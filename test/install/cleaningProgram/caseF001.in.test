@@ -1,0 +1,93 @@
+#!/bin/sh
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+## wdb - weather and water data storage
+##
+## Copyright (C) 2007 met.no
+##
+##  Contact information:
+##  Norwegian Meteorological Institute
+##  Box 43 Blindern
+##  0313 OSLO
+##  NORWAY
+##  E-mail: wdb@met.no
+##
+##  This is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Setup environment
+export TESTCASE="F001"
+export TEST_DESCRIPTION="Deleting old data"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
+
+# Test Environment
+source $TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+    --xml)
+		XML_OPT="-x";;
+    -x)
+		XML_OPT="-x";;
+esac
+
+# Timing
+startTime=`date +%s%N`
+# Calculate Test time
+TESTTIME=$(date +%FT%R:%S --date "2 days ago")
+
+# Clean out database
+source $TEST_PATH/tearDown.sh
+
+# Generate Test Data
+${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime=${TESTTIME}
+if ! $PSQL -Atc "SELECT count(*) FROM test.oidvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data was not inserted for test\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not inserted)"
+	fi
+    source $TEST_PATH/tearDown.sh
+    exit 1
+fi
+
+# Run Cleaner
+$PSQL -q <<EOF
+\o __WDB_LOGDIR__/$TESTCASE_FILE.tmp
+select cleanupDb();
+EOF
+
+# Check Result
+# - Expected Result: Data should be deleted
+if ! $PSQL -Atc "SELECT count(*) FROM test.oidvalue WHERE dataprovidername='test cleandb'" | grep -qE "0"
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data does not appear to have been deleted\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not deleted from WDB)"
+	fi
+    source $TEST_PATH/tearDown.sh
+    exit 1
+fi
+
+# Clean Up and Exit
+source $TEST_PATH/tearDown.sh
+endTime=`date +%s%N`
+totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+if test "$XML_OPT" = "-x"; then
+	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
+else
+	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+fi

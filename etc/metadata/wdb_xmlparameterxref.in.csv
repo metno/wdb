@@ -1,0 +1,7 @@
+xmlnode|xmlvalue|xmlunitretrive|defaultunit|pointtime|ParameterId|Load
+symbol|number|f|code|f|800|t
+precipitation|value|f|millimetre|f|59|t
+windDirection|deg|f|degree|t|31|t
+windSpeed|mps|f|metre per second|t|32|t
+temperature|value|t|degree celsius|t|11|t
+pressure|value|t|hectopascal|t|1|t

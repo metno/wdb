@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:wdb_software-architecture">
+	
+	<title>Software Architecture</title>
+	
+	<sect1>
+		<title>Introduction</title>
+		
+		<sect2>
+			<title>Purpose</title>
+			
+			<para>The purpose of this chapter is to describe the architecture of the WDB
+				system.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Scope</title>
+			
+			<para>The document describes the architecture of the WDB system using the
+				following views:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Use-case view,</para>
+				</listitem>
+				<listitem>
+					<para>Logical view,</para>
+				</listitem>
+				<listitem>
+					<para>Process view,</para>
+				</listitem>
+				<listitem>
+					<para>Physical view, and</para>
+				</listitem>
+				<listitem>
+					<para>Implementation view.</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Priorities</title>
+		
+		<para>The software architecture prioritizes the following criteria, as defined by
+			the WDB Vision, in order of priority.</para>
+		
+		<sect2>
+			<title>Stability</title>
+			
+			<para>The WDB system must be stable. This is because the system is intended to be
+				run in a hands-free fashion, and also because it is expected to be deployed
+				widely.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Maintainability</title>
+			
+			<para>Maintainability is a high priority of the WDB system. Due to the presumed
+				long life-time of the system, it is important that the system be capaale of
+				operating in a hands-free fashion.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Simplicity</title>
+			<para> The WDB system should be simple to use, and simple to develop systems
+				against. </para>
+		</sect2>
+		
+		<sect2>
+			<title>Flexibility</title>
+			<para> The WDB system should be flexible, in order to permit the easy development
+				of the system to permit loading and reading of new data types. </para>
+		</sect2>
+		
+		<sect2>
+			<title>Scalable Performance</title>
+			<para> The WDB should provide scalable performance in terms of both latency and
+				throughput. </para>
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Limitations</title>
+		
+		<sect2>
+			<title>Existing architecture, systems, and organizations</title>
+			
+			<para>The following existing systems and architectural choices impact on the
+				new load chain.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Diana</title>
+			
+			<para>Diana is Met.No's graphical worktool for weather forecasts. The WDB
+				system is intended to function together with the Diana system, and should be
+				able to both be read from as well as to be written to.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Economical Situation</title>
+			
+			<para>The economical resources of the PROLOG project are limited. As such, the
+				system must be modular so that it can be constructed in multiple
+				stages.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Cooperation with SMHI</title>
+			
+			<para>To facilitate future cooperation with SMHI on joint development, the WDB
+				system must avoid deviating significantly from the ideas of the ROAD
+				system.</para>
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Use Case View</title>
+		
+		<para>The following sections describe the critical use cases of the WDB
+			system.</para>
+		
+		<para>Use Case #1: Retrieve data from WDB via application programming interface. An
+			external weather application needs to retrieve weather data. The application
+			connects to the WDB system using an API, is verified for access, and is then able to
+			retrieve data from the system. Once the application has retrieved all the data it
+			requires, it then closes down its connection to the WDB.</para>
+		
+		<para>Use Case #2: Load forecast data from GRIB format from Opdata. The WDB system
+			monitors Opdata for the presence of new GRIB files. When a new GRIB file arrives,
+			the WDB system retrieves the file, decodes it, and loads it into the WDB system. If
+			there are any errors during the process, these are logged.</para>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Logical View</title>
+		
+		<para>This section provides a description of the logical view of the architecture.
+			It defines the different components of the WDB system and how they relate to each
+			other.</para>
+		
+		<figure id="fig:wdb_logical-architecture">
+			<title>Overview of the Logical Architecture</title>
+			<mediaobject>
+				<imageobject role="html">
+					<imagedata align="center"
+						fileref="gfx/wdb_logical-architecture.png" format="PNG"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para><xref linkend="fig:wdb_logical-architecture"/> gives an overview of the
+			logical architecture of the system.</para>
+		
+		<sect2>
+			<title>GRIB Loading</title>
+			
+			<para>The GRIB Loading package is the component responsible for handling the
+				loading of GRIB data (files) into the WDB system.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Input</title>
+			
+			<para>Data is input into the GRIB Loading system as files. These files are packed
+				up and decoded from the GRIB format using standard GRIB file reading and
+				decoding libraries (EMOSLib is used in the case of WDB).</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Loading</title>
+			
+			<para>Data is loaded from the GRIB Loading system into the database through
+				standard SQL calls.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Logging</title>
+			
+			<para>The Logging component logs any errors that may occur during the decoding
+				and database loading, for use in latter diagnostics or debugging. Typical
+				errors are issues such as missing metadata, or unexpected responses from
+				the database. Logging is based on an open-source component,
+				log4cpp.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Data Storage</title>
+			
+			<para>The Data Storage component of the WDB system, is the location of the system
+				where data is stored and organized. The WDB system data storage is expected
+				to be implemented in a database system, and to consist of several layers. The
+				organization will be dimensional rather than strictly
+				dimensional.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Value Layer</title>
+			
+			<para>The actual data values of the weather data is stored in a few large
+				dimensional tables. These tables are kept completely similar, in order to
+				facilitate the extraction of weather data from multiple tables using
+				identical queries.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Meta Data Layer</title>
+			
+			<para>The meta data layer consists of all the tables that describe the data
+				stored in the Value layer, such as category, weather parameter, unit,
+				source of the data, etc. The structure of the meta data layer attempts to
+				reflect the logic structure of the work flow and domain of the weather data.
+				The meta data itself is largely static, with changes to the data happening
+				infrequently.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Loading Layer</title>
+			
+			<para>The loading layer collects a number of cross-reference tables that
+				contain meta information used by the loading programs to identify the
+				correct meta data of values from the data sources in WDB.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>View Layer</title>
+			
+			<para>The view layer consists of a number of views that are used by the various
+				components outside of the data storage to access the data storage. The
+				purpose of the view layer is to isolate applications and WDB components from
+				changes in the underlying data model. All read access on tables in WDB occur
+				through the View Layer.</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Process View</title>
+		
+		<para> This section describes how the components of the individually WDB components
+			interact during the processing of data in the WDB system. </para>
+		
+		<figure id="fig:wdb_process-architecture">
+			<title>Overview of the Process Architecture</title>
+			<mediaobject>
+				<imageobject role="html">
+					<imagedata align="center"
+						fileref="gfx/wdb_process-architecture.png" format="PNG"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para><xref linkend="fig:wdb_process-architecture"/> displays the process
+			view over the components of the WDB system. The GRIB Loading system consists of a
+			process that monitors the file system for new GRIB files, and then activates the
+			gribLoad program that handles the actual loading of data. The data is loaded into
+			the database server where it is stored in the WDB value tables. Data is then
+			extracted from the database using the WDB Development Kit API.</para>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Physical Views</title>
+		
+		<para>This section of the document describes how the components and processes of the
+			system are connected to the hardware used by the system.</para>
+		
+		<figure id="fig:wdb_physical-architecture">
+			<title>Overview of the Physical Architecture</title>
+			<mediaobject>
+				<imageobject role="html">
+					<imagedata align="center"
+						fileref="gfx/wdb_physical-architecture.png"
+						format="PNG"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para><xref linkend="fig:wdb_physical-architecture"/> displays the physical
+			locations of the components of WDB. The WDB system itself is single-server, with
+			all components capable of being run from the same server. Maintaining the WDB
+			components on a single server reduces the number of points of hardware failure.
+			Individual components, e.g., the loading programs, could be run from external
+			systems, however.</para>
+		
+		<para>Redundancy is achieved by two, or more, database servers in parallel, thereby
+			solving the problem of a single point of failure.</para>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Implementation View</title>
+		
+		<para>The following components are part of the WDB deliverable:</para>
+		
+		<para><emphasis>WDB Data Storage:</emphasis> The Data Storage consists of SQL
+			scripts to construct the tables, views, functions, indexes and user roles of the
+			WDB system.</para>
+		
+		<para><emphasis>GRIB Loader:</emphasis> The GRIB Loading system consists of an
+			executable component and a system script. The executable component is designed
+			to be run from the command line, and which takes a GRIB file as input and loads it
+			into the database. The system script is a script designed to be run as a system
+			process with the purpose of handling continuous loading of GRIB files from
+			specified locations.</para>
+		
+		<para><emphasis>WDB Cleaner:</emphasis> The WDB Cleaner consists of a set of SQL
+			scripts/functions and a system script. The system script is designed to
+			activate the cleaning program at scheduled intervals to handle clean-up of the
+			data in the database system. </para>
+		
+		<para><emphasis>WDB Call Interface:</emphasis> The WDB Call Interface
+			(generally referred to as WCI) is the application programmer's interface to WDB
+			for weather and water data applications.</para>
+		
+		<sect2>
+			<title>Deliverables</title>
+			
+			<para>For each component, the WDB package should contain:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Source code of the component (documented with JavaDoc)</para>
+				</listitem>
+				<listitem>
+					<para>System Design Specification</para>
+				</listitem>
+				<listitem>
+					<para>System Test Specification</para>
+				</listitem>
+				<listitem>
+					<para>Regression Test Suite</para>
+				</listitem>
+				<listitem>
+					<para>Operational Manual</para>
+				</listitem>
+			</itemizedlist>
+			
+			<para>The System Design documentation for each component provides an overview
+				of the component design, as well as a description of the external interface
+				of the component and is included in the Developer's Manual (this
+				document).</para>
+			
+			<para>The WDB Call Interface additionally consists of:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>WCI User's Manual</para>
+				</listitem>
+				<listitem>
+					<para>Example Programs</para>
+				</listitem>
+			</itemizedlist>
+			
+			<para>The WDB package itself contains a number of deliverables in addition to
+				those of the components. These are:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>WDB Vision (Developer's Manual)</para>
+				</listitem>
+				<listitem>
+					<para>WDB Software Architecture (Developer's Manual)</para>
+				</listitem>
+				<listitem>
+					<para>WDB Test Plan (Developer's Manual)</para>
+				</listitem>
+				<listitem>
+					<para>Installation Instructions</para>
+				</listitem>
+				<listitem>
+					<para>Developer Credits</para>
+				</listitem>
+				<listitem>
+					<para>ChangeLog</para>
+				</listitem>
+				<listitem>
+					<para>License Information</para>
+				</listitem>
+				<listitem>
+					<para>News</para>
+				</listitem>
+				<listitem>
+					<para>Readme</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Implementation Quality</title>
+			
+			<para>Implementation quality on the WDB system is achieved using the two
+				following methods.</para>
+			
+			<para>Development on the WDB system is to follow sound development principles,
+				and involves either pair-programming and/or formal code reviews on all
+				critical code.</para>
+			
+			<para>In addition, all components must pass the acceptance tests provided for
+				these components. Each requirement for a component must be traceable to a
+				test case in the system test specification of that component. Test cases for
+				all P1 requirements must be implemented in the test suite of each component;
+				test cases for other requirements are optional.</para>
+			
+		</sect2>
+	</sect1>
+	
+	<sect1>
+		<title>Summary</title>
+		
+		<para>It is believed that the architecture as described above, will fulfill the key
+			criteria determined for the WDB system as described below.</para>
+		
+		<para><emphasis>Stability:</emphasis> The stability of the WDB system is
+			primarily achieved through two measures described in the implementation view;
+			firstly, quality-review of the source code (code reviews), and secondly,
+			rigorous testing of the release-ready code using regression testing.</para>
+		
+		<para><emphasis>Maintainability:</emphasis> Maintainability is a high
+			priority of the WDB system. Due to the presumed long life-time of the system, it is
+			important that the system be capable of operating in a hands-free
+			fashion.</para>
+		
+		<para><emphasis>Simplicity:</emphasis> The WDB system should be simple to use,
+			and simple to develop systems against.</para>
+		
+	</sect1>
+	
+</chapter>

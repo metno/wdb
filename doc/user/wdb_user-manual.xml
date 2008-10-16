@@ -1,0 +1,1285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % xinclude SYSTEM "../docbook/xinclude.mod">
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%xinclude;
+	%wdb.entities;
+]
+>
+
+<book>
+	<title>WDB User's Manual</title>
+	
+	<bookinfo>
+		<editor>
+			<firstname>Michael</firstname>
+			<othername>O.</othername>
+			<surname>Akinde</surname>
+			
+			<affiliation>
+				<orgname><ulink url="http://www.met.no">met.no</ulink>
+				</orgname>
+				
+				
+				<address>
+				  <street>Niels Henrik Abelsvei 4</street> 
+				  <city>Oslo</city>
+				  <country>Norway</country>
+				  <email>wdb@met.no</email>
+				</address>
+			</affiliation>
+		</editor>
+		<abstract>
+			<para>WDB is a database system designed to store MHO (Meteorological,
+				Hydrological and Oceanographic) data in a PostgreSQL database management
+				server. The purpose of the WDB system is to improve the quality and
+				effectiveness of IT systems for MHO production by providing a complete,
+				flexible, and effective data storage solution for real-time and archive
+				data.</para>
+			<para>This is the User's Manual for WDB version &version;</para>
+		</abstract>
+	</bookinfo>
+	
+	<chapter id="cha:wdb_introduction">
+		
+		<title>Introduction</title>
+		
+		<sect1 id="sec:what_is_wdb">
+			<title>What is WDB?</title>
+			
+			<para>WDB is a storage system for meteorological, hydrological, and
+				oceanographic data, including physical and chemical data, but excluding
+				biological/environmental data. It is primarily designed to store field
+				data (meteorological forecasts and analysis, oceanographic wave and
+				circulation models) as well as observations and point forecasts. The
+				purpose of the WDB system is to improve the quality and effectiveness of IT
+				systems for MHO production by providing a flexible and effective data
+				storage solution for real-time and archive data</para>
+			
+			<para>WDB is an open-source system built on the PostgreSQL object-relational
+				database management system. Key features of the system are that it:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>supports high availability production</para>
+				</listitem>
+				<listitem>
+					<para>can handle most types of meteorological, hydrological, and
+						oceanographic data</para>
+				</listitem>
+				<listitem>
+					<para>is flexible enough to be extended with new data types and data
+						formats</para>
+				</listitem>
+				<listitem>
+					<para>is easy (and cheap) to maintain and operate</para>
+				</listitem>
+				<listitem>
+					<para>provides a simple and consistent interface to all the different
+						kinds of data</para>
+				</listitem>
+			</itemizedlist>
+			
+			<para>As WDB is released under GPL, it may be used, modified, and distributed by
+				anyone free of charge for any purpose, be it private, commercial or
+				academic.</para>
+		</sect1>
+		
+		<sect1 id="sec:wdb_history">
+			<title>A brief history of WDB</title>
+			
+			<para>The WDB system was initially developed by Meteorologisk institutt,
+				Norway (met.no) from 2006-2008. WDB is a descendant of the ROAD system, a
+				real-time operational database system developed at Sveriges
+				Meteorologiska och Hydrologiska Institut (SMHI).</para>
+			
+			<para>This section will contain a brief overview of the ideas and history of the
+				ROAD/WDB system.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:further_information">
+			<title>Further Information</title>
+			
+			<para>In addition to the manuals, there are (or will be) other resources
+				available on WDB:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Web site</para>
+					<para>The WDB web site, http://wdb.met.no contains information
+						about the latest release and lots of other information to make your
+						work (or play) with WDB more productive. </para>
+				</listitem>
+				<listitem>
+					<para>FAQs</para>
+					<para>The FAQ list contains continually updated answers to
+						frequently asked questions.</para>
+				</listitem>
+				<listitem>
+					<para>README</para>
+					<para>Every WDB package contains a README file.</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect1>
+		
+		<sect1 id="sec:reporting_bugs">
+			<title>Reporting Bugs</title>
+			
+			<para>When you find a bug in WDB, we want to hear about it.</para>
+			
+			<para>This section of the manual will discuss the bug reporting policy followed
+				by WDB. Since there is as yet no public access to our Bugzilla
+				http://wdb.bugs.met.no/, the best solution at the moment is to contact us on
+				the appropriate mailing list.</para>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter id="cha:getting_started">
+		
+		<title>Getting Started</title>
+		
+		<sect1 id="sec:wdb_overview">
+			<title>WDB Overview</title>
+			
+			<para>In this section, we will briefly describe the basic architecture of the
+				WDB system. Understanding the architecture of WDB will help make the
+				following sections somewhat clearer.</para>
+			
+			<para>At its core, the WDB system consists of a database management server
+				(built on the PostgreSQL DBMS), a number of utilities for maintenance and
+				data loading, and a function interface for data extraction. We refer to the
+				data loading utilities as loading programs and the data extraction
+				interface as the WDB Call Interface (WCI). <xref
+					linkend="fig:wdb_users-architecture-overview"/> illustrates
+				the relation of the different components of WDB.</para>
+			
+			<figure id="fig:wdb_users-architecture-overview">
+				<title>Overview of the WDB Architecture</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata align="center"
+							fileref="gfx/wdb_users-architecture-overview.png"
+							format="PNG"/>
+					</imageobject>
+				</mediaobject>
+			</figure>
+			
+			<para>We refer to the WDB data model together with the WDB Call Interface as the
+				WDB core. This comprises the data storage components of the database along
+				with the interface to read and write data. The WDB Call Interface (WCI) is
+				essentially a database plugin module that provides the application
+				developer or user with a function-based interface that can be used to
+				extract data from WDB. This function interface is accessible through SQL,
+				which means that any programming language capable of querying a PostgreSQL
+				database can access data through WCI; at least in theory.</para>		
+			
+			<para>The loading programs are utilized to extract data from the data sources
+				(typically files or some network service) and load them into the database.
+				In principle, each type of data: GRIB, FELT (an internal data format used at
+				met.no), BUFR, etc., will have its own loading programs. The options and
+				interfaces to the various loading programs are designed to be as similar to
+				each other as possible, however. </para>
+							
+			<para>The maintenance utilities are used for a variety of tasks related to the
+				administration of the database, such as data cleaning (removing data that
+				is no longer required), creating and deleting users, and checking on the
+				status of the system.</para>
+					
+		</sect1>
+		
+		<sect1 id="sec:wdb_installation">
+			<title>Installation</title>
+			
+			<para>Before you can use WDB, you need to install it. If you are not sure whether
+				WDB is available on your site, or whether you can use it for your needs, you can
+				install it yourself. WDB can be installed by any unprivileged user;
+				superuser (root) access is not required. If you are installing WDB
+				yourself, then refer to Section <xref linkend="cha:installation"/> for
+				the detailed installation instructions, and return to this guide when the
+				installation is complete.</para>
+			
+			<sect2 id="sec:check_configuration">
+				<title>Checking the Configuration</title>
+				
+				<para>If your site administrator has not set WDB up in a default way, you may
+					have a little work to do checking and setting up your environment
+					variables. If WDB has been installed correctly, you should have access
+					to the wdbConfiguration utility. This can be used to verify the
+					configuration of your system.</para>
+				
+				<programlisting>
+			%> wdbConfiguration
+			database =      mywdb
+			host =          localhost
+			port =          5432
+			user =          myuser
+			</programlisting>
+				
+				<para>This tells you what the connection information of your WDB database
+					is. If these are incorrect, you can change your settings by editing the
+					wdb.conf file installed in WDB's sysconfdir and save it to
+					$(HOME)/.wdb</para>
+				
+				<para>If you are unsure as to whether the connection information is
+					correct, run:</para>
+				
+				<programlisting>
+			%> wdb
+			</programlisting>
+				
+				<para>wdb runs the administrative interface to a WDB database. Like all WDB
+					utilities, it will attempt to connect to the database using the
+					connection information stored in your wdb.conf file, unless
+					alternative connection parameters are given on the command line. If
+					the wdb utility is unable to connect to the database, something is wrong
+					with your connection options. Check whether your database server is
+					running. If the database server is down, then obviously you can not
+					connect to it. Otherwise, you may need to consult your site
+					administrator (or if that is you) the PostgreSQL documentation to make
+					sure that your database environment is set up properly. </para>
+				
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sec:upgrading">
+			<title>Upgrading</title>
+			
+			<para>The roadmap currently calls for it to be possible to upgrade WDB simply, without
+				having to dump/reload data. This has not been implemented yet, however, so until further 
+				notice the solution for upgrading is simply to uninstall WDB (purge in Debian) and then
+				re-installing the system).</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:loading_data">
+			<title>Loading Data into WDB</title>
+			
+			<para>Data is loaded into WDB using one of the loading programs. Most of the
+				loading have a file interface; in addition, several of them can be set up as
+				persistent loading processes.</para>
+			
+			<para>Each of the loading programs has its own manual page; consult the Loading
+				Programs User Manual for details. In addition, all executable WDB components
+				have the --help option implemented to provide extensive information about the
+				options available to the program. In this section, we will just briefly go
+				over the broad details. </para>
+			
+			<sect2 id="sec:load_grib">
+				<title>Loading GRIB files</title>
+				
+				<para>The gribLoad utility is used to load GRIB files into the database. It
+					takes as input the name of the file(s) as well as a number of options,
+					decodes the GRIB file using the cross-reference metadata for GRIB in
+					WDB, and stores the fields from the GRIB file in WDB. The GRIB loading
+					program is invoked by typing gribLoad and the filename from the command
+					line. </para>
+				
+				<programlisting>
+			%> gribLoad myfile.grib
+			</programlisting>
+				
+				<para>This loads the GRIB file myfile.grib into the WDB database using the
+					default parameters for the gribLoad utility. If the database
+					configuration is not the default, you will want to specify the correct
+					configuration using the available options.</para>			
+				
+				<programlisting>
+			%> gribLoad -d mywdb -u myuser -p 5433 myfile.grib
+			</programlisting>
+				
+				<para>This loads the GRIB file into the database "mywdb" on port "5433",
+					with the database user "myuser". For the full list of options available
+					with the gribLoad utility, use the --help option or check the GribLoad documentation.</para>
+				
+				<para>Note that the gribLoad utility works together with wildcards. For
+					example, you could use the command:</para>
+				
+				<programlisting>
+			%> gribLoad *.grib
+			</programlisting>
+				
+				<para>This would load every file in the current directory with the "grib"
+					suffix into the database one after the other. Note, though, that if you
+					have a system with multiple processors and good enough disks, you will
+					be able to achieve better loading performance by loading several files
+					in parrallel. See the Loading Program User Manual for a description of
+					the utilities available to facilitate faster loading.</para>						
+				
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sec:accessing_data">
+			<title>Accessing Data in WDB</title>
+			
+			<para>To access data in WDB, one needs to go through the WDB Call Interface (WCI).
+				WCI is a data-retrieval API implemented using SQL functions. </para>
+			
+			<sect2 id="sec:wdb_c_i">
+				<title>WDB Call Interface</title>
+				
+				<para>To use the WCI, the user connects to the database through any SQL
+					interface and then retrieves data using the WCI functions. This means
+					that, in theory, data can be retrieved through the WCI from any
+					programming language or program that supports SQL queries to a
+					PostgreSQL database server. For the example below, we will assume a
+					connection to PostgreSQL through a psql client interface.</para>
+				
+				<para>To retrieve data from WCI through SQL, you need to understand three (two)
+					functions:</para>
+				
+				<variablelist>
+					<?dbfo list-presentation="blocks"?>
+					
+					<varlistentry>
+						<term>wci.begin</term>
+						<listitem>
+							<para>The wci.begin function call "opens" up the connection to the
+								WCI. In practice, it sets up a number of internal
+								variables in the database and checks that your user has
+								permission to use the WCI. The wci.begin call must be
+								called before any other WCI functions are
+								called.</para>
+							
+							
+							<programlisting>
+						mywdb=# select wci.begin('myuser');
+					</programlisting>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>wci.read</term>
+						<listitem>
+							<para>The wci.read call is the key function call in the WCI
+								used to retrieve data from the database. In WDB, data is
+								classified by a number of dimensions; the dataprovider
+								(the source that provided the data), the location of the data
+								(and what geographical interpolation to use), the reference time
+								(time of reference for the data), the valid time (the time for which the data
+								is valid), the value parameter (the "MHO parameter" that identifies the
+								data values in the database, the level for which the data 
+								is valid (height, depth, etc.) and finally the version of the data (data
+								can exist in multiple versions). Each of these dimensions
+								can be passed as a parameter to the wci.read function. In
+								addition, the wci.read function also takes as a
+								parameter the type of data to be returned.</para>
+							
+							
+							<programlisting>
+						mywdb=# select * 
+								from wci.read ( ARRAY['hirlam'], -- Data Provider
+											   'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Location
+											   ('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wciTimeSpec,  -- Reference time
+											   ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'inside')::wciTimeSpec, -- Valid time
+											   ARRAY['instant temperature of air'], -- Value Parameter
+											   (2,2,'distance above ground','exact')::wciLevelSpec, -- Level
+											   ARRAY[-1], -- Data version
+											   NULL::returnFloat   -- Return type
+											 );
+					</programlisting>
+							
+							<para>Specifying a NULL for a parameter, corresponds to
+								asking for all data of that kind. For example:</para>						
+							
+							<programlisting>
+						mywdb=# select * 
+								from wci.read ( ARRAY['hirlam'], -- Data Provider
+											   'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Location
+											   ('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wciTimeSpec,  -- Reference time
+											   ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'inside')::wciTimeSpec, -- Valid time
+											   NULL, -- All parameters
+											   NULL::wciLevelSpec, -- Any level
+											   NULL, -- All data versions
+											   0::returnFloat -- Return type
+											 );
+					</programlisting>
+							
+							<para>This query would return all data for the location, reference
+								time, and valid time specified, irrespective
+								of what value parameter, level, or data version the data is
+								recorded with.</para>
+							
+							<para>The wci.read call permits great flexibility in the
+								specification of queries, allowing the user to extract
+								individual records in the database (although doing so
+								would be rather ineffective) or thousands of records.
+								Data can also be extracted as points (as above), or entire
+								fields of data. </para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>wci.end</term>
+						<listitem>
+							<para>The wci.end call "closes" down the connection to the
+								WCI, and resets any internal variables that may have been
+								changed by the WCI. It is, strictly speaking, not
+								necessary to call wci.end if you subsequently close down
+								the database connection (as this will drop all the
+								settings anyway), but not doing so can lead to problems if
+								you subsequently continue working on the same
+								connection.</para>						
+							
+							<programlisting>
+						mywdb=# select wci.end( );
+					</programlisting>
+						</listitem>
+					</varlistentry>
+					
+				</variablelist>
+				
+				<para>For a more thorough description of the functionality in the WDB Call
+					Interface, consult the WCI User Manual.</para>
+				
+			</sect2>
+		</sect1>
+		
+	</chapter>
+	
+	<chapter id="cha:installation">
+		
+		<title>Installation</title>
+		
+		<sect1 id="sec:quick_start">
+			<title>Quick Start</title>
+			
+			<para> The quick way to install the WDB system is simply to do the following (this
+				requires that your system has all of the prerequisites for the WDB system
+				installed and operational). </para>
+			
+			<para>Retrieve version &version; of the WDB source from the download section of
+				the WDB website (http://wdb.met.no).</para>
+			
+			<programlisting>
+			%> ./configure 
+			%> make 
+			%> make install
+		</programlisting>
+			
+			<para> The rest of this chapter discusses the details of the details of
+				installing WDB. </para>
+			
+		</sect1>
+		
+		<sect1 id="sec:requirements">
+			<title>Requirements</title>
+			
+			<para>In general, WDB should be possible to run on any modern, Unix-compatible
+				platform that is capable of running PostgreSQL. However, it is only tested
+				on the platforms described in Section <xref
+					linkend="sec:supported_platforms"/>. </para>
+			
+			<para>The following software packages are required for building WDB:</para>
+			
+			<variablelist>
+				<?dbfo list-presentation="blocks"?>
+				
+				<varlistentry>
+					<term>GNU make</term>
+					<listitem>
+						<para>GNU make or another, compatible, make program is required.
+							WDB is developed and tested using GNU make version 3.80. There
+							is no reason why it should not work with earlier versions, but
+							obviously there are no guarantees. </para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>C++ Compiler</term>
+					<listitem>
+						<para>You need an ISO/ANSI C++ compiler. We recommend a recent
+							version of GCC, but WDB should compile with most variants of
+							compilers.</para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>GNU tar</term>
+					<listitem>
+						<para>GNU tar or similar archiving software able to handle tar.gz
+							filesq is required to unpack the source distribution in the
+							first place, in addition to either gzip or bzip2.</para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>GNU sed</term>
+					<listitem>
+						<para>GNU sed version 4.1.5 or later is used for performing text
+							transformations on the WDB system files. If you need to get a
+							GNU package, you can find it at your local GNU mirror site (see
+								<ulink url="http://www.gnu.org/order/ftp.html">
+							http://www.gnu.org/order/ftp.html</ulink> for a list) or
+							at <ulink url="ftp://ftp.gnu.org/gnu/">
+							ftp://ftp.gnu.org/gnu/</ulink>. </para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>GNU readline</term>
+					<listitem>
+						<para>GNU readline version 5.x or later is used for handling of command
+							line inputs in the WDB administration tools. If you need to get a
+							GNU package, you can find it at your local GNU mirror site (see
+								<ulink url="http://www.gnu.org/order/ftp.html">
+							http://www.gnu.org/order/ftp.html</ulink> for a list) or
+							at <ulink url="ftp://ftp.gnu.org/gnu/">
+							ftp://ftp.gnu.org/gnu/</ulink>. </para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>PostgreSQL</term>
+					<listitem>
+						<para> You must have access to a PostgreSQL 8.1.x (or later
+							version) server, to be able to install a WDB server. WDB
+							utilizes the pg_config utility to retrieve information
+							about your installed version of PostgreSQL, so take care to
+							ensure the right version of pg_config is in your path, if you
+							have multiple versions of the database server installed. If
+							you need to download PostgreSQL, see <ulink
+								url="http://www.postgresql.org">
+							http://www.postgresql.org</ulink></para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>PostGIS</term>
+					<listitem>
+						<para>PostGIS 1.1.x or later is used for the geographical objects
+							in WDB. The WDB installation scripts utilize pg_config to
+							determine the location of the PostGIS scripts, so care should
+							be taken that PostGIS is installed correctly (i.e., in the
+							SHAREDIR of PostgreSQL). If you need to download PostGIS, see
+								<ulink url="http://www.postgis.org">
+							http://www.postgis.org</ulink></para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>Boost</term>
+					<listitem>
+						<para>Boost libraries version 1.33.1 or later is required to
+							compile a number of the programs in WDB. Boost can be
+							downloaded from <ulink url="http://www.boost.org">
+							http://www.boost.org</ulink></para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>GRIB API</term>
+					<listitem>
+						<para>The ECMWF GRIB API 1.3.x or later is required for the
+							decoding of &grib; files. The ECMWF GRIB API is accessible
+							from <ulink
+								url="http://www.ecmwf.int/products/data/software/grib_api.html">
+							http://www.ecmwf.int/products/data/software/grib_api.html</ulink>
+							</para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>Log4Cpp</term>
+					<listitem>
+						<para>Log for C++ (Log4Cpp) 1.0.x or later is utilized for the
+							logging functionality in WDB. It can be downloaded from
+								<ulink url="http://log4cpp.sourceforge.net/">
+							http://log4cpp.sourceforge.net/</ulink></para>
+					</listitem>
+				</varlistentry>
+				
+			</variablelist>
+			
+			<para>The following software packages are optional. It is possible to compile
+				WDB without these packages, but certain options will then be disabled, as
+				explained below.</para>
+			
+			<variablelist>
+				<?dbfo list-presentation="blocks"?>
+				
+				<varlistentry>
+					<term>KvalObs</term>
+					<listitem>
+						<para>KvalObs is an observation retrieval and distribution
+							system developed by met.no (also open-source). The
+							kvalObsLoad application of WDB requires that KvalObs be
+							installed. If not found, WDB will refrain from building
+							kvalObsLoad.</para>
+					</listitem>
+				</varlistentry>
+				
+			</variablelist>
+			
+			<para>You may wish to verify that you have sufficient disk space. The compiled
+				source for WDB requires approximately 120 MB and an empty PostgreSQL
+				installation with WDB can rapidly take up to 200 MB of disk space (more if
+				installation tests are run).</para>
+			
+			<sect2 id="sec:supported_platforms">
+				<title>Supported Platforms</title>
+				
+				<para>Currently, WDB is only extensively tested on Debian Etch. It is
+					developed on Fedora Core 5.</para>
+				
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sec:install_procedure">
+			<title>Installation Procedure</title>
+			
+			<para>The first step of the installation procedure is to retrieve and unpack the
+				source files for WDB. Once this has been done, you can configure the
+				package.</para>
+			
+			<sect2 id="sec:configure">
+				<title>Configuration</title>
+				
+				<para>First, you will need to configure the source tree for your system and
+					select your build options.This is done by running the configure
+					script. For a default installation simply enter:</para>
+				
+				<programlisting>
+			./configure
+			</programlisting>
+				
+				<para>This script will run a number of tests to guess values for various
+					system dependent variables, detect quirks of your operating system,
+					and finally will create several files in the build tree to record what it
+					found. (You can also run configure in a directory outside the source
+					tree if you want to keep the build directory separate). Once the script
+					has completed running, it will print out the settings for your
+					system.</para>
+				
+				<para>The default configuration will build the WDB database and
+					administration utilities, as well as the GribLoad loading program.
+					All files will be installed under /usr/local by default. </para>
+				
+				<para>You can customize the build and installation process by supplying
+					one or more of the following command line options to configure: </para>
+				
+				<variablelist>
+					<?dbfo list-presentation="blocks"?>
+					
+					<varlistentry>
+						<term>--prefix=PREFIX</term>
+						<listitem>
+							<para>Install all files under the directory PREFIX instead
+								of /usr/local. The actual files will be installed into
+								various subdirectories; no files will ever be installed
+								directly into the PREFIX directory.</para>
+							<para>If you have special needs, you can also customize the
+								individual subdirectories with the following options.
+								However, if you leave these with their defaults, the
+								installation will be relocatable, meaning you can move
+								the directory after installation. The man and doc
+								locations are not affected by this.</para>
+							<para>To install WDB in a local directory, you could
+								use:</para>
+							
+							
+							<programlisting>%> ./configure --prefix=/home/myuser/local</programlisting>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--exec-prefix=EXEC-PREFIX</term>
+						<listitem>
+							<para>You can install architecture-dependent files under a
+								different prefix, EXEC-PREFIX, than what PREFIX was set
+								to. This can be useful to share
+								architecture-independent files between hosts. If you
+								omit this, then EXEC-PREFIX is set equal to PREFIX and
+								both architecture-dependent and independent files
+								will be installed under the same tree, which is probably
+								what you want.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--bindir=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory for executable
+								programs. The default is EXEC-PREFIX/bin, which
+								normally means /usr/local/bin.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--datadir=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory for read-only data files
+								used by the installed programs. The default is
+								PREFIX/share.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--sysconfdir=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory for various
+								configuration files, PREFIX/etc by default.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--libdir=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the location to install libraries and
+								dynamically loadable modules. The default is
+								EXEC-PREFIX/lib.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--includedir=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory for installing C and C++
+								header files. The default is PREFIX/include.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--mandir=DIRECTORY</term>
+						<listitem>
+							<para>The man pages that come with WDB will be installed under
+								this directory, in their respective manx
+								subdirectories. The default is PREFIX/man.</para>
+						</listitem>
+					</varlistentry>
+					
+				</variablelist>
+				
+				<para>If configure is having difficulty finding a particular library or
+					supporting component, you can assist it by asking it to search a
+					particular path.</para>
+				
+				<variablelist>
+					<?dbfo list-presentation="blocks"?>
+					
+					<varlistentry>
+						<term>--with-pgsql=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which PostgreSQL is
+								installed (by default, WDB searches your PATH
+								environment variable). WDB is searching for the
+								pg_config application and will search DIRECTORY/bin
+								when this option is specified. pg_config provides
+								detailed information about your installed version of
+								PostgreSQL. If you have multiple installations of
+								PostgreSQL, make sure that the pg_config used by WDB is
+								for the intended version of PostgreSQL.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-postgis=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which Postgis
+								installs its SQL setup files (lwpostgis.sql and
+								spatial_ref_sys.sql). By default, this should be the
+								location used for architecture-independent support
+								files by PostgreSQL, given by "pg_config --sharedir".
+								Unfortunately, not all versions of Postgis handle the
+								installation of these files in a standard manner. To
+								ensure that WDB is able to locate those files, set the
+								directory to be searched with this option.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-gribapi=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which the ECMWF GRIB
+								API has been installed. If set, WDB will add
+								DIRECTORY/include and DIRECTORY/lib to its search
+								space when searching for the header and library files for
+								the GRIB API. </para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-boost=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which Boost has been
+								installed. If set, WDB will add DIRECTORY/include and
+								DIRECTORY/lib to its search space when searching for the
+								header and library files of Boost.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-boost-date-time=LIBNAME</term>
+						<listitem>
+							<para>WDB uses the date-time library of Boost. By setting
+								this option, you can instruct the linker to utilize a
+								specific version of the library; e.g.</para>
+														
+							<programlisting>
+							--with-boost-date-time=boost_date_time-gcc-mt-d-1_33_1							
+						</programlisting>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-boost-regex=LIBNAME</term>
+						<listitem>
+							<para>WDB uses the regex library of Boost. By setting this
+								option, you can instruct the linker to utilize a specific
+								version of the library; e.g.</para>
+							
+							
+							<programlisting>
+							--with-boost-regex=boost_regex-gcc-mt-d-1_33_1							
+						</programlisting>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-proj=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which Proj has been
+								installed. If set, WDB will add DIRECTORY/include and
+								DIRECTORY/lib to its search space when searching for the
+								header and library files of Proj.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-cppunit-prefix=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which the
+								cppunit-config application has been installed (by
+								default, WDB searches your PATH environment variable).
+								CppUnit is an optional module; it is only required for the
+								compilation of the test framework.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-cppunit-exec-prefix=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which the
+								cppunit-config application has been installed (by
+								default, WDB searches your PATH environment variable).
+								CppUnit is an optional module; it is only required for the
+								compilation of the test framework.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-docbook=DIRECTORY</term>
+						<listitem>
+							<para>This specifies the directory into which the docbook
+								processor used by WDB, xmlto, is installed (by default,
+								WDB searches your PATH environment variable). If
+								DIRECTORY is set, configure will in addition search
+								through DIRECTORY/bin.</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>--with-kvalobsLoad</term>
+						<listitem>
+							<para>This option specifies whether the kvalObsLoad daemon
+								should be compiled and installed. This requires that the
+								compiler have access to the kvalObs libraries. By
+								default, kvalObsLoad is not compiled.</para>
+						</listitem>
+					</varlistentry>
+					
+				</variablelist>
+				
+				<para>If you prefer a C++ compiler different from the one configure picks,
+					you can set the environment variable CXX to the program of your choice.
+					By default, configure will pick gcc if available, else the platform's
+					default (usually cc). Similarly, you can override the default
+					compiler flags if needed with the CXXFLAGS variable.</para>
+				
+				<para>You can specify environment variables on the configure command
+					line, for example:</para>
+								
+				<programlisting>%> ./configure CXX=/opt/bin/gcc CXXFLAGS='-O2 -Wno-deprecated'</programlisting>
+				
+				<para>The following are the significant variables that can be set in this
+					manner:</para>
+				
+				<variablelist>
+					<?dbfo list-presentation="blocks"?>
+					
+					<varlistentry>
+						<term>CC</term>
+						<listitem>
+							<para>The C compiler</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>CXX</term>
+						<listitem>
+							<para>The C++ compiler</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>CPPFLAGS</term>
+						<listitem>
+							<para>Options to pass to the C/C++ compiler</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>LDFLAGS</term>
+						<listitem>
+							<para>Options to pass to the linker</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>PKG_CONFIG</term>
+						<listitem>
+							<para>The path to the pkg_config utility.</para>
+						</listitem>
+					</varlistentry>
+					
+				</variablelist>
+				
+			</sect2>
+			
+			<sect2 id="sec:build">
+				<title>Build</title>
+				
+				<para>To build WDB, run:</para>
+				
+				<programlisting>%> make</programlisting>
+				
+				<para>A cup of coffee around now might be appropriate, depending on your
+					hardware.</para>
+				
+			</sect2>
+			
+			<sect2 id="installing">
+				<title>Installing</title>
+				
+				<para>In general, you should not try to install new files over an old
+					installation; instead, uninstall the old system (taking a backup of
+					the database, as needed, beforehand), and install the new version. Or
+					follow the instructions for upgrading provided in Section Section
+						<xref linkend="sec:upgrading"/>.</para>
+				
+				<para>To install WDB, verify that your database server is running, and then
+					enter:</para>
+				
+				<programlisting>
+				%> make install
+			</programlisting>
+				
+				<para>This will install files into the directories that were specified
+					during configuration. Ensure that you have appropriate permissions
+					to write into that area (if this is /usr/local, you will normally have to
+					do this step as root). Alternatively, you could create the target
+					directories in advance and arrange for appropriate permissions to be
+					granted.</para>
+				
+				<para>You can use make install-strip instead of make install to strip the
+					executable files and libraries as they are installed. This will save
+					some space. If you built with debugging support, stripping will
+					effectively remove the debugging support, so it should only be done if
+					debugging is no longer needed. install-strip tries to do a reasonable
+					job saving space, but it does not have perfect knowledge of how to strip
+					every unneeded byte from an executable file, so if you want to save all
+					the disk space you possibly can, you will have to do manual work.</para>
+				
+				<para>Note that installation, in particular the loading of the database
+					with metadata, can take a few minutes.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:testing">
+				<title>Testing</title>
+				
+				<para>If you want to test the newly built system that you just installed, you
+					can run the regression test suite. This involves two parts: the unit
+					tests (which can be run prior to the installatuion) and the
+					installation tests. The test suite can be used to verify that WDB runs on
+					your system the way the developers expected it to. Type:</para>
+				
+				
+				<programlisting>
+				%> make check installcheck
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:uninstallation">
+				<title>Uninstallation</title>
+				
+				<para>To undo the installation, simply type </para>
+				
+				<programlisting>
+				%> make uninstall
+			</programlisting>
+				
+				<para>Note, however that this will not remove directories created by the
+					installation.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:cleaning">
+				<title>Cleaning</title>
+				
+				<para>After the installation, you can make room on your drives by removing
+					the built files from your source tree by typing:</para>
+				
+				<programlisting>
+				%> make clean
+			</programlisting>
+				
+				<para>This will preserve the files made by the configure program, so you
+					will still be able to run make later on. To clean out everything,
+					use:</para>
+				
+				<programlisting>
+				%> make distclean
+			</programlisting>
+				
+				<para>If you perform a build and discover that your configure options were
+					wrong, you changed some option that WDB utilizes (e.g., upgraded
+					software), or you need to build for several platforms using the same
+					source tree, it can be a good idea to use distclean before reconfiguring
+					and building.</para>
+				
+			</sect2>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter id="cha:system_administration">
+		
+		<title>System Administration</title>
+		
+		<para>In the following sections, we describe the system administration
+			functionality that is available with WDB.</para>
+		
+		<para>The generic administration utility of the WDB system is the wdb
+			utility.</para>
+		
+		<programlisting>
+		%> wdb
+	</programlisting>
+		
+		<para>This will bring up the wdb command line interface. From this interface, the
+			user can type 'help' to get a list of the available commands. The wdb utility can be
+			used to carry out a number of the most common administrative tasks.</para>
+		
+		<para>The wdb utility can also be invoked directly from the command line.
+			Thus:</para>
+		
+		<programlisting>
+		%> wdb help
+	</programlisting>
+		
+		<para>This will print out a list of the available commands and exit the
+			utility.</para>
+		
+		<sect1 id="sec:user_management">
+			<title>User Management</title>
+			
+			<para>User management in WDB is implemented on top of the user authentication in
+				PostgreSQL. By default, PostgreSQL is usually set up to accept local
+				connections using the 'trust' method. This means that any local user can
+				connect to the database as any PostgreSQL user, including the database
+				superuser. To change this and switch on client authentication, have the
+				database administrator consult the PostgreSQL Administrator's Guide,
+				chapter "Client Authentication".</para>
+			
+			<para>Currently, the WDB system does not support use of password
+				authentication in its various utilities.</para>
+			
+			<para>WDB users can belong to one or more of three different groups: wdb_admin,
+				wdb_read, and wdb_write.</para>
+			
+			<variablelist>
+				<?dbfo list-presentation="blocks"?>
+				
+				<varlistentry>
+					<term>wdb_admin</term>
+					<listitem>
+						<para>This is the administrator/superuser group for WDB. The WDB
+							user must belong to this group in order to perform
+							administrative acions in the database.</para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>wdb_read</term>
+					<listitem>
+						<para>This is the default user group for WDB users. It allows the
+							user to read data from the database through WCI
+							functions.</para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>wdb_write</term>
+					<listitem>
+						<para>This is the user group that one must belong to in order to be
+							able to load data into the database using the WCI functions or
+							the loading programs. The WDB user that runs the loading
+							programs must belong to the wdb_write group. </para>
+					</listitem>
+				</varlistentry>
+				
+			</variablelist>
+			
+			<para>Observe that the PostgreSQL superuser for the database always has full
+				access to all of these groups.</para>
+			
+			<para>The wdb utility can be utilized to create, drop, or modify WDB
+				users.</para>
+			
+			<programlisting>
+			%> wdb createuser mywdbuser 
+		</programlisting>
+			
+			<para>This will create a user, 'mywdbuser', with the default user settings
+				(wdb_read). The administrator can also specify precisely the settings
+				that they would like to assign. The following command will create a user
+				'mywdbuser', with the wdb_write group (the 'noread' command is used to
+				remove the 'wdb_read' group that would otherwise be assigned by
+				default.</para>
+			
+			
+			<programlisting>
+			%> wdb createuser mywdbuser write noread 
+		</programlisting>
+			
+			<para>To drop a user, replace the command as appropriate:</para>
+			
+			<programlisting>
+			%> wdb dropuser mywdbuser 
+		</programlisting>
+			
+			<para>It is also possible to change a users attributes after they have been
+				created. To do so, use the 'changeuser' command as follows.</para>
+			
+			<programlisting>
+			%> wdb changeuser mywdbuser write read 
+		</programlisting>
+			
+			<para>This gives 'mywdbuser' the wdb_read and wdb_write roles. If the user
+				previously had the wdb_admin role, it would have been removed.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:data_description">
+			<title>Data Description</title>
+			
+			<para>The community at which WDB is directed (meteorology, hydrology,
+				oceanography) has, literally, hundreds of different metadata standards.
+				Consequently, the internal data description language (i.e., metadata) of
+				WDB, is built on a generic template to ensure maximum flexibility.</para>
+			
+			<para>The following section will describe the data description language of WDB
+				in detail, as well as discuss how to modify it and keep it up to date.</para>
+			
+			<sect2 id="sec:data_description_intro">
+				<title>Introduction</title>
+				
+				<para>At its core, the description of data in WDB reflects a dimensional
+					model, where the value of the data are the facts, while the various
+					parameters: data provider, location, reference time, valid time,
+					value parameter, level parameter and level measure, confidence
+					code/quality, storage time, etc. reflect the dimensions of the
+					model.</para>
+				
+				<para>Of these many dimensions, four require some maintenance of the
+					metadata in the database.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:data_provider">
+				<title>Data Provider</title>
+				
+				<para>The Data Provider of a data value, represents the source closest to
+					the creation of the data that we can identify from the database. In order
+					to load data into the database, the data source should be represented in
+					the metadata of the database.</para>
+				
+				<para>Data Provider metadata must currently be maintained in the database
+					manually. See the relevant loading program system design notes for
+					details.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:place_definition">
+				<title>Place Definition</title>
+				
+				<para>The Place Definition of a data value describes the location for which
+					that data value is valid. This is usually either a point or a grid (for
+					data matrices). </para>
+				
+				<para>Data Provider metadata must currently be maintained in the database
+					manually. See the relevant loading program system design notes for
+					details.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:value_parameter">
+				<title>Value Parameter</title>
+				
+				<para>The Value Parameter represents the meteorological, hydrological,
+					or oceanographic parameter that describes the data value.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:level_parameter">
+				<title>Level Parameter</title>
+				
+				<para>The Level Parameter describes the level value associated with the
+					data value.</para>
+				
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sec:data_cleaning">
+			<title>Data Cleaning</title>
+			
+			<para>WDB contains a data cleaning utility which can be used to clean out old
+				data. This section will contain a description of the cleaning program, as
+				well as how it is used.</para>
+			
+			<para>The current version of the data cleaning utility, however, is not
+				suitable for production usage. It is therefore not recommended to make use
+				of it.</para>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter id="cha:reference_pages">
+		
+		<title>Reference Pages</title>
+		
+		<xi:include href="wdb.man.xml"
+			xmlns:xi="http://www.w3.org/2003/XInclude"/>
+		
+		<xi:include href="wdbConfiguration.man.xml"
+			xmlns:xi="http://www.w3.org/2003/XInclude"/>
+		
+		<xi:include href="wdb.conf.man.xml"
+			xmlns:xi="http://www.w3.org/2003/XInclude"/>
+		
+	</chapter>
+	
+</book>

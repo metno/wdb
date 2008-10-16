@@ -1,0 +1,9 @@
+Code|Type|Description
+0|Any|Values are valid for anywhere (place is invalid)
+1|Exact|Values are valid for the placedefinition given
+2|Inside|Values are valid for positions inside the placedefinition given
+3|Outside|Values are valid for positions outside the placedefinition given
+6|Withheld|Placedefinition information is known but withheld
+7|Withdrawn|Placedefinition information was given but retracted
+8|Unknown|Placedefinition is unknown
+9|Delayed|Placedefinition information will be specified later

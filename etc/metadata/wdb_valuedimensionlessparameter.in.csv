@@ -1,0 +1,41 @@
+ParameterId|Parameter Name|Value Parameter Description
+31|direction of wind|Wind direction in degrees radian
+47|direction of current|Direction of current in degrees radian
+51|specific humidity|Specific humidity
+52|relative humidity|Relative humidity
+53|mixing ratio humidity|Mixing ratio humidity
+60|thunderstorm probability|NA
+71|cloud cover, total|NA
+72|cloud cover, convective|NA
+73|cloud cover, low|NA
+74|cloud cover, medium|NA
+75|cloud cover, high|NA
+81|land cover|NA
+84|land albedo|NA
+87|land vegetation|NA
+91|ice cover|NA
+93|direction of ice drift|NA
+101|direction of wind waves|NA
+104|direction of swell waves|NA
+107|direction of primary waves|NA
+109|direction of secondary waves|NA
+700|temperature of air (10 percentile)|10th percentile of a set of temperature values
+701|temperature of air (25 percentile)|25th percentile of a set of temperature values
+702|temperature of air (50 percentile)|Median of a set of temperature values
+703|temperature of air (75 percentile)|75th percentile of a set of temperature values
+704|temperature of air (90 percentile)|90th percentile of a set of temperature values
+710|accumulated surface density of precipitation (10 percentile)|10th percentile of a set of precipitation values
+711|accumulated surface density of precipitation (25 percentile)|25th percentile of a set of precipitation values
+712|accumulated surface density of precipitation (50 percentile)|Median of a set of precipitation values
+713|accumulated surface density of precipitation (75 percentile)|75th percentile of a set of precipitation values
+714|accumulated surface density of precipitation (90 percentile)|90th percentile of a set of precipitation values
+720|probability of precipitation >0.1mm|Probability of precipitation exceeding 0.1 mm
+721|probability of precipitation >0.2mm|Probability of precipitation exceeding 0.2 mm
+722|probability of precipitation >0.5mm|Probability of precipitation exceeding 0.5 mm
+723|probability of precipitation >1.0mm|Probability of precipitation exceeding 1.0 mm
+724|probability of precipitation >2.0mm|Probability of precipitation exceeding 2.0 mm
+725|probability of precipitation >5.0mm|Probability of precipitation exceeding 5.0 mm
+801|probability of yr weather symbol|Probability of the correctness of the yr weather symbol
+1104|probability of fog|NA
+1181|proportion of land, model|NA
+7100|fog cover|NA

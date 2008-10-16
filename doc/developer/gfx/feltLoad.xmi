@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmlns:UML="http://schema.omg.org/spec/UML/1.3" verified="false" timestamp="2008-06-17T09:46:22" xmi.version="1.2" >
+ <XMI.header>
+  <XMI.documentation>
+   <XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
+   <XMI.exporterVersion>1.5.4</XMI.exporterVersion>
+   <XMI.exporterEncoding>UnicodeUTF8</XMI.exporterEncoding>
+  </XMI.documentation>
+  <XMI.metamodel xmi.name="UML" href="UML.xml" xmi.version="1.3" />
+ </XMI.header>
+ <XMI.content>
+  <UML:Model isSpecification="false" isLeaf="false" isRoot="false" xmi.id="m1" isAbstract="false" name="UML Model" >
+   <UML:Namespace.ownedElement>
+    <UML:Stereotype isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="16" isRoot="false" isAbstract="false" name="datatype" />
+    <UML:Stereotype isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="117" isRoot="false" isAbstract="false" name="constructor" />
+    <UML:Stereotype isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="182" isRoot="false" isAbstract="false" name="typedef" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="15" isRoot="false" isAbstract="false" name="int" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="17" isRoot="false" isAbstract="false" name="char" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="18" isRoot="false" isAbstract="false" name="bool" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="19" isRoot="false" isAbstract="false" name="float" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="20" isRoot="false" isAbstract="false" name="double" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="21" isRoot="false" isAbstract="false" name="short" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="22" isRoot="false" isAbstract="false" name="long" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="23" isRoot="false" isAbstract="false" name="unsigned int" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="24" isRoot="false" isAbstract="false" name="unsigned short" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="25" isRoot="false" isAbstract="false" name="unsigned long" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="26" isRoot="false" isAbstract="false" name="string" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="37" isRoot="false" isAbstract="false" name="const std::string&amp;" elementReference="36" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="44" isRoot="false" isAbstract="false" name="const std::vector&lt; wdb :: database :: WdbLevel >&amp;" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="48" isRoot="false" isAbstract="false" name="const double*" elementReference="20" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="54" isRoot="false" isAbstract="false" name="const std::string" elementReference="36" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="84" isRoot="false" isAbstract="false" name="std::vector&lt; wdb :: database :: WdbLevel >&amp;" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="98" isRoot="false" isAbstract="false" name="const boost::posix_time::ptime&amp;" elementReference="97" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="192" isRoot="false" isAbstract="false" name="const FeltFile&amp;" elementReference="184" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="207" isRoot="false" isAbstract="false" name="std::vector&lt; word >&amp;" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="228" isRoot="false" isAbstract="false" name="const std::vector&lt; word >&amp;" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="230" isRoot="false" isAbstract="false" name="std::vector&lt; short int >&amp;" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="232" isRoot="false" isAbstract="false" name="std::vector&lt; word >" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="240" isRoot="false" isAbstract="false" name="const boost::filesystem::path&amp;" elementReference="238" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="267" isRoot="false" isAbstract="false" name="const FeltField&amp;" elementReference="185" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="272" isRoot="false" isAbstract="false" name="std::istream*" elementReference="271" />
+    <UML:DataType stereotype="16" comment="// namespace wdb" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="284" isRoot="false" isAbstract="false" name="{" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="288" isRoot="false" isAbstract="false" name="wdb::database::FeltDatabaseInterface&amp;" elementReference="29" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="317" isRoot="false" isAbstract="false" name="std::vector&lt; double >&amp;" elementReference="43" />
+    <UML:DataType stereotype="16" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="8699" isRoot="false" isAbstract="false" name="const FeltField *" />
+    <UML:Package comment="wdb
+Copyright (C) 2007 met.no
+Contact information:
+Norwegian Meteorological Institute
+Box 43 Blindern
+0313 OSLO
+NORWAY
+E-mail: wdb@met.no
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+MA  02110-1301, USA" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="27" isRoot="false" isAbstract="false" name="wdb" >
+     <UML:Namespace.ownedElement>
+      <UML:Package isSpecification="false" isLeaf="false" visibility="public" namespace="27" xmi.id="28" isRoot="false" isAbstract="false" name="database" >
+       <UML:Namespace.ownedElement>
+        <UML:Class comment="The interface class to the database. Handles the connection of the loading program to the database 
+as well as the processing of all SQL queries. Inherits pqxx::connection." isSpecification="false" isLeaf="false" visibility="public" namespace="28" xmi.id="105" isRoot="false" isAbstract="false" name="FeltDatabaseConnection" >
+         <UML:GeneralizableElement.generalization>
+          <UML:Generalization xmi.idref="108" />
+          <UML:Generalization xmi.idref="112" />
+          <UML:Generalization xmi.idref="13100" />
+         </UML:GeneralizableElement.generalization>
+         <UML:Classifier.feature>
+          <UML:Operation stereotype="117" comment="// LIFECYCLE/** 
+Default constructor
+@param	target		The connection string for the database connection" isSpecification="false" isLeaf="false" visibility="public" xmi.id="115" isRoot="false" isAbstract="false" isQuery="false" name="FeltDatabaseConnection" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="116" value="" type="37" name="target" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Destructor" isSpecification="false" isLeaf="false" visibility="public" xmi.id="118" isRoot="false" isAbstract="false" isQuery="false" name="~ FeltDatabaseConnection" />
+          <UML:Operation comment="// OPERATORS// None// OPERATIONS /** 
+Load a Value into the Database for the designated field.
+@param	dataProvider	The data provider id of the field
+@param	placeId			The place id of the fields grid description
+@param	referenceTime	The reference time of the field
+@param	validTimeFrom	Valid time from of the field
+@param	validTimeTo		Valid time to of the field
+@param	validTimeIndCode	Valid time indeterminate code of the field
+@param	parameter		Information about the unit, usage, and statistics type of field data
+@param	levels			Vector of level parameters
+@param	dataVersion		The data version of the field
+@param	qualityCode		WDB quality code to be associated with the field
+@param	values			A pointer to the array of values (doubles) in the field
+@param	noOfValues		The size of the values array" isSpecification="false" isLeaf="false" visibility="public" xmi.id="119" isRoot="false" isAbstract="false" isQuery="false" name="loadField" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="120" value="" type="32" name="dataProvider" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="121" value="" type="32" name="placeId" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="122" value="" type="37" name="referenceTime" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="123" value="" type="37" name="validTimeFrom" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="124" value="" type="37" name="validTimeTo" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="125" value="" type="15" name="validTimeIndCode" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="126" value="" type="15" name="valueparameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="127" value="" type="44" name="levels" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="128" value="" type="15" name="dataVersion" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="129" value="" type="15" name="qualityCode" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="130" value="" type="48" name="values" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="131" value="" type="23" name="noOfValues" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Data Provider of a GRIB Field.
+@param	feltProduver			The felt producent number (generating centre in GRIB)
+@param	feltGridArea			Code for the grid area covered
+@param	refTime					The reference time of the field
+@return	The Data Provider ID associated with the given values" isSpecification="false" isLeaf="false" visibility="public" xmi.id="132" isRoot="false" isAbstract="false" isQuery="false" name="getFeltDataProvider" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13228" type="32" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="133" value="" type="15" name="feltProducer" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="134" value="" type="15" name="feltGridArea" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="135" value="" type="54" name="refTime" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the PlaceId of a GRIB1 Field.
+@param	geoObj		The geometry object described as a string
+@param	geoDatum	The datum of the geometry object
+@param	iNum		Number of points along the i axis
+@param	jNum		Number of points along the j axis
+@param	iInc		Size of increments along the i axis
+@param	jInc		Size of increments along the j axis
+@param	startLat	Starting latitude of the grid
+@param	startLon	Starting longitude of the grid
+@param	origDatum	The original datum of the geometry object
+@return the PlaceId of the inserted PlaceDefinition" isSpecification="false" isLeaf="false" visibility="public" xmi.id="136" isRoot="false" isAbstract="false" isQuery="false" name="getFeltPlaceId" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13229" type="32" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="137" value="" type="37" name="geoObj" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="138" value="" type="15" name="geoDatum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="139" value="" type="32" name="iNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="140" value="" type="32" name="jNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="141" value="" type="19" name="iInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="142" value="" type="19" name="jInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="143" value="" type="19" name="startLat" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="144" value="" type="19" name="startLon" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="145" value="" type="15" name="origDatum" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Load a new PlaceDefinition for a GRIB1 field into the database.
+@param	geoObj		The geometry object described as a string
+@param	geoDatum	The datum of the geometry object. Ignored by the postgres gribload
+@param	iNum		Number of points along the i axis
+@param	jNum		Number of points along the j axis
+@param	iInc		Size of increments along the i axis
+@param	jInc		Size of increments along the j axis
+@param	startLat	Starting latitude of the grid
+@param	startLon	Starting longitude of the grid
+@param	origDatum	The original datum of the geometry object
+@return the PlaceId of the inserted PlaceDefinition" isSpecification="false" isLeaf="false" visibility="public" xmi.id="146" isRoot="false" isAbstract="false" isQuery="false" name="setFeltPlaceId" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13230" type="32" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="147" value="" type="37" name="geoObj" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="148" value="" type="15" name="geoDatum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="149" value="" type="32" name="iNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="150" value="" type="32" name="jNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="151" value="" type="19" name="iInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="152" value="" type="19" name="jInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="153" value="" type="19" name="startLat" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="154" value="" type="19" name="startLon" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="155" value="" type="15" name="origDatum" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the SRID for a Proj String
+If SRID is missing in database, it is inserted by the function call
+@param	projStr		The PROJ definition of the Srid		
+@return	Returns the srid" isSpecification="false" isLeaf="false" visibility="public" xmi.id="156" isRoot="false" isAbstract="false" isQuery="false" name="getSrid" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13231" type="15" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="157" value="" type="37" name="projStr" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Parameter information associated with the FELT parameter.
+@param	feltParameter				The actual FELT parameter ID
+@param	feltLevelParameter			The level parameter of the FELT field
+@param	feltNiveau1					The niveau1 of the FELT field (usually level)
+@param	feltNiveau2					The niveau2 of the FELT field (levelto; alternately EPS information )
+@return	Returns the valueparameterid" isSpecification="false" isLeaf="false" visibility="public" xmi.id="158" isRoot="false" isAbstract="false" isQuery="false" name="getFeltParameter" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13232" type="15" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="159" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="160" value="" type="15" name="feltLevelParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="161" value="" type="15" name="feltNiveau1" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="162" value="" type="15" name="feltNiveau2" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Parameter information associated with the FELT parameter.
+@param	levels				A vector of the levels found
+@param	feltParameter				The actual FELT parameter ID
+@param	feltLevelParameter			The level parameter of the FELT field
+@param	feltNiveau1					The niveau1 of the FELT field (usually level)
+@param	feltNiveau2					The niveau2 of the FELT field (levelto; alternately EPS information )
+@return	Returns the valueparameterid" isSpecification="false" isLeaf="false" visibility="public" xmi.id="163" isRoot="false" isAbstract="false" isQuery="false" name="getAdditionalLevels" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="164" value="" type="84" name="levels" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="165" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="166" value="" type="15" name="feltLevelParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="167" value="" type="15" name="levelFrom" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="168" value="" type="15" name="levelTo" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Level Parameter information associated with the FELT level parameter.
+@param	levelParam		The actual FELT level parameter of the field
+@param	levelNiveau1	The niveau1 of the FELT field (usually level, but can also be a dummy variable)
+@return	Returns the levelparameter id" isSpecification="false" isLeaf="false" visibility="public" xmi.id="169" isRoot="false" isAbstract="false" isQuery="false" name="getFeltLevelParameter" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13233" type="15" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="170" value="" type="15" name="levelParam" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="171" value="" type="15" name="levelNiveau1" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="172" isRoot="false" isAbstract="false" isQuery="false" name="getValidTimeFrom" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13234" type="97" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="173" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="174" value="" type="98" name="referenceTime" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="175" value="" type="98" name="validTime" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="176" isRoot="false" isAbstract="false" isQuery="false" name="getValidTimeTo" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13235" type="97" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="177" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="178" value="" type="98" name="referenceTime" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="179" value="" type="98" name="validTime" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+         </UML:Classifier.feature>
+        </UML:Class>
+        <UML:Class comment="Data structure representing a WDB Level" isSpecification="false" isLeaf="false" visibility="public" namespace="28" xmi.id="274" isRoot="false" isAbstract="false" name="WdbLevel" >
+         <UML:Classifier.feature>
+          <UML:Attribute comment="/// Parameter" isSpecification="false" visibility="public" xmi.id="275" type="15" name="levelParameter_" />
+          <UML:Attribute comment="/// Level From" isSpecification="false" visibility="public" xmi.id="276" type="20" name="levelFrom_" />
+          <UML:Attribute comment="/// Level To" isSpecification="false" visibility="public" xmi.id="277" type="20" name="levelTo_" />
+          <UML:Attribute comment="/// Indeterminate Code of Level" isSpecification="false" visibility="public" xmi.id="278" type="15" name="levelIndeterminate_" />
+          <UML:Operation stereotype="117" isSpecification="false" isLeaf="false" visibility="public" xmi.id="279" isRoot="false" isAbstract="false" isQuery="false" name="WdbLevel" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="280" value="" type="15" name="lP" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="281" value="" type="20" name="lF" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="282" value="" type="20" name="lT" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="283" value="" type="15" name="lI" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+         </UML:Classifier.feature>
+        </UML:Class>
+        <UML:Class comment="The interface class to the database. Handles the connection of the loading program to the database 
+as well as the processing of all SQL queries. Inherits pqxx::connection." isSpecification="false" isLeaf="false" visibility="public" namespace="28" xmi.id="29" isRoot="false" isAbstract="false" name="FeltDatabaseInterface" >
+         <UML:Classifier.feature>
+          <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="30" isRoot="false" isAbstract="false" isQuery="false" name="~ FeltDatabaseInterface" />
+          <UML:Operation comment="// OPERATIONS /** 
+Load a Value into the Database for the designated field.
+@param	dataProvider	The data provider id of the field
+@param	placeId			The place id of the fields grid description
+@param	referenceTime	The reference time of the field
+@param	validTimeFrom	Valid time from of the field
+@param	validTimeTo		Valid time to of the field
+@param	validTimeIndCode	Valid time indeterminate code of the field
+@param	parameter		Information about the unit, usage, and statistics type of field data
+@param	levels			Vector of level parameters
+@param	dataVersion		The data version of the field
+@param	qualityCode		WDB quality code to be associated with the field
+@param	values			A pointer to the array of values (doubles) in the field
+@param	noOfValues		The size of the values array" isSpecification="false" isLeaf="false" visibility="public" xmi.id="31" isRoot="false" isAbstract="true" isQuery="false" name="loadField" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="33" value="" type="32" name="dataProvider" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="34" value="" type="32" name="placeId" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="38" value="" type="37" name="referenceTime" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="39" value="" type="37" name="validTimeFrom" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="40" value="" type="37" name="validTimeTo" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="41" value="" type="15" name="validTimeIndCode" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="42" value="" type="15" name="valueparameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="45" value="" type="44" name="levels" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="46" value="" type="15" name="dataVersion" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="47" value="" type="15" name="qualityCode" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="49" value="" type="48" name="values" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="50" value="" type="23" name="noOfValues" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Data Provider of a GRIB Field.
+@param	feltProduver			The felt producent number (generating centre in GRIB)
+@param	feltGridArea			Code for the grid area covered
+@param	refTime					The reference time of the field
+@return	The Data Provider ID associated with the given values" isSpecification="false" isLeaf="false" visibility="public" xmi.id="51" isRoot="false" isAbstract="true" isQuery="false" name="getFeltDataProvider" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13236" type="32" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="52" value="" type="15" name="feltProducer" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="53" value="" type="15" name="feltGridArea" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="55" value="" type="54" name="refTime" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the PlaceId of a GRIB1 Field.
+@param	geoObj		The geometry object described as a string
+@param	geoDatum	The datum of the geometry object
+@param	iNum		Number of points along the i axis
+@param	jNum		Number of points along the j axis
+@param	iInc		Size of increments along the i axis
+@param	jInc		Size of increments along the j axis
+@param	startLat	Starting latitude of the grid
+@param	startLon	Starting longitude of the grid
+@param	origDatum	The original datum of the geometry object
+@return the PlaceId of the inserted PlaceDefinition" isSpecification="false" isLeaf="false" visibility="public" xmi.id="56" isRoot="false" isAbstract="true" isQuery="false" name="getFeltPlaceId" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13237" type="32" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="57" value="" type="37" name="geoObj" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="58" value="" type="15" name="geoDatum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="59" value="" type="32" name="iNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="60" value="" type="32" name="jNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="61" value="" type="19" name="iInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="62" value="" type="19" name="jInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="63" value="" type="19" name="startLat" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="64" value="" type="19" name="startLon" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="65" value="" type="15" name="origDatum" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Load a new PlaceDefinition for a GRIB1 field into the database.
+@param	geoObj		The geometry object described as a string
+@param	geoDatum	The datum of the geometry object. Ignored by the postgres gribload
+@param	iNum		Number of points along the i axis
+@param	jNum		Number of points along the j axis
+@param	iInc		Size of increments along the i axis
+@param	jInc		Size of increments along the j axis
+@param	startLat	Starting latitude of the grid
+@param	startLon	Starting longitude of the grid
+@param	origDatum	The original datum of the geometry object
+@return the PlaceId of the inserted PlaceDefinition" isSpecification="false" isLeaf="false" visibility="public" xmi.id="66" isRoot="false" isAbstract="true" isQuery="false" name="setFeltPlaceId" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13238" type="32" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="67" value="" type="37" name="geoObj" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="68" value="" type="15" name="geoDatum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="69" value="" type="32" name="iNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="70" value="" type="32" name="jNum" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="71" value="" type="19" name="iInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="72" value="" type="19" name="jInc" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="73" value="" type="19" name="startLat" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="74" value="" type="19" name="startLon" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="75" value="" type="15" name="origDatum" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the SRID for a Proj String
+If SRID is missing in database, it is inserted by the function call
+@param	projStr		The PROJ definition of the Srid		
+@return	Returns the srid" isSpecification="false" isLeaf="false" visibility="public" xmi.id="76" isRoot="false" isAbstract="true" isQuery="false" name="getSrid" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13239" type="15" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="77" value="" type="37" name="projStr" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Parameter information associated with the FELT parameter.
+@param	feltParameter				The actual FELT parameter ID
+@param	feltLevelParameter			The level parameter of the FELT field
+@param	feltNiveau1					The niveau1 of the FELT field (usually level)
+@param	feltNiveau2					The niveau2 of the FELT field (levelto; alternately EPS information )
+@return	Returns the valueparameterid" isSpecification="false" isLeaf="false" visibility="public" xmi.id="78" isRoot="false" isAbstract="true" isQuery="false" name="getFeltParameter" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13240" type="15" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="79" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="80" value="" type="15" name="feltLevelParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="81" value="" type="15" name="feltNiveau1" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="82" value="" type="15" name="feltNiveau2" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Parameter information associated with the FELT parameter.
+@param	levels				A vector of the levels found
+@param	feltParameter				The actual FELT parameter ID
+@param	feltLevelParameter			The level parameter of the FELT field
+@param	feltNiveau1					The niveau1 of the FELT field (usually level)
+@param	feltNiveau2					The niveau2 of the FELT field (levelto; alternately EPS information )
+@return	Returns the valueparameterid" isSpecification="false" isLeaf="false" visibility="public" xmi.id="83" isRoot="false" isAbstract="true" isQuery="false" name="getAdditionalLevels" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="85" value="" type="84" name="levels" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="86" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="87" value="" type="15" name="feltLevelParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="88" value="" type="15" name="levelFrom" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="89" value="" type="15" name="levelTo" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation comment="Get the Level Parameter information associated with the GRIB level parameter.
+@param	levelParam		The actual FELT level parameter of the field
+@param	levelNiveau1	The niveau1 of the FELT field (usually level, but can also be a dummy variable)
+@return	Returns the levelparameter id" isSpecification="false" isLeaf="false" visibility="public" xmi.id="90" isRoot="false" isAbstract="true" isQuery="false" name="getFeltLevelParameter" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13241" type="15" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="91" value="" type="15" name="levelParam" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="92" value="" type="15" name="levelNiveau1" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="93" isRoot="false" isAbstract="true" isQuery="false" name="getValidTimeFrom" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13242" type="97" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="94" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="99" value="" type="98" name="referenceTime" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="100" value="" type="98" name="validTime" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+          <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="101" isRoot="false" isAbstract="true" isQuery="false" name="getValidTimeTo" >
+           <UML:BehavioralFeature.parameter>
+            <UML:Parameter kind="return" xmi.id="13243" type="97" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="102" value="" type="15" name="feltParameter" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="103" value="" type="98" name="referenceTime" />
+            <UML:Parameter isSpecification="false" visibility="private" xmi.id="104" value="" type="98" name="validTime" />
+           </UML:BehavioralFeature.parameter>
+          </UML:Operation>
+         </UML:Classifier.feature>
+        </UML:Class>
+       </UML:Namespace.ownedElement>
+      </UML:Package>
+     </UML:Namespace.ownedElement>
+    </UML:Package>
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="32" isRoot="false" isAbstract="false" name="long int" />
+    <UML:Package comment="wdb
+Copyright (C) 2007 met.no
+Contact information:
+Norwegian Meteorological Institute
+Box 43 Blindern
+0313 OSLO
+NORWAY
+E-mail: wdb@met.no
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+MA  02110-1301, USA" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="95" isRoot="false" isAbstract="false" name="boost" >
+     <UML:Namespace.ownedElement>
+      <UML:Package isSpecification="false" isLeaf="false" visibility="public" namespace="95" xmi.id="96" isRoot="false" isAbstract="false" name="posix_time" >
+       <UML:Namespace.ownedElement>
+        <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="96" xmi.id="97" isRoot="false" isAbstract="false" name="ptime" />
+       </UML:Namespace.ownedElement>
+      </UML:Package>
+      <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="95" xmi.id="186" isRoot="false" isAbstract="false" name="noncopyable" />
+      <UML:Package isSpecification="false" isLeaf="false" visibility="public" namespace="95" xmi.id="237" isRoot="false" isAbstract="false" name="filesystem" >
+       <UML:Namespace.ownedElement>
+        <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="237" xmi.id="238" isRoot="false" isAbstract="false" name="path" />
+       </UML:Namespace.ownedElement>
+      </UML:Package>
+     </UML:Namespace.ownedElement>
+    </UML:Package>
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="111" isRoot="false" isAbstract="false" name="FeltDatabaseInterface" />
+    <UML:Package comment="wdb
+Copyright (C) 2007 met.no
+Contact information:
+Norwegian Meteorological Institute
+Box 43 Blindern
+0313 OSLO
+NORWAY
+E-mail: wdb@met.no
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+MA  02110-1301, USA" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="180" isRoot="false" isAbstract="false" name="felt" >
+     <UML:Namespace.ownedElement>
+      <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="180" xmi.id="181" isRoot="false" isAbstract="false" name="word" />
+      <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="180" xmi.id="183" isRoot="false" isAbstract="false" name="FeltGridDefinitionPtr" />
+      <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="180" xmi.id="184" isRoot="false" isAbstract="false" name="FeltFile" >
+       <UML:Classifier.feature>
+        <UML:Operation stereotype="117" isSpecification="false" isLeaf="false" visibility="public" xmi.id="239" isRoot="false" isAbstract="false" isQuery="false" name="FeltFile" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter isSpecification="false" visibility="private" xmi.id="241" value="" type="240" name="file" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="242" isRoot="false" isAbstract="false" isQuery="false" name="~ FeltFile" />
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="244" isRoot="false" isAbstract="false" isQuery="false" name="size" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13244" type="243" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="245" isRoot="false" isAbstract="false" isQuery="false" name="empty" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13245" type="18" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="246" isRoot="false" isAbstract="false" isQuery="false" name="information" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13246" type="36" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="247" isRoot="false" isAbstract="false" isQuery="false" name="lastUpdateTime" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13247" type="97" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="248" isRoot="false" isAbstract="false" isQuery="false" name="referenceTime" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13248" type="97" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="249" isRoot="false" isAbstract="false" isQuery="false" name="firstTime" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13249" type="97" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="250" isRoot="false" isAbstract="false" isQuery="false" name="lastTime" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13250" type="97" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation comment="//	class iterator;" isSpecification="false" isLeaf="false" visibility="public" xmi.id="253" isRoot="false" isAbstract="false" isQuery="false" name="begin" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13251" type="252" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="254" isRoot="false" isAbstract="false" isQuery="false" name="end" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="13252" type="252" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+       <UML:Namespace.ownedElement>
+        <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="243" isRoot="false" isAbstract="false" name="size_type" />
+        <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="251" isRoot="false" isAbstract="false" name="FeltFieldPtr" />
+        <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="252" isRoot="false" isAbstract="false" name="iterator" />
+        <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="255" isRoot="false" isAbstract="false" name="const_iterator" />
+        <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="258" isRoot="false" isAbstract="false" name="Block" />
+        <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="269" isRoot="false" isAbstract="false" name="Fields" />
+        <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="184" xmi.id="185" isRoot="false" isAbstract="false" name="FeltField" />
+       </UML:Namespace.ownedElement>
+      </UML:Class>
+      <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="180" xmi.id="285" isRoot="false" isAbstract="false" name="FeltField" />
+      <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="180" xmi.id="286" isRoot="false" isAbstract="false" name="FeltLoader" >
+       <UML:Classifier.feature>
+        <UML:Attribute comment="//	std::map&lt;felt::word, long int> felt2wdbDataProvider_;" isSpecification="false" visibility="private" xmi.id="320" type="288" name="connection_" />
+        <UML:Operation stereotype="117" isSpecification="false" isLeaf="false" visibility="public" xmi.id="287" isRoot="false" isAbstract="false" isQuery="false" name="FeltLoader" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter isSpecification="false" visibility="private" xmi.id="289" value="" type="288" name="connection" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation isSpecification="false" isLeaf="false" visibility="public" xmi.id="291" isRoot="false" isAbstract="false" isQuery="false" name="load" >
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter isSpecification="false" visibility="private" xmi.id="292" value="" type="192" name="feltFile" />
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+     </UML:Namespace.ownedElement>
+    </UML:Package>
+    <UML:Class stereotype="182" isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="190" isRoot="false" isAbstract="false" name="Header" />
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="194" isRoot="false" isAbstract="false" name="size_t" />
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="107" isRoot="false" isAbstract="false" name="connection" />
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="36" isRoot="false" isAbstract="false" name="string" />
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="43" isRoot="false" isAbstract="false" name="vector" />
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="271" isRoot="false" isAbstract="false" name="istream" />
+    <UML:Package isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="5072" isRoot="false" isAbstract="false" name="Storage" >
+     <UML:Namespace.ownedElement/>
+    </UML:Package>
+    <UML:Package isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="5137" isRoot="false" isAbstract="false" name="Reader" >
+     <UML:Namespace.ownedElement/>
+    </UML:Package>
+    <UML:Generalization isSpecification="false" child="105" visibility="public" namespace="m1" xmi.id="108" parent="107" discriminator="" name="" />
+    <UML:Generalization isSpecification="false" child="105" visibility="public" namespace="m1" xmi.id="112" parent="111" discriminator="" name="" />
+    <UML:Generalization isSpecification="false" child="185" visibility="public" namespace="m1" xmi.id="187" parent="186" discriminator="" name="" />
+    <UML:Association isSpecification="false" visibility="public" namespace="m1" xmi.id="6935" name="" >
+     <UML:Association.connection>
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="6936" aggregation="aggregate" type="184" name="" />
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="6937" aggregation="none" type="185" name="" />
+     </UML:Association.connection>
+    </UML:Association>
+    <UML:Association isSpecification="false" visibility="public" namespace="m1" xmi.id="8956" name="" >
+     <UML:Association.connection>
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="8957" aggregation="aggregate" type="184" name="" />
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="8958" aggregation="none" type="185" name="" />
+     </UML:Association.connection>
+    </UML:Association>
+    <UML:Association isSpecification="false" visibility="public" namespace="m1" xmi.id="9151" name="" >
+     <UML:Association.connection>
+      <UML:AssociationEnd isSpecification="false" visibility="private" changeability="changeable" isNavigable="true" xmi.id="9152" aggregation="aggregate" type="185" name="fileds_" multiplicity="0.." />
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="9153" aggregation="none" type="184" name="" />
+     </UML:Association.connection>
+    </UML:Association>
+    <UML:Association isSpecification="false" visibility="public" namespace="m1" xmi.id="12199" name="" >
+     <UML:Association.connection>
+      <UML:AssociationEnd isSpecification="false" visibility="private" changeability="changeable" isNavigable="true" xmi.id="12200" aggregation="aggregate" type="184" name="fields_" multiplicity="0.." />
+      <UML:AssociationEnd isSpecification="false" visibility="private" changeability="changeable" isNavigable="true" xmi.id="12201" aggregation="none" type="185" name="fields_" multiplicity="0.." />
+     </UML:Association.connection>
+    </UML:Association>
+    <UML:Association isSpecification="false" visibility="public" namespace="m1" xmi.id="12893" name="" >
+     <UML:Association.connection>
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="12894" aggregation="aggregate" type="184" name="" />
+      <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="12895" aggregation="none" type="185" name="fields_" multiplicity="0.." />
+     </UML:Association.connection>
+    </UML:Association>
+    <UML:Generalization isSpecification="false" child="105" visibility="public" namespace="m1" xmi.id="13100" parent="29" discriminator="" name="" />
+   </UML:Namespace.ownedElement>
+  </UML:Model>
+ </XMI.content>
+ <XMI.extensions xmi.extender="umbrello" >
+  <docsettings viewid="14" documentation="" uniqueid="13252" />
+  <diagrams>
+   <diagram snapgrid="0" showattsig="0" fillcolor="#ffffc0" linewidth="0" zoom="100" showgrid="0" showopsig="1" usefillcolor="1" snapx="10" canvaswidth="1264" snapy="10" showatts="1" xmi.id="14" documentation="" type="402" showops="1" showpackage="0" name="class diagram" localid="900000" showstereotype="0" showscope="1" snapcsgrid="0" font="Sans,10,-1,5,50,0,0,0,0,0" linecolor="#ff0000" canvasheight="1025" >
+    <widgets>
+     <classwidget usesdiagramfillcolour="0" width="281" showattsigs="600" usesdiagramusefillcolour="0" x="455" y="16" showopsigs="601" linewidth="none" fillcolour="#ffffc0" height="221" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="184" showoperations="1" showpackage="0" showscope="1" font="Sans,10,-1,5,75,0,0,0,0,0" linecolor="#ff0000" />
+     <classwidget usesdiagramfillcolour="0" width="143" showattsigs="600" usesdiagramusefillcolour="0" x="524" y="368" showopsigs="600" linewidth="none" fillcolour="#ffffc0" height="100" usefillcolor="1" showpubliconly="0" showattributes="0" isinstance="0" xmi.id="185" showoperations="1" showpackage="0" showscope="1" font="Sans,10,-1,5,75,0,0,0,0,0" linecolor="#ff0000" />
+     <classwidget usesdiagramfillcolour="0" width="396" showattsigs="600" usesdiagramusefillcolour="0" x="33" y="191" showopsigs="601" linewidth="none" fillcolour="#ffffc0" height="59" usefillcolor="1" showpubliconly="0" showattributes="0" isinstance="0" xmi.id="286" showoperations="1" showpackage="0" showscope="1" font="Sans,10,-1,5,75,0,0,0,0,0" linecolor="#ff0000" />
+     <classwidget usesdiagramfillcolour="0" width="222" showattsigs="600" usesdiagramusefillcolour="0" x="120" y="337" showopsigs="600" linewidth="none" fillcolour="#ffffc0" height="212" usefillcolor="1" showpubliconly="0" showattributes="0" isinstance="0" xmi.id="29" showoperations="1" showpackage="0" showscope="1" font="Sans,10,-1,5,50,1,0,0,0,0" linecolor="#ff0000" />
+     <notewidget usesdiagramfillcolour="1" width="278" usesdiagramusefillcolour="1" x="17" y="22" linewidth="none" fillcolour="none" height="146" usefillcolor="1" isinstance="0" xmi.id="4111" showstereotype="1" text="main()
+{
+    FeltDatabaseConnection db;
+    FeltLoader loader( db );
+    for_each( FeltFile f : inputFiles )
+        loader.load( f );
+}
+" font="Sans,10,-1,5,50,0,0,0,0,0" linecolor="none" />
+     <classwidget usesdiagramfillcolour="0" width="264" showattsigs="600" usesdiagramusefillcolour="0" x="99" y="606" showopsigs="600" linewidth="none" fillcolour="#ffffc0" height="229" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="105" showoperations="1" showpackage="0" showscope="1" font="Sans,10,-1,5,75,0,0,0,0,0" linecolor="#ff0000" />
+    </widgets>
+    <messages/>
+    <associations>
+     <assocwidget totalcounta="2" indexa="1" visibilityB="200" totalcountb="2" indexb="1" linewidth="none" widgetbid="29" widgetaid="286" xmi.id="320" type="501" changeabilityA="900" changeabilityB="900" linecolor="none" visibilityA="200" >
+      <linepath>
+       <startpoint startx="231" starty="250" />
+       <endpoint endx="231" endy="337" />
+      </linepath>
+      <floatingtext usesdiagramfillcolour="1" width="32" usesdiagramusefillcolour="1" x="233" y="303" linewidth="none" posttext="" role="702" fillcolour="none" height="32" usefillcolor="1" pretext="" isinstance="0" xmi.id="11413" text="0..1" font="Sans,10,-1,5,50,0,0,0,0,0" linecolor="none" />
+      <floatingtext usesdiagramfillcolour="1" width="86" usesdiagramusefillcolour="1" x="147" y="314" linewidth="none" posttext="" role="710" fillcolour="none" height="21" usefillcolor="1" pretext="+" isinstance="0" xmi.id="11412" showstereotype="1" text="connection_" font="Sans,10,-1,5,50,0,0,0,0,0" linecolor="none" />
+     </assocwidget>
+     <assocwidget totalcounta="2" indexa="1" totalcountb="2" indexb="1" linewidth="none" widgetbid="185" widgetaid="184" xmi.id="12893" linecolor="none" >
+      <linepath>
+       <startpoint startx="595" starty="237" />
+       <endpoint endx="595" endy="368" />
+      </linepath>
+      <floatingtext usesdiagramfillcolour="1" width="32" usesdiagramusefillcolour="1" x="597" y="334" linewidth="none" posttext="" role="702" fillcolour="none" height="32" usefillcolor="1" pretext="" isinstance="0" xmi.id="12949" text="0.." font="Sans,10,-1,5,50,0,0,0,0,0" linecolor="none" />
+      <floatingtext usesdiagramfillcolour="1" width="54" usesdiagramusefillcolour="1" x="539" y="345" linewidth="none" posttext="" role="710" fillcolour="none" height="21" usefillcolor="1" pretext="+" isinstance="0" xmi.id="12947" text="fields_" font="Sans,10,-1,5,50,0,0,0,0,0" linecolor="none" />
+     </assocwidget>
+     <assocwidget totalcounta="2" indexa="1" totalcountb="2" indexb="1" linewidth="none" widgetbid="29" widgetaid="105" xmi.id="13100" linecolor="none" >
+      <linepath>
+       <startpoint startx="231" starty="606" />
+       <endpoint endx="231" endy="549" />
+      </linepath>
+     </assocwidget>
+    </associations>
+   </diagram>
+  </diagrams>
+  <listview>
+   <listitem open="1" type="800" label="Views" >
+    <listitem open="1" type="801" label="Logical View" >
+     <listitem open="0" type="813" id="111" />
+     <listitem open="0" type="813" id="190" />
+     <listitem open="0" type="813" id="107" />
+     <listitem open="0" type="813" id="271" />
+     <listitem open="0" type="813" id="32" />
+     <listitem open="0" type="813" id="194" />
+     <listitem open="0" type="813" id="36" />
+     <listitem open="0" type="813" id="43" />
+     <listitem open="1" type="818" id="5137" />
+     <listitem open="1" type="818" id="5072" />
+     <listitem open="0" type="818" id="95" >
+      <listitem open="0" type="813" id="186" />
+      <listitem open="0" type="818" id="237" >
+       <listitem open="0" type="813" id="238" />
+      </listitem>
+      <listitem open="0" type="818" id="96" >
+       <listitem open="0" type="813" id="97" />
+      </listitem>
+     </listitem>
+     <listitem open="1" type="818" id="180" >
+      <listitem open="0" type="813" id="185" />
+      <listitem open="0" type="813" id="285" />
+      <listitem open="0" type="813" id="184" >
+       <listitem open="0" type="813" id="258" />
+       <listitem open="0" type="813" id="251" />
+       <listitem open="0" type="813" id="269" />
+       <listitem open="0" type="813" id="255" />
+       <listitem open="0" type="813" id="252" />
+       <listitem open="0" type="813" id="243" />
+       <listitem open="0" type="815" id="239" />
+       <listitem open="0" type="815" id="242" />
+       <listitem open="0" type="815" id="244" />
+       <listitem open="0" type="815" id="245" />
+       <listitem open="0" type="815" id="246" />
+       <listitem open="0" type="815" id="247" />
+       <listitem open="0" type="815" id="248" />
+       <listitem open="0" type="815" id="249" />
+       <listitem open="0" type="815" id="250" />
+       <listitem open="0" type="815" id="253" />
+       <listitem open="0" type="815" id="254" />
+      </listitem>
+      <listitem open="0" type="813" id="183" />
+      <listitem open="0" type="813" id="286" >
+       <listitem open="0" type="814" id="320" />
+       <listitem open="0" type="815" id="287" />
+       <listitem open="0" type="815" id="291" />
+      </listitem>
+      <listitem open="0" type="813" id="181" />
+     </listitem>
+     <listitem open="1" type="818" id="27" >
+      <listitem open="1" type="818" id="28" >
+       <listitem open="0" type="813" id="105" >
+        <listitem open="0" type="815" id="115" />
+        <listitem open="0" type="815" id="118" />
+        <listitem open="0" type="815" id="119" />
+        <listitem open="0" type="815" id="132" />
+        <listitem open="0" type="815" id="136" />
+        <listitem open="0" type="815" id="146" />
+        <listitem open="0" type="815" id="156" />
+        <listitem open="0" type="815" id="158" />
+        <listitem open="0" type="815" id="163" />
+        <listitem open="0" type="815" id="169" />
+        <listitem open="0" type="815" id="172" />
+        <listitem open="0" type="815" id="176" />
+       </listitem>
+       <listitem open="0" type="813" id="29" >
+        <listitem open="0" type="815" id="30" />
+        <listitem open="0" type="815" id="31" />
+        <listitem open="0" type="815" id="51" />
+        <listitem open="0" type="815" id="56" />
+        <listitem open="0" type="815" id="66" />
+        <listitem open="0" type="815" id="76" />
+        <listitem open="0" type="815" id="78" />
+        <listitem open="0" type="815" id="83" />
+        <listitem open="0" type="815" id="90" />
+        <listitem open="0" type="815" id="93" />
+        <listitem open="0" type="815" id="101" />
+       </listitem>
+       <listitem open="0" type="813" id="274" >
+        <listitem open="0" type="814" id="275" />
+        <listitem open="0" type="814" id="276" />
+        <listitem open="0" type="814" id="277" />
+        <listitem open="0" type="814" id="278" />
+        <listitem open="0" type="815" id="279" />
+       </listitem>
+      </listitem>
+     </listitem>
+     <listitem open="1" type="830" label="Datatypes" >
+      <listitem open="1" type="829" id="18" />
+      <listitem open="1" type="829" id="17" />
+      <listitem open="1" type="829" id="8699" />
+      <listitem open="0" type="829" id="267" />
+      <listitem open="0" type="829" id="192" />
+      <listitem open="0" type="829" id="240" />
+      <listitem open="0" type="829" id="98" />
+      <listitem open="0" type="829" id="48" />
+      <listitem open="0" type="829" id="54" />
+      <listitem open="0" type="829" id="37" />
+      <listitem open="0" type="829" id="44" />
+      <listitem open="0" type="829" id="228" />
+      <listitem open="1" type="829" id="20" />
+      <listitem open="1" type="829" id="19" />
+      <listitem open="1" type="829" id="15" />
+      <listitem open="1" type="829" id="22" />
+      <listitem open="1" type="829" id="21" />
+      <listitem open="0" type="829" id="272" />
+      <listitem open="0" type="829" id="317" />
+      <listitem open="0" type="829" id="230" />
+      <listitem open="0" type="829" id="84" />
+      <listitem open="0" type="829" id="232" />
+      <listitem open="0" type="829" id="207" />
+      <listitem open="1" type="829" id="26" />
+      <listitem open="1" type="829" id="23" />
+      <listitem open="1" type="829" id="25" />
+      <listitem open="1" type="829" id="24" />
+      <listitem open="0" type="829" id="288" />
+      <listitem open="0" type="829" id="284" />
+     </listitem>
+    </listitem>
+    <listitem open="1" type="802" label="Use Case View" />
+    <listitem open="1" type="821" label="Component View" />
+    <listitem open="1" type="827" label="Deployment View" />
+    <listitem open="1" type="836" label="Entity Relationship Model" />
+   </listitem>
+  </listview>
+  <codegeneration>
+   <codegenerator language="C++" />
+  </codegeneration>
+ </XMI.extensions>
+</XMI>

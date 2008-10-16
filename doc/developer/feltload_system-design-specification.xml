@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:feltload_system-design-specification">
+	
+	<title>FeltLoad - System Design Specification</title>
+	
+	<sect1>
+		<title>Introduction</title>
+		
+		<para>This document is the System Design Specification of the WDB Field Loading
+			program, feltLoad.</para>
+		
+		<sect2>
+			<title>Purpose</title>
+			
+			<para>The system design specification provides a comprehensive overview of
+				the design of the software system. This is used to ensure agreement between
+				the developers of the WDB system. It is also intended to make it easier for new
+				developers of WDB to become productive developing on the system.</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>System Overview</title>
+
+		<para>
+			The feltLoad program loads met.no felt files into wdb. This is
+			done by invoking the feltLoad program with one or more felt files
+			as command-line argument.</para>
+		
+		<para>
+			The program is not intended to be used outside of met.no.
+		</para>		
+		
+		<sect2>
+			<title>Technical Platform</title>
+			
+			<para>The software requires the following operating
+				environment:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Hardware: Desktop PC</para>
+				</listitem>
+				<listitem>
+					<para>Operating System: Linux</para>
+				</listitem>
+				<listitem>
+					<para>libpqxx version 2.6.8</para>
+				</listitem>
+				<listitem>
+					<para>Boost 1.33.x</para>
+				</listitem>
+				<listitem>
+					<para>Log4Cpp version 1.0</para>
+				</listitem>
+				<listitem>
+					<para>PROJ version 4.4.9</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>System Architecture</title>
+		
+		<para>The following section describes the architecture of the FeltLoad
+			system.</para>
+		
+		<sect2>
+			<title>Components</title>
+			
+			<para>The FeltLoad system consists of two logical components, one for reading
+				the felt file, and one for storing it into the database.</para>
+			
+			<sect3>
+				<title>Reading the felt files</title>
+				
+				<para>Each file consists of several fields. The reading component
+					iterates through each of these, and provides the relevant data to the
+					loading component.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Storing data</title>
+				
+				<para>The storage component is responsible for both interpreting data in a 
+					way that wdb understands, and for perfoming the actual storage. The 
+					interpretation is done by looking up felt-specific tables in the database.
+					These tables contain translation rules from felt codes to the wdb internal 
+					format.</para>
+				
+				<para>Once all translations are complete, this system stores data into the database.
+				First the field itself is stored, and then the relevant data row or rows are entered
+				into the database.</para>
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>Dependencies</title>
+			
+			<sect3>
+				<title>libPQXX</title>
+				
+				<para>The database API used in the FeltLoad software is the libPQXX library
+					for C++.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Log4cpp</title>
+				
+				<para>Log4cpp is library of C++ classes for flexible logging to files,
+					syslog, IDSA and other destinations. It is modeled on the Log4j Java
+					library. Log4cpp is used to handle logging from the FeltLoad system.
+					Log4cpp is encapsulated by the wdbLogHandler library.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Proj.4</title>
+				
+				<para>PROJ.4 is a Cartographic Projections library originally written by
+					Gerald Evenden. It is used to handle transformations from the varied
+					map projections of the GRIB files to the WGS84 map coordinate system
+					used in the WDB. The handling of projections in WDB is encapsulated in
+					the wdbProjection library.</para>
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>Program Interface</title>
+			
+			<para>FeltLoad is a command-line tool. Its primary functionality (to load one or several
+				met.no felt files) is executed by writing the program name followed by the
+				file name of the file to be loaded, as follows:</para>
+			
+			<para>wdb% bin/feltLoad Ph12_00.dat</para>
+			
+			<para>In addition to the base functionality, the FeltLoad system offers a
+				number of additional options.</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>--list</para>
+					<para>This option lists the contents of the chosen met.no felt,
+						without storing the data in the database.</para>
+				</listitem>
+				<listitem>
+					<para>--loadPlaceDefinition</para>
+					<para>A field can only be loaded in the database if there exists an
+						appropriate place definition for that field in the wdb. Setting
+						--loadPlaceDefinition ensures that the field is always loaded;
+						if the place definition is missing, the FeltLoad system
+						automatically generates an appropriate place definition for the
+						file in the database.</para>
+					<para><emphasis>Note:</emphasis> In the current version,
+						--loadPlaceDefinition is implied, and you cannot turn it
+						off.</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Core Design</title>
+		
+		<para>The following section describes the core design of the FeltLoad
+			system.</para>
+		
+		<sect2>
+			<title>Database Design</title>
+			
+			<para>The data from the forecast fields are stored in the table:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>wdb.oidvalue</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Main Program Routine</title>
+			
+			<para>The functionality of the main program is as follows:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Parse the options from the command line</para>
+				</listitem>
+				<listitem>
+					<para>Open a database connection</para>
+				</listitem>
+				<listitem>
+					<para>For each file to read:</para>
+					<itemizedlist>
+					<listitem>
+						<para>Open file with FeltFile class</para>
+					</listitem>
+					<listitem>
+						<para>For each field in the file:</para>
+						<itemizedlist>
+							<listitem>
+								<para>Store field in database</para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+				</itemizedlist>
+				</listitem>
+				<listitem>
+					<para>Terminate the program</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+
+		<sect2>
+			<title>Classes and Functionality</title>
+			
+			<para><xref linkend="fig:feltload_class-diagram"/> is the class diagram of
+				the FeltLoad system. It describes the main classes in the system, as well as
+				the interrelationship of the classes with the various function
+				sets.</para>
+			
+			<figure id="fig:feltload_class-diagram">
+				<title>Class diagram of the FeltLoad system</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata align="center"
+							fileref="gfx/feltLoad_class-diagram.png"
+							format="PNG"/>
+					</imageobject>
+				</mediaobject>
+			</figure>
+			
+			<para>This is not intended to be an exhaustive description of the classes and
+				functions in the program; for that, review the code documentation
+				generated using Doxygen.</para>
+			
+					<sect3>
+			<title>FeltFile</title>
+			
+			<para>This is a representation of a single felt file. The class provides a
+				container-like interface, with begin() and end() functions, along with
+				functions such as size() and empty(). Dereferencing an iterator will yield
+				a FeltField object.</para>
+			
+			<para>In addition to the iterator interface various information methods
+				exists. One notable such method is information(), which returns a text
+				summarizing the information in the felt file header.</para>
+
+		</sect3>
+		
+		<sect3>
+			<title>FeltField</title>
+			
+			<para>FeltField objects references are aquired by iterating over a FeltFile.
+			The class consists solely of const information methods, which returns information
+			about the field. Three functions are specifically worth mentioning:</para>
+			
+			<sect4>
+				<title>information() and gridInformation()</title>
+				
+				<para>These two functions text summaries for the field. The former returns
+					info parsed from the felt index section, while the latter returns
+					information from the field header.</para>
+				
+			</sect4>
+			
+			<sect4>
+				<title>grid</title>
+				
+				<para>This returns the grid itself. Note that you need to use the scaleFactor() 
+					function to get the correct values for each point.</para>
+			</sect4>
+						
+		</sect3>
+		
+		<sect3>
+			<title>FeltDatabaseInterface</title>
+
+			<para>This is an abstract interface to the wdb database. It is implemented in the
+			FeltDatabaseConnection class.</para>			
+			
+		</sect3>
+
+		<sect3>
+			<title>FeltLoader</title>
+			
+			<para>This class is responsible for coordinating the loading of files. It takes
+				a FeltDatabaseInterface reference as input parameter, and provides a
+				single public function, load, which takes a const FeltFile reference as
+				argument. This loads the given FeltFile into the database.</para>
+			
+		</sect3>
+			
+		</sect2>
+						
+	</sect1>
+	
+</chapter>

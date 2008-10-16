@@ -1,0 +1,14 @@
+WDB was initially developed by Meteorologisk institutt (met.no) from November
+2006 to 2008. The architecture of WDB is based on that of the ROAD system
+developed at Sveriges Meteorologiska och Hydrologiska Institut (SMHI).
+
+Core WDB Developers:
+
+michaeloa (Michael O. Akinde)  
+vegardb (Vegard Bønes)
+borgem (Børge Moe)
+
+
+
+If you think that you are missing from this list, contact the WDB development
+group.

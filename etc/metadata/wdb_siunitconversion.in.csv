@@ -1,0 +1,21 @@
+Unit Name|termB|coefficientA|termD|coefficientC
+milligram per cubic metre|0|1|0|1000000
+hectopascal|0|100|0|1
+joule per cubic metre|0|1|0|1
+newton per square metre|0|1|0|1
+hectopascal per second|0|100|0|1
+joule per square metre|0|1|0|1
+millimetre|0|1|0|1000
+hour|0|3600|0|1
+minute|0|60|0|1
+level number|0|1|0|1
+degree|0|3.14159|0|180
+percent|0|1|0|100
+kilogram per kilogram|0|1|0|1
+cubic metre per cubic metre|0|1|0|1
+fraction|0|1|0|1
+coefficient|0|1|0|1
+square slope|0|1|0|1
+per second|0|1|0|1
+square metre per square second|0|1|0|1
+degree celsius|273.15|1|0|1

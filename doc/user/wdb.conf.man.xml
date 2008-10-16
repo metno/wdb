@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<refentry id='wdb.conf5'>
+	<refmeta>
+		<refentrytitle>wdb.conf</refentrytitle>
+		<manvolnum>5</manvolnum>
+	</refmeta>
+	
+	<refnamediv>
+		<refname>wdb.conf</refname>
+		<refpurpose>Information about wdb database configuration</refpurpose>
+	</refnamediv>
+
+	<refsect1>
+		<title>Description</title>
+		<para>
+			The wdb.conf file contains database configuration for wdb. This 
+			includes the database's host, port and name. Also, the file may 
+			contain a default username for connections.
+		</para>
+		<para>
+			The file contains one or more "key = value" statements, separated 
+			by newlines. Comments may be inserted using a #. Allowed keys in 
+			wdb.conf are:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>database</term>
+				<listitem><para>Database name. Defaults to 'wdb'.</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>host</term>
+				<listitem><para>Database host, either as a network address, or 
+					as a local folder. If unspecified, wdb connection will be 
+					created using unix filesystem sockets, using postgresql's 
+					default socket directory. If a folder in the file system is
+					specified, that folder will be used instead.</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>port</term>
+				<listitem><para>What port to connect to. Default value is 
+					postgresql's default port (5432).</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>user</term>
+				<listitem><para>Database user name defaults to environment 
+					variable $USER</para></listitem>
+			</varlistentry>	
+		</variablelist>		
+	</refsect1>
+	<refsect1>
+		<title>Placement</title>
+		<para>
+			A global configuration file is normally placed in 
+			<filename>PREFIX/etc/wdb.conf</filename>. It is also possible to
+			place a local configuration file in 
+			<filename>$HOME/.wdb/wdb.conf</filename>. All key mentioned here 
+			will override keys mentioned in the global file, but other values
+			in the global file will remain unchanged. 
+		</para>
+		<para>
+			I addition to this, every wdb application has an options for 
+			overriding the configuration, including to read another config
+			file.
+		</para>
+	</refsect1>
+	<refsect1>
+		<title>Example file</title>
+		<para>
+			An example wdb.conf file can be found at <filename>
+			__WDB_DATADIR__/wdb/wdb.conf.ex</filename>.
+		</para>
+	</refsect1>
+</refentry>

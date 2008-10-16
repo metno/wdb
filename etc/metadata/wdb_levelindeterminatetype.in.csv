@@ -1,0 +1,11 @@
+Code|Type|Description
+0|Any|Values are valid for any level
+1|Exact|Exact interval
+2|Inside|The level  is inside the given interval
+3|Outside|The level is outside the given interval
+4|Above|The level is above the given interval
+5|Below|The level is below the given interval
+6|Withheld|The level interval is known but not exposed
+7|Withdrawn|The level interval is changed to be unknown
+8|Unknown|The level definition is unknown
+9|Delayed|The level definition will be specified later

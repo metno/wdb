@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:gribload_system-test-specification">
+
+  <title>GribLoad - System Test Specification</title>
+
+	<sect1><title>Introduction</title>
+
+<para>This document describes the specific tests to be carried out during the system test of the GribLoad component, used for the GRIB Field loading. The purpose of this component is to load meteorological fields into the WDB system.</para>
+
+<sect2><title>Purpose</title>
+
+<para>The test specification should:</para>
+
+<itemizedlist>
+    <listitem><para>Clarify the functionality/performance/accesibility requirements of the system</para></listitem>
+    <listitem><para>Clearly specify which tests must be passed for the component to be accepted for production</para></listitem>
+    <listitem><para>Document the consensus for the level of testing of the WDB</para></listitem>
+</itemizedlist>
+
+<para>The tests set forth in this document are designed to satisfy the demands of two distinct stakeholders in the product; namely the end-users of the WDB and the operational maintenance department.</para>
+
+<para>For each test, it must be defined who has the responsibility for performing the test. Any limitations with respect to the test must also be specified (e.g., for example if the test has yet to be implemented).</para>
+
+</sect2>
+
+<sect2><title>Controlling Document</title>
+
+<para>The test specification and implemented tests in the GribLoad component follow the principles described in the WDB Test plan [1].</para>
+
+</sect2>
+
+</sect1>
+
+<sect1><title>Compilation Test</title>
+
+<para>There should be no warnings during the compilation or linking of the GribLoad component.</para>
+
+</sect1>
+
+<sect1><title>Unit Tests</title>
+
+<para>There are no unit tests for the GribLoad component.</para>
+
+</sect1>
+
+<sect1><title>Installation Tests</title>
+
+<para>Installation tests examine that the functionality of the system fulfills the system requirements of the system as defined in Bugzilla. We employ the Category-Partition test design pattern [2].</para>
+
+<sect2><title>Test Cases</title>
+
+<para>The following section describes the test samples that are
+intended to be handled by the test cases of the test suite.</para>
+
+	<table frame="all">
+	  <title>GribLoad Installation Test Cases</title>
+	  <tgroup cols="7">
+	  <colspec align="left"/> 
+          <colspec align="left"/>
+	  <colspec align="center"/> 
+          <colspec align="left"/>
+	  <colspec align="left"/> 
+          <colspec align="left"/>
+	  <colspec align="center"/>
+          <thead>
+            <row>
+            <entry> C# </entry>
+            <entry> Category </entry>
+            <entry> P# </entry>
+            <entry> Partition </entry>
+            <entry> Description </entry>
+            <entry> Expected Result </entry>
+            <entry> Priority </entry>
+            </row>
+          </thead>
+	  <tbody>
+
+	    <row>
+              <entry> F001 </entry>
+              <entry> Input File</entry>
+              <entry>  1 </entry>
+              <entry> No input file exists </entry>
+              <entry> Dummy argument passed for function </entry>
+              <entry> Log an error and abort </entry>
+              <entry> H </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> Input file is empty </entry>
+              <entry> Empty file as argument </entry>
+              <entry> Log an error and abort </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  3 </entry>
+              <entry> Input file is already loaded </entry>
+              <entry> Load a file twice </entry>
+              <entry> Log duplicate errors for each field in the file </entry>
+              <entry> H </entry>
+	    </row>
+
+	    <row>
+              <entry> F002 </entry>
+              <entry> Number of fields </entry>
+              <entry>  1 </entry>
+              <entry> 0 fields in file </entry>
+              <entry> Load an empty file </entry>
+              <entry> Log an error and abort </entry>
+              <entry> H (Duplicate of F001_01) </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> 1 field in file </entry>
+              <entry> Load a file with only one field </entry>
+              <entry> Load one field </entry>
+              <entry> H </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  3 </entry>
+              <entry> &gt; 1 field in file  </entry>
+              <entry> Load a file with more than one field </entry>
+              <entry> All fields loaded without errors </entry>
+              <entry> H (Not implemented) </entry>
+	    </row>
+
+	    <row>
+              <entry> F003 </entry>
+              <entry> Grid description </entry>
+              <entry>  1 </entry>
+              <entry> Undefined grid description type </entry>
+              <entry> Load field with an unknown grid definition </entry>
+              <entry> grib_api throws an error </entry>
+              <entry> H </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> Regular Lon/Lat Grid </entry>
+              <entry> Load a field with a regular Lon/Lat grid </entry>
+              <entry> Field(s) loaded without errors </entry>
+              <entry> L (Not implemented) </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  3 </entry>
+              <entry> Rotated Lon/Lat Grid  </entry>
+              <entry> Load a file with a rotated Lon/Lat grid </entry>
+              <entry> Field(s) loaded without errors </entry>
+              <entry> L (Not implemented) </entry>
+	    </row>
+
+	    <row>
+              <entry> F004 </entry>
+              <entry> Place Definition </entry>
+              <entry>  1 </entry>
+              <entry> Place definition is missing in WDB </entry>
+              <entry> Load field into WDB without the place definition defined in the metadata </entry>
+              <entry> No field loaded and error logged </entry>
+              <entry> H </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> Place definition exists in WDB </entry>
+              <entry> Load a field into WDB with the place definition defined </entry>
+              <entry> Field(s) loaded without any errors </entry>
+              <entry> L (Not implemented) </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  3 </entry>
+              <entry> Create a new place definition </entry>
+              <entry> Load a field with a new place definition into WDB with the "loadPlaceDefinition" option set </entry>
+              <entry> Field(s) loaded without errors. New place definition inserted into WDB </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  4 </entry>
+              <entry> Create an existing place definition </entry>
+              <entry> Load a field with a place definition that is already in WDB into the database with the "loadPlaceDefinition" option set </entry>
+              <entry> Field(s) loaded without any errors. No changes to the place definitions in WDB </entry>
+              <entry> M </entry>
+	    </row>
+
+	    <row>
+              <entry> F005 </entry>
+              <entry> Level Parameter </entry>
+              <entry>  1 </entry>
+              <entry> Level parameter is missing </entry>
+              <entry> Load a field containing a level parameter not in WDB </entry>
+              <entry> Field not loaded and error is logged </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> Level parameter is not loaded </entry>
+              <entry> Switch "off" (false) a level parameter in the cross-reference tables and attempt to load it </entry>
+              <entry> Field is not loaded and no errors are reported </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  3 </entry>
+              <entry> All level parameters described  </entry>
+              <entry> Load fi)d(s with valid level parameters </entry>
+              <entry> Field(s) loaded without errors </entry>
+              <entry> L (Not implemented) </entry>
+	    </row>
+
+	    <row>
+              <entry> F006 </entry>
+              <entry> Parameter </entry>
+              <entry>  1 </entry>
+              <entry> Grib parameter is missing </entry>
+              <entry> Load a field containing a grib parameter not in WDB </entry>
+              <entry> Field not loaded and error is logged  </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> Grib parameter is not loaded </entry>
+              <entry> Switch "off" (false) a grib parameter in the cross-reference tables and attempt to load it </entry>
+              <entry> Field is not loaded and no errors are reported </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  3 </entry>
+              <entry> All grib parameters described  </entry>
+              <entry> Load fi)d(s with valid level parameters </entry>
+              <entry> Field(s) loaded without errors </entry>
+              <entry> L (Not implemented) </entry>
+	    </row>
+
+	    <row>
+              <entry> F007 </entry>
+              <entry> Data Provider </entry>
+              <entry>  1 </entry>
+              <entry> Unknown data provider </entry>
+              <entry> Load a field with a data provider not present in WDB </entry>
+              <entry> Field not loaded and error is logged </entry>
+              <entry> M </entry>
+	    </row>
+	    <row>
+              <entry>    </entry>
+              <entry>    </entry>
+              <entry>  2 </entry>
+              <entry> Data provider is in WDB </entry>
+              <entry> Load a field with an entry in the WDB cross-reference table </entry>
+              <entry> Field loaded without any errors </entry>
+              <entry> L (Not implemented) </entry>
+	    </row>
+
+	  </tbody>
+	  </tgroup>
+	</table>
+
+</sect2>
+
+</sect1>
+
+<sect1><title>Performance Tests</title>
+
+<para>The performance tests are performed in the WDB test environment, defined in [1].</para>
+
+	<table frame="all">
+	  <title>GribLoad Installation Test Cases</title>
+	  <tgroup cols="7">
+	  <colspec align="left"/> 
+          <colspec align="left"/>
+	  <colspec align="center"/> 
+          <colspec align="left"/>
+	  <colspec align="left"/> 
+          <colspec align="left"/>
+	  <colspec align="center"/>
+          <thead>
+            <row>
+            <entry> C# </entry>
+            <entry> Category </entry>
+            <entry> P# </entry>
+            <entry> Partition </entry>
+            <entry> Description </entry>
+            <entry> Expected Result </entry>
+            <entry> Priority </entry>
+            </row>
+          </thead>
+	  <tbody>
+
+	    <row>
+              <entry> P001 </entry>
+              <entry> Throughput on a single process </entry>
+              <entry>  1 </entry>
+              <entry> Single file with 100kb fields </entry>
+              <entry> Single GribLoad process loading a file of min. 100 fields </entry>
+              <entry> Throughput of 10 fields per second </entry>
+              <entry> H </entry>
+	    </row>
+
+	    <row>
+              <entry> P002 </entry>
+              <entry> Throughput on multiple processes </entry>
+              <entry>  2 </entry>
+              <entry> Single files with 100kb fields </entry>
+              <entry> 4 GribLoad processes loading files of min. 100 fields </entry>
+              <entry> Throughput of at least 40 fields per second on 4 CPU hardware </entry>
+              <entry> M </entry>
+	    </row>
+
+	  </tbody>
+	  </tgroup>
+	</table>
+
+</sect1>
+
+</chapter>

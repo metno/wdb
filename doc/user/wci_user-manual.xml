@@ -1,0 +1,1557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<book>
+	<title>WDB Call Interface User Manual</title>
+	
+	<bookinfo>
+		<editor>
+			<firstname>Michael</firstname>
+			<othername>O.</othername>
+			<surname>Akinde</surname>
+			
+			<affiliation>
+				<orgname> <ulink url="http://www.met.no">met.no</ulink>
+				</orgname>
+				
+				<address>
+          <street>Niels Henrik Abelsvei 4</street> 
+          <city>Oslo</city>
+          <country>Norway</country>
+          <email>wdb@met.no</email>
+        </address>
+			</affiliation>
+		</editor>
+		<abstract>
+			
+			<para>WDB is a data storage solution for weather and water data based on the
+				PostgreSQL object-relational database system. The system utilizes
+				PostGIS for GIS (Geographic Information Systems) support and handles
+				regular grids (e.g., forecast fields) and point (e.g., observation)
+				data.</para>
+			
+			<para>This is the User's Manual for WDB Call Interface of WDB version
+				&version;</para>
+			
+		</abstract>
+	</bookinfo>
+	
+	<chapter id="cha:wci_introduction">
+		<title>Introduction</title>
+		
+		<para>The WDB Call Interface (WCI) is the official API used for retrieving data from
+			the WDB system.</para>
+		
+		<sect1 id="sec:about_manual">
+			<title>About this Manual</title>
+			
+			<para>This manual is intended for system designers, application developers
+				and programmers. It describes in technical terms how weather data can be
+				retrieved from the WDB system through the WCI. It is assumed that the reader
+				has some familiarity with databases and weather data.</para>
+			
+			<para>For a more elaborate description of the vision and system architecture of
+				the WDB system, see the WDB Developer's Manual.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:intended_usage">
+			<title>Intended Usage</title>
+			
+			<para>WCI is intended to be used for retrieving weather data (e.g.,
+				temperature, air pressure, etc.) for a geographic point or area, given an
+				altitude interval and a time or time interval. It is possible to retrieve
+				individual data values or huge quantities of data using a single
+				API.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:wci_outline">
+			<title>Outline</title>
+			
+			<para>This document is structured as follows:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Key Concepts: introduction to the concepts and terms used in the
+						documentation</para>
+				</listitem>
+				<listitem>
+					<para>Using the WCI: an introduction to how the WCI is used</para>
+				</listitem>
+				<listitem>
+					<para>Function Reference: reference documentation for each of the
+						WCI functions</para>
+				</listitem>
+				<listitem>
+					<para>Data Types Reference: reference documentation for the WCI data
+						types</para>
+				</listitem>
+				<listitem>
+					<para>Examples: Example programs for WCI</para>
+				</listitem>
+				<listitem>
+					<para>FAQ: Frequently asked questions</para>
+				</listitem>
+				<listitem>
+					<para>Known bugs and limitations</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter id="cha:key_concepts">
+		<title>Key Concepts</title>
+		
+		<para>This section provides an overview of the WCI, including some important
+			definitions and explanations.</para>
+		
+		<sect1 id="sec:wci_overview">
+			<title>Overview</title>
+			
+			<para>WCI is an API designed to retrieve weather data from the WDB system. The WCI
+				API resides on the database server.</para>
+			
+			<para>All function calls on WCI are executed as SQL statements. The SQL
+				statements can be executed through a dedicated SQL client application,
+				such as psql, pgadmin3, DbVisualizer, or by an application program through
+				a database API such as JDBC, ODBC, libpqxx, etc. The WCI is thus not linked
+				into the application program itself, but is a component of the
+				database.</para>
+			
+			<para>A data item in WDB could be an observation, a forecast, an analysis, etc.
+				Each item consists of a value and a number of dimensions that describe the
+				value.</para>
+			
+			<para>A dimension could be a description of the data item (e.g., temperature),
+				its geographic position, its altitude (or depth), the time the data item was
+				created, the origin of the data item, etc.</para>
+			
+			<para>To access the data items in WDB, the user must have an understanding of the
+				dimensions as they are the entry point into the database. To retrieve data
+				from the database, a set of search criteria is given for each of the
+				WCI dimensions. If the search criteria for a dimension is
+				not specified, it is assumed the user wants to retrieve all data items,
+				regardless of their description in that dimension.</para>
+			
+			<para>The dimensions are described in the following sections.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:data_provider">
+			<title>Data Provider</title>
+			
+			<para>The Data Provider identifies the source of the data; literally,
+				<emphasis>the entity that provides the data</emphasis>. Where multiple
+				sources could be identified as the source of the data, the entity that can be
+				identified closest to the creation of the data item at the time of loading is
+				usually specified.</para>
+			
+			<para>A data provider can be a software process (e.g., Hirlam), a
+				Meteorological station, an aircraft, a person, or a group of data providers. A data provider is
+				identified by a DataProviderName. DataProviderNames are used to search for the
+				data.</para>
+			
+			<para>When searching for data, the user may specify a single DataProviderName,
+				several DataProviderNames, or NULL. NULL indicates that the user wants all
+				data items, regardless of the data source.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Place (Geographic Location)</title>
+			
+			<para>The place (geographic location) of a data item is the position of the item
+				on the earth in a 2D space. In WDB, the geographic location is by default
+				specified using longitude and latitude in a WGS84 coordinate system
+				(though this can be changed when the database is set up; consult your system
+				administrator). The geographic dimension is specified using a geometry
+				object and can be either a point or a polygon.</para>
+			
+			<para>In addition to using geometry objects to retrieve data, the user can also
+				use a PlaceName - a pre-specified name that defines a geometry object in the
+				database - to specify location.</para>
+			
+			<para>At the same time as the user specifies a location to retrieve data from, it
+				is also possible to specify an interpolation option for location
+				calculations. These permit the user a great deal of flexibility in
+				searching.</para>
+			
+			<para>Specifying NULL for the place definition of a query is logically
+				equivalent to asking for all of the data items in the database, irrespective
+				of their location.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Reference Time</title>
+			
+			<para>The reference time of a data item is the moment when the data item is
+				referenced from.</para>
+			
+			<para>When searching for data, the user specifies the reference time (with time
+				zone), or NULL. NULL indicates that the user wants all data items,
+				regardless of the reference time of the data.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Valid Time</title>
+			
+			<para>The valid time of a data item is the moment for which the data item is
+				valid.</para>
+			
+			<para>When searching for data, the user specifies the valid time (with time
+				zone), or NULL. NULL indicates that the user wants all data items,
+				regardless of the valid time of the data.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Value Parameter</title>
+			
+			<para>Each data value can be described using a "value parameter". The value
+				parameter is a name that describes the physics or code table basis of the
+				parameter value. The value parameter concept in WCI is broadly similar to
+				the concept of meteorological parameter used in, e.g., GRIB files.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Level (Altitude)</title>
+			
+			<para>The <emphasis>Level</emphasis> dimension is used to designate the
+				altitude or depth of the data value. Level is designated using a level
+				parameter (e.g., height above sea level, pressure), and a height interval
+				(level from and to). The user can also specify a level interpolation option;
+				this permits the user flexibility when expressing searches.</para>
+			
+			<para>Specifying <emphasis>ANY</emphasis> for the level interpolation is
+				logically equivalent to specifying a NULL for the level; i.e., it retrieves
+				all data items regardless of their level (height).</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Data Version</title>
+			
+			<para>There can be several different versions of the same data value that is
+				valid for the same time, position, etc. This can happen with probability
+				forecast calculations, or when a data value is edited (in which case the new
+				value will usually be inserted with a higher data version). A data version is
+				always a positive whole number.</para>
+			
+			<para>The user may specify one or several data versions as search criteria in
+				WCI, as well as NULL. NULL indicates that the user wants all versions of the
+				data items specified. In addition, the user may specify the data version as
+				<emphasis>-1</emphasis>. Specifying <emphasis>-1</emphasis>
+				retrieves only the most recent version of the data item inserted into the
+				database.</para>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter>
+		<title>Using the WCI</title>
+		
+		<para>This section gives an overview on how to use the WCI to retrieve data values from
+			WDB.</para>
+		
+		<sect1>
+			<title>Outline</title>
+			
+			<para>The following list gives a brief overview of the actions that the user
+				takes in order to retrieve data from WCI.</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Create a connection to the database</para>
+				</listitem>
+				<listitem>
+					<para>Initialize WCI</para>
+				</listitem>
+				<listitem>
+					<para>Read from WCI (one or more times)</para>
+				</listitem>
+				<listitem>
+					<para>Release WCI</para>
+				</listitem>
+				<listitem>
+					<para>Close database connection</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Open a connection</title>
+			
+			<para>To enable communication with WCI, the user must open a connection to the
+				database. How this is done depends very much on the application or API that is
+				being used (consult the documentation of the program or API for
+				information).</para>
+			
+			<para>Using libpq,</para>
+			
+			
+			<programlisting>
+connection_ = PQconnectdb("dbname=wdb user=myuser host=localhost");
+		</programlisting>
+			
+			<para>The connection must be open and valid as long as commands are being sent and
+				data retrieved from the database. It is worth noting that connections are a
+				limited resource; the database may thus have limits on how many connections
+				can be open at the same time. This is particularly important in massively
+				multi-user applications (e.g., web applications). In such cases, the
+				database connections must be managed with some care. </para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Initialize WCI</title>
+			
+			<para>Before WCI may be used by the user, it should be initialized.</para>
+			
+			
+			<programlisting>
+SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
+		</programlisting>
+			
+			<para>The username is used to identify the user with WCI (this is used in setting
+				up internal WCI variables); the namespace ids for data provider,
+				parameter, and level parameter initialize these variables. wci.begin can
+				also be called without setting these variables, in which case they are set to
+				the default (usually 0, 0, 0) by the system.</para>
+			
+			<para>The username of the wci user can be a different identity than the one the
+				user connected with (always assuming, of course, that your user has
+				appropriate rights). This allows, for instance, for a single system to act
+				as a multiplexing front-end to retrieve data available from several
+				distinct users.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Read from the WCI</title>
+			
+			<para>As soon as the user has initialized WCI using wci.begin, the database is
+				ready for retrieval of data. Data is retrieved using the wci.read function,
+				and data is searched for by setting the appropriate dimensions in that
+				call.</para>
+			
+			
+			<programlisting>
+SELECT * 
+FROM wci.READ ( ARRAY['Hirlam'], -- Data provider name
+               'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Geometry
+               ('1980-01-01 12:00:00', '1980-01-01 18:00:00', 'inside')::wci.timeSpec,  -- Reference time
+               ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'any')::wci.timeSpec, --Valid time
+               ARRAY['% temperature of air'], -- Parameter
+               (0,1000,'of isobaric surface','any')::wci.levelSpec, -- Level
+               ARRAY[-1],  -- Data version
+               NULL::wci.returnFloat -- Return type
+             )
+		</programlisting>
+			
+			<para>The above query returns Hirlam data for a specific region (given by the
+				geometry), whose referencetime is on or between 12 to 18 o'clock on January
+				1, 1980; the query will return data for any valid times, for air temperature.
+				It will return data for any level, but only the latest version of such data.
+				Values will be returned as point data.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Release WCI</title>
+			
+			<para>Once the user has finished retrieving data using WCI, it is a good idea to
+				close down WCI.</para>
+			
+			<programlisting>
+SELECT wci.end();
+		</programlisting>
+			
+			<para> This is not strictly necessary, but allows the system to graciously
+				deallocate resources and reset any settings that may have been changed by
+				WCI.</para>
+			
+		</sect1>
+		
+		<sect1>
+			<title>Close Connection</title>
+			
+			<para>Closes down the connection to the database, freeing up the resources on
+				the database to be used by other applications.</para>
+			
+			<para>Using libpq,</para>
+			
+			<programlisting>
+PQfinish(connection_);
+		</programlisting>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter>
+		<title>Function Reference</title>
+		
+		<para>The following sections provide a list of the functions available for usage
+			through the WDB Call Interface.</para>
+		
+		<sect1 id="sec:wci.read">
+			<title>wci.read</title>
+			
+			<para>wci.read is the function that fetches MHO data from the database, and as
+				such is the core of the WDB Call Interface. The function takes the user's
+				search parameters as input and returns data as either individual point, or
+				as a reference (OID) to a complete data grid (where applicable).</para>
+			
+			<para>The function is overloaded, and exists in two almost identical versions,
+				depending on the return type required.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				
+				<programlisting>
+wci.read 
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.returnoid
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.read
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.returnfloat
+)
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.read:parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.read parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProviders</entry>
+								<entry>List of data providers for the MHO data to be
+									retrieved</entry>
+							</row>
+							<row>
+								<entry>place</entry>
+								<entry>A text string containing either a geometry
+									describing the geographic locations that the user
+									is interested in retrieving data for (formatted
+									using well-known-text) or a placename. The string
+									may optionally be prefixed with a place
+									interpolation description.</entry>
+							</row>
+							<row>
+								<entry>referenceTime</entry>
+								<entry>When the MHO data was created</entry>
+							</row>
+							<row>
+								<entry>validtime</entry>
+								<entry>What time is the MHO data valid for</entry>
+							</row>
+							<row>
+								<entry>parameters</entry>
+								<entry>What MHO-parameters the user is interested in
+									retrieving</entry>
+							</row>
+							<row>
+								<entry>level</entry>
+								<entry>What level (altitude/depth) the data is located
+									at</entry>
+							</row>
+							<row>
+								<entry>dataVersion</entry>
+								<entry>What version of the data should be
+									returned</entry>
+							</row>
+							<row>
+								<entry>returnType</entry>
+								<entry>What type of data the user wants
+									returned</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+				<para>>Geospatial definitions are defined using well-known-text. Only
+					POINTs and POLYGONs are currently supported.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>Depending on the returnType specified:</para>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.returnfloat</para>
+					</listitem>
+					<listitem>
+						<para>wci.returnoid</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.write</para>
+					</listitem>
+					<listitem>
+						<para>wci.begin</para>
+					</listitem>
+					<listitem>
+						<para>wci.end</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sect:wci.browse">
+			<title>wci.browse</title>
+			
+			<para>wci.browse is the function utilized to browse the MHO data in the
+				database; it is used to retrieve summary data about what data values exist in
+				the database. The function takes as input the same search parameters as the
+				wci.read call, but returns summarized rather than detailed data about the
+				values in the database. Using wci.browse will usually be significantly
+				faster than performing a similar wci.read call followed by
+				aggregation.</para>
+			
+			<para>The function is overloaded, and exists in many different versions,
+				depending on the return type required.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				
+				<programlisting>
+wci.browse
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.browsedataprovider
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.browse
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.browseplace
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.browse
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.browsereferencetime
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.browse
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.browsevalidtime
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.browse
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.browsevalueparameter
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.browse
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  wci.timespec,
+          validtime      wci.timepsec,
+          parameters     ARRAY[text],
+          level          wci.levelspec,
+          dataVersions   ARRAY[integer],
+          returnType     wci.browselevelparameter
+)
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<para>All the wci.browse input parameters, except the returnType, are
+					precisely the same as the input paramaters to a wci.read call (see
+					Section <xref linkend="sec:wci.read:parameters"></xref>). It is also 
+					possible to call each of the functions above with only the "returnType"
+					parameter specified; this is equivalent to calling the wci.browse function
+					with all NULLs (indicating that all data is required). 
+					</para>
+				
+				<para>The returnType specifies which of the six different types of
+					summarized metadata the user wants to retrieve.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>Depending on the returnType specified:</para>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.browsedataprovider</para>
+						<para>This returns a list of the data providers that exist in the
+							database for the parameter definitions given in the
+							wci.browse call and the utilized namespace. For each
+							dataprovider, the number of data records and the earliest and
+							latest referencetimes that exist for that data value is also
+							listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browseplace</para>
+						<para>This returns a list of the place definitions that exist in
+							the database for the parameter definitions given by the
+							wci.browse call and the used namespace. For each place
+							definition, the number of data records in the database are
+							listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsereferencetime</para>
+						<para>This returns a list of the referencetimes that exist in the
+							database for the parameter definitions given by the
+							wci.browse call. For each referencetime, the number of data
+							records in the database are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsevalidtime</para>
+						<para>This returns a list of the validtimes that exist in the
+							database for the parameter definitions given by the
+							wci.browse call. For each validtime, the number of data
+							records in the database are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsevalueparameter</para>
+						<para>This returns a list of the value parameters that exist in the
+							database for the parameter definitions given by the
+							wci.browse call and the used namespace. For each
+							valueparameter, the number of data records in the database
+							are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browselevelparameter</para>
+						<para>This returns a list of the level parameters that exist in the
+							database for the parameter definitions given by the
+							wci.browse call and the utilized namespace. For each level
+							parameter, the number of data records in the database are
+							listed.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.read</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sect:wci.info">
+			<title>wci.info</title>
+			
+			<para>wci.info is the function utilized to retrieve the metadata in the
+				database; for example, it can be used to return a lists of all parameters
+				possible in the database, a list of the dataproviders registered, etc.
+				Where wci.browse returns information about the data stored in the
+				database, wci.info returns information about the data that is possible to
+				store in the database. The function usually takes as its input a string as its
+				search parameter. </para>
+			
+			<para>The function is overloaded, and exists in four different versions,
+				depending on the return type required. Calling the function with a NULL in
+				place of the search parameter will return the complete list of
+				parameters.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				
+				<programlisting>
+wci.info
+(
+          dataProvider   text,
+          returnType     wci.infodataprovider
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.info
+(
+          place          text,
+          returnType     wci.infoplace
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.info
+(
+          valueParameter text,
+          returnType     wci.infovalueparameter
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.info
+(
+          levelParameter text,
+          returnType     wci.infolevelparameter
+)
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.info parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProvider</entry>
+								<entry>A text string representing the data providers to
+									list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>place</entry>
+								<entry>A text string representing the place names to
+									list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>valueParameter</entry>
+								<entry>A text string representing the value parameters
+									to list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>levelParameter</entry>
+								<entry>A text string representing the level parameters
+									to list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>returnType</entry>
+								<entry>What type of data the user wants
+									returned</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+				<para>>Geospatial definitions are defined using well-known-text. Only
+					POINTs and POLYGONs are currently supported.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>Depending on the returnType specified:</para>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.infodataprovider</para>
+					</listitem>
+					<listitem>
+						<para>wci.infoplace</para>
+					</listitem>
+					<listitem>
+						<para>wci.infovalueparameter</para>
+					</listitem>
+					<listitem>
+						<para>wci.infolevelparameter</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.read</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1>
+			<title>wci.write</title>
+			
+			<para>wci.write is function that can be utilized to write MHO data into the
+				database.</para>
+			
+			<para>The function is overloaded, and exists in several different versions
+				depending on the input utilized.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_write</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				
+				<programlisting>
+wci.write
+(
+	value          oid,
+	placename      text,
+	referencetime  timestamp without time zone,
+	validtimerom   timestamp without time zone,
+	validtimeto    timestamp without time zone
+	valueparameter text,
+	levelparameter text,
+	levelFrom      float,
+	levelTo        float 
+)
+</programlisting>
+				
+				
+				<programlisting>	
+wci.write
+(
+          row           wci.returnOid
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.write parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>value</entry>
+								<entry>The OID value to be retrieved</entry>
+							</row>
+							<row>
+								<entry>placename</entry>
+								<entry>A text string identifying the geographical
+									location that the data is being inserted
+									for</entry>
+							</row>
+							<row>
+								<entry>referenceTime</entry>
+								<entry>When the MHO data was created</entry>
+							</row>
+							<row>
+								<entry>validtimefrom</entry>
+								<entry>What time is the MHO data valid for; starting
+									time</entry>
+							</row>
+							<row>
+								<entry>validtimefrom</entry>
+								<entry>What time is the MHO data valid for; ending
+									time</entry>
+							</row>
+							<row>
+								<entry>valueparameter</entry>
+								<entry>What MHO-parameters the user is interested in
+									retrieving</entry>
+							</row>
+							<row>
+								<entry>levelparameter</entry>
+								<entry>The parameter that describes the level
+									designation</entry>
+							</row>
+							<row>
+								<entry>levelFrom</entry>
+								<entry>What level (altitude/depth) the data is located
+									at; starting point</entry>
+							</row>
+							<row>
+								<entry>levelTo</entry>
+								<entry>What level (altitude/depth) the data is located
+									at; ending point</entry>
+							</row>
+							<row>
+								<entry>row</entry>
+								<entry>A wci.returnOid row. This function allows the
+									user to take the result a query and write the same (or a
+									slightly modified row) easily into the
+									database.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>The valueid of the inserted row.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.read</para>
+					</listitem>
+					<listitem>
+						<para>wci.begin</para>
+					</listitem>
+					<listitem>
+						<para>wci.end</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1>
+			<title>wci.begin</title>
+			
+			<para>The function wci.begin initializes the WDB Call Interface for a
+				specified user.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>A connection must be open to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to one of the wdb user
+							groups</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				
+				<programlisting>
+wci.begin 
+(
+          user                    name,
+          dataproviderNameSpaceId integer,
+          placeNameSpaceId        integer,
+          parameterNameSpaceId    integer
+)
+</programlisting>
+				
+				
+				<programlisting>
+wci.begin (
+          user                    name
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.begin parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>user</entry>
+								<entry>The userid to initialize the connection
+									with</entry>
+							</row>
+							<row>
+								<entry>dataprovidernamespaceid</entry>
+								<entry>The namespace to be used for dataprovider
+									names</entry>
+							</row>
+							<row>
+								<entry>placenamespaceid</entry>
+								<entry>The namespace to be used for parameter
+									names</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The namespace to be used for level parameter
+									names</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>No return expected.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.end</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1>
+			<title>wci.end</title>
+			
+			<para>The function wci.end unsets any settings and frees up resources that may
+				have been initialized by wci.begin.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>A connection must be open to the database.</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to one of the wdb user
+							groups</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				<programlisting>
+wci.end 
+(
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>No return expected.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.begin</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter>
+		<title>Data Type Reference</title>
+		
+		<para>This section provides an overview of the data types that are returned from the
+			database through WCI; in particular the return rows used by the wci.read and
+			wci.write calls.</para>
+		
+		<sect1>
+			<title>wci.returnOid</title>
+			
+			<para>The wci.returnOid data type is a simple row type used for returning data to
+				the user from the wci.read call. The following table describes the
+				attributes that are returned from wci.returnOid; including the ordering
+				of the attributes in the type.</para>
+			
+			<table frame="all">
+				<title>wci.returnOid</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>value</entry>
+							<entry>The object ID (OID) of the value being
+								returned</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>data provider name</entry>
+							<entry>The name of the data provider of the value (as defined
+								within the dataprovidernamespace selected)</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>place name</entry>
+							<entry>The name of the grid definition selected (as defined
+								within the placenamespace selected). The place name can
+								be then be used to retrieve the original grid definition
+								of the grid, if needed</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>place geometry</entry>
+							<entry>The geometry definition of the value returned. This
+								is less useful for rotated grids, as the coordinates will
+								be in regular WGS84.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>referencetime</entry>
+							<entry>The time of reference for the value returned</entry>
+						</row>
+						<row>
+							<entry>5</entry>
+							<entry>validtime from</entry>
+							<entry>The first point in time for which the value is
+								valid</entry>
+						</row>
+						<row>
+							<entry>6</entry>
+							<entry>validtime to</entry>
+							<entry>The last point in time for which the value is
+								valid</entry>
+						</row>
+						<row>
+							<entry>7</entry>
+							<entry>value parameter name</entry>
+							<entry>The parameter name for the value returned (as defined
+								within the parameter name space selected)</entry>
+						</row>
+						<row>
+							<entry>8</entry>
+							<entry>value parameter unit</entry>
+							<entry>The measurement unit for the value returned</entry>
+						</row>
+						<row>
+							<entry>9</entry>
+							<entry>level parameter name</entry>
+							<entry>The parameter name for the level of the value returned
+								(as defined within the parameter name space
+								selected)</entry>
+						</row>
+						<row>
+							<entry>10</entry>
+							<entry>level unit name</entry>
+							<entry>The measurement unit for the level of the value
+								returned</entry>
+						</row>
+						<row>
+							<entry>11</entry>
+							<entry>level from</entry>
+							<entry>The lower value of the level</entry>
+						</row>
+						<row>
+							<entry>12</entry>
+							<entry>level</entry>
+							<entry>The upper of the level</entry>
+						</row>
+						<row>
+							<entry>13</entry>
+							<entry>data version</entry>
+							<entry>The data version of the value. Data version is
+								utilized for two separate purposes; to indicate
+								different version of the same data (i.e., to allow
+								corrections and edits to co-exist in the database) and
+								for perturbed versions of the same data (e.g., ensemble
+								members).</entry>
+						</row>
+						<row>
+							<entry>14</entry>
+							<entry>confidence code</entry>
+							<entry>Quality marker (not currently used)</entry>
+						</row>
+						<row>
+							<entry>15</entry>
+							<entry>value store time</entry>
+							<entry>The time when the data was inserted into the
+								database</entry>
+						</row>
+						<row>
+							<entry>16</entry>
+							<entry>value id</entry>
+							<entry>The ID of the value within its value type. Together
+								with valuetype, this costitutes a key of the WDB
+								value</entry>
+						</row>
+						<row>
+							<entry>17</entry>
+							<entry>value type</entry>
+							<entry>The type of the value returned. Together with the
+								valueid, this constitutes a key of the WDB value</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			
+		</sect1>
+		
+		<sect1>
+			<title>wci.returnFloat</title>
+			
+			<para>The wci.returnFloat data type is a simple row type used for returning
+				floating-point data to the user from the wci.read call. The following table
+				describes the attributes that are returned from wci.returnFloat;
+				including the ordering of the attributes in the type.</para>
+			
+			<table frame="all">
+				<title>wci.returnFloat</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>value</entry>
+							<entry>The floating point value returned by the
+								query</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>data provider name</entry>
+							<entry>The name of the data provider of the value (as defined
+								within the dataprovidernamespace selected)</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>place name</entry>
+							<entry>The name of the grid definition selected (as defined
+								within the placenamespace selected). If the point value
+								is being returned from a grid, the name returned will be
+								that of the grid.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>place geometry</entry>
+							<entry>The POINT geometry definition of the value
+								returned.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>referencetime</entry>
+							<entry>The time of reference for the value returned</entry>
+						</row>
+						<row>
+							<entry>5</entry>
+							<entry>validtime from</entry>
+							<entry>The first point in time for which the value is
+								valid</entry>
+						</row>
+						<row>
+							<entry>6</entry>
+							<entry>validtime to</entry>
+							<entry>The last point in time for which the value is
+								valid</entry>
+						</row>
+						<row>
+							<entry>7</entry>
+							<entry>value parameter name</entry>
+							<entry>The parameter name for the value returned (as defined
+								within the parameter name space selected)</entry>
+						</row>
+						<row>
+							<entry>8</entry>
+							<entry>value parameter unit</entry>
+							<entry>The measurement unit for the value returned</entry>
+						</row>
+						<row>
+							<entry>9</entry>
+							<entry>level parameter name</entry>
+							<entry>The parameter name for the level of the value returned
+								(as defined within the parameter name space
+								selected)</entry>
+						</row>
+						<row>
+							<entry>10</entry>
+							<entry>level unit name</entry>
+							<entry>The measurement unit for the level of the value
+								returned</entry>
+						</row>
+						<row>
+							<entry>11</entry>
+							<entry>level from</entry>
+							<entry>The lower value of the level</entry>
+						</row>
+						<row>
+							<entry>12</entry>
+							<entry>level</entry>
+							<entry>The upper of the level</entry>
+						</row>
+						<row>
+							<entry>13</entry>
+							<entry>data version</entry>
+							<entry>The data version of the value. Data version is
+								utilized for two separate purposes; to indicate
+								different version of the same data (i.e., to allow
+								corrections and edits to co-exist in the database) and
+								for perturbed versions of the same data (e.g., ensemble
+								members).</entry>
+						</row>
+						<row>
+							<entry>14</entry>
+							<entry>confidence code</entry>
+							<entry>Quality marker (not currently used)</entry>
+						</row>
+						<row>
+							<entry>15</entry>
+							<entry>value store time</entry>
+							<entry>The time when the data was inserted into the
+								database</entry>
+						</row>
+						<row>
+							<entry>16</entry>
+							<entry>value id</entry>
+							<entry>The ID of the value within its value type. Together
+								with valuetype, this costitutes a key of the WDB
+								value</entry>
+						</row>
+						<row>
+							<entry>17</entry>
+							<entry>value type</entry>
+							<entry>The type of the value returned. Together with the
+								valueid, this constitutes a key of the WDB value</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<!--			
+	
+	Data Types Reference & Data Retrieval
+	Examples
+	FAQ: Frequently Asked Questions
+	Known Problems, Bugs, and Limitations
+	
+	-->
+	
+</book>

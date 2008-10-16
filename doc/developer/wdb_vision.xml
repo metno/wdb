@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:wdb_vision">
+
+  <title>Vision</title>
+
+	<sect1 id="vis_intro">
+  <title>Introduction</title>
+  
+  <para>This chapter describes the vision of the WDB system.</para>
+  
+  <sect2 id="vis_intro_purpose">
+    <title>Purpose</title>
+    
+    <para>The purpose of this document is to document some of the
+      principles and ideas that direct the development of the WDB
+      system.</para>
+    
+    <para>Specifically, it:</para>
+    <itemizedlist>
+      <listitem>
+	<para>Motivates the effort of building the WDB system,</para> 
+      </listitem>
+      <listitem>
+	<para>Provides an overview of the work domain of the WDB
+	  system,</para>
+      </listitem>
+      <listitem>
+	<para>Identifies the high-level requirements of the WDB
+	  system. </para>
+      </listitem>
+    </itemizedlist>
+    
+    <para>The requirements specified in this document are based on
+      the goals set forth by the PROFF project.</para>
+  </sect2>
+</sect1>
+
+    <sect1 id="vis_position">
+      <title>Positioning</title>
+
+      <para>This section describes the positioning of the WDB
+      system.</para>
+      
+      <sect2 id="vis_position_problem">
+	<title>Problem Statement</title>
+
+	<table frame="all">
+	  <title>Problem Statement</title>
+	  <tgroup cols="2">
+	    <colspec colname="cc1" align="left"/> <colspec
+	    colname="cc2" align="left"/>
+	    <tbody>
+	      <row class="oddrow">
+		<entry>The problem of</entry> <entry>consistent and
+		efficient storage and retrieval of quality-controlled
+		weather and water data</entry>
+	      </row>
+	      <row class="evenrow">
+		<entry>That affects</entry> <entry>all applications
+		that require weather and water data</entry>
+	      </row>
+	      <row class="oddrow">
+		<entry>The impact of which is </entry> <entry>costly
+		maintenance of redundant data storage solutions and
+		inconsistent data in heterogenous data sources</entry>
+	    </row>
+	      <row class="evenrow">
+		<entry>A successful solution would</entry>
+		<entry>provide a simple interface to consistent,
+		quality-controlled weather data.</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+	
+      </sect2>
+
+      <sect2>
+	<title>Stakeholders</title>
+
+	<para>For the purposes of the development of WDB, we identify
+	four distinct stakeholders (groups of users) with an interest
+	in the WDB system. These four groups are:</para>
+
+	<para>Specifically, it:</para>
+	<itemizedlist>
+	  <listitem>
+	     <para>the WDB development group</para> <para>The
+	     development group of the WDB system responsible for
+	     maintaining the source code and extending the system with
+	     new features.</para>
+	  </listitem>
+	  <listitem>
+	    <para>the WDB operations group</para> <para>The operations
+	    group of the WDB system responsible for keeping the
+	    production systems working according to given
+	    requirements.</para>
+	  </listitem>
+	  <listitem>
+	    <para>application developers of weather
+	    applications</para> <para>Developers of applications that
+	    retrieve and manipulate weather data.</para>
+	  </listitem>
+	  <listitem>
+	    <para>users of Diana</para> <para>Users of Diana who would
+	    like to retrieve data from an instance of the WDB
+	    system.</para>
+	  </listitem>
+	</itemizedlist>
+      </sect2>
+	
+      <sect2>
+	<title>Product Position Statement</title>
+
+	<para>WDB is intended to fill the position of an extensible,
+	general and easily maintained data storage system for water
+	and weather data.</para>
+
+	<table frame="all">
+	  <title>WDB Developers</title>
+	  <tgroup cols="2">
+	  <colspec align="left"/> <colspec align="left"/>
+	    <tbody>
+	    <row>
+	      <entry>For</entry> <entry>the development group of
+	      WDB</entry>
+	    </row>
+	    <row>
+	      <entry>Who</entry> <entry>fix bugs and implement new
+	      features in the WDB system</entry>
+	    </row>
+	    <row>
+	      <entry>WDB is</entry> <entry>a data storage solution
+	      system</entry>
+	    </row>
+	    <row>
+	      <entry>That </entry> <entry>easy to maintain and
+	      extend</entry>
+	    </row>
+	    <row>
+	      <entry>Unlike</entry> <entry>other home-grown,
+	      proprietary or other closed source systems</entry>
+	    </row>
+	    <row>
+	      <entry>This system</entry> <entry>is open-source, has a
+	      clean and simple architecture, is well-documented, and
+	      has an extensive test framework</entry>
+	    </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+	<table frame="all">
+	  <title>WDB Operations Group</title>
+	  <tgroup cols="2">
+	  <colspec align="left"/> <colspec align="left"/>
+	    <tbody>
+	    <row>
+	      <entry>For</entry> <entry>the operations group of
+	      WDB</entry>
+	    </row>
+	    <row>
+	      <entry>Who</entry> <entry>operate the WDB system in
+	      production</entry>
+	    </row>
+	    <row>
+	      <entry>WDB is</entry> <entry>a data storage solution
+	      system</entry>
+	    </row>
+	    <row>
+	      <entry>That </entry> <entry>is highly reliable and
+	      requires minimal maintenance</entry>
+	    </row>
+	    <row>
+	      <entry>Unlike</entry> <entry>other home-grown,
+	      proprietary or other closed source systems</entry>
+	    </row>
+	    <row>
+	      <entry>This system</entry> <entry>is designed to be
+	      robust and to manage self-recovery when possible</entry>
+	    </row>
+	      </tbody>
+	      </tgroup>
+	</table>
+
+	<table frame="all">
+	  <title>Software Developers</title>
+	  <tgroup cols="2">
+	  <colspec align="left"/> <colspec align="left"/>
+	    <tbody>
+	    <row>
+	      <entry>For</entry> <entry>software developers of weather
+	      and water data applications</entry>
+	    </row>
+	    <row>
+	      <entry>Who</entry> <entry>develop applications that
+	      require water and weather data</entry>
+	    </row>
+	    <row>
+	      <entry>WDB is</entry> <entry>a data storage solution
+	      system</entry>
+	    </row>
+	    <row>
+	      <entry>That </entry> <entry>provides easy and accurate
+	      access to weather and water data</entry>
+	    </row>
+	    <row>
+	      <entry>Unlike</entry> <entry>ad-hoc, file-based
+	      solutions</entry>
+	    </row>
+	    <row>
+	      <entry>This system</entry> <entry>provides a simple and
+	      time-invariant access interface to weather and water
+	      data</entry>
+	    </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+	<table frame="all">
+	  <title>Diana Users</title>
+	  <tgroup cols="2">
+	  <colspec align="left"/> <colspec align="left"/>
+	  <tbody>
+	    <row>
+	      <entry>For</entry> <entry>users of the Diana
+	      visualization system</entry>
+	    </row>
+	    <row>
+	      <entry>Who</entry> <entry>retrieve and view weather data
+	      through Diana</entry>
+	    </row>
+	    <row>
+	      <entry>WDB is</entry> <entry>a data storage solution
+	      system</entry>
+	    </row>
+	    <row>
+	      <entry>That </entry> <entry>allows for easy access to
+	      consistent weather and water data through Diana</entry>
+	    </row>
+	    <row>
+	      <entry>Unlike</entry> <entry>ad-hoc, file-based
+	      solutions</entry>
+	    </row>
+	    <row>
+	      <entry>This system</entry> <entry>simple storage and
+	      handling of weather and water data</entry>
+	    </row>
+	  </tbody>
+	  </tgroup>
+	</table>
+
+      </sect2>
+      
+      <sect2>
+	<title>Alternative Solutions</title>
+
+	<para>Several alternatives to WDB exist. These include:</para>
+	
+	<itemizedlist>
+	  <listitem>
+	    <para>Ad-hoc disk storage</para> <para>Disk storage is a
+	    simple way to store data, but it becomes increasingly hard
+	    to keep such data organized and consistent as the volume
+	    of data increases. In addition, there is no easy and
+	    simple way to keep data indexed (particularly not across
+	    sets of files), and extracting time series of data can
+	    become increasingly time-consuming. Finally, applications
+	    are heavily dependent on the data storage format, making
+	    it costly to handle new data types</para>
+	  </listitem>
+	  <listitem>
+	    <para>MARS</para> <para>ECMWF's operational archive. This
+	    is a complex, heavyweight system, which is primarily
+	    intended for archive usage. It is not well-suited to
+	    real-time applications.</para>
+	  </listitem>
+	</itemizedlist>
+
+      </sect2>
+    </sect1>
+
+    <sect1>
+      <title>System Overview</title>
+      
+      <para>This section provides a high level overview of the WDB
+      system, a summary of the capabilities of the system, and the
+      packaging and licensing details.</para>
+
+      <sect2>
+	<title>Work Domain</title>
+	
+	<para>The WDB system is intended to be used in two different
+	contexts, described below.</para>
+
+	<figure id="fig:wdb_production-overview">
+	  <title>Overview of the Work Domain for Production</title>
+	  <mediaobject>
+	    <imageobject role="html">
+	      <imagedata align="center"
+	      fileref="gfx/wdb_production-overview.png" format="PNG" scalefit="1" width="100%" contentdepth="100%"/>
+	    </imageobject>
+	  </mediaobject>
+	</figure>
+
+	<para><xref linkend="fig:wdb_production-overview"/> shows the
+	WDB system and how it is intended to interrelate with other
+	systems in Met.no's real-time meteorological production. In a
+	high performance, high availability environment replication of
+	data is required in order to prevent bottlenecks (on reading)
+	and provide automatic fail-over.</para>
+
+	<figure id="fig:wdb_standalone-overview">
+	  <title>Overview of the Work Domain for a stand-alone
+	  installation</title>
+	  <mediaobject id="wdb_standalone-overview">
+	    <imageobject role="html">
+	      <imagedata align="center"
+	      fileref="gfx/wdb_standalone-overview.png" format="PNG"/>
+	    </imageobject>
+	  </mediaobject>
+	</figure>
+	
+	<para><xref linkend="fig:wdb_standalone-overview"/>
+	demonstrates how the WDB system is used in the context of a
+	standalone deployment on a local server. In this setup, the
+	focus is on providing rapid access to local data, while at the
+	same time making possible the retrieval of non-local data from
+	a central data source.</para>
+
+      </sect2>
+      
+      <sect2 id="sec:capabilities">
+	<title>Capabilities</title>
+	
+	<para>The following table lists the capabilities of the WDB
+	system.</para>
+
+	<sect3>
+	  <title>Storage of Weather Data</title>
+
+	  <para><emphasis>Description:</emphasis> The WDB system must
+	  load and store weather data for any period of time. The
+	  system is primarily designed for field and point
+	  data.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> All WDB
+	  system is designed to utilize high-performance, modern data
+	  storage technology.</para>
+
+	</sect3>
+
+	<sect3><title>Fast Access to Stored Weather Data</title>
+
+	  <para><emphasis>Description:</emphasis> The WDB system must
+	  provide a high-performance data retrieval service through a
+	  well-defined interface to the weather data.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> The WDB Call
+	  Interface (API) is designed with functions to retrieve all
+	  weather data in the system, and is capable of fulfilling the
+	  given performance requirements through the use of indexing
+	  and interface optimizations.</para>
+
+	</sect3>
+
+	<sect3><title>Write Access</title>
+
+	  <para><emphasis>Description:</emphasis> It must be possible
+	  to write weather data to the system for applications; e.g.,
+	  for corrections.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> The WDB Call
+	  Interface (API) is designed with functions that support the
+	  writing of data into the data storage system.</para>
+
+	</sect3>
+	  
+	<sect3><title>Consistency of Data</title>
+
+	  <para><emphasis>Description:</emphasis> The WDB system must
+	  facilitate the maintenance of consistent weather
+	  products.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> The WDB
+	  system is designed to support synchronization and/or
+	  replication of data between multiple servers.</para>
+
+	</sect3>
+
+	<sect3><title>Quality of Data</title>
+
+	  <para><emphasis>Description:</emphasis> The WDB system must
+	  facilitate the improvement and maintenance of quality in
+	  weather products.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> The data
+	  model of the WDB system contains elements designed to store
+	  full details about the quality of the weather data
+	  stored.</para>
+
+	</sect3>
+
+	<sect3><title>Rapid Application Development</title>
+
+	  <para><emphasis>Description:</emphasis> The WDB system must
+	  facilitate the rapid development and deployment of new
+	  weather applications.</para>
+
+
+	  <para><emphasis>Supporting Feature:</emphasis> The WDB Call
+	  Interface (API) makes it simple to specify what data one
+	  wants to extract. The simple interface and usage of standard
+	  database APIs lowers the technical barriers to access
+	  data.</para>
+
+	</sect3>
+
+	<sect3><title>Flexibility</title>
+
+	  <para><emphasis>Description:</emphasis> It must be easy to
+	  change (.e.g, resolutions of data) and add new products and
+	  data types.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> The datamodel
+	  is designed to be independent of the conventions and data
+	  formats of the weather data. In theory, any physical weather
+	  data with a geographic location may be stored within the WDB
+	  system.</para>
+
+	</sect3>
+
+	<sect3><title>Extensibility</title>
+	  
+	  <para><emphasis>Description:</emphasis> The WDB system must
+	  be possible to extend to with new functionality and
+	  services.</para>
+
+	  <para><emphasis>Supporting Feature:</emphasis> A modular
+	  architecture and design, combined with an extensive test
+	  suite supports the extensibility of the WDB system.</para>
+	  
+	</sect3>
+
+      </sect2>
+
+      <sect2><title>Assumptions and Dependencies</title>
+
+	<para>In theory, theory and practice are the same. In
+	practice, practice sometimes differs from theory (or the other
+	way round).</para>
+
+	<para>In this project, we assume portability through the use
+	of standard database APIs; i.e., it is assumed that database
+	APIs provide identical services in different development
+	environments. In practice, this is not always so. This
+	capability of WDB will only be tested on a few, prioritized
+	environments.</para>
+
+      </sect2>
+
+      <sect2><title>Cost and Licensing</title>
+      
+	<para>WDB is a system provided at no cost to developers within
+	Met.no and SMHI. it is planned that the system should be made
+	available on the GNU Public License.</para>
+      
+      </sect2>
+      
+      <sect2><title>Packaging and Installation</title>
+
+	<para>Packaging and installation of WDB is designed to follow
+	the GNU standard as closely as practicable.</para>
+
+      </sect2>
+
+    </sect1>
+
+    <sect1>
+      <title>Product Features</title>
+
+      <para>This section describes the features of the WDB system. It
+      lists the quality attributes of the system (high-level
+      features), the technical constraints, the performance
+      requirements, and the documentation requirements of the WDB
+      system.</para>
+
+      <sect2><title>Quality Attributes</title>
+
+	<para>In all cases, the ``customer'' of a developed system
+	naturally wants the best possible quality, on time, and below
+	budget. In a less perfect world, trade-offs need to be made
+	between quality, functionality, cost, and
+	delivery-time.</para>
+
+	<para>For the WDB system, the decision has been to focus on
+	quality above cost, functionality, and delivery time. The
+	motivation for such a prioritization is that WDB is intended
+	as a central system in the production pipeline, and thus
+	problems in the quality of the system (instability,
+	inconsistency) can create problems for the entire production
+	system.</para>
+
+	<para>The following are the prioritized quality attributes of
+	the WDB system (in order of importance).</para>
+	
+	<sect3><title>Availability</title>
+	  
+	  <para>WDB should support high availability for the
+	  meteorological production system.</para>
+	  
+	</sect3>
+	
+	<sect3><title>Long life-span</title>
+	  
+	  <para>The WDB system should be constructed for a long
+	  life-time. Of the software systems in the meteorological
+	  production chain, the data storage system is likely to have
+	  the longest lifetime. The reason for this is that many of
+	  the other systems will tend to be dependent on the data
+	  storage, making it difficult to replace or modify.</para>
+	  
+	  <para>The most important component in this respect is the
+	  application interface to the data storage, Since production
+	  applications are directly dependent on the interface, it is
+	  vital that the API uses appropriate abstractions and provide
+	  a decoupling from the underlying data and data storage
+	  formats.</para>
+	  
+	</sect3>
+	
+	<sect3><title>Maintainable</title>
+	  
+	  <para>A long life-span necessitates high
+	  maintainability. The data models in WDB must be amenable to
+	  changes; and it must be possible to change physical storage
+	  and data formats. To facilitate this, the applications
+	  programmers interface must not be allowed to expose the data
+	  model internals of the data storage system.</para>
+
+	</sect3>
+
+	<sect3><title>Extendability</title>
+
+	  <para>Because of the long life-time, WDB must be extensible
+	  with respect to new functionality, as well as new types of
+	  data, input and output formats. Extensions should be easy to
+	  do, and extensions should be able to coexists with previous
+	  versions with as little maintenance effort as
+	  possible.</para>
+
+	</sect3>
+
+	<sect3><title>Ease of Use</title>
+
+	  <para>WDB should be easy to use for the application
+	  developer. This means simple specification of desired data,
+	  easy unpacking of data in the client (minimal parsing), and
+	  a clear overview of APIs.</para>
+
+	</sect3>
+
+	<sect3><title>Throughput Performance and Scalability</title>
+
+	  <para>WDB must scale in throughput performance and latency
+	  with the hardware being used to run it.</para>
+
+	</sect3>
+
+	<sect3><title>Support for Met.no Hardware</title>
+
+	  <para>WDB must support the hardware being used at Met.no
+	  from which it is expected that operations or extraction of
+	  data is expected.</para>
+
+	</sect3>
+
+	<sect3><title>Support for Met.no Operating Systems</title>
+
+	  <para>WDB must be able to run on Linux, and be accessible
+	  from the relevant operating systems used at Met.no.</para>
+
+	</sect3>
+
+	<sect3><title>Dependable</title>
+
+	  <para>WDB must deliver correct data with quality
+	  markings.</para>
+
+	</sect3>
+
+	<sect3><title>Well-documented</title>
+
+	  <para>Good documentation is essential for ease of use and
+	  maintainability.</para>
+	  
+	</sect3>
+	
+      </sect2>
+
+      <sect2><title>Technical Constraints</title>
+
+	<para>In this section, we describe the technical platform of
+	the WDB system.</para>
+
+	<sect3><title>Server Configuration</title>
+	  
+	  <para>WDB is designed and implemented to run on the Linux
+	  operating system, and to be compliant with Postgres version
+	  8.1 or later. The system should be capable of running on a
+	  regular desktop/laptop PC with 1 GB + data volume of
+	  harddisk space.</para>
+
+	</sect3>
+	  
+	<sect3><title>Server-side Extensions</title>
+
+	  <para>Server-side extensions to the DBMS is the key for
+	  supporting multiple languages and platforms. PostgreSQL
+	  (like most other database systems) support server-side
+	  extensions, through which user-defined routines (UDR) and
+	  user-defined types (UDT) can be implemented. Once a UDR/UDT
+	  is implemented in the database system, it can be accessed
+	  from all operating systems and programming languages via
+	  standard connectivity solutions.</para>
+
+	</sect3>
+
+	<sect3><title>Coexisting Architectures</title>
+
+	  <para>The WDB is designed to a self-contained system (i.e.,
+	  with clean interfaces to external systems).</para>
+
+	</sect3>
+
+	<sect3><title>Client Compliance</title>
+
+	  <para>The production environment of WDB is expected to be
+	  highly heterogeneous. Hence, the client situation is a
+	  complex combination of different operating systems,
+	  different hardware platforms, different connectivity
+	  solutions, and different programming languages. WDB will
+	  focus on the following environments:</para>
+
+	  <itemizedlist>
+	    <listitem>
+	     <para>Linux - C++ (libpqxx)</para>
+	    </listitem>
+	    <listitem>
+	      <para>Linux - Perl (native)</para>
+	    </listitem>
+	  </itemizedlist>
+
+	</sect3>
+
+	<sect3><title>Interface Compliance</title>
+
+	  <para>The WDB application programmers interface must be
+	  compliant with JDBC 3.0.</para>
+
+	</sect3>
+
+	<sect3><title>Software Generation Compliance</title>
+
+	  <para>The WDB Call Interface shall be compliant with the
+	  following client languages:</para>
+
+	  <itemizedlist>
+	    <listitem><para>C</para></listitem>
+	    <listitem><para>C++</para></listitem>
+	    <listitem><para>Perl</para></listitem>
+	  </itemizedlist>
+
+	</sect3>
+
+	<sect3><title>Operating System Compliance</title>
+
+	  <para>RDK shall be compliant with the following operating
+	  systems:</para>
+
+	  <itemizedlist>
+	    <listitem><para>Linux Fedora Core 5</para></listitem>
+	    <listitem><para>Debian Etch</para></listitem>
+	  </itemizedlist>
+
+	</sect3>
+
+      </sect2>
+
+      <sect2><title>Performance Requirements</title>
+
+	<para>The performance requirements indicated below are valid
+	for a client connection from the servers prologclient1 to
+	prologtest1 through a libpqxx connection.</para>
+    
+        <para>Observe that the numbers given below are informal;
+        specific requirements have not yet been set formally by the
+        project.</para>
+
+	<table frame="all">
+	  <title>Performance Requirements</title>
+	  <tgroup cols="2">
+	    <colspec colname="pr1" align="left"/> <colspec
+	    colname="pr2" align="left"/>
+	    <tbody>
+	      <row class="oddrow">
+		<entry>Retrieval of forecast points</entry> 
+	        <entry>400 per second </entry>
+	      </row>
+	      <row class="evenrow">
+		<entry>Retrieval of forecast fields</entry>
+	        <entry>100 Hirlam 10 fields per second</entry>
+	      </row>
+	      <row class="oddrow">
+		<entry>Retrieval of point values</entry> 
+	        <entry>200 per second </entry>
+	      </row>
+	      <row class="evenrow">
+		<entry>Latency for single point retrieval</entry> 
+	        <entry>2 seconds </entry>
+	      </row>
+	      <row class="oddrow">
+		<entry>Minimum number of concurrent connections</entry>
+	        <entry>200</entry>
+	      </row>
+	      <row class="evenrow">
+		<entry>Minimum number of user identities</entry>
+	        <entry>100</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+      </sect2>
+      
+
+      <sect2><title>Administrative Constraints</title>
+
+	<para>The datamodel of the WDB system is intended to be
+	identical with the datamodel of the ROAD system of SMHI with a
+	view to facilitating exchange of expertise and technology, as
+	well as a future migration from ROAD to WDB by SMHI. As a
+	result, any changes to the WDB data model need to be reviewed
+	in cooperation with the data-model architect at SMHI.</para>
+
+	<sect3><title>Documentation Requirements</title>
+
+	  <para>The usefulness of the WDB concept relies in large part
+	  on the accesibility of the system for developers. Hence good
+	  documentation and example programs (for the call interface)
+	  are essential.</para>
+
+	  <para>The documentation style is to be based on GNU
+	  man-pages.</para>
+
+	</sect3>
+
+	<sect3><title>User Manuals</title>
+
+	  <para><emphasis>Loading Programs:</emphasis> WDB should have
+	  user manuals for each of the loading programs used in the
+	  system.</para>
+
+	  <para><emphasis>Development Kit:</emphasis> There should
+	  exist a user manual for the application programmers
+	  interface of the call interface that includes:</para>
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>specification of the functions in the API, </para>
+	    </listitem>
+	    <listitem>
+	      <para>detailed description of the arguments used in the functions,</para>
+	    </listitem>
+	    <listitem>
+	      <para>necessary preconditions to be satisfied before calling the functions (e.g., connection established, metadata available, etc), </para>
+	    </listitem>
+	
+	    <listitem>
+	      <para>description of how data is returned to applications and the structure of returned data, and</para>
+	    </listitem>
+	    <listitem>
+	      <para>description of all exceptions and error codes that the API can throw</para>
+	    </listitem>
+          </itemizedlist>
+
+	</sect3>
+
+	<sect3><title>Example Programs</title>
+	  
+	  <para>A very efficient way of instructing developers to use
+	  an API is to provide simple example programs. All
+	  functionality in the WDB call interface should be
+	  demonstrated using a simple, runnable example
+	  program.</para>
+
+	</sect3>
+
+	<sect3><title>On-line Help</title>
+
+	  <para>All documentation and example programs should be
+	  downloadable on the web.</para>
+
+	</sect3>
+
+	<sect3><title>Installation Guides, Configuration, and Read Me
+	Files</title>
+
+	  <para>Documentations for installation, configuration, and
+	  Read Me files follow the GNU standard.</para>
+
+	</sect3>
+
+	<sect3><title>Test Documentation</title>
+
+	  <para>Once the project reaches the release candidate stage
+	  (i.e., the system enters final tests in preparation for
+	  production), all discovered bugs must be documented in the
+	  WDB bugzilla repository.</para>
+
+	</sect3>
+	  
+	<sect3><title>Operational documents</title>
+
+	  <para>According to IT regulations at met.no.</para>
+
+	</sect3>
+
+      </sect2>
+
+    </sect1>
+
+</chapter>

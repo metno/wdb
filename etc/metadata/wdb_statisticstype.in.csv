@@ -1,0 +1,8 @@
+Statistics Type|Description
+instant|Instantaneous value valid for the specific moment defined by the valid time
+accumulated|Accumulated value for the period specified by the valid time interval
+min|Minimum value for the period specified by the valid time interval
+max|Maximum value for the period specified by the valid time interval
+mean|Mean (average) value for the period specified by the valid time interval
+stddev|Standard deviation of the value for the period specified by the valid time interval
+unknown|The statistics type is unknown

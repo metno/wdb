@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:wci_system-design-specification">
+	
+	<title>WDB Call Interface - System Design Specification</title>
+	
+	<sect1>
+		<title>Introduction</title>
+		
+		<para>This document is the System Design Specification of the WDB Call
+			Interface.</para>
+		
+		<sect2>
+			<title>Purpose</title>
+			
+			<para>The system design specification provides a comprehensive overview of
+				the design of the WDB Call Interface (WCI). This is used to ensure agreement
+				between the developers of the project with respect to its specification and
+				functionality. It is also intended to make it easier for new developers of
+				the WDB to become productive developing software on the WDB
+				platform.</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>System Architecture</title>
+		
+		<para>The following sections provide an overview of the WDB Call Interface and describe its architecture.</para>
+	
+		<sect2>
+			<title>System Overview</title>
+			
+			<para>The WDB Call Interface (WCI) is the application programmer's interface
+				to the WDB system and all retrieval of data from the system is intended to
+				occur through these methods.</para>
+			
+			<figure id="fig:wci_work-domain">
+				<title>Work domain and work flow of the WDB Call Interface</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata align="center"
+							fileref="gfx/wci_work-domain.png" format="PNG"/>
+					</imageobject>
+				</mediaobject>
+			</figure>
+			
+			<para><xref linkend="fig:wci_work-domain"/> provides an overview of the
+				work domain of the WDB Call Interface. As illustrated, the system is
+				concerned with the reading (and writing) of weather data from WDB by the
+				system users. These can be broadly classified into three distinct actors:
+				users of the WDB system through some weather data application (e.g., Diana,
+				Profet), expert users extracting data directly from the database through
+				an SQL interface, and automatic production systems (software).</para>
+			
+		</sect2>
+			
+		<sect2>
+			<title>Components</title>
+			
+			<para>The WDB Call Interface can be split into six components.</para>
+			
+			<sect3>
+				<title>Administrative Component</title>
+				
+				<para>This consists of functions that are used to administrate and
+					maintain the WCI.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>API Component</title>
+				
+				<para>This consists of the functions that are visible to the regular users
+					of the WCI; that is, the application programmer's interface
+					itself.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Core Component</title>
+				
+				<para>This consists of the functions that do the actual ``dirty work'' of
+					the WCI; basically, all of the functions that implement the
+					API.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Database Component</title>
+				
+				<para>This consists of the tables that are used to store information about
+					the WCI as well as the views used to access data from the database.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Meta Data Component</title>
+				
+				<para>This consists of the functions available in the API that allow the user 
+					to retrieve information about content and type of data that is available 
+					in the database.</para>
+			</sect3>
+
+			<sect3>
+				<title>User-defined Data Types Component</title>
+				
+				<para>This consists of the definitions of the user-defined data types used
+					by the WCI.</para>
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Dependencies</title>
+			
+			<para>The following dependencies exist for the WCI.</para>
+			
+			<sect3>
+				<title>PostGIS 1.3.x</title>
+				
+				<para>PostGIS is a spatial extension to PostgreSQL that facilitates the
+					manipulation of GIS objects (geometry) in the database. PostGIS is
+					used to store the spatial data used in WDB, and to perform indexed
+					spatial searches.</para>
+			</sect3>
+
+			<sect3>
+				<title>Proj.4.4.9</title>
+				
+				<para>PROJ.4 is a Cartographic Projections library originally written by
+					Gerald Evenden. It is used to handle transformations from the varied
+					map projections of the GRIB files to the WGS84 map coordinate system
+					used in the WDB.</para>
+			</sect3>
+			
+		</sect2>
+	</sect1>
+	
+	<sect1>
+		<title>Program Concepts</title>
+		
+		<sect2>
+			<title>User Identification</title>
+			
+			<para>The WCIUSERID is the identification of the user in WCI. Normally, the
+				WCIUSERID will be the same as the user's login role for the database, though
+				separate ids can be used (in order for this to be possible, the user must be
+				able to switch to those user roles). The user identification encodes
+				information about the user's rights (reading data, writing data or both)
+				and what code spaces the user utilizes as default.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Data Provider</title>
+			
+			<para>The Data provider is a name that identifies a data provider (source of
+				data) in the database. The dataprovider is the first known entity that
+				packaged and dispatched the MHO data to the database. Data provider names
+				exist within a dataprovider namespace; each data provider can only have one
+				data provider name within a particular name space. Groups of data providers
+				can be defined using a data provider name, however.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Geographic Location</title>
+			
+			<para>Geographic information is specified in the database using Postgis
+				GEOMETRY objects. These follow the OpenGIS WKT (Well Known Text) and WKB
+				(Well Known Binary) specifications for representation of data.</para>
+			
+			<para>In addition to supporting specification using GEOMETRY objects, the
+				also supports specification using a place name. A place name is a
+				shortcut notation/name for a GEOMETRY object in the database which allows for
+				faster performance in certain situations. Each place name is unique within its place namespace.</para>
+			
+			<para>The SRID designates the Geodetic Reference System used by the database
+				GEOMETRY object. By default, WDB is set up to utilize the WGS84 geodetic
+				reference system with Longitude-Latitude.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Place Interpolation</title>
+			
+			<para>WCI currently iplements three place interpolation methods (interpolation based on the
+				Longitude/Latitude coordinates). These are:</para>
+			
+			<orderedlist>
+				<listitem>
+					<para>Exact: Return the exact point or polygon specifed</para>
+				</listitem>
+				<listitem>
+					<para>Nearest: Return nearest value to the specified point or
+						line</para>
+				</listitem>
+				<listitem>
+					<para>Surround: Return the four surrounding values (essentially,
+						the four closest values) to the specified point</para>
+				</listitem>
+			</orderedlist>
+			
+			<para>Of the place interpolation methods, only 'Exact' is valid when used
+				together with geographic specifications of areas, as the results
+				of 'Nearest' or 'Surround' would be ambiguous for area
+				specifications. All three interpolation methods are valid for point
+				specifications.</para>
+			
+			<para>Additional interpolation methods (e.g., geoweighted), may be added
+				later depending on the requirements of the users.</para>
+		</sect2>
+
+		<sect2>
+			<title>Reference Time</title>
+			
+			<para>The reference time of a data item is the moment when the data item was
+				established.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Time Specification</title>
+			
+			<para>A WCITIMESPEC is a complex data type that is used to specify a time in the WDB
+				Call Interface. It consists of a time interval as well as a Time
+				Indeterminate Code ('Exact', 'Any') that modifies the time
+				specification.</para>
+			
+			<para>Example Time Specification: (2007-01-01T12:00:00,
+				2007-02-01T12:00:00, 'Exact')</para>
+		</sect2>
+		
+		
+		<sect2>
+			<title>Value Parameter Specification</title>
+			
+			<para>A value parameter specification is a text string (for physical
+				parameters, combining the statistics type, the physical phenomena, and
+				the reference domain) used by WDB to describe a value.</para>
+		</sect2>
+		
+		<sect2>
+			<title>Level Specification</title>
+			
+			<para>A WCILEVELSPEC is a complex data type that is used to specify levels
+				(altitudes) in the WDB Call Interface. It consists of a level parameter, the
+				level interval (levelfrom and levelto), as well as the level indeterminate
+				code ('exact', 'above', 'below', 'any') that modifies the
+				level.</para>
+			
+			<para>Example Level Specification: (0.0, 10.0, 'distance above ground', 'Exact')</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Data Versions</title>
+			
+			<para>The data version specifies what version of the data the current value is.
+				Versions are sequentially numbered from 0 and up. The user may specify the
+				return of specific data values by returning the appropriate data version in
+				the reading inarguments.</para>
+			
+			<para>The user may also use negative data version values to select specific data
+				versions. Specifying a data version of ``-1'' selects the latest data
+				version (i.e., the value with the highest data version), ``-2'' selects the
+				second latest data version, etc.</para>
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Program Interface</title>
+		
+		<para>In the following sections, we describe the relevant implementation details
+			of the WCI API specification. For the most up to date description of the API
+			specification itself, consult the reference section of the WCI User
+			Manual.</para>
+		
+		<sect2>
+			<title>wci.begin</title>
+			
+			<para>The wciBegin function initializes the WDB Call Interface using the
+				setting specified.</para>
+			
+			<sect3>
+				<title>Parameters</title>
+				
+				<para>The userid is the user identity of the application. User IDs are
+					identical to Postgres user roles that are members of one of the wdb user
+					groups. Explicitly identifying a userid when running wci.begin
+					allows for multiplexing applications.</para>
+				
+				<para>In order to retrieve data with alternative codespaces, wci.begin
+					can be called with the option to set the various name space ids.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>This function is used to initialize the WCI. It sets the name space ids
+					for the session. If the name space ids are not given with the function
+					call, then the default WCI name space ID is assumed (usually 0, 0,
+					0).</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>wci.end</title>
+			
+			<para>The wci.end function terminates a session of the WDB Call Interface, and
+				is used to reset the PostgreSQL environment to its default state after a call
+				to wci.begin.</para>
+			
+			<sect3>
+				<title>Parameters</title>
+				
+				<para>None.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function unsets the session variables set by the wci.begin
+					call.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>wci.read</title>
+			
+			<para>The wci.read function is used to read data from the database.</para>
+			
+			<sect3>
+				<title>Parameters</title>
+				
+				<para>The dataproviders are the list of dataprovider names that the user
+					intends to extract information about. If dataproviders are specified
+					as NULL denotes all dataproviders irrespective of identification.</para>
+				
+				<para>The location designates the position that the user wishes to
+					retrieve; either a geometry specified using the WKT format or a place
+					name (which can then be translated to a geometry position using the
+					internal tables of WDB). A NULL denotes all locations.</para>
+				
+				<para>The location specification can be prefixed by a place
+					interpolation. The place interpolation determines what kind of
+					spatial interpolation is used for the extraction of data.</para>
+
+				<para>The referencetime is the time when the data was established; the user
+					designates this using a WCITIMESPEC. A NULL denotes all data,
+					irrespective of reference time.</para>
+				
+				<para>The validtime allows the user to specify that data be extracted that
+					is valid for a specific time period. Valid times are specified using a
+					WCITIMESPEC. A NULL here denotes data values for all valid
+					times.</para>
+				
+				<para>The value parameters lists the parameter names that the user has an
+					interest in. A NULL here denotes all data values, irrespective of their
+					value parameters.</para>
+				
+				<para>The level specifies the level (altitude) that the user has an
+					interest in. Levels are specified using the WCILEVELSPEC, that
+					specifies levels using a level parameter and a level interval
+					(levelfrom to levelto), as well as an indeterminatecode allowing the
+					user to specify imprecision. A NULL here denotes all data values
+					irrespective of their level.</para>
+				
+				<para>Both wci.timespec and wci.levelspec parameters are composite types. Although it
+					might be useful to specify lists of levels and validtimes, arrays over
+					composite types is not currently supported as of PostgreSQL 8.2. This
+					should be possible to do from PostgreSQL 8.3.</para>
+				
+				<para>The dataversions lists the versions of the data values that the user
+					is interested in. A NULL here denotes all data, regardless of
+					dataversion.</para>
+				
+				<para>The returntype specifies what kind of information the user intends
+					to retrieve from the database. Float returns the data values as floats.
+					This format is used to return data point values. returns the data values
+					as a reference to a binary object (the internal Object Identifier =
+					OID). This format can only be used to return gridded field data from the
+					database.</para>
+			</sect3>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function first verifies that the function call is valid, as
+					appropriate. This is done by verifying the input parameters. WCI is
+					expected to throw exceptions on being called with incorrect
+					parameters.</para>
+				
+				<para>The appropriate SQL statement is constructed from the parameters.
+					This is done using C/C++ code, as this is assumed to be more efficient
+					than performing the string computations in pl/pgsql.</para>
+				
+				<para>The constructed SQL query is executed over the appropriate
+					view.</para>
+				
+				<para>The returned values are packed into the appropriate return
+					type.</para>
+				
+				<para>The function returns a row type dependent on the returntype
+					specified. The wci.returnFloat returns the data value as a float,
+					whereas the wci.returnOid returns the data value as an OID.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>wci.info</title>
+			
+			<para>The wci.info function is used to retrieve meta data from the database.</para>
+
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The wci.info function is basically implemented in the same way as
+					wci.read. The only notable difference is that wci.info returns the
+					result of aggregated queries (usually a summary of the contents of the
+					database), whereas wci.read returns individual rows.</para>
+
+				</sect3>
+			</sect2>
+		
+				
+		<sect2>
+			<title>wci.write</title>
+			
+			<para>The wci.write function is used to write data to the database.</para>
+			
+			<sect3>
+				<title>Parameters</title>
+				
+				<para>The row types input into the wci.write function correspond exactly
+					with the row type returned by the corresponding wci.read
+					function.</para>
+				
+				<para>The returntype specifies what kind of information the user intends
+					to retrieve from the database. Float returns the data values as floats.
+					This format is used to return data point values. returns the data values
+					as a reference to a binary object (the internal Object Identifier =
+					OID). This format can only be used to return gridded field data from the
+					database.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function first verifies that the function call is valid. The row
+					type is then deconstructed to identify the insert keys for the tables of
+					the database.</para>
+				
+				<para>Data stored in the database may not be modified; thus, the ValueId is
+					disregarded for insertion purposes. The data to be inserted will be
+					stored as a new row.</para>
+				
+				<para>The function first verifies that there are no duplicate rows with the
+					same keys in the database. If such rows exist, the system automatically
+					updates the dataversion of the data to be inserted.</para>
+				
+				<para>The DataProviderId is set by the system, based on the user role (the
+					entry sent in the rowtype is ignored).</para>
+				
+				<para>Position is ignored. Only PlaceId is utilized. If there is no
+					matching PlaceId, then an exception is raised.</para>
+				
+				<para>LevelFrom and LevelTo are verified for sanity (i.e., that levelFrom
+					is less than or the same as levelTo).</para>
+				
+				<para>ValidTime is verified for sanity (i.e., that validTo is after or the
+					same as validFrom).</para>
+				
+				<para>If all the keys match, the data is inserted into the corresponding
+					value table.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Meta Data Interface</title>
+		
+		<sect2>
+			<title>wci.dataProviderFromId</title>
+			
+			<para>The purpose of this function is to retrieve information about a
+				dataprovider provided its dataproviderid.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function returns information dependent on the
+					returntype.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>wci.idFromDataProvider</title>
+			
+			<para>The purpose of this function is to retrieve dataproviderid information
+				from the database, given the name and type of the dataprovider.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function returns an array of dataproviderids.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>wci.placeGeoFromId</title>
+			
+			<para>The purpose of this function is to retrieve place information given one or
+				more placeids.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function returns information in the form of a
+					WCIPLACEDEFINITIONROW_1.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>wci.regularGridFromId</title>
+			
+			<para>The purpose of this function is to retrieve regular grid information for a
+				PlaceId.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The original SRID (defined in PROJ) allows the system to compute
+					startLatitude and startLongitude of the original grid, as well as to
+					determine poleLat and poleLon.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Work in progress</title>
+			
+			<para>Full documentation of metadata functions needs some works</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Internal Functionality</title>
+		
+		<para>This is a description of the ``core'' functions of the system. By core
+			functions, we mean those functions that do the actual work, but that are not meant
+			to be called by users. This section describes what the various functions do,
+			along with a very general description of their implementation, where this may be
+			useful for understanding the structure of the system.</para>
+		
+		<sect2>
+			<title>Authorization</title>
+			
+			<para>During the call to wci.begin, the user is authorized to access the wci.
+				Authentication is done by postgresql when the user connects to the
+				database, and is therefore of no importance here. Authorization is
+				mostly enforced by postgresql itself, but access to code spaces are
+				enforced through a set of functions, which are described in the following
+				sections.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.setRole</title>
+			
+			<para>Exactly the same as calling SET ROLE. This function exists in order to
+				allow calling SET ROLE r, where r is a pspgsql variable or a string
+				literal.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>This function is implemented in C. The C function calls SET ROLE
+					newRole, in a valid way.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.setupSession</title>
+			
+			<para>Sets the codespaces to be used.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>Sets the codespaces to be used during this wci session. This function
+					is implemented is C. See the C documentation for implementation
+					details.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.tearDownSession</title>
+			
+			<para>Undo the effect of a call to &wci_int;.setupSession.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>Resets the codespaces after them having been set by
+					&wci_int;.setupSession. Throws an exception if the session has
+					not been initialized. This function is implemented is C. See the C
+					documentation for implementation details.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.getSessionData</title>
+			
+			<para>Get information about the current wci session's codespaces.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>Returns the various code spaces to be used, as a set.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.sessionIsInitialized</title>
+			
+			<para>Checks whether a session has been initialized.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>Returns true if &wci_int;.setupSession has been called, that
+					has not been torn down by &wci_int;.tearDownSession. This
+					function is implemented is C. See the C documentation for
+					implementation details.</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.extractGridData</title>
+			
+			<para>This function extracts values for points in a provided floatgridvalue
+				row, along with their exact geometry.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The first version of these returns all points associated with the
+					given floatGridValue row. The second version only returns those that
+					matches the given geometry and interpolation specification. The
+					interpolation parameter is only relevant if the given geometry is a
+					point.</para>
+				
+				<para>The function has two tasks; deciding what points of a blob should be
+					read and reading the points from the blob. The first step of this is
+					performed only by version 2 of the function - and then by delegating to
+					the function &wci_int;.getPlacePoints. The last step of this is
+					performed inline.</para>
+				
+				<para>The function returns a set of
+					&wci_int;.extractGridDataReturnType rows, which contains the
+					exact geometry of a given point, along with its value.</para>
+				
+				<para>The function is implemented in
+					src/callInterface/core/wciExtractGridData.in.sql</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.getPlacePoints</title>
+			
+			<para>Decides which points in a grid matches the given geometry and
+				interpolation type.</para>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>The function is merely delegating its work to other functions,
+					depending on the values of location and interpolation. All functions
+					which are called from this function has names matching
+					&wci_int;.get*PlacePoint( ... ).</para>
+				
+				<para>The function returns a cursor to rows of &wci_int;.placepoint -
+					the same value as returned by &wci_int;.get*PlacePoint( ...
+					).</para>
+				
+				<para>The function is implemented in
+					src/callInterface/core/wciExtractGridData.in.sql</para>
+				
+			</sect3>
+		</sect2>
+		
+		<sect2>
+			<title>&wci_int;.get*PlacePoint</title>
+			
+			<para>Extract specific geometries and blob indexes matching the given
+				arguments. These are four very similar functions:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>&wci_int;.getAllPlacePoints( placeid integer )</para>
+				</listitem>
+				<listitem>
+					<para>&wci_int;.getExactPlacePoint(location GEOMETRY,
+						placeid integer )</para>
+				</listitem>
+				<listitem>
+					<para>&wci_int;.getNearestPlacePoint(location GEOMETRY,
+						placeid integer)</para>
+				</listitem>
+				<listitem>
+					<para>&wci_int;.getSurroundingPlacePoint(location
+						GEOMETRY, placeid integer)</para>
+				</listitem>
+			</itemizedlist>
+			
+			<sect3>
+				<title>Implementation</title>
+				
+				<para>These functions looks up relevant &wci_int;.placepoint rows
+					and return them.</para>
+				
+				<para><emphasis>getAllPlacePoints</emphasis> merely returns all rows
+					for the given placeid.</para>
+				
+				<para><emphasis>getExactPlacePoint</emphasis> matches the "exact"
+					interpolation type.</para>
+				
+				<para><emphasis>getNearestPlacePoint</emphasis> matches the
+					"nearest" interpolation type.</para>
+				
+				<para><emphasis>getSurroundingPlacePoint</emphasis> matches the
+					"surround" interpolation type.</para>
+				
+				<para>The functions all return a cursor to rows of
+					&wci_int;.placepoint.</para>
+				
+				<para>They are implemented in
+					src/callInterface/core/wciExtractGridData.in.sql</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+	</sect1>
+	
+</chapter>

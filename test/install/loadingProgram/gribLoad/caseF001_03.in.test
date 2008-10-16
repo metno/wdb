@@ -1,0 +1,89 @@
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+## wdb - weather and water data storage
+##
+## Copyright (C) 2007 met.no
+##
+##  Contact information:
+##  Norwegian Meteorological Institute
+##  Box 43 Blindern
+##  0313 OSLO
+##  NORWAY
+##  E-mail: wdb@met.no
+##
+##  This is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#!/bin/sh
+# Script Information
+export TESTCASE="F001_03"
+export TEST_DESCRIPTION="Verify that duplicates cannot be loaded"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+
+# Test Environment
+source $TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+    --xml)
+		XML_OPT="-x";;
+    -x)
+		XML_OPT="-x";;
+esac
+
+# Timing
+startTime=`date +%s%N`
+# Prepare Test
+TESTTIME=$(date +%FT12:00:00)
+# Todo: On 8.3 this is duplicate key value violates...
+# 8.2 and earlier throw a different error message
+EXPECTED_LOG_MESSAGE='violates unique constraint'
+EXECUTE="${GRIBLOAD_PATH}/gribLoad ${TEST_FILE}"
+
+# Clean out database
+source ${TEST_PATH}/tearDown.sh
+
+# Generate Test Data
+rm -f ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 10 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+
+#Execute Test 
+$EXECUTE --logfile $LOGFILE
+$EXECUTE --logfile $LOGFILE
+
+# Check Result
+TEST_RESULT=`grep -E "$EXPECTED_LOG_MESSAGE" $LOGFILE | wc -l`
+if test ${TEST_RESULT} != "5"
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Did not find expected log message in logs\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	fi
+    exit 1
+fi
+
+# Clean up
+source ${TEST_PATH}/tearDown.sh
+
+# Exit
+endTime=`date +%s%N`
+totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+if test "$XML_OPT" = "-x"; then
+	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
+else
+	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+fi
+exit 0

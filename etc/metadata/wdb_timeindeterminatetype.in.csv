@@ -1,0 +1,11 @@
+Code|Type|Description
+0|Any|The time definition can be anything
+1|Exact|The time interval is exact
+2|Inside|The time definition is inside the given interval
+3|Outside|The time definition is outside the given interval
+4|Before|The time definition is before the given time interval
+5|After|The time definition is after the given time interval
+6|Withheld|The time interval is known but not exposed
+7|Withdrawn|The time interval is changed to be unknown
+8|Unknown|The time definition is unknown
+9|Delayed|The time definition will be specified later

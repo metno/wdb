@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<refentry id='wdb1'>
+	<refentryinfo>
+			<date>2008-03-19</date>
+			<productname>WDB</productname>
+			<productnumber>&version;</productnumber>
+	</refentryinfo>		
+	<refmeta>
+		<refentrytitle>wdb</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+	<refnamediv>
+		<refname>wdb</refname>
+		<refpurpose>WDB administration utility. It is a part of the WDB
+			system.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>wdb</command>
+			<arg choice='opt'>OPTION</arg>
+			<arg choice='opt'>COMMAND</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>Description</title>
+		<para> wdb is a terminal based tool for monitoring and controlling the WDB system.
+			</para>
+	</refsect1>
+	<refsect1>
+		<title>Options</title>
+		
+		<para> If invoked without any arguments, the utility will attempt to connect to the
+			database program with the default arguments available. </para>
+		
+		<variablelist remap='TP'>
+			<?dbfo list-presentation="blocks"?>
+			
+			<varlistentry>
+				<term>--help</term>
+				<listitem>
+					<para>Produces the help message and then exits.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--version</term>
+				<listitem>
+					<para>Produce version information and then exits.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--logfile FILENAME.LOG</term>
+				<listitem>
+					<para>Set output logfile. The default is to print to stdout</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--loglevel LEVEL</term>
+				<listitem>
+					<para>Sets the logging level, from 1 (most) to 5 (least)</para>
+				</listitem>
+			</varlistentry>
+					
+			<varlistentry>
+				<term>-d DBNAME</term>
+				<term>--database=DBNAME</term>
+				<listitem>
+					<para>Specify the database name to connect to (e.g., wdb).</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-h DBHOST</term>
+				<term>--host=DBHOST</term>
+				<listitem>
+					<para>Specify the database host to connect to (e.g.,
+						somehost.met.no).</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-u DBUSER</term>
+				<term>--user=DBUSER</term>
+				<listitem>
+					<para>Specify the WDB user to connect as. The database user must have
+						access to the wdb_grib role (this is will usually be the case if the
+						gribLoad process is being run by the creator of the
+						database).</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-p DBPORT</term>
+				<term>--port=DBPORT</term>
+				<listitem>
+					<para>Specify the database port to connect to (e.g., 5432).</para>
+				</listitem>
+			</varlistentry>
+			
+		</variablelist>
+		
+	</refsect1>
+</refentry>

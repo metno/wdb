@@ -1,0 +1,45 @@
+The gribLoader Install Test Suite
+=========================
+
+This document describes how to run regression tests for the gribLoader program.
+
+
+Overview
+--------
+
+There are several tests for the gribLoad program. Each outputs a single line of 
+TAP formatted output, plus possibly comments. see 
+http://search.cpan.org/dist/Test-Harness/lib/Test/Harness/TAP.pod for a quick 
+primer on this protocol.
+
+
+Runnable Programs
+-----------------
+
+<todo>
+testGribLoad.t 
+  This runs all the tests, matching the pattern *.test. The output is formatted
+  for the TAP protocol, and therefore you may use the program as argument to 
+  the program *prove*.
+</todo>
+
+caseXXXX.test
+  This runs test case XXXX.
+
+
+Other files
+-----------
+
+caseXXXX.grib
+  An input GRIB file for test case XXXX.
+
+caseXXXX.resultX
+  A result file for test case XXXX which output from the test case may be compared with to verify the correctness of results.
+
+
+Generated files
+---------------
+
+/tmp/caseXXXX.log
+  The log output from running test case XXXX.
+

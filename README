@@ -1,0 +1,108 @@
+============================================================
+WDB - Water and Weather Database System
+============================================================
+
+Norwegian Meteorological Institute (met.no)
+Box 43 Blindern
+0313 OSLO
+NORWAY
+
+email: wdb@met.no
+
+WDB is a database system for storage and retrieval of weather and 
+water observations and forecasts. It handles both gridded data
+(raster) and point data. 
+
+
+Installation
+============
+
+Please refer to the file INSTALL for generic installation instructions.
+
+Requirements
+------------
+
+WDB requires that a PostgreSQL installation is installed and available. 
+In addition, it requires the following libraries:
+	* postgis (www.postgis.org)
+	* grib-api (www.ecmwf.eu/products/data/software/grib_api.html)
+	* boost (www.boost.org)
+	* log4cpp (log4cpp.sourceforge.net)
+	* proj.4 (proj.maptools.org)
+	* GNU Readline (tiswww.case.edu/php/chet/readline/rltop.html)
+	
+The following technologies are also used, if present:
+	* CppUnit (cppunit.sourceforge.net)
+	* xmlto   (www.docbook.org)
+	* doxygen (www.doxygen.org)
+
+The configuration script should be able to locate these libraries if 
+they are installed on your system. If the script has difficulty 
+locating the libraries, you may assist it by explicitly specifying the
+directories for the configure script. For more information about this, 
+run:
+
+	./configure --help
+
+
+Requirements when installing
+----------------------------
+
+If the install procedure fails, please note the following:
+
+- A postgresql database must be up and running before installation is
+  attempted. The user running the installation script must have rights
+  to create a new database on the DBMS.
+
+- Installation will fail if AUTOVACUUM is not turned on (from 
+  PostgreSQL 8.3, this is the default). Please refer to the postgresql 
+  documentation for details on autovacuum and how to turn it on.
+
+- Installation of the database will fail if you attempt to install the
+  database twice. If you need to overwrite the old installation, you
+  must first remove the old version of the database.
+
+
+Other useful make targets
+----------------------------
+
+As stated in the INSTALL notes, ./configure; make; make install handles
+the compilation and installation of the WDB system (provided the 
+requirements stated above are fulfilled). The following make targets 
+may also be of interest.
+
+- uninstall
+  Uninstall the WDB system.
+  
+- html
+  Generates html-based documentation for WDB utilizing docbook.
+  
+- pdf
+  Generates documentation for WDB in PDF format utilizing docbook.
+
+- doxygen-doc
+  Generates developer documentation for the WDB source code using 
+  doxygen.
+
+- check
+  Runs the WDB unit tests. 
+
+- installcheck
+  Runs the WDB install tests. These verify that you have a correctly 
+  functioning installation of WDB. They require that you have  
+  successfully installed WDB on the system.
+
+- performancecheck
+  Runs the WDB performance tests. They require that you have a
+  working installation of WDB.
+
+
+
+Documentation
+=============
+
+Developer documentation is located in doc/developer/. All developer 
+documentation is available as XML markup, using the docbook format.
+
+User and Operations documentation is located in doc/user/. All user 
+documentation is available as XML markup, using the docbook format.

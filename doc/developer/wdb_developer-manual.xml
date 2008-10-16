@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % xinclude SYSTEM "../docbook/xinclude.mod">
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%xinclude;
+	%wdb.entities;
+]
+>
+
+<book>
+	<title>WDB Developer's Manual</title>
+	
+	<bookinfo>
+		<editor>
+			<firstname>Michael</firstname>
+			<othername>O.</othername>
+			<surname>Akinde</surname>
+			
+			<affiliation>
+				<orgname> <ulink url="http://www.met.no">met.no</ulink>
+				</orgname>
+				
+				
+				<address>
+          <street> Niels Henrik Abelsvei 4</street> 
+          <city>Oslo</city>
+          <country>Norway</country>
+          <email>wdb@met.no</email>
+        </address>
+			</affiliation>
+		</editor>
+		<abstract>
+			
+			<para>WDB is a data storage solution for weather and water data based on the
+				PostgreSQL object-relational database system. The system utilizes
+				PostGIS for GIS (Geographic Information Systems) support, and handles
+				Grids (e.g., forecast fields) and Point (e.g., observation) data.</para>
+			
+			<para>This is the Developer's Manual for WDB version &version;</para>
+			
+		</abstract>
+	</bookinfo>
+	
+	<xi:include href="wdb_vision.xml" xmlns:xi="http://www.w3.org/2003/XInclude"/>
+	
+	<xi:include href="wdb_software-architecture.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+	
+	<xi:include href="wdb_test-plan.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+	
+	<xi:include href="wci_system-design-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+	
+	<xi:include href="wci_system-test-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+
+	<!-- This program is out of date, and should not be in documentation
+	<xi:include href="kvalobsLoad_system-design-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+		-->
+	
+	<xi:include href="gribload_system-design-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+
+	<xi:include href="feltload_system-design-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+
+		
+	<xi:include href="gribload_system-test-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+	
+	<xi:include href="loaderDaemon_system-design-specification.xml"
+		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+	
+</book>

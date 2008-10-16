@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<refentry id='wdbConfiguration1'>
+	<refmeta>
+		<refentrytitle>wdbConfiguration</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+	
+	<refnamediv>
+		<refname>wdbConfiguration</refname>
+		<refpurpose>Get information related to wdb database settings</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>wdbConfiguration</command>
+			    <arg choice='opt'>OPTION</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>Description</title>
+		<para>
+			The purpose of wdbConfiguration is to provide information about 
+			the wdb database setup. The information provided should be enough 
+			to connect to the database, appart from authentication and 
+			authorization.
+		</para>
+		<para>
+			If invoked without any arguments, the program will list database 
+			host, port, along with the user name any wdb-related applications 
+			will use unless told otherwise. It is also possible to request the 
+			output of a single of these parameters. This is done by using one 
+			of the following commands: 
+		</para>
+		<variablelist remap='TP'>
+			<varlistentry>
+				<term><option>--database</option></term>
+				<listitem><para>Get database name</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><option>--host</option></term>
+				<listitem><para>Get the database host</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><option>--user</option></term>
+				<listitem><para>Get default database user name</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><option>--port</option></term>
+				<listitem><para>Get the database port number to connect to</para></listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			In addition, it is also possible to specify an output format. If 
+			none is given, the output format will match the format of the 
+			wdb.conf files. 
+		</para>
+		<variablelist remap='TP'>
+			<varlistentry>
+				<term><option>--psqlArgs</option></term>
+				<listitem><para>
+					Get arguments to connect to the database using
+					psql (You may e.g say <command>psql `wdbConfiguration --psqlArgs`</command>)
+				</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><option>--pqxxArgs</option></term>
+				<listitem><para>
+					Get the connection parameter to connect to the database 
+					using libpqxx
+				</para></listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			Other options are:
+		</para>
+		<variablelist remap='TP'>
+			<varlistentry>
+				<term><option>--conf</option></term>
+				<listitem><para>
+					Read additional configuration from the given file. The
+					information in the provided file will take precedence over
+					other configuration sources (eg. <filename>/etc/wdb.conf</filename>). 
+				</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><option>--help</option></term>
+				<listitem><para>
+					Display a help message, wiht a summary of command line 
+					options.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><option>--version</option></term>
+				<listitem><para>
+					Display version information, then exit
+				</para></listitem>
+			</varlistentry>
+		</variablelist>
+			
+	</refsect1>
+</refentry>

@@ -1,0 +1,23 @@
+dataproviderid|placeid|referencetime|validtimefrom|validtimeto|validtimeindeterminatecode|valueparametername|valueunitname|levelparametername|levelunitname|levelfrom|levelto|levelindeterminatecode|dataversion|confidencecode
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated irradiance of surface radiation, long-wave |watt per square metre|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated irradiance of surface radiation, short-wave |watt per square metre|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated surface density of precipitation|kilogram per square metre|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated surface density of precipitation, convective|kilogram per square metre|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated surface density of precipitation, large scale|kilogram per square metre|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated surface density of snow, water equivalent|kilogram per square metre|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, high|ratio|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, high|ratio|pressure of isobaric surface|hectopascal|300|300|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, low|ratio|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, low|ratio|pressure of isobaric surface|hectopascal|850|850|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, medium|ratio|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, medium|ratio|pressure of isobaric surface|hectopascal|500|500|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, total|ratio|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud cover, total|ratio|distance above ground|metre|2|2|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure of air|hectopascal|distance above mean sea level|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|distance above ground|metre|2|2|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|0|0|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|2|2|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|999|999|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|distance above ground|metre|10|10|0|0|0
+1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|distance above ground|metre|10|10|0|0|0
+(21 rows)

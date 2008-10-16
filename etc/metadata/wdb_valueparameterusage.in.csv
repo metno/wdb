@@ -1,0 +1,119 @@
+Value Domain|Description
+of undefined|Undefined parameter usage. This is used for temporary, experimental, and/or not yet defined parameters.
+of air|The value describes a property of air
+of air, anomaly|The value describes an anomalous property of air
+of air, virtual|The value describes a virtual property of air
+of air, potential|The value describes a potential property of air
+of air, visibility|Unknown
+of air, pseudo-abiadetic potential|Unknown
+of air, dew point|The value describes a property of air at the point where water vapor condenses into water
+of air, dew point depression|Unknown
+of air, lapse rate|Unknown
+of air (u-component)|U-component of a wind vector
+of air (v-component)|V-component of a wind vector
+of air, stream function|Unknown
+of air, velocity potential|Unknown
+of air, montgomery stream function|Unknown
+of air, absolute vorticity|Unknown
+or air, absolute divergence|Unknown
+of air, relative vorticity|Unknown
+or air, relative divergence|Unknown
+of ozone|The value describes a property of ozone
+of fog|Unknown
+of cloud water|Unknown
+of atmosphere, standard icao reference height|ICAO Standard Atmosphere reference height
+of precipitation|Unknown
+of precipitation, total|Unknown
+of precipitation, large scale|Unknown
+of precipitation, convective|Unknown
+of vapour|Unknown
+of saturation deficit|Unknown
+of evaporation|Unknown
+of cloud ice|Unknown
+of snow|Unknown
+of snow, convective|Unknown
+of snow, large scale|Unknown
+of snow, water equivalent|Unknown
+of snow melt|Unknown
+of snow fall|Unknown
+of mixed layer depth|Unknown
+of transient thermocline depth|Unknown
+of main thermocline depth|Unknown
+of main thermocline anomaly|Unknown
+of soil|The value describes a property of the soil
+of land|Unknown
+of land, surface roughness|Unknown
+of land, geopotential height|Geopotential height
+of land, geometrical height|Geometrical height
+of land, height standard deviation|Standard deviation of land height
+of parcel lifted index|Unknown
+of best lifted index|Unknown
+of vertical velocity|Unknown
+of vertical velocity, sigma coordinate|Unknown
+of vertical shear (u component)|Unknown
+of vertical shear (v component)|Unknown
+of sea, geometrical depth|Depth of sea bottom
+of current|Unknown
+of current, direction|Unknown
+of current (u component)|Unknown
+of current (v component)|Unknown
+of water, precipitable|Unknown
+of water|Unknown
+of water, salinity|Unknown
+of water, run-off|Unknown
+of salinity|Unknown
+of sea level, deviation from mean|Unknown
+of combined wind waves and swell, significant height|Unknown
+of wind waves, significant height|Unknown
+of swell waves, significant height|Unknown
+of primary waves|Unknown
+of secondary waves|Unknown
+of ice, cover|Unknown
+of ice, thickness|Unknown
+of ice, growth rate|Unknown
+of ice, divergence|Unknown
+of ice drift|Unknown
+of ice drift (u component)|Unknown
+of ice drift (v component)|Unknown
+of surface radiation, short-wave |Unknown
+of surface radiation, long-wave |Unknown
+of top of atmosphere radiation, short-wave |Unknown
+of top of atmosphere radiation, long-wave |Unknown
+of radiation, long-wave|Unknown
+of radiation, short-wave|Unknown
+of global radiation|Unknown
+of brightness|Unknown
+of radiance (with respect to wave number)|Unknown
+of radiance (with respect to wave length)|Unknown
+of latent heat|Unknown
+of sensible heat|Unknown
+of boundary layer dissipation|Unknown
+of momentum flux (u component)|Unknown
+of momentum flux (v component)|Unknown
+of wind mixing energy|Unknown
+of inorganic nitrate|WAM
+of phosphate|WAM
+of silicate|WAM
+of detritus|WAM
+of diatomer (algae)|WAM
+of flagellate (algae)|WAM
+of oxygen|WAM
+of biogenic silica|WAM
+of type 2 sediments|WAM
+of other sediments|WAM
+of wave|WAM
+of swell|WAM
+of drag with waves|WAM
+of total sea|WAM
+of stokes drift (u-component)|WAM
+of stokes drift (v-component)|WAM
+of friction|WAM
+of 1d spectra|WAM
+of 2d wave spectra|WAM
+of combined wind waves and swell|WAM
+of wind waves|WAM
+of swell waves|WAM
+of land topography, model|PROFET
+of land, model|PROFET
+of mean sea level|EPS
+of sunshine|EPS

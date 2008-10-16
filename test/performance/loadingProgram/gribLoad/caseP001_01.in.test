@@ -1,0 +1,53 @@
+#!/bin/sh
+# Script Information
+export TESTCASE="P001_01"
+export TEST_DESCRIPTION="Single file, single process"
+export TEST_PATH=__WDB_BUILDDIR__/test/performance/loadingProgram/gribLoad
+
+# Test Environment
+source $TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+esac
+
+# Prepare Test
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --name ${TEST_FILE}01"
+
+totalTime=0
+
+# Execute Test 1
+source ${TEST_PATH}/tearDown.sh
+startTime=`date +%s`
+$EXECUTE
+endTime=`date +%s`
+let totalTime=totalTime+endTime-startTime
+
+# Repeat Test 2
+source ${TEST_PATH}/tearDown.sh
+startTime=`date +%s`
+$EXECUTE
+endTime=`date +%s`
+let totalTime=totalTime+endTime-startTime
+
+# Repeat Test 3
+source ${TEST_PATH}/tearDown.sh
+startTime=`date +%s`
+$EXECUTE
+endTime=`date +%s`
+let totalTime=totalTime+endTime-startTime
+
+averageTimeFile=$(echo "$totalTime/3.0" | bc -l)
+averageTimeField=$(echo "288.0/$averageTimeFile" | bc -l)
+
+echo "File Loaded: $averageTimeFile seconds"
+echo "Field Loaded: $averageTimeField per second"
+
+source ${TEST_PATH}/tearDown.sh
+# Exit
+echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+exit 0

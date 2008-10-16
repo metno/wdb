@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:gribload_system-design-specification">
+	
+	<title>GribLoad - System Design Specification</title>
+	
+	<sect1>
+		<title>Introduction</title>
+		
+		<para>This document is the System Design Specification of the WDB GRIB Loading
+			program.</para>
+		
+		<sect2>
+			<title>Purpose</title>
+			
+			<para>The system design specification provides a comprehensive overview of
+				the design of the software system. This is used to ensure agreement between
+				the developers of the WDB system. It is also intended to make it easier for new
+				developers of WDB to become productive developing on the system.</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>System Overview</title>
+		
+		<sect2>
+			<title>Work Domain</title>
+			
+			<figure id="fig:gribload_work-domain">
+				<title>Work domain and work flow of the GribLoad system</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata align="center"
+							fileref="gfx/gribload_work-domain.png" format="PNG"/>
+					</imageobject>
+				</mediaobject>
+			</figure>
+			
+			<para><xref linkend="fig:gribload_work-domain"/> provides an overview of
+				the work domain and the work flow of the WDB field loading system.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Technical Platform</title>
+			
+			<para>The field loading software requires the following operating
+				environment:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Hardware: Desktop PC</para>
+				</listitem>
+				<listitem>
+					<para>Operating System: Linux</para>
+				</listitem>
+				<listitem>
+					<para>PostgreSQL version 8.1.x</para>
+				</listitem>
+				<listitem>
+					<para>libpqxx version 2.6.8</para>
+				</listitem>
+				<listitem>
+					<para>Postgis version 1.3.x</para>
+				</listitem>
+				<listitem>
+					<para>grib_api version 1.2.x</para>
+				</listitem>
+				<listitem>
+					<para>Boost 1.33.x</para>
+				</listitem>
+				<listitem>
+					<para>Log4Cpp version 1.0</para>
+				</listitem>
+				<listitem>
+					<para>PROJ version 4.4.9</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>System Architecture</title>
+		
+		<para>The following section describes the architecture of the GribLoad
+			system.</para>
+		
+		<sect2>
+			<title>Components</title>
+			
+			<para>The GribLoad system consists of three logical components. Each of these
+				components handle one of the key sequences of the task. The main GribLoad
+				program generally takes as an in-argument to the program the filename of the
+				file to be loaded into WDB. The file is then passed on to the three GribLoad
+				components in turn.</para>
+			
+			<sect3>
+				<title>Unpacking Fields</title>
+				
+				<para>The initial component of the GribLoad system is used to unpack the
+					fields. Unpacking of prognosis fields is implemented using a standard
+					library developed and maintained by ECMWF, referred to as the
+					grib_api.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>Decoding and Indexing Fields</title>
+				
+				<para>The class GribField converts field data into a format that conforms
+					with the data structures of WDB. The class bridges the GRIB formats and
+					the Database Model; it takes as an input in its constructor the unpacked
+					GRIB arrays, and returns through its methods the metadata for the field
+					in the WDB. The class handles all table look-ups in the database
+					required to handle such conversions.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>Storing Fields in the Database</title>
+				
+				<para>The storeInDatabase method of the GribField class takes the
+					contents of a field and store it in the WDB database.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Dependencies</title>
+			
+			<sect3>
+				<title>libPQXX</title>
+				
+				<para>The database API used in the GribLoad software is the libPQXX library
+					for C++.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>GRIB API</title>
+				
+				<para>The routines included in the GRIB API software library were
+					developed in the Meteorological Application Section at the European
+					Centre for Medium-Range Weather Forecasts, Reading, U.K. It is used
+					for the encoding and decoding of GRIB products stored in GRIB1 or GRIB2
+					formatted binary files. For a complete description of the
+					functionality in the library, see [3].</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>Log4cpp</title>
+				
+				<para>Log4cpp is library of C++ classes for flexible logging to files,
+					syslog, IDSA and other destinations. It is modeled on the Log4j Java
+					library. Log4cpp is used to handle logging from the GribLoad system.
+					Log4cpp is encapsulated by the wdbLogHandler library.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>Proj.4</title>
+				
+				<para>PROJ.4 is a Cartographic Projections library originally written by
+					Gerald Evenden. It is used to handle transformations from the varied
+					map projections of the GRIB files to the WGS84 map coordinate system
+					used in the WDB. The handling of projections in WDB is encapsulated in
+					the wdbProjection library.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>wdbException</title>
+				
+				<para>WdbException is the default exception class for the WDB system based
+					on std::exception. It is encapsulated in the wdbException
+					library.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Program Interface</title>
+			
+			<para>GribLoad is a command-line tool. Its primary functionality (to load a
+				single GRIB file) is executed by writing the program name followed by the
+				file name of the file to be loaded, as follows:</para>
+			
+			<para>wdb% bin/gribLoad hirlam10.grib</para>
+			
+			<para>In addition to the base functionality, the GribLoad system offers a
+				number of additional options.</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>--list</para>
+					<para>This option lists the contents of the chosen GRIB file using
+						GRIBEX's debug printout functionality, without storing the data
+						in the database.</para>
+				</listitem>
+				<listitem>
+					<para>--loadPlaceDefinition</para>
+					<para>A Grib field can only be loaded in the database if there exists an
+						appropriate place definition for that field in the wdb. Setting
+						-loadPlaceDefinition ensures that the field is always loaded; if
+						the place definition is missing, the GribLoad system
+						automatically generates an appropriate place definition for the
+						file in the database.</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Core Design</title>
+		
+		<para>The following section describes the core design of the GribLoad
+			system.</para>
+		
+		<sect2>
+			<title>Database Design</title>
+			
+			<para>The data from the forecast fields are stored in the table:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>wdb.oidvalue</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Classes and Functionality</title>
+			
+			<para><xref linkend="fig:gribload_class-diagram"/> is the class diagram of
+				the GribLoad system. It describes the classes in the system, as well as the
+				interrelationship of the classes with the various function sets.</para>
+			
+			<figure id="fig:gribload_class-diagram">
+				<title>Class diagram of the GribLoad system</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata align="center"
+							fileref="gfx/gribload_class-diagram.png"
+							format="PNG"/>
+					</imageobject>
+				</mediaobject>
+			</figure>
+			
+			<para>This is not intended to be an exhaustive description of the classes and
+				functions in the program; for that, review the code documentation
+				generated using Doxygen.</para>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Main Program Routine</title>
+			
+			<para>The functionality of the main program is as follows:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Parse the options from the command line</para>
+				</listitem>
+				<listitem>
+					<para>Open the file</para>
+				</listitem>
+				<listitem>
+					<para>Read the first field from the file using grib_api</para>
+				</listitem>
+				<listitem>
+					<para>While not at EOF
+						<itemizedlist>
+							<listitem>
+								<para>Create a GribField object from the forecast
+									field</para>
+							</listitem>
+							<listitem>
+								<para>Store the prognosis field in the database</para>
+							</listitem>
+							<listitem>
+								<para>Destroy the object</para>
+							</listitem>
+							<listitem>
+								<para>Read the next field from the file using
+									grib_api</para>
+							</listitem>
+						</itemizedlist> </para>
+				</listitem>
+				<listitem>
+					<para>Close the file</para>
+				</listitem>
+				<listitem>
+					<para>Terminate the program</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect2>
+		
+		<sect2>
+			<title>GribField</title>
+			
+			<para>The GribField class encapsulates a single forecast field. It is
+				instantiated using a pointer to the file, and employs the grib_api to unpack
+				the field values and the keys.</para>
+			
+			<para>The GribField class contains two main methods:</para>
+			
+			<sect3>
+				<title>initializeData</title>
+				
+				<para>The initializeData method handles any preprocessing that may be
+					required of the value data itself, prior to it being stored in the
+					database. In WDB, this is related to the ``scanning mode'' of the field;
+					WDB assumes that fields are stored with scanning mode 64 (i.e., the
+					first point of the array is the lower left corner of the field, and the
+					last point of the array is the upper right corner). If the field is not in
+					scanning mode 64, it is re-mapped such that it is.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>storeInDatabase</title>
+				
+				<para>The storeInDatabase method stores the value-group keys of the
+					forecast field in the wdb_floatgridvalue table.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>GribGridDefinition</title>
+			
+			<para>The GribGridDefinition class encapsulates the grid description of the
+				the GRIB forecast field. It contains functions to generate a wdb place
+				definition from the data in the field. The section below discusses the most
+				important functions.</para>
+			
+			<sect3>
+				<title>getPlaceId</title>
+				
+				<para>The getPlaceId method is the core method of the class. The place
+					definition of the field is compared with those in the database. If an
+					identical place definition is found, the placeId of that place
+					definition is retrieved and returned by the function. If the grid
+					definition does not exist, then an error is returned - unless the
+					loadPlaceDefinition option was set when the GribLoad system was
+					started. In the latter case, it inserts a new grid definition, and then
+					returns the placeId of the newly inserted place definition.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>getScanMode</title>
+				
+				<para>Returns the scan mode of the field.</para>
+			</sect3>
+			
+			<sect3>
+				<title>setScanMode</title>
+				
+				<para>Sets the scan mode of the field.</para>
+			</sect3>
+			
+			<sect3>
+				<title>createRegularLatLonGrid</title>
+				
+				<para>This method is called when the object is instantiated with a regular
+					equidistant cylindrical grid. It generates the metadata for the place
+					definition of the field.</para>
+			</sect3>
+			
+			<sect3>
+				<title>createRotatedLatLonGrid</title>
+				
+				<para>This method is called when the object is instantiated with a rotated
+					equidistant cylindrical grid. It generates the metadata for the place
+					definition of the field. Using the grid definition from the KSec2, the
+					method calculates the grid points of each of the corners of the grid
+					polygon in the rotated projection. It then uses PROJ.4 to transform
+					those coordinates and retrieve the actual longitude and latitude for
+					those grid points in WGS84.</para>
+				
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>GribDatabaseConnection</title>
+			
+			<para>The GribDatabaseConnection class encapsulates the embedded SQL of the
+				GribLoad implementation. It inherits the connection class from libpqxx,
+				and contains function calls for all the database access that occurs in
+				GribLoad. Isolating the database calls in the GribDatabaseConnection
+				permits the GribLoad system to be easily converted to a different database
+				system with alternative database access APIs.</para>
+			
+			<para>To maximize performance during loading, most SQL statements and cursors
+				are prepared and declared only once. The database must be indexed such that
+				all searches made occur using indexed search.</para>
+			
+			<para>The various transactors are utilized through the
+				GribDatabaseConnection class to retrieve data from the database.</para>
+			
+			<sect3>
+				<title>ReadDataProvider</title>
+				
+				<para>DataProvider is derived from the gribLoad.dataproviderxref view,
+					using the loadmode to determine dataprovidercodespaceid,
+					generating center and generating process to identify a DataProvider
+					Id.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>ReadParameter</title>
+				
+				<para>The parameter (representing the statistics type, the physical
+					phenomena and value domain of the forecast value) of the forecast field
+					is retrieved from the gribLoad.parameterxref view. Loadmode is used
+					to identify what valuedomaincodespaceid is operating under. The
+					generating center and codetable 2 version number identify which
+					reference lookup table is being used by the gribparameter; based on
+					these two codes, we can then use the gribparameter to identify what
+					parameter the forecast field has.</para>
+				
+				<para>The timerange code is used to identify the time range of the forecast;
+					e.g., is it an instant, average, or accumulated parameter.</para>
+				
+				<para>For probability forecasts, we may additionally have ``threshold''
+					parameters; probabilities of a given parameter exceeding or falling
+					below a given threshold. In these cases, the threshold will be passed
+					from the KSEC1 field (usually in a local usage section).</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>ReadLevelParameter</title>
+				
+				<para>The levelparameter represents the physical phenomena and level
+					domain of the level) of the forecast field. This is identified using the
+					level parameter of the GRIB field and the loading mode (to identify the
+					level codespaceid) from the gribload.levelparameterxref view. The
+					leveldomaincodespaceid is identified by the loadMode of the GribLoad
+					system; together with the level indicator from the GRIB file (defined
+					in WMO Code Table 3) the level parameter (physical phenomenon and level
+					domain) can be identified.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>ReadAdditionalLevel</title>
+				
+				<para>Additional level information from the GRIB parameter is decoded
+					using the gribload.parametertolevelxref view.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>ReadPlaceDefinition</title>
+				
+				<para>This transactor is used when identifying the placeid of a GRIB field.
+					This is done by using the grid information and original srid to retrieve
+					the corresponding place definition from the gribload.placexref
+					view.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>WritePlaceDefinition</title>
+				
+				<para>This transactor is used to write a new place definition into the
+					database. It inserts data into the wdb.placedefinition and
+					wdb.regulargrid tables.</para>
+				
+			</sect3>
+			
+			<sect3>
+				<title>ReadSrid</title>
+				
+				<para>This transactor is used to identify the srid of the projections in a
+					GRIB file. The srid is retrieved from the gribload.sridxref
+					view.</para>
+			</sect3>
+			
+			<sect3>
+				<title>WriteValue</title>
+				
+				<para>This transactor is used to write the values and keys of the GRIB field
+					itself into the wdb.floatgridvalue table.</para>
+			</sect3>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Error Handling</title>
+			
+			<para>Errors in the GribLoad system are resolved through exception handling
+				based on the WdbException base class. All errors are logged using the
+				Log4cpp library for writing log files (encapsulated in wdbLog).</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+</chapter>

@@ -1,0 +1,2900 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<chapter id="cha:wci_system-test-specification">
+	
+	<title>WDB Call Interface - System Test Specification</title>
+	
+	<sect1>
+		<title>Introduction</title>
+		
+		<para>This document describes the specific tests to be carried out during the system
+			test of the WDB Call Interface. The WCI is the application programmer's
+			interface (API) to the WDB and should be used for all data retrieval by non-WDB
+			applications.</para>
+		
+		<sect2>
+			<title>Purpose</title>
+			
+			<para>The purpose of this document is to describe the test suite for the WDB Call
+				Interface. Specifically, the test specification should:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Clarify the functionality/performance/accesibility
+						requirements of the system</para>
+				</listitem>
+				<listitem>
+					<para>Clearly specify what tests must be passed for the product to be
+						accepted for production</para>
+				</listitem>
+				<listitem>
+					<para>Document the consensus for the level of testing of the WDB Call
+						Interface</para>
+				</listitem>
+			</itemizedlist>
+			
+			<para>For each test, it must be defined what entity has the responsibility for
+				performing the test. Any limitations with respect to the test must also be
+				specified (e.g., for example whether the test has been
+				implemented).</para>
+			
+			<para>The test specification follows the framework laid out by the WDB Test
+				Plan.</para>
+			
+		</sect2>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Compilation Test</title>
+		
+		<para>As a general rule, there should be no new warnings or errors during the
+			compilation or linking of the WDB Call Interface libraries. </para>
+		
+		<para>Only the warnings documented below are accepted:</para>
+		
+		<table frame="all">
+			<title>Known Warnings of the WCI Compilation Test</title>
+			<tgroup cols="3">
+				<colspec align="left"/>
+				<colspec align="left"/>
+				<colspec align="left"/>
+				<thead>
+					<row>
+						<entry> Warning </entry>
+						<entry> Module </entry>
+						<entry> Explanation </entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry> - </entry>
+						<entry> - </entry>
+						<entry> - </entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Unit Tests</title>
+		
+		<para>All core and type C and/or C++ functionality in the WCI should have unit
+			tests.</para>
+		
+	</sect1>
+	
+	<sect1>
+		<title>Install Tests</title>
+		
+		<para>The functional tests examine that the functionality of the system fulfills
+			the system requirements of the system as defined in Bugzilla. The functionality
+			of the WDB Call Interface is tested using the Category-Partition test design
+			pattern.</para>
+		
+		<sect2>
+			<title>Test Cases</title>
+			
+			<para>The following section describes the test samples that are intended to be
+				handled by the test cases of the test suite.</para>
+			
+			<table frame="all">
+				<title>WDB Call Interface Installation Test Cases</title>
+				<tgroup cols="7">
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<colspec align="center"/>
+					<thead>
+						<row>
+							<entry> C# </entry>
+							<entry> Category </entry>
+							<entry> P# </entry>
+							<entry> Partition </entry>
+							<entry> Description </entry>
+							<entry> Expected Result </entry>
+							<entry> Priority </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry> B1 </entry>
+							<entry> wci.begin() </entry>
+							<entry> 1 </entry>
+							<entry> Existing user </entry>
+							<entry> wci.begin( 'someuser' ) </entry>
+							<entry> Function performed </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>	</entry>
+							<entry> (existing user) </entry>
+							<entry> 2 </entry>
+							<entry> Nonexisting user </entry>
+							<entry> wci.begin( 'nonexisting' ) </entry>
+							<entry> Function throws exception </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Empty user </entry>
+							<entry> wci.begin( '' ) </entry>
+							<entry> Function throws exception </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> B2 </entry>
+							<entry> wci.begin() </entry>
+							<entry> 1 </entry>
+							<entry> No manual setting of namespace </entry>
+							<entry> wci.begin( 'someuser' ) </entry>
+							<entry> Function performed </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (namespace) </entry>
+							<entry> 2 </entry>
+							<entry> Manually set namespace </entry>
+							<entry> wci.begin( 'someuser', 0, 0, 0 ) </entry>
+							<entry> Function performed </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> B3 </entry>
+							<entry> wci.begin() </entry>
+							<entry> 1 </entry>
+							<entry> Namespace with data </entry>
+							<entry> wci.begin( 'someuser', 0, 0, 0 ) </entry>
+							<entry> Function performed </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (data restriction) </entry>
+							<entry> 2 </entry>
+							<entry> Namespace with no data </entry>
+							<entry> wci.begin( 'someuser', 99999, 99999, 99999 )
+								</entry>
+							<entry> Function performed but no data retrievable </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Some of the namespaces contain no data </entry>
+							<entry> wci.begin( 'someuser', 0, 0, 99999 ) </entry>
+							<entry> Function performed, but no data retrievable
+								</entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> B4 </entry>
+							<entry> wci.begin() </entry>
+							<entry> 1 </entry>
+							<entry> Call changes user </entry>
+							<entry> wci.begin( 'notme' ) </entry>
+							<entry> After wci.begin has been called, user is set to
+								'notme' </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (context) </entry>
+							<entry> 2 </entry>
+							<entry> Call does not change user </entry>
+							<entry> wci.begin( 'otheruser' ) </entry>
+							<entry> Call does not permit setting of user if you do not have
+								permission on that role </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Call does not change user </entry>
+							<entry> wci.begin( 'wdb_test' ) </entry>
+							<entry> Call does not permit setting of user to a built-in wdb
+								role even if you have permission on that role (built in
+								roles are not login roles) </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> B5 </entry>
+							<entry> Security </entry>
+							<entry> 1 </entry>
+							<entry> Call does not allow SQL code in the call </entry>
+							<entry> wci.begin( 'set role wdb_test' ) </entry>
+							<entry> Call does not permit SQL code to be executed on
+								database </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry> E1 </entry>
+							<entry> wci.end() </entry>
+							<entry> 1 </entry>
+							<entry> wci.begin() has been called </entry>
+							<entry> wci.end() </entry>
+							<entry> Call performed </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (context) </entry>
+							<entry> 2 </entry>
+							<entry> wci.begin() has not been called </entry>
+							<entry> wci.end() </entry>
+							<entry> Call aborts with error </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> E2 </entry>
+							<entry> wci.end() </entry>
+							<entry> 1 </entry>
+							<entry> previous wci.begin() call has changed user </entry>
+							<entry> wci.end() </entry>
+							<entry> User is reset back to the original user </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (existing user) </entry>
+							<entry> 2 </entry>
+							<entry> previous wci.begin() has not changed user </entry>
+							<entry> wci.end() </entry>
+							<entry> User remains as original user </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry> U1 </entry>
+							<entry> UserID </entry>
+							<entry> 1 </entry>
+							<entry> Valid UserId </entry>
+							<entry> Valid UserId </entry>
+							<entry> wci.begin with a valid user ID works </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Validity) </entry>
+							<entry> 2 </entry>
+							<entry> Invalid UserId </entry>
+							<entry> Invalid UserId </entry>
+							<entry> wci.begin with an invalid user ID returns an error
+								</entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> U2 </entry>
+							<entry> UserID </entry>
+							<entry> 1 </entry>
+							<entry> String </entry>
+							<entry> The UserId is a string </entry>
+							<entry> wci.begin does not throw type errors when user ID is
+								passed as a string </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type) </entry>
+							<entry> 2 </entry>
+							<entry> Not a string </entry>
+							<entry> The UserId passed is not a string </entry>
+							<entry> wci.begin returns an error (or is not found) user ID is
+								passed is not a string </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> NULL </entry>
+							<entry> The UserId passed is a NULL value </entry>
+							<entry> Error </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> D1 </entry>
+							<entry> Dataprovider </entry>
+							<entry> 1 </entry>
+							<entry> 0 </entry>
+							<entry> \{ \} </entry>
+							<entry> Error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Number) </entry>
+							<entry> 2 </entry>
+							<entry> 1 </entry>
+							<entry> \{10\} </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> 255 $gt$ n $gt$ 1 </entry>
+							<entry> \{ 1, 10, 24 \} </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> n $gt$ 255 </entry>
+							<entry> \{ 1, 2, 3, ... \} </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> NULL </entry>
+							<entry> NULL value </entry>
+							<entry> Correct (returns all) </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> D2 </entry>
+							<entry> Dataprovider </entry>
+							<entry> 1 </entry>
+							<entry> lower case </entry>
+							<entry> ARRAY['wci test 0'] </entry>
+							<entry> Function returns data for specified dataprovider
+								correctly </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (case) </entry>
+							<entry> 2 </entry>
+							<entry> upper case </entry>
+							<entry> ARRAY['WCI TEST 0'] </entry>
+							<entry> Function returns data for specified dataprovider
+								correctly </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> mixed case </entry>
+							<entry> ARRAY['WcI teST 0'] </entry>
+							<entry> Function returns data for specified dataprovider
+								correctly </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> D3 </entry>
+							<entry> Dataprovider </entry>
+							<entry> 1 </entry>
+							<entry> All exist </entry>
+							<entry> ARRAY['test wci 1', 'test wci 2'] </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Existence) </entry>
+							<entry> 2 </entry>
+							<entry> None exist </entry>
+							<entry> ARRAY['test wci -', 'test wci 12345', 'test wci XYZ']
+								</entry>
+							<entry> Correct (no data) </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Some exist, others don't </entry>
+							<entry> ARRAY['test wci -', 'test wci 1', 'test wci XYZ']
+								</entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> D4 </entry>
+							<entry> Dataprovider </entry>
+							<entry> 1 </entry>
+							<entry> None </entry>
+							<entry> ARRAY['test wci 0', 'test wci 1', 'test wci 2']
+								</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Duplicates) </entry>
+							<entry> 2 </entry>
+							<entry> One duplicate </entry>
+							<entry> ARRAY['test wci 0', 'test wci 1', 'test wci 2', 'test
+								wci 1'] </entry>
+							<entry> Duplicate is ignored </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Several duplicates </entry>
+							<entry> ARRAY['test wci 0', 'test wci 1', 'test wci 1', 'test
+								wci 2', 'test wci 2', 'test wci 1'] </entry>
+							<entry> Duplicates are ignored </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> D5 </entry>
+							<entry> Dataprovider </entry>
+							<entry> 1 </entry>
+							<entry> Group with data </entry>
+							<entry> ARRAY['test group'] </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Groups) </entry>
+							<entry> 2 </entry>
+							<entry> Group without data </entry>
+							<entry> ARRAY['test group empty'] </entry>
+							<entry> No data is returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Several groups </entry>
+							<entry> ARRAY['test group', 'test group empty'] </entry>
+							<entry> Correct data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G1 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Valid POINT </entry>
+							<entry> POINT (11.34 60.75)', 4030 ) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Validity) </entry>
+							<entry> 2 </entry>
+							<entry> Invalid POINT </entry>
+							<entry> POINT (11.34 92.75)', 4030 ) </entry>
+							<entry> Error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Valid POLYGON </entry>
+							<entry> POLYGON (11.34 60.75, 11.34 62.75, 13.34 62.75,
+								11.34 60.75)', 4030 ) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Invalid POLYGON </entry>
+							<entry> POLYGON (11.34 89.75, 11.34 92.75, 13.34 92.75,
+								11.34 89.75)', 4030 ) </entry>
+							<entry> Error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G2 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> 0 </entry>
+							<entry> ' ' </entry>
+							<entry> Error </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Number) </entry>
+							<entry> 2 </entry>
+							<entry> 1 </entry>
+							<entry> POINT (11.34 60.75) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> 255 $gt$ n $gt$ 1 </entry>
+							<entry> MULTIPOINT (11.34 60.75, 1.0 1.0, 34.4 25.0)
+								</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> n $gt$ 255 </entry>
+							<entry> MULTIPOINT (11.34 60.75, 1.0 1.0, 34.4 25.0, ... )
+								</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> NULL </entry>
+							<entry> NULL </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry> G3 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> None </entry>
+							<entry> Multiple </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Duplicates) </entry>
+							<entry> 2 </entry>
+							<entry> One duplicate </entry>
+							<entry>
+							</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Several duplicates </entry>
+							<entry>
+							</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G4 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> All return rows </entry>
+							<entry> Multiple </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Multiple PlaceGeometry) </entry>
+							<entry> 2 </entry>
+							<entry> None return rows </entry>
+							<entry>
+							</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Some return rows, other's don't </entry>
+							<entry>
+							</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G5 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Northern Hemisphere </entry>
+							<entry> POINT (11.34 60.75) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Position </entry>
+							<entry> 2 </entry>
+							<entry> Southern Hemisphere </entry>
+							<entry> POINT (11.34 -60.75) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> North/South) </entry>
+							<entry> 3 </entry>
+							<entry> Equator </entry>
+							<entry> POINT (11.34 0.0) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> North Pole </entry>
+							<entry> POINT (4.14 90.0) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> South Pole </entry>
+							<entry> POINT (-4.14 -90.0) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> Set of points in northern hemisphere </entry>
+							<entry> MULTIPOINT( 11.34 60.75, 13.72 68.09 ) </entry>
+							<entry> Correct</entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> Set of points in southern hemisphere </entry>
+							<entry> MULTIPOINT( 11.34 -60.75, 13.72 -68.09 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 8 </entry>
+							<entry> Set of points at equator </entry>
+							<entry> MULTIPOINT( 11.34 0, 13.72 0 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low s</entry>
+						</row>
+						<row>
+							<entry> G6 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Eastern Hemisphere </entry>
+							<entry> POINT (11.34 60.75) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Position </entry>
+							<entry> 2 </entry>
+							<entry> Western Hemisphere </entry>
+							<entry> POINT (-100.62 40.75) </entry>
+							<entry> Correct</entry>
+							<entry> Hgh</entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> East/West) </entry>
+							<entry> 3 </entry>
+							<entry> 0 Meridian </entry>
+							<entry> POINT (0.0 50.75) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> 180 Meridian </entry>
+							<entry> POINT (180.0 40.0) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> -180 Meridian </entry>
+							<entry> POINT (-180.0 40.0) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> Set of points in eastern hemisphere </entry>
+							<entry> MULTIPOINT( 100.60 40.75, 101.48 43.12 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> Set of points in western hemisphere </entry>
+							<entry> MULTIPOINT( -100.60 40.75, -101.48 43.12 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 8 </entry>
+							<entry> Set of points at 0 meridian </entry>
+							<entry> MULTIPOINT( 0 40.75, 0 43.12 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 9 </entry>
+							<entry> Set of points at 180 meridian </entry>
+							<entry> MULTIPOINT( 180 40.75, 180 43.12 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 10 </entry>
+							<entry> Set of points at -180 meridian </entry>
+							<entry> MULTIPOINT( -180 40.75, -180 43.12 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G7 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> One POINT </entry>
+							<entry> POINT( 11.34 60.75 ) </entry>
+							<entry> Correct </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type) </entry>
+							<entry> 2 </entry>
+							<entry> Set of POINTs </entry>
+							<entry> MULTIPOINT( 180 40.75, 180 43.12 ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> One POLYGON </entry>
+							<entry> POLYGON( ( 11.34 60.75, 11.34 62.75, 13.34 62.75,
+								11.34 60.75 ) ) </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Set of POLYGONs </entry>
+							<entry> MULTIPOLYGON( ( (11.34 60.75, 11.34 62.75, 13.34
+								62.75, 11.34 60.75),(11.34 60.75, 11.34 62.75, 13.34
+								62.75, 11.34 60.75) ) ) </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G8 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Null Area - a polygon without area </entry>
+							<entry> POLYGON (11.0 60.75, 11.0 60.75, 11.0 60.75, 11.0
+								60.75, 11.0 60.75) </entry>
+							<entry> Should behave like a point </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Area) </entry>
+							<entry> 2 </entry>
+							<entry> Precision $gt$ area $gt$ 0 </entry>
+							<entry> POLYGON (11.0 60.75, 11.0 60.750000001, 11.0000001
+								60.750000001, 11.0000001 60.75, 11.0 60.75) </entry>
+							<entry> Should behave like a point </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Polygon with measurable area </entry>
+							<entry> POLYGON (11.34 60.75, 11.34 62.75, 13.34 62.75,
+								13.34 60.75, 11.34 60.75) </entry>
+							<entry> Should return points inside polygon </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G9 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> 4 </entry>
+							<entry> POLYGON(( 11.34 60.75, 12.34 60.75, 12.34 61.75,
+								11.34 61.75, 11.34 60.75 )) </entry>
+							<entry> Return points within square </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Points in Polygon) </entry>
+							<entry> 2 </entry>
+							<entry> 5-999 </entry>
+							<entry> POLYGON(( 11.34 60.75, 11.84 60.75, 12.34 61.25,
+								11.84 61.75, 11.34 61.25, 10.84 61, 11.34 60.75 ))
+								</entry>
+							<entry> Return points within a polygon </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> $gt$ 999 </entry>
+							<entry> Polygon with 1000 points </entry>
+							<entry> Return points within polygon</entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G10 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Convex </entry>
+							<entry> POLYGON(( 11.34 60.75, 12.34 60.75, 13.34 61.25,
+								12.34 61.75, 11.34 61.75, 11.34 60.75 )) </entry>
+							<entry> Return points in polygon </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Convexity of Polygon) </entry>
+							<entry> 2 </entry>
+							<entry> Concave </entry>
+							<entry> POLYGON(( 11.34 60.75, 12.34 60.75, 11.84 61.25,
+								12.34 61.75, 11.34 61.75, 11.34 60.75 )) </entry>
+							<entry> Return points in polygon </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G11 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> None </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Crossing Points) </entry>
+							<entry> 2 </entry>
+							<entry> 1 point </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> $gt$ 1 point </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G12 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Perpendicular ($=$ 90) </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Angles in polygon) </entry>
+							<entry> 2 </entry>
+							<entry> Acute angle ($lt$ 90) </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Obtuse angle (180 $gt$ n $gt$ 90) </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Straight angle ($=$ 180) </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Reflex angle ($gt$ 180) </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G13 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Few long segments </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Scan segment for </entry>
+							<entry> 2 </entry>
+							<entry> Many short segments </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> polygons) </entry>
+							<entry> 3 </entry>
+							<entry> Mixed segments </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G14 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> All points inside grid </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Offsets) </entry>
+							<entry> 2 </entry>
+							<entry> Some points inside grid </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> No points inside grid </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G15 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Complete overlap </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (In field) </entry>
+							<entry> 2 </entry>
+							<entry> Partial overlap </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> No overlap </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G16 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Complete intersection </entry>
+							<entry> Multiple </entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Overlapping with </entry>
+							<entry> 2 </entry>
+							<entry> Partial intersection </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> multiple geometry) </entry>
+							<entry> 3 </entry>
+							<entry> No intersection </entry>
+							<entry>
+							</entry>
+							<entry> Correct points returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G17 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Correct POINT </entry>
+							<entry> Test with correct POINT syntax </entry>
+							<entry> Query executes correctly</entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Geometry syntax) </entry>
+							<entry> 2 </entry>
+							<entry> Incorrect POINT </entry>
+							<entry> Test with incorrect POINT syntax </entry>
+							<entry> WCI should throw an exception </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Correct POLYGON </entry>
+							<entry> Test with correct POLYGON syntax </entry>
+							<entry> Query executes correctly </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Incorrect POLYGON </entry>
+							<entry> Test with incorrect POLYGON syntax </entry>
+							<entry> WCI should throw an exception </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G18 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Regular Lon-Lat </entry>
+							<entry> Retrieve some points from a regular lat-lon grid
+								</entry>
+							<entry> Points correctly retrieved </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type of field) </entry>
+							<entry> 2 </entry>
+							<entry> Rotated Lon-Lat </entry>
+							<entry> Retrieve some points from a rotated lat-lon grid
+								</entry>
+							<entry> Points correctly retrieved </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G19 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Global </entry>
+							<entry> Retrieve all points from global field </entry>
+							<entry> Points correctly retrieved </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Complete field) </entry>
+							<entry> 2 </entry>
+							<entry> Non-global </entry>
+							<entry> Retrieve all points from non-global field </entry>
+							<entry> Points correctly retrieved </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry> G20 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Invalid interpolation type </entry>
+							<entry> Specify an invalid interpolation </entry>
+							<entry> Cast an exception </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Interpolation Type) </entry>
+							<entry> 2 </entry>
+							<entry> No interpolation type </entry>
+							<entry> Interpolation set to default </entry>
+							<entry> Correct rows returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> G21 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Inside the grid </entry>
+							<entry> Specify a point inside the grid with exact
+								interpolation </entry>
+							<entry> Correct row returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Exact Interpolation) </entry>
+							<entry> 2 </entry>
+							<entry> Edge of the grid </entry>
+							<entry> Specify a point on the edge of the grid with exact
+								interpolation </entry>
+							<entry> Correct row returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Just outside the grid </entry>
+							<entry> Specify a point just outside the grid with exact
+								interpolation </entry>
+							<entry> No rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Far outside the grid </entry>
+							<entry> Specify a point far outside the grid with exact
+								interpolation </entry>
+							<entry> No rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G22 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Inside the grid </entry>
+							<entry> Specify a point inside the grid with nearest
+								interpolation </entry>
+							<entry> Correct row returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Nearest Interpolation) </entry>
+							<entry> 2 </entry>
+							<entry> Edge of the grid </entry>
+							<entry> Specify a point on the edge of the grid with nearest
+								interpolation </entry>
+							<entry> Correct row returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Just outside the grid </entry>
+							<entry> Specify a point just outside the grid with nearest
+								interpolation </entry>
+							<entry> No rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Far outside the grid </entry>
+							<entry> Specify a point far outside the grid with nearest
+								interpolation </entry>
+							<entry> No rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G23 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Inside the grid </entry>
+							<entry> Specify a point inside the grid with surrounding
+								interpolation </entry>
+							<entry> Correct rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Surrounding Interpolation) </entry>
+							<entry> 2 </entry>
+							<entry> Edge of the grid </entry>
+							<entry> Specify a point on the edge of the grid with
+								surrounding interpolation </entry>
+							<entry> Correct row returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Just outside the grid </entry>
+							<entry> Specify a point just outside the grid with
+								surrounding interpolation </entry>
+							<entry> No rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Far outside the grid </entry>
+							<entry> Specify a point far outside the grid with surrounding
+								interpolation </entry>
+							<entry> No rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> G24 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Regular Lon-Lat </entry>
+							<entry> All points correctly located in regular field
+								</entry>
+							<entry> Points correctly retrieved and matched against
+								facit </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Correctness) </entry>
+							<entry> 2 </entry>
+							<entry> Rotated Lon-Lat </entry>
+							<entry> All points correctly located in rotated field
+								</entry>
+							<entry> Points correctly retrieved and matched against
+								facit </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry> G25 </entry>
+							<entry> PlaceGeometry </entry>
+							<entry> 1 </entry>
+							<entry> Return all rows from field </entry>
+							<entry> Polygon that contains an entire field </entry>
+							<entry> All rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Row returns) </entry>
+							<entry> 2 </entry>
+							<entry> Return some rows from field </entry>
+							<entry> Polygon that contains some rows of a field </entry>
+							<entry> Correct row returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> No rows returned </entry>
+							<entry> Polygon that contains no rows from field </entry>
+							<entry> No rows returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> L1 </entry>
+							<entry> PlaceName </entry>
+							<entry> 1 </entry>
+							<entry> No placename </entry>
+							<entry> "" </entry>
+							<entry> Returns an error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Presence) </entry>
+							<entry> 2 </entry>
+							<entry> A placename is given </entry>
+							<entry> "hirlam 10" </entry>
+							<entry> Returns appropriate rows </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> NULL </entry>
+							<entry> NULL value </entry>
+							<entry> Returns appropriate rows </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> L2 </entry>
+							<entry> PlaceName </entry>
+							<entry> 1 </entry>
+							<entry> Exists in database </entry>
+							<entry> "hirlam 10" </entry>
+							<entry> Returns appropriate rows </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Existence) </entry>
+							<entry> 2 </entry>
+							<entry> Does not exist in database </entry>
+							<entry> "no such place" </entry>
+							<entry> Returns no rows </entry>
+							<entry> Hgh </entry>
+						</row>
+						<row>
+							<entry> L3 </entry>
+							<entry> PlaceName </entry>
+							<entry> 1 </entry>
+							<entry> lower case </entry>
+							<entry> 'hirlam 10' </entry>
+							<entry> Correct data is returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (case) </entry>
+							<entry> 2 </entry>
+							<entry> upper case </entry>
+							<entry> 'HIRLAM 10' </entry>
+							<entry> Correct data is returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> mixed case </entry>
+							<entry> 'HirlaM 10' </entry>
+							<entry> Correct data is returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> R1 </entry>
+							<entry> ReferenceTime </entry>
+							<entry> 1 </entry>
+							<entry> Valid Time Interval </entry>
+							<entry> { 2006-11-30 12:00:00, 2007-01-15 06:00:00 }
+								</entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type) </entry>
+							<entry> 2 </entry>
+							<entry> Valid Time Point </entry>
+							<entry> { 2006-11-30 12:00:00, 2006-11-30 12:00:00 }
+								</entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Incorrect Interval </entry>
+							<entry> { 2007-01-15 06:00:00, 2006-11-30 12:00:00 }
+								</entry>
+							<entry> Error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Invalid Time </entry>
+							<entry> { 2006-11-31 00:00:00, 2007-01-15 06:00:00 }
+								</entry>
+							<entry> Error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Not Timestamp </entry>
+							<entry> { 2006ELVTHRT00/00/00, 2007-01-15 06:00:00 }
+								</entry>
+							<entry> Error </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> NULL </entry>
+							<entry> NULL value </entry>
+							<entry> All values returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> R2 </entry>
+							<entry> ReferenceTime </entry>
+							<entry> 1 </entry>
+							<entry> Now </entry>
+							<entry> Current time </entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Time) </entry>
+							<entry> 2 </entry>
+							<entry> Past </entry>
+							<entry> { 1970-01-30 12:00:00, 1970-01-30 18:00:00 }
+								</entry>
+							<entry> Correct </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Future </entry>
+							<entry> \{ 2100-11-30 00:00:00, 2100-12-15 06:00:00 \}
+								</entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<!-- Valid time tests not implemented  -->
+						<row>
+							<entry> T1 </entry>
+							<entry> ValidTime </entry>
+							<entry> 1 </entry>
+							<entry> Valid Time Interval </entry>
+							<entry> \{ 2006-11-30 12:00:00, 2007-01-15 06:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type) </entry>
+							<entry> 2 </entry>
+							<entry> Valid Time Point </entry>
+							<entry> \{ 2006-11-30 12:00:00, 2006-11-30 12:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Incorrect Interval </entry>
+							<entry> \{ 2007-01-15 06:00:00, 2006-11-30 12:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Invalid Time </entry>
+							<entry> \{ 2006-11-31 00:00:00, 2007-01-15 06:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Not Timestamp </entry>
+							<entry> \{ 2006ELVTHRT00/00/00, 2007-01-15 06:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> NULL Content </entry>
+							<entry> NULL value </entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> NULL TimeInterpolation </entry>
+							<entry> ( 2006-11-30 12:00:00, 2007-01-15 06:00:00, NULL )
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry> T2 </entry>
+							<entry> ValidTime </entry>
+							<entry> 1 </entry>
+							<entry> Now </entry>
+							<entry> Current time </entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Time) </entry>
+							<entry> 2 </entry>
+							<entry> Past </entry>
+							<entry> \{ 1970-01-30 12:00:00, 1970-01-30 18:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Future </entry>
+							<entry> \{ 2100-11-30 00:00:00, 2100-12-15 06:00:00 \}
+								</entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry> T3 </entry>
+							<entry> ValidTime </entry>
+							<entry> 1 </entry>
+							<entry> Correct WCITimeSpec </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 2 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Syntax) </entry>
+							<entry> 2 </entry>
+							<entry> Incorrect WCITimeSpec </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 2 </entry>
+						</row>
+						<row>
+							<entry> T4 </entry>
+							<entry> ValidTime </entry>
+							<entry> 1 </entry>
+							<entry> Values exist </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 2 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Existence) </entry>
+							<entry> 2 </entry>
+							<entry> No values exist </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 2 </entry>
+						</row>
+						<row>
+							<entry> T5 </entry>
+							<entry> ValidTime </entry>
+							<entry> 1 </entry>
+							<entry> None </entry>
+							<entry> \{ \} </entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type Size) </entry>
+							<entry> 2 </entry>
+							<entry> sizeof(int) $gt$ n $gt$ 1 </entry>
+							<entry> \{ 10\} </entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> n $gt$ sizeof(int) </entry>
+							<entry> \{ 11099999...\} </entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+						</row>
+						<row>
+							<entry> T6 </entry>
+							<entry> ValidTime </entry>
+							<entry> 1 </entry>
+							<entry> lower case </entry>
+							<entry> "exact" </entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (TimeInterpol Case) </entry>
+							<entry> 2 </entry>
+							<entry> uppper case </entry>
+							<entry> "EXACT" </entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> mixed case </entry>
+							<entry> "eXaCT" </entry>
+							<entry>
+							</entry>
+							<entry> 1 </entry>
+						</row>
+						<!-- Valid Time -->
+						<row>
+							<entry> P1 </entry>
+							<entry> Value Parameter </entry>
+							<entry> 1 </entry>
+							<entry> Valid Parameter </entry>
+							<entry> "instant pressure of air" </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Validity) </entry>
+							<entry> 2 </entry>
+							<entry> Invalid Parameter </entry>
+							<entry> "foo fi doo" </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> P2 </entry>
+							<entry> Value Parameter </entry>
+							<entry> 1 </entry>
+							<entry> No parameter </entry>
+							<entry> '' </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Numbers) </entry>
+							<entry> 2 </entry>
+							<entry> 1 parameter </entry>
+							<entry> 'instant pressure of air' </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> 255 $gt$ n $gt$ 1 </entry>
+							<entry> 'instant pressure of air', 'instant temperature of
+								air' </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> n $gt$ 255 </entry>
+							<entry> 'instant pressure of air', 'instant temperature of
+								air', ... </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> NULL </entry>
+							<entry> NULL value </entry>
+							<entry> All rows returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> P3 </entry>
+							<entry> Value Parameter </entry>
+							<entry> 1 </entry>
+							<entry> lower case </entry>
+							<entry> ARRAY['instant pressure of air'] </entry>
+							<entry> Function returns data for specified value parameter
+								</entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (case) </entry>
+							<entry> 2 </entry>
+							<entry> upper case </entry>
+							<entry> ARRAY['INSTANT PRESSURE OF AIR'] </entry>
+							<entry> Function returns data for specified value parameter
+								</entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> mixed case </entry>
+							<entry> ARRAY['inSTaNT preSSURE of AIr'] </entry>
+							<entry> Function returns data for specified value parameter
+								</entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> P4 </entry>
+							<entry> Value Parameter </entry>
+							<entry> 1 </entry>
+							<entry> All exist </entry>
+							<entry> ARRAY['instant pressure of air', 'instant
+								temperature of air', 'instant temperature of soil']
+								</entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Existence) </entry>
+							<entry> 2 </entry>
+							<entry> None exist </entry>
+							<entry> ARRAY['instant velocity of soil', 'instant surface
+								density of air', 'instant pressure of soil'] </entry>
+							<entry> No data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Some exist, others don't </entry>
+							<entry> ARRAY['instant velocity of soil', 'instant
+								pressure of air'] </entry>
+							<entry> Data is returned for those parameters that exist
+								</entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> P5 </entry>
+							<entry> Value Parameter </entry>
+							<entry> 1 </entry>
+							<entry> No duplicates </entry>
+							<entry> ARRAY['instant pressure of air', 'instant
+								temperature of air', 'instant temperature of soil']
+								</entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Duplicates) </entry>
+							<entry> 2 </entry>
+							<entry> One duplicate </entry>
+							<entry> ARRAY['instant pressure of air', 'instant
+								temperature of air', 'instant temperature of air']
+								</entry>
+							<entry> Duplicates are ignored </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Several duplicates </entry>
+							<entry> ARRAY['instant pressure of air', 'instant pressure
+								of air', 'instant temperature of air', 'instant
+								temperature of air'] </entry>
+							<entry> Duplicates are ignored </entry>
+							<entry> Med </entry>
+						</row>
+						
+						<row>
+							<entry> L1 </entry>
+							<entry> Level </entry>
+							<entry> 1 </entry>
+							<entry> Valid levelspec </entry>
+							<entry> ( 5, 5, 'distance above sea level', 'above' ) </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type) </entry>
+							<entry> 2 </entry>
+							<entry> Invalid levelspec </entry>
+							<entry> ( 10, 25, "Fee", "FOO" ) </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> NULL Content </entry>
+							<entry> NULL </entry>
+							<entry> All levels returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> NULL Level Parameter </entry>
+							<entry> ( 10, 25, NULL, 'exact' ) </entry>
+							<entry> All levels returned (behaves as NULL levelspec)
+								</entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> NULL Level Interpolation </entry>
+							<entry> ( 10, 25, "distance above sea level", NULL ) </entry>
+							<entry> All levels returned (behaves as NULL levelspec)
+								</entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> L2 </entry>
+							<entry> Level </entry>
+							<entry> 1 </entry>
+							<entry> Exact </entry>
+							<entry> ( 0, 0, 'distance above sea level' , "exact" ) </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Indeterminate) </entry>
+							<entry> 2 </entry>
+							<entry> Above </entry>
+							<entry> ( 0, 0, 'distance above sea level', "above" ) </entry>
+							<entry> All points above the level are returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Below </entry>
+							<entry> ( 0, 0, "distance above sea level", "below" ) </entry>
+							<entry> All points below the level are returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Any </entry>
+							<entry> ( 0, 0, "distance above ground", "any" ) </entry>
+							<entry> All levels are returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> L3 </entry>
+							<entry> Level </entry>
+							<entry> 1 </entry>
+							<entry> Correct WCILevelSpec </entry>
+							<entry> ( 0, 0, "distance above ground", "any" ) </entry>
+							<entry> Correct </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Syntax) </entry>
+							<entry> 2 </entry>
+							<entry> Incorrect WCILevelSpec </entry>
+							<entry> ( "tf", "0", "distance above mean sea level", "any" )
+								</entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> L4 </entry>
+							<entry> Level </entry>
+							<entry> 1 </entry>
+							<entry> Values exist </entry>
+							<entry> ( 0, 0, "distance above ground", "any" ) </entry>
+							<entry> Values in database are returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Existence) </entry>
+							<entry> 2 </entry>
+							<entry> No values exist </entry>
+							<entry> ( 0, 0, "of sigma value", "any" ) </entry>
+							<entry> No values are returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> L5 </entry>
+							<entry> Level </entry>
+							<entry> 1 </entry>
+							<entry> lower case </entry>
+							<entry> "distance above sea" </entry>
+							<entry> Correct data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Level Parameter Case) </entry>
+							<entry> 2 </entry>
+							<entry> uppper case </entry>
+							<entry> "DISTANCE ABOVE SEA" </entry>
+							<entry> Correct data returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> mixed case </entry>
+							<entry> "DIstance aBOVe Sea" </entry>
+							<entry> Correct data returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> L6 </entry>
+							<entry> Level </entry>
+							<entry> 1 </entry>
+							<entry> lower case </entry>
+							<entry> "exact" </entry>
+							<entry> Correct data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Level Interpolation Case) </entry>
+							<entry> 2 </entry>
+							<entry> uppper case </entry>
+							<entry> "EXACT" </entry>
+							<entry> Correct data returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> mixed case </entry>
+							<entry> "eXaCT" </entry>
+							<entry> Correct data returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry> V1 </entry>
+							<entry> Data Version </entry>
+							<entry> 1 </entry>
+							<entry> No data version </entry>
+							<entry> ARRAY[] </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Number) </entry>
+							<entry> 2 </entry>
+							<entry> Data version returned </entry>
+							<entry> ARRAY[ 10 ] </entry>
+							<entry> Data versions returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> 255 $gt$ n $gt$ 1 </entry>
+							<entry> ARRAY[ 0, 1, 2 ] </entry>
+							<entry> Data versions returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> n $gt$ 255 </entry>
+							<entry> \{ 1, 2, 3, ... \} </entry>
+							<entry> Data versions returned </entry>
+							<entry> Low </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> NULL </entry>
+							<entry> NULL value </entry>
+							<entry> All data versions returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> V2 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> unsigned integer </entry>
+							<entry> \{ 1, 10, 24 \} </entry>
+							<entry> Correct data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type) </entry>
+							<entry> 2 </entry>
+							<entry> signed integer </entry>
+							<entry> \{ -24, 10 \} </entry>
+							<entry> Correct data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> non-integer </entry>
+							<entry> \{ 123...abcd...\} </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> V3 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> All exist </entry>
+							<entry> \{ 1, 10, 24 \} </entry>
+							<entry> Data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Existence) </entry>
+							<entry> 2 </entry>
+							<entry> None exist </entry>
+							<entry> \{ 12345, 9999, 8765\} </entry>
+							<entry> No data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Some exist, others don't </entry>
+							<entry> \{ 1, 10, 9999, 28765\} </entry>
+							<entry> Data returned for existing versions </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> V4 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> None </entry>
+							<entry> \{ \} </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Type Size) </entry>
+							<entry> 2 </entry>
+							<entry> sizeof(int) $gt$ n $gt$ 1 </entry>
+							<entry> \{ 10\} </entry>
+							<entry> Correct data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> n $gt$ sizeof(int) </entry>
+							<entry> \{ 11099999...\} </entry>
+							<entry> Exception thrown </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> V5 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> None </entry>
+							<entry> \{ 1, 10, 24 \} </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Duplicates) </entry>
+							<entry> 2 </entry>
+							<entry> One duplicate </entry>
+							<entry> \{ 1, 10, 24, 10 \} </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Several duplicates </entry>
+							<entry> \{ 1, 10, 10, 10, 24, 24 \} </entry>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+						</row>
+						<row>
+							<entry> V6 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> Retrieve latest (no data) </entry>
+							<entry> ARRAY[ -1 ] </entry>
+							<entry> No data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Retrieve Latest Data) </entry>
+							<entry> 2 </entry>
+							<entry> Retrieve latest data (one data item) </entry>
+							<entry> ARRAY[ -1 ] </entry>
+							<entry> One data item returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Retrieve latest data (several data items) </entry>
+							<entry> ARRAY[ -1 ] </entry>
+							<entry> Correct data item returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> V7 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> Positive data version out of bounds </entry>
+							<entry> ARRAY[ 15 ] </entry>
+							<entry> No data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Version outside bounds) </entry>
+							<entry> 2 </entry>
+							<entry> Negative data version out of bounds </entry>
+							<entry> ARRAY[ -15 ] </entry>
+							<entry> No data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry> V8 </entry>
+							<entry> Dataversion </entry>
+							<entry> 1 </entry>
+							<entry> Mixed positive and negative data versions without
+								overlap </entry>
+							<entry> ARRAY[ -1, 2, 5 ] </entry>
+							<entry> All data returned </entry>
+							<entry> Med </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Negative and Positive/Duplication) </entry>
+							<entry> 2 </entry>
+							<entry> Retrieve latest data (one data item) </entry>
+							<entry> ARRAY[ -1, 1, -2, 2, 0 ] </entry>
+							<entry> No duplicate data returned </entry>
+							<entry> Med </entry>
+						</row> 
+					</tbody>
+				</tgroup>
+			</table>
+			
+		</sect2>
+		
+		<sect2>
+			<title>Performance Tests</title>
+			
+			<para>The performance tests are performed in the WDB test environment, defined
+				in [1].</para>
+			
+			<table frame="all">
+				<title>WDB Call Interface Installation Test Cases</title>
+				<tgroup cols="7">
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<colspec align="center"/>
+					<thead>
+						<row>
+							<entry> C# </entry>
+							<entry> Category </entry>
+							<entry> P# </entry>
+							<entry> Partition </entry>
+							<entry> Description </entry>
+							<entry> Expected Result </entry>
+							<entry> Priority </entry>
+						</row>
+					</thead>
+					<tbody>
+						
+						<row>
+							<entry> P1 </entry>
+							<entry> Throughput for a single process </entry>
+							<entry> 1 </entry>
+							<entry> Individual Points </entry>
+							<entry> 1 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Geometry) </entry>
+							<entry> 2 </entry>
+							<entry> Individual Points (Multiple parameters) </entry>
+							<entry> 2 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Collection of Points </entry>
+							<entry> 3 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Individual Polygon (simple) </entry>
+							<entry> 4 </entry>
+							<entry> Polygon with less than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Individual Polygon (complex) </entry>
+							<entry> 5 </entry>
+							<entry> Polygon with greater than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> Multiple Polygons (simple) </entry>
+							<entry> 6 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> Multiple Polygons (complex) </entry>
+							<entry> 7 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 8 </entry>
+							<entry> Entire field </entry>
+							<entry> 8 </entry>
+							<entry> Field retrieved into buffer </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry> P2 </entry>
+							<entry> Throughput for multiple processes </entry>
+							<entry> 1 </entry>
+							<entry> Individual Points </entry>
+							<entry> 1 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Geometry) </entry>
+							<entry> 2 </entry>
+							<entry> Individual Points (Multiple parameters) </entry>
+							<entry> 2 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Collection of Points </entry>
+							<entry> 3 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Individual Polygon (simple) </entry>
+							<entry> 4 </entry>
+							<entry> Polygon with less than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Individual Polygon (complex) </entry>
+							<entry> 5 </entry>
+							<entry> Polygon with greater than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> Multiple Polygons (simple) </entry>
+							<entry> 6 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> Multiple Polygons (complex) </entry>
+							<entry> 7 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry> P3 </entry>
+							<entry> Latency for a single process </entry>
+							<entry> 1 </entry>
+							<entry> Individual Points </entry>
+							<entry> 1 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Geometry) </entry>
+							<entry> 2 </entry>
+							<entry> Individual Points (Multiple parameters) </entry>
+							<entry> 2 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Collection of Points </entry>
+							<entry> 3 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Individual Polygon (simple) </entry>
+							<entry> 4 </entry>
+							<entry> Polygon with less than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Individual Polygon (complex) </entry>
+							<entry> 5 </entry>
+							<entry> Polygon with greater than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> Multiple Polygons (simple) </entry>
+							<entry> 6 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> Multiple Polygons (complex) </entry>
+							<entry> 7 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry> P4 </entry>
+							<entry> Latency for a single process </entry>
+							<entry> 1 </entry>
+							<entry> Individual Points </entry>
+							<entry> 1 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry> (Geometry) </entry>
+							<entry> 2 </entry>
+							<entry> Individual Points (Multiple parameters) </entry>
+							<entry> 2 </entry>
+							<entry> 1000 different points retrieved </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 3 </entry>
+							<entry> Collection of Points </entry>
+							<entry> 3 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 4 </entry>
+							<entry> Individual Polygon (simple) </entry>
+							<entry> 4 </entry>
+							<entry> Polygon with less than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 5 </entry>
+							<entry> Individual Polygon (complex) </entry>
+							<entry> 5 </entry>
+							<entry> Polygon with greater than 10 vertices </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 6 </entry>
+							<entry> Multiple Polygons (simple) </entry>
+							<entry> 6 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						<row>
+							<entry>
+							</entry>
+							<entry>
+							</entry>
+							<entry> 7 </entry>
+							<entry> Multiple Polygons (complex) </entry>
+							<entry> 7 </entry>
+							<entry> Not implemented </entry>
+							<entry> 1 </entry>
+						</row>
+						
+					</tbody>
+				</tgroup>
+			</table>
+			
+		</sect2>
+		
+	</sect1>
+	
+</chapter>

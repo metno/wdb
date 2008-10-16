@@ -1,0 +1,212 @@
+\documentclass[a4paper,11pt]{wdb}
+
+%----------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------
+
+\system{wdbAdmin}
+\title{System Design Specification}
+\author{Vegard Bønes}
+
+\maketitle
+
+%----------------------------------------------------------------------------
+
+\maketoc
+
+%----------------------------------------------------------------------------
+
+\section{Introduction}
+
+This document is the System Design Specification of the various WDB
+Administartion programs.
+
+\subsection{Purpose}
+
+The system design specification provides a comprehensive overview of
+the design of the software system. This is used to ensure agreement
+between the developers of the WDB system. It is also intended to
+make it easier for new developers of WDB to become productive
+developing on the system.
+
+\subsection{Definitions and Terminology}
+
+None.
+
+
+
+%----------------------------------------------------------------------------
+
+\section{System Overview}
+
+
+
+%----------------------------------------------------------------------------
+
+\section{Technical Platform}
+
+The administration software requires the following operating environment:
+
+\begin{itemize}
+\item Hardware: Desktop PC
+\item Operating System: Linux
+\item PostgreSQL client v8.1
+\item libpqxx
+\item Boost
+\end{itemize}
+
+
+
+%----------------------------------------------------------------------------
+
+\section{System Architecture}
+
+The administration module is made so that several administration
+programs may be used. Therefore, presentation is sharply separated
+from business logic and database access.
+
+The following section describes the architecture of the administration systems.
+
+\subsection{User interface}
+
+UI is separated from the rest of the program, and only provides a way
+to interpret a user's desires, and present the result of an operation
+back to the user. No business logic is placed here.
+
+There may exist several user interfaces, but they all use the same set
+of functions. These functions are described below.
+
+\subsubsection{Command line}
+
+This is a user interface, where the user may type commands into a
+terminal, and get results back to stdout.
+
+\subsection{Core}
+
+All operations to be performed by an administration program should use
+the same set of functions. These are here described as the
+administation core. 
+
+
+\subsubsection{Business logic}
+
+The business logic uses resources, such as predefined
+transactions or the grib loader, to perform varoius operations, that
+are required by a user interface.
+
+
+\subsubsection{Database access}
+
+The administration core contains a number of predefined transactions
+for getting various informtaion from the database. These are not ment
+to be used by other components of the system than the administration
+business logic.
+
+
+\subsection{Program Interface}
+
+The various UI frontends to the WDB administration program have
+different ways of presenting their available operations, but they have
+all operations in common. These operations are:
+
+\begin{itemize}
+\item [List keys]
+  Get a list of all keys for the given reference time.
+\item [List fields]
+  Get the number of fields in database, keyed on reference time.
+\item [Display loadable files]
+  Show a list of loadable files, under a given directory.
+\item [Load data]
+  Load the given files or directories into wdb
+\end{itemize}
+
+In addition, varying criteria for what is a loadable file may be set.
+Parameters for database connection may be set, like in any other
+application connecting to WDB.
+
+\subsubsection{Command line}
+
+After having started the program, the user may type commands into the
+shell. These are 
+
+\begin{itemize}
+\item keys - to list keys
+\item list - t olist fields in database
+\item load - to load data into database
+\item show\_ loadable to display loadable files
+\item validator to see or change which file validator is used.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------
+
+\section{Core Design}
+
+The following section describes the core design of the WDB
+administration system.
+
+\subsection{User interface}
+
+\subsubsection{Command line}
+
+The command line based user interface is divided into two parts: Input
+and output.
+
+The input part, the CommandLineInterpretor, interprets commands
+entered onto the command line. The interpretation is done in an
+infinite loop, only terminating when the user has typed ``exit'' into
+the command line.
+
+Once a complete line has been entered by the user, the first word
+on the command line is taken to be a command. This command is checked
+against a command - function object map. In case of a match, the found
+function object is invoked, and otherwise the outputter object is
+requested to display an appropriate error message.
+
+The function objects for performing the various actions are all
+subclasses of the abstract class CommandLineInterpretor::Command,
+which offers two methods: operator() and help(). The former delegates
+performing of the intended command to the outputter. The latter
+provides a short help string specifying the command's function and
+syntax.
+
+The outputting class, AdminCmdLineOutput, is both responsible for
+calling the core's functions, and for presenting the result to the
+user. The class has one method for each provided command line command,
+which will typically send a requst to the core, and thereafter
+displaying the result to the user, using stdout.
+
+Also, the outputting class has a method, info(), which may be used to
+display other messages. This method should be used instead of writing
+directly to stdout.
+
+\subsection{Internal functions}
+
+\subsubsection{Administration operations}
+
+The class AdminOperations provides all functions which should be
+available from any administration program.
+
+The functions mostly do one of three things: Wrap a call to the
+database, check the file system for loadable files, or call an
+external program, such as gribLoad.
+
+The calls to the database are specified separately, in their own
+files. They are run in their own transaction.
+
+
+
+%----------------------------------------------------------------------------
+% Dummy Insert for Possible Appendix
+
+%\appendix
+%\include{app1}
+%\include{app2}
+
+%----------------------------------------------------------------------------
+
+\end{document}
+
+

@@ -1,0 +1,103 @@
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+## wdb - weather and water data storage
+##
+## Copyright (C) 2007 met.no
+##
+##  Contact information:
+##  Norwegian Meteorological Institute
+##  Box 43 Blindern
+##  0313 OSLO
+##  NORWAY
+##  E-mail: wdb@met.no
+##
+##  This is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#!/bin/sh
+# Script Information
+export TESTCASE="F004_03"
+export TEST_DESCRIPTION="Load a field without a placedefinition in the database (force load)"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+
+# Test Environment
+source $TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+    --xml)
+		XML_OPT="-x";;
+    -x)
+		XML_OPT="-x";;
+esac
+
+# Timing
+startTime=`date +%s%N`
+# Prepare Test
+TESTTIME=$(date +%FT12:00)
+EXPECTED_LOG_MESSAGE=
+EXECUTE="${GRIBLOAD_PATH}/gribLoad ${TEST_FILE}"
+
+# Clean out database
+source ${TEST_PATH}/tearDown.sh
+# Deleting "TestGrid" information
+$PSQL  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp -q <<EOF
+select test.removeplacedef( );
+EOF
+
+# Generate Test Data
+rm -f ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+
+#Execute Test 
+$EXECUTE --logfile $LOGFILE --loadPlaceDefinition
+
+# Check Result
+if ! $PSQL -Atc "select count(*) from test.oidvalue where dataprovidername='test gribload'" | grep -qE "^1$"
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Could not identify row supposed to be inserted in the database\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION - could not find data"
+	fi
+	exit 1
+	$PSQL -q -Atc "select test.insertplacedef()"  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
+    exit 1
+fi
+if grep -q -E "WARN" $LOGFILE;
+then
+    # The log contains error messages
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"There are errors/warnings in the log file\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	fi
+	$PSQL -q -Atc "select test.insertplacedef()"  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
+    exit 1
+fi
+
+# Clean up
+$PSQL -q  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp -Atc "select test.removeInsertedplacedef()"
+source ${TEST_PATH}/tearDown.sh
+$PSQL -q  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp -Atc "select test.insertplacedef()"
+
+# Exit
+endTime=`date +%s%N`
+totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+if test "$XML_OPT" = "-x"; then
+	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
+else
+	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+fi
+exit 0

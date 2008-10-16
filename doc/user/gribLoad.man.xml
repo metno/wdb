@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<refentry id='gribLoad1'>
+	
+	<refmeta>
+		<refentrytitle>gribLoad</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+	
+	<refnamediv>
+		<refname>gribLoad</refname>
+		<refpurpose>Load a &grib; file into the WDB database. It is a part of the WDB
+			system.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>gribLoad</command>
+			<arg choice='opt'>OPTIONS</arg>
+			<arg choice='req'>GRIBFILE1</arg>
+			<arg choice='opt'>GRIBFILE2... GRIBFILEN</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>Description</title>
+		
+		<para>gribLoad loads the contents of the given &grib; file(s) into the wdb database. The
+			database must be up and running for this program to work, unless one of the options
+			--help or --list have been given on the command line.</para>
+		
+		<para>Normally, a grib file will only be loaded into the database if it already has the
+			file's area in it's database. If you want to load a file with an unknown field
+			definition, you must sepcify the option --loadPlaceDefinition. This will load
+			the &grib; file's place definition into the database before loading
+			data.</para>
+		
+	</refsect1>
+	
+	<refsect1>
+		<title>Options</title>
+		
+		<variablelist>
+			<?dbfo list-presentation="blocks"?>
+			
+			<varlistentry>
+				<term>--help</term>
+				<listitem>
+					<para>Produces the help message and then exits.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--version</term>
+				<listitem>
+					<para>Produce version information and then exits.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--logfile FILENAME.LOG</term>
+				<listitem>
+					<para>Set output logfile. The default is to print to stdout</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--loglevel LEVEL</term>
+				<listitem>
+					<para>Sets the logging level, from 1 (most) to 5 (least)</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-l</term>
+				<term>--list</term>
+				<listitem>
+					<para>This lists the contents of the file, instead of inserting the
+						data into the database</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-m M</term>
+				<term>--loadMode=M</term>
+				<listitem>
+					<para>Set the load mode to M. The loading mode determines which
+						codespace is used to decode the data internally in the database.
+						The default loading mode is 1; the standard english codespace used
+						by met.no. 0 is the testing codespace, used by (almost) all of the
+						test code in WDB.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--time</term>
+				<listitem>
+					<para>Print the time used by the gribLoad process.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--loadPlaceDefinition</term>
+				<listitem>
+					<para>Loads the place definition of the &grib; file into the database,
+						if it does not already exist there. The default behavior of the
+						gribLoad application is to report an error if the place definition
+						(grid) of the file being loaded is not in the database.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--overwrite</term>
+				<listitem>
+					<para>Overwrites existing data in the database. The default behavior
+						of the gribLoad application is to refuse to load duplicate
+						data.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-d DBNAME</term>
+				<term>--database=DBNAME</term>
+				<listitem>
+					<para>Specify the database name to connect to (e.g., wdb).</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-h DBHOST</term>
+				<term>--host=DBHOST</term>
+				<listitem>
+					<para>Specify the database host to connect to (e.g.,
+						somehost.met.no).</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-u DBUSER</term>
+				<term>--user=DBUSER</term>
+				<listitem>
+					<para>Specify the WDB user to connect as. The database user must have
+						access to the wdb_grib role (this is will usually be the case if the
+						gribLoad process is being run by the creator of the
+						database).</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>-p DBPORT</term>
+				<term>--port=DBPORT</term>
+				<listitem>
+					<para>Specify the database port to connect to (e.g., 5432).</para>
+				</listitem>
+			</varlistentry>
+			
+		</variablelist>
+		
+	</refsect1>
+	
+	<refsect1>
+		<title>Exit Status</title>
+		
+		<para>gribLoad returns 0 to the shell if it finished normally and 1 if a fatal error
+			occured during loading (out of memory, files not found, database not found,
+			etc.). Note that not being able to load a field is not considered a fatal error; in
+			such cases, gribLoad simply logs a warning or error to the log and tries to load the
+			next field. </para>
+		
+	</refsect1>
+	
+</refentry>

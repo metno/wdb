@@ -1,0 +1,90 @@
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+## wdb - weather and water data storage
+##
+## Copyright (C) 2007 met.no
+##
+##  Contact information:
+##  Norwegian Meteorological Institute
+##  Box 43 Blindern
+##  0313 OSLO
+##  NORWAY
+##  E-mail: wdb@met.no
+##
+##  This is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#!/bin/sh
+# Script Information
+export TESTCASE="F001_02"
+export TEST_DESCRIPTION="Hirlam 10/p2 Metadata / Met.no"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/metadata
+
+# Test Environment
+source $TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+    --xml)
+		XML_OPT="-x";;
+    -x)
+		XML_OPT="-x";;
+esac
+
+# Timing
+startTime=`date +%s%N`
+# Prepare Test
+EXPECTED_LOG_MESSAGE=
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --name ${SRC_PATH}/test/install/metadata/${TESTCASE_FILE}.grib"
+OUTPUT_FILE=$TMP_PATH/$TESTCASE_FILE.tmp
+OUTPUT="$PSQL -f $TEST_PATH/caseF001.sql -o $OUTPUT_FILE -q"
+rm -f  $LOGFILE
+
+# Execute Test Hirlam10.p2
+source ${TEST_PATH}/tearDown.sh
+$EXECUTE --logfile $LOGFILE
+$OUTPUT    
+
+# Check Results Hirlam10.p2
+if !( diff $OUTPUT_FILE ${SRC_PATH}/test/install/metadata/$TESTCASE_FILE.result )
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Rows in database differ from facit\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION  (Rows in database differ from facit)"
+	fi
+    exit 1
+fi
+if [ -s $LOGFILE ]
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Unexpected printouts in the log\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION  (Log printouts)"
+	fi
+    exit 1
+fi
+
+# Clean up
+source ${TEST_PATH}/tearDown.sh
+
+# Exit
+endTime=`date +%s%N`
+totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+if test "$XML_OPT" = "-x"; then
+	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
+else
+	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+fi
+exit 0
