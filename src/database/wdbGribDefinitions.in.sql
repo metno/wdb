@@ -37,6 +37,7 @@ CREATE TABLE gribload.valueparameterxref (
     gribparameterthresholdscale integer NOT NULL,
     griblevelparameter integer NOT NULL,
     valueparameterid integer NOT NULL,
+	valueparameterunit character varying(80) NOT NULL,
     loadvalueflag boolean NOT NULL
 );
 
@@ -152,6 +153,12 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE 'plpgsql' STRICT VOLATILE;
 
+
+CREATE TYPE gribload.valueparameter AS (
+	valueparameterid int,
+	valueparameterunit text
+);
+
 --
 -- ValueParameter XREF
 --
@@ -167,13 +174,13 @@ gribload.getvalueparameter(
 	gribPTS integer,
 	gribLevel integer
 )
-RETURNS SETOF integer AS
+RETURNS gribload.valueparameter AS
 $BODY$
 DECLARE
-	ret integer;
+	ret gribload.valueparameter;
 	load boolean;
 BEGIN
-	SELECT valueparameterid, loadvalueflag INTO ret, load
+	SELECT valueparameterid, valueparameterunit, loadvalueflag INTO ret.valueparameterid, ret.valueparameterunit, load
 	FROM gribload.valueparameterxref
 	WHERE
 		generatingcenterid = genCenter AND
@@ -187,12 +194,10 @@ BEGIN
 		GribLevelParameter = gribLevel;
 	-- Check load
 	IF load = false THEN
-		RETURN NEXT -1;
+		ret.valueparameterid = -1;
+		RETURN ret;
 	END IF;
-	IF load = true THEN
-		RETURN NEXT ret;
-	END IF;
-	RETURN;
+	RETURN ret;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STRICT STABLE;

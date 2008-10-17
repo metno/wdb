@@ -184,9 +184,10 @@ GribDatabaseConnection::getGrib1Parameter( int generatingCenter,
 									       int levelParameter )
 {
 	int ret;
+	std::string retUnit;
 	try {
 		perform(
-			ReadValueParameter( ret, generatingCenter, codeTable2Version, gribParameter, timeRange,
+			ReadValueParameter( ret, retUnit, generatingCenter, codeTable2Version, gribParameter, timeRange,
   							    parameterThresholdIndicator, parameterThresholdLower, parameterThresholdUpper,
 							    parameterThresholdScale, levelParameter ),
 			1

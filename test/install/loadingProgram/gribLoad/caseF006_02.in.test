@@ -65,7 +65,7 @@ then
 	else
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
-    source ${builddir}/test/loadingProgram/gribLoad/tearDown.sh
+    source $TEST_PATH/tearDown.sh
     exit 1
 fi
 if grep -q -E "WARN" $LOGFILE;

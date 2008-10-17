@@ -19,3 +19,5 @@ square slope|0|1|0|1
 per second|0|1|0|1
 square metre per square second|0|1|0|1
 degree celsius|273.15|1|0|1
+kilowatt second per square metre|0|1|0|1000
+watt second per square metre|0|1|0|1

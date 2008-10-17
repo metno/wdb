@@ -85,9 +85,10 @@ public:
 	 * @param	pTS			Query parameter
 	 * @param   lP 			Query parameter
 	 */
-	ReadValueParameter(int & ret, int gC, int cT2, int gP, int tR, int pTI, int pTL, int pTU, int pTS, int lP) :
+	ReadValueParameter(int & ret, std::string & unit, int gC, int cT2, int gP, int tR, int pTI, int pTL, int pTU, int pTS, int lP) :
     	pqxx::transactor<>("ReadValueParameter"),
     	return_(ret),
+    	unit_(unit),
 		generatingCenter_(gC),
 		codeTable2Version_(cT2),
 		gribParameter_(gP),
@@ -98,6 +99,7 @@ public:
 		parameterThresholdScale_(pTS),
 		levelParameter_(lP)
     {
+    	// NOOP
     }
 
 	/**
@@ -123,30 +125,31 @@ public:
   	void on_commit()
   	{
   		if (R.size() == 1) {
-  			R.at(0).at(0).to( return_ );
-            if ( return_ < 0 )
-            {
-                WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.parameter" );
-                log.infoStream() << "Parameter is on database exclusion list, and should not be loaded";
-                throw WdbDoNotLoadException( "Should not load this parameter", __func__ );
-            }
-  			return;
+  			if (!R.at(0).at(0).is_null()) {
+				R.at(0).at(0).to( return_ );
+				R.at(0).at(1).to( unit_ );
+				if ( return_ < 0 )
+				{
+					WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.parameter" );
+					log.infoStream() << "Parameter is on database exclusion list, and should not be loaded";
+					throw WdbDoNotLoadException( "Should not load this parameter", __func__ );
+				}
+				return;
+  			}
   		}
-  		else {
-			WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.parameter" );
-        	log.warnStream() << "Transaction " << Name() << " returned "
-					  		  << R.size() << " rows."
-					  		  << " GeneratingCenter: " << generatingCenter_
-					  		  << " CodeTable2Version: " << codeTable2Version_
-					  		  << " GribParameter: " << gribParameter_
-					  		  << " TimeRange: " << timeRange_
-					  		  << " ThresholdIndicator: " << parameterThresholdIndicator_
-					  		  << " ThresholdLower: " << parameterThresholdLower_
-					  		  << " ThresholdUpper: " << parameterThresholdUpper_
-					  		  << " ThresholdScale: " << parameterThresholdScale_
-					  		  << " Level Parameter: " << levelParameter_;
-			throw WdbException("Could not identify parameter", __func__);
-  		}
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.parameter" );
+		log.warnStream() << "Transaction " << Name() << " returned "
+						  << R.size() << " rows."
+						  << " GeneratingCenter: " << generatingCenter_
+						  << " CodeTable2Version: " << codeTable2Version_
+						  << " GribParameter: " << gribParameter_
+						  << " TimeRange: " << timeRange_
+						  << " ThresholdIndicator: " << parameterThresholdIndicator_
+						  << " ThresholdLower: " << parameterThresholdLower_
+						  << " ThresholdUpper: " << parameterThresholdUpper_
+						  << " ThresholdScale: " << parameterThresholdScale_
+						  << " Level Parameter: " << levelParameter_;
+		throw WdbException("Could not identify parameter", __func__);
   	}
 
 	/**
@@ -173,6 +176,8 @@ public:
 private:
 	/// The reference used to store the result returned to the calling class
 	int & return_;
+	/// The unit of the value parameter
+	std::string & unit_;
 	/// The result returned by the query
     pqxx::result R;
 	/// The generating centre of the GRIB field

@@ -63,23 +63,29 @@ namespace wdb {
 namespace database {
 
 /**
- * Transactor to identify the Spatial Reference Id connected to a given PROJ definition.
- * If the SRID is not identified, the transactor will insert the spatial reference into
- * the database, and return the value given.
+ * Transactor to retrieve the SI Unit conversion information required for a given
+ * unit.
  */
-class ReadSrid : public pqxx::transactor<>
+class ReadUnit : public pqxx::transactor<>
 {
 public:
 	/**
 	 * Default constructor.
-	 * @param	ret			return value (numerical srid)
+	 * @param	term1		term 1
+	 * @param	coeff1		coefficient 1
+	 * @param	term2		term 2
+	 * @param	coeff2		coefficient 2
 	 * @param	srid		Descriptive PROJ string (srid)
 	 */
-	ReadSrid(long int & ret, const std::string srid) :
-    	pqxx::transactor<>("ReadSrid"),
-    	return_(ret),
-    	srid_(srid)
+	ReadUnit(float * coeff1, float * term1, float * coeff2, float * term2, const std::string unit) :
+    	pqxx::transactor<>("ReadUnit"),
+    	term1_(term1),
+    	term2_(term2),
+    	coeff1_(coeff1),
+    	coeff2_(coeff2),
+    	unit_(unit)
     {
+    	// NOOP
     }
 
 	/**
@@ -87,37 +93,24 @@ public:
 	 */
 	void operator()(argument_type &T)
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wdb.loaderBaseLoad.dataPlaceId" );
-  		log.infoStream() << "Attempting to identify srid: " << srid_;
-		R = T.prepared("ReadSrid")
-					  (srid_).exec();
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.unit" );
+  		log.infoStream() << "Checking unit conversion information for: " << unit_;
+		R = T.prepared("ReadUnitData")
+					  (unit_).exec();
   		if ( R.size() == 1 ) {
-  			WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.dataPlaceId" );
-			if ( R.at(0).at(0).is_null() ) {
-	 			// If we did not find an srid, insert
-	  			R = T.exec("SELECT loaderBase.maxsrid()");
-	  			if ( R.size() == 1 ) {
-	  				R.at(0).at(0).to( return_ );
-	  			}
-		  		log.infoStream() << "Did not find original srid in spatial_ref_sys";
-		       	if (return_ < getMinimumSrid()) return_ = getMinimumSrid();
-		       	return_ ++;
-				R = T.prepared("WriteSrid")
-							  (return_)
-							  ("Automatically inserted srid")
-							  (srid_).exec();
-				log.infoStream() << "Inserted new srid into spatial_ref_sys: " << return_;
-				R = T.prepared("ReadSrid")
-							  (srid_).exec();
+			if ( R.at(0).at(2).is_null() ) {
+				log.infoStream() << "Did not find any conversion data";
+				throw WdbEmptyResultException("Unit did not have any conversion data", __func__ );
 			}
 			else {
-				R.at(0).at(0).to( return_ );
-	 			log.infoStream() << "Identified original srid: " << return_;
-			}
+  				R.at(0).at(2).to( *coeff1_ );
+  				R.at(0).at(3).to( *term1_ );
+  				R.at(0).at(4).to( *coeff2_ );
+  				R.at(0).at(5).to( *term2_ );
+	  		}
   		}
   		if ( R.size() != 1 ) {
-  			// Technically, it should be impossible for this to happen
-  	        throw WdbException("Transaction ReadSrid returned a NULL value. This should not be possible.", __func__);
+  	        throw WdbException("Transaction ReadUnit did not return any value. This suggests an error in the metadata", __func__);
   		}
 	}
 
@@ -135,7 +128,7 @@ public:
 	 */
   	void on_abort(const char Reason[]) throw ()
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.dataPlaceId" );
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.unit" );
 		log.errorStream() << "Transaction " << Name() << " failed "
 				  		  << Reason;
   	}
@@ -146,17 +139,23 @@ public:
 	 */
   	void on_doubt() throw ()
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.dataPlaceId" );
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.unit" );
 		log.errorStream() << "Transaction " << Name() << " in indeterminate state";
   	}
 
 private:
-	/// Place Id to be returned
-	long int & return_;
+	// Term 1
+	float * term1_;
+	// Coefficient 1
+	float * coeff1_;
+	// Term 2
+	float * term2_;
+	// Coefficient 2
+	float * coeff2_;
 	/// The result returned by the query
     pqxx::result R;
-	/// PROJ string (srid)
-	std::string srid_;
+	/// Value unit
+	std::string unit_;
 
 };
 

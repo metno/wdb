@@ -7,6 +7,7 @@ libwdbLoaderBase_la_SOURCES = \
 	src/loadingProgram/loaderBase/transactors/loaderTransactorPlaceDefinition.h \
 	src/loadingProgram/loaderBase/transactors/loaderTransactorSrid.h \
 	src/loadingProgram/loaderBase/transactors/loaderTransactorValue.h \
+	src/loadingProgram/loaderBase/transactors/loaderTransactorUnit.h \
 	src/loadingProgram/loaderBase/transactors/loaderTransactorWci.h
 	
 pkginclude_HEADERS += \

@@ -30,7 +30,7 @@ surface tension|0|1|-2|0|0|0|0
 thermal conductivity|1|1|-3|0|0|-1|0
 velocity|1|0|-1|0|0|0|0
 volume|3|0|0|0|0|0|0
-irradiance|0|1|3|0|0|0|0
+irradiance|0|1|-3|0|0|0|0
 potential vorticity|2|-1|-1|0|0|1|0
 angular momentum|2|0|-1|0|0|0|0
 surface density change|-2|1|-1|0|0|0|0

@@ -31,6 +31,7 @@
 #include "transactors/loaderTransactorWci.h"
 #include "transactors/loaderTransactorPlaceDefinition.h"
 #include "transactors/loaderTransactorSrid.h"
+#include "transactors/loaderTransactorUnit.h"
 #include <wdbEmptyResultException.h>
 #include <pqxx/pqxx>
 #include <stdexcept>
@@ -248,26 +249,24 @@ LoaderDatabaseConnection::getSrid( const std::string & projStr )
 
 
 void
-LoaderDatabaseConnection::readUnit( const std::string & unit, float coeff1, float term1,
-								    float coeff2, float term2 )
+LoaderDatabaseConnection::readUnit( const std::string & unit, float * coeff1, float * term1,
+								    float * coeff2, float * term2 )
 {
-	/*
 	try {
 		perform(
-			ReadSrid( ret, projStr ),
+			ReadUnit( coeff1, term1, coeff2, term2, unit ),
 			1
 		);
 	}
 	catch (const WdbEmptyResultException &e)
 	{
-		throw e;
+		// NOOP
 	}
 	catch (const exception &e)
 	{
 		// All exceptions thrown by libpqxx are derived from std::exception
 	    throw WdbException(e.what(), __func__);
 	}
-	return ret;*/
 }
 
 }

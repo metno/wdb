@@ -363,14 +363,14 @@ GribField::getParameter( GribDatabaseConnection & db, std::vector <wdb::database
 	 * if (EPS) then...
 	 */
 	int ret = db.getGrib1Parameter( generatingCenter,
-	                               codeTableVersion,
-	                               parameter,
-	                               timeRange,
-	                               parameterThresholdIndicator,
-	                               parameterThresholdLower,
-	                               parameterThresholdUpper,
-	                               parameterThresholdScale,
-	                               lparameter );
+	                                codeTableVersion,
+	                                parameter,
+	                                timeRange,
+	                                parameterThresholdIndicator,
+	                                parameterThresholdLower,
+	                                parameterThresholdUpper,
+	                                parameterThresholdScale,
+	                                lparameter );
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
     log.debugStream() << "Got value parameterid: " << ret;
 	// Check for additional levels
@@ -423,7 +423,6 @@ GribField::getLevelTo()
     log.debugStream() << "Got LevelTo: " << level;
 	return level;
 }
-
 
 int
 GribField::getDataVersion()
@@ -527,8 +526,6 @@ GribField::gridToLeftLowerHorizontal( )
             throw WdbException( "Unsupported field conversion", __func__ );
     }
 }
-
-
 
 
 /**

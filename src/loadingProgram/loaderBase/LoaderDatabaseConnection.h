@@ -145,8 +145,8 @@ public:
      * @param	coeff2		Second coefficient of conversion
      * @param	term2		Second term of conversion
      */
-    void readUnit(const std::string & projStr, float coeff1, float term1,
-				 float coeff2, float term2);
+    void readUnit(const std::string & projStr, float * coeff1, float * term1,
+				 float * coeff2, float * term2);
 };
 
 }
