@@ -103,10 +103,17 @@ void GribGridDefinition::setup()
     	throw WdbException("Unrecognized scan mode", __func__);
     GridGeometry::Orientation o = f->second;
 
+
 	long iNumber = gribHandleReader_->getLong("numberOfPointsAlongAParallel", __func__);
 	long jNumber = gribHandleReader_->getLong("numberOfPointsAlongAMeridian", __func__);
 	double iIncrement = gribHandleReader_->getDouble("iDirectionIncrementInDegrees", __func__);// * DEG_TO_RAD;
+	if ( gribHandleReader_->getLong("iScansNegatively", __func__) )
+		iIncrement *= -1;
+
 	double jIncrement = gribHandleReader_->getDouble("jDirectionIncrementInDegrees", __func__);// * DEG_TO_RAD;
+	if ( ! gribHandleReader_->getLong("jScansPositively", __func__) )
+		jIncrement *= -1;
+
 	double startLatitude = gribHandleReader_->getDouble("latitudeOfFirstGridPointInDegrees", __func__);// * DEG_TO_RAD;
 	double startLongitude = gribHandleReader_->getDouble("longitudeOfFirstGridPointInDegrees", __func__);// * DEG_TO_RAD;
 
