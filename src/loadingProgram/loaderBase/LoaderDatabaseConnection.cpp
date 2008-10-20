@@ -78,7 +78,7 @@ LoaderDatabaseConnection::LoaderDatabaseConnection(const std::string & target, c
 
     // Statement insertSrid
     prepare("ReadUnitData",
-            "SELECT loaderBase.unitconversion ( $1 )" )
+            "SELECT * FROM loaderBase.unitconversion ( $1 )" )
            ("varchar", treat_direct );
 
     // Statement Insert value
@@ -249,12 +249,11 @@ LoaderDatabaseConnection::getSrid( const std::string & projStr )
 
 
 void
-LoaderDatabaseConnection::readUnit( const std::string & unit, float * coeff1, float * term1,
-								    float * coeff2, float * term2 )
+LoaderDatabaseConnection::readUnit( const std::string & unit, float * coeff, float * term )
 {
 	try {
 		perform(
-			ReadUnit( coeff1, term1, coeff2, term2, unit ),
+			ReadUnit( coeff, term, unit ),
 			1
 		);
 	}

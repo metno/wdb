@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -36,35 +36,35 @@
  * @addtogroup feltload
  * @{
  */
- 
-/** 
+
+/**
  * @file
- * Definition and implementation of the parameter retrieval transactor used in 
+ * Definition and implementation of the parameter retrieval transactor used in
  * the FeltLoad application.
  */
-  
+
 // PROJECT INCLUDES
 #include <wdbException.h>
 #include <wdbDoNotLoadException.h>
 #include <wdbLogHandler.h>
-#include <WdbLevel.h> 
- 
+#include <WdbLevel.h>
+
 // SYSTEM INCLUDES
 #include <pqxx/transactor>
 #include <pqxx/result>
 #include <iostream>
 #include <string>
 #include <vector>
- 
+
 // FORWARD REFERENCES
 //
 
 namespace wdb {
-	
+
 namespace database {
 
 /**
- * Transactor to identify parameter information in WDB, given a set of FELT parameter 
+ * Transactor to identify parameter information in WDB, given a set of FELT parameter
  * codes. It returns the valueparameterid.
  *
  * \see FeltDatabaseConnection
@@ -80,17 +80,18 @@ public:
 	 * @param	fN1			Query parameter
 	 * @param	fN2			Query parameter
 	 */
-	ReadValueParameter( int & ret, int fP, int fL, int fN1, int fN2 ) :
+	ReadValueParameter( int & ret, std::string & unit, int fP, int fL, int fN1, int fN2 ) :
     	pqxx::transactor<>("ReadValueParameter"),
     	return_(ret),
+    	unit_(unit),
 		feltParam_(fP),
 		feltLevel_(fL),
 		feltN1_(fN1),
-		feltN2_(fN2)		
+		feltN2_(fN2)
     {
     	// NOOP
     }
-	
+
 	/**
 	 * Functor. The transactors functor executes the query.
 	 */
@@ -102,7 +103,7 @@ public:
 					  (feltN1_)
 					  (feltN2_).exec();
 	}
-  
+
 	/**
 	 * Commit handler. This is called if the transaction succeeds.
 	 */
@@ -110,6 +111,7 @@ public:
   	{
   		if (R.size() == 1) {
   			R.at(0).at(0).to( return_ );
+  			R.at(0).at(1).to( unit_ );
             if ( return_ < 0 )
             {
                 WDB_LOG & log = WDB_LOG::getInstance( "wdb.feltLoad.parameter" );
@@ -122,11 +124,11 @@ public:
 			WDB_LOG & log = WDB_LOG::getInstance( "wdb.feltLoad.parameter" );
         	log.warnStream() << "Transaction " << Name() << " returned "
 					  		  << R.size() << " rows."
-					  		  << " Felt Param: " << feltParam_ 
-					  		  << " Felt Level: " << feltLevel_ 
+					  		  << " Felt Param: " << feltParam_
+					  		  << " Felt Level: " << feltLevel_
 					  		  << " FeltN1: " << feltN1_
 					  		  << " FeltN2: " << feltN2_;
-			throw WdbException("Could not identify parameter", __func__); 
+			throw WdbException("Could not identify parameter", __func__);
   		}
   	}
 
@@ -154,6 +156,8 @@ public:
 private:
 	/// The reference used to store the result returned to the calling class
 	int & return_;
+	/// The unit of the parameter
+	std::string & unit_;
 	/// The result returned by the query
     pqxx::result R;
 	/// The FELT field parameter
@@ -164,7 +168,7 @@ private:
 	int feltN1_;
 	/// FELT Niveau 2
 	int feltN2_;
-  	
+
 };
 
 
@@ -174,7 +178,7 @@ private:
 
 /**
  * @}
- * 
+ *
  * @}
  */
 

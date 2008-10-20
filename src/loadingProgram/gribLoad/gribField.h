@@ -120,6 +120,10 @@ private:
     bool loadPlaceDef_;
     /// The reference time of the GRIB field
     boost::posix_time::ptime referenceTime_;
+    /// The value parameter unit
+    std::string valueUnit_;
+    /// The level parameter unit
+    std::string levelUnit_;
     /// A pointer to the array of values of the GRIB field
     double * values_;
     /// The number of value elements (size of values_ array)
@@ -173,12 +177,12 @@ private:
      * Return the Level From of the field
      * @return LevelFrom
      */
-    double getLevelFrom();
+    double getLevelFrom( database::GribDatabaseConnection & db );
     /**
      * Return the Level To of the field
      * @return LevelTo
      */
-    double getLevelTo();
+    double getLevelTo( database::GribDatabaseConnection & db );
     /**
      * Return the Valid Time From of the field
      * @return ValidTimeFrom
@@ -193,6 +197,10 @@ private:
 	 * Retrieve the values from the file into an array pointed to by values_
 	 */
     void retrieveValues();
+	/**
+	 * Convert the values_ depending on the value parameter unit
+	 */
+    void convertValues( database::GribDatabaseConnection & db );
     /**
      * Convert values grid to LeftUpperHorizontal Scan mode
      */

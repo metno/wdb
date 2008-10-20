@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -36,33 +36,33 @@
  * @addtogroup feltload
  * @{
  */
- 
-/** 
+
+/**
  * @file
- * Definition and implementation of level parameter retrieval transactor used in 
+ * Definition and implementation of level parameter retrieval transactor used in
  * the GribLoad application.
  */
-  
+
 // PROJECT INCLUDES
 #include <wdbException.h>
 #include <wdbDoNotLoadException.h>
 #include <wdbLogHandler.h>
- 
+
 // SYSTEM INCLUDES
 #include <pqxx/transactor>
 #include <pqxx/result>
 #include <iostream>
 #include <string>
- 
+
 // FORWARD REFERENCES
 //
 
 namespace wdb {
-	
+
 namespace database {
 
 /**
- * Transactor to identify level parameter information in WDB, given a set of GRIB 
+ * Transactor to identify level parameter information in WDB, given a set of GRIB
  * level parameter codes. It returns a WdbParameter struct.
  *
  * \see feltDatabaseConnection
@@ -76,15 +76,16 @@ public:
 	 * @param	fP			Query parameter
 	 * @param	fN1			Query parameter
 	 */
-	ReadLevelParameter( int & ret, int fP, int fN1 ) :
+	ReadLevelParameter( int & ret, std::string & levelUnit, int fP, int fN1 ) :
     	pqxx::transactor<>("ReadLevelParameter"),
     	return_(ret),
+    	levelUnit_(levelUnit),
 		feltLevelParameter_(fP),
 		feltNiveau1_(fN1)
     {
     	// NOOP
     }
-	
+
 	/**
 	 * Functor. The transactors functor executes the query.
 	 */
@@ -94,14 +95,15 @@ public:
 					  (feltLevelParameter_)
 					  (feltNiveau1_).exec();
 	}
-  
+
 	/**
 	 * Commit handler. This is called if the transaction succeeds.
 	 */
   	void on_commit()
   	{
-  		if (R.size() == 1) {	
+  		if (R.size() == 1) {
   			R.at(0).at(0).to( return_ );
+  			R.at(0).at(1).to( levelUnit_ );
             if ( return_ < 0 )
             {
                 WDB_LOG & log = WDB_LOG::getInstance( "wdb.feltLoad.levelparameter" );
@@ -115,8 +117,8 @@ public:
         	log.warnStream() << "Transaction " << Name() << " returned "
 					  		  << R.size() << " rows."
 					  		  << " LevelParameter: " << feltLevelParameter_
-					  		  << " Niveau1: " << feltNiveau1_; 
-			throw WdbException("Could not identify level parameter", __func__); 
+					  		  << " Niveau1: " << feltNiveau1_;
+			throw WdbException("Could not identify level parameter", __func__);
   		}
   	}
 
@@ -144,13 +146,15 @@ public:
 private:
 	/// The reference used to store the result returned to the calling class
 	int & return_;
+	/// The level unit
+	std::string & levelUnit_;
 	/// The result returned by the query
     pqxx::result R;
 	/// The FELT level parameter
 	int feltLevelParameter_;
 	/// Niveau1 of FELT
 	int feltNiveau1_;
-    	    
+
 };
 
 } // namespace database
@@ -159,7 +163,7 @@ private:
 
 /**
  * @}
- * 
+ *
  * @}
  */
 

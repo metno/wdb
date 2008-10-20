@@ -1,11 +1,11 @@
-GRIB LevelParameter|LevelParameterId|Load Flag
-254|0|f
-100|1|t
-101|1|t
-102|2|t
-103|2|t
-104|2|t
-105|3|t
-109|4|t
-201|5|t
-1|6|t
+GRIB LevelParameter|LevelParameterId|LevelParameterUnit|Load Flag
+254|0|none|f
+100|1|hectopascal|t
+101|1|kilopascal|t
+102|2|none|t
+103|2|metre|t
+104|2|hectometre|t
+105|3|metre|t
+109|4|none|t
+201|5|none|t
+1|6|none|t

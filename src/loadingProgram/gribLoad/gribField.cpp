@@ -170,8 +170,8 @@ GribField::storeInDatabase( database::GribDatabaseConnection & db, bool listOpt 
         vector <WdbLevel> levels;
 		int valueparameter = getParameter( db, levels );
 		int levelParameter = getLevelParameter( db );
-		double levelFrom = getLevelFrom();
-		double levelTo = getLevelTo();
+		double levelFrom = getLevelFrom( db );
+		double levelTo = getLevelTo( db );
 		int levelIndeterminateCode = getDefaultLevelIndeterminateCode();
 		levels.push_back(WdbLevel(levelParameter, levelFrom, levelTo, levelIndeterminateCode));
         int dataVersion = getDataVersion();
@@ -196,6 +196,8 @@ GribField::storeInDatabase( database::GribDatabaseConnection & db, bool listOpt 
 
 		}
 		else {
+			// Convert/verify values to SI unit
+			convertValues( db );
 			// Store the Values
 			db.loadField(dataProvider,
 						 placeId,
@@ -362,7 +364,8 @@ GribField::getParameter( GribDatabaseConnection & db, std::vector <wdb::database
 	 * @todo MiA 20070507 EPS Parameter compatibility
 	 * if (EPS) then...
 	 */
-	int ret = db.getGrib1Parameter( generatingCenter,
+	int ret = db.getGrib1Parameter( valueUnit_,
+									generatingCenter,
 	                                codeTableVersion,
 	                                parameter,
 	                                timeRange,
@@ -373,6 +376,7 @@ GribField::getParameter( GribDatabaseConnection & db, std::vector <wdb::database
 	                                lparameter );
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
     log.debugStream() << "Got value parameterid: " << ret;
+    log.debugStream() << "Got value parameter unit: " << valueUnit_;
 	// Check for additional levels
 	db.getAdditionalLevels( levels,
 							0,
@@ -394,9 +398,10 @@ GribField::getLevelParameter( GribDatabaseConnection & db )
 {
 	long int parameter = 0;
 	errorCheck( grib_get_long( gribHandle_, "indicatorOfTypeOfLevel",  &parameter), __func__ );
-    int ret = db.getGrib1LevelParameter( parameter );
+    int ret = db.getGrib1LevelParameter( levelUnit_, parameter );
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
     log.debugStream() << "Got level parameterid: " << ret;
+    log.debugStream() << "Got level parameter unit: " << levelUnit_;
     return ret;
 }
 
@@ -405,21 +410,35 @@ GribField::getLevelParameter( GribDatabaseConnection & db )
  * top and bottom layers
  */
 double
-GribField::getLevelFrom()
+GribField::getLevelFrom( GribDatabaseConnection & db )
 {
 	double level = 0.0;
 	errorCheck( grib_get_double( gribHandle_, "level",  &level), __func__ );
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+    if ( levelUnit_.size() == 0 ) {
+    	log.warnStream() << "Could not identify the level unit!";
+    	return level;
+    }
+    float coeff = 1.0, term = 0.0;
+    db.readUnit( levelUnit_, &coeff, &term );
+	level = ( ( level * coeff ) + term );
     log.debugStream() << "Got LevelFrom: " << level;
 	return level;
 }
 
 double
-GribField::getLevelTo()
+GribField::getLevelTo( GribDatabaseConnection & db )
 {
 	double level = 0.0;
 	errorCheck( grib_get_double( gribHandle_, "level",  &level), __func__ );
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+    if ( levelUnit_.size() == 0 ) {
+    	log.warnStream() << "Could not identify the level unit!";
+    	return level;
+    }
+    float coeff = 1.0, term = 0.0;
+    db.readUnit( levelUnit_, &coeff, &term );
+	level = ( ( level * coeff ) + term );
     log.debugStream() << "Got LevelTo: " << level;
 	return level;
 }
@@ -467,8 +486,24 @@ GribField::retrieveValues()
     	log.errorStream() << errorMessage << " Grid: " << sizeOfValues_ << " Defined: " << (grid_.getINumber() * grid_.getJNumber());
     	throw WdbException(errorMessage, __func__);
     }
+}
 
-
+void
+GribField::convertValues( database::GribDatabaseConnection & db )
+{
+    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+    if ( valueUnit_.length() == 0 ) {
+    	log.warnStream() << "Could not identify the value unit!";
+    	return;
+    }
+    float coeff = 1.0, term = 0.0;
+    db.readUnit( valueUnit_, &coeff, &term );
+    // Scale the data
+    if (( coeff != 1.0 )&&( term != 0.0)) {
+    	for ( int i=0; i<sizeOfValues_; i++ ) {
+    		values_[i] = ( ( values_[i] * coeff ) + term );
+    	}
+    }
 }
 
 void

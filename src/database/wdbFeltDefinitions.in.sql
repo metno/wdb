@@ -32,8 +32,15 @@ CREATE TABLE feltload.valueparameterxref (
     feltniveau1 		integer NOT NULL,
     feltniveau2			integer NOT NULL,
     valueparameterid	integer NOT NULL,
+	valueparameterunit  character varying(80) NOT NULL,
     loadvalueflag 		boolean NOT NULL
 );
+
+ALTER TABLE feltload.valueparameterxref
+	ADD FOREIGN KEY (valueparameterunit)
+					REFERENCES __WDB_SCHEMA__.unit(unitname)
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
 
 REVOKE ALL ON feltload.valueparameterxref FROM public;
 GRANT ALL ON feltload.valueparameterxref TO wdb_admin;
@@ -45,8 +52,15 @@ CREATE TABLE feltload.levelparameterxref (
 	feltniveau1lower	integer NOT NULL,
 	feltniveau1upper	integer NOT NULL,
     levelparameterid	integer NOT NULL,
+	levelparameterunit	character varying(80) NOT NULL,
     loadlevelflag 		boolean NOT NULL
 );
+
+ALTER TABLE feltload.levelparameterxref
+	ADD FOREIGN KEY (levelparameterunit)
+					REFERENCES __WDB_SCHEMA__.unit(unitname)
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
 
 REVOKE ALL ON feltload.levelparameterxref FROM public;
 GRANT ALL ON feltload.levelparameterxref TO wdb_admin;
@@ -156,6 +170,11 @@ SECURITY DEFINER
 LANGUAGE 'plpgsql' STRICT VOLATILE;
 
 
+CREATE TYPE feltload.valueparameter AS (
+	valueparameterid int,
+	valueparameterunit text
+);
+
 --
 -- ValueParameter XREF
 --
@@ -166,13 +185,13 @@ feltload.getvalueparameter(
 	feltnv1			integer,
 	feltnv2			integer
 )
-RETURNS SETOF integer AS
+RETURNS feltload.valueparameter AS
 $BODY$
 DECLARE
-	ret integer;
+	ret feltload.valueparameter;
 	load boolean;
 BEGIN
-	SELECT valueparameterid, loadvalueflag INTO ret, load
+	SELECT valueparameterid, valueparameterunit, loadvalueflag INTO ret.valueparameterid, ret.valueparameterunit, load
 	FROM feltload.valueparameterxref
 	WHERE
         feltparameter = feltparam AND
@@ -181,15 +200,14 @@ BEGIN
 		feltniveau2 = feltnv2;
 	-- Check load
 	IF load = false THEN
-		RETURN NEXT -1;
+		ret.valueparameterid = -1;
+		RETURN ret;
 	END IF;
-	IF load = true THEN
-		RETURN NEXT ret;
-	END IF;
-	RETURN;
+	RETURN ret;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STRICT STABLE;
+
 
 
 --
@@ -216,6 +234,12 @@ $BODY$
 LANGUAGE 'sql';
 
 
+CREATE TYPE feltload.levelparameter AS (
+	levelparameterid int,
+	levelparameterunit text
+);
+
+
 --
 -- LevelParameter XREF
 --
@@ -224,13 +248,13 @@ feltload.getlevelparameter(
 	levelParam integer, 
 	levelnv1 integer 
 )
-RETURNS SETOF integer AS
+RETURNS feltload.levelparameter AS
 $BODY$
 DECLARE
-	ret integer;
+	ret gribload.levelparameter;
 	load boolean;
 BEGIN
-	SELECT levelparameterid, loadlevelflag INTO ret, load
+	SELECT levelparameterid, levelparameterunit, loadlevelflag INTO ret.levelparameterid, ret.levelparameterunit, load
 	FROM feltload.levelparameterxref
 	WHERE
 		feltlevelparameter = levelParam AND
@@ -238,12 +262,10 @@ BEGIN
 		feltniveau1upper >= levelnv1;
 	-- Check load
 	IF load = false THEN
-		RETURN NEXT -1;
+		ret.levelparameterid = -1;
+		RETURN ret;
 	END IF;
-	IF load = true THEN
-		RETURN NEXT ret;
-	END IF;
-	RETURN;
+	RETURN ret;
 END;
 $BODY$
 LANGUAGE 'plpgsql';

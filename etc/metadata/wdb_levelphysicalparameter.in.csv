@@ -1,6 +1,6 @@
 ParameterId|Level Unit|Level Parameter
-0|hectopascal|of test data
-1|hectopascal|of isobaric surface
+0|pascal|of test data
+1|pascal|of isobaric surface
 2|metre|above mean sea level
 3|metre|above ground
 113|kelvin|of isentropic (theta) level

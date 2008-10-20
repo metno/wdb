@@ -41,16 +41,29 @@ CREATE TABLE gribload.valueparameterxref (
     loadvalueflag boolean NOT NULL
 );
 
+ALTER TABLE gribload.valueparameterxref
+	ADD FOREIGN KEY (valueparameterunit)
+					REFERENCES __WDB_SCHEMA__.unit(unitname)
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
+
 REVOKE ALL ON gribload.valueparameterxref FROM public;
 GRANT ALL ON gribload.valueparameterxref TO wdb_admin;
 GRANT SELECT ON gribload.valueparameterxref TO wdb_grib;
 
 
 CREATE TABLE gribload.levelparameterxref (
-    griblevelparameter integer NOT NULL,
-    levelparameterid integer NOT NULL,
-    loadlevelflag boolean NOT NULL
+    griblevelparameter 	integer NOT NULL,
+    levelparameterid 	integer NOT NULL,
+	levelparameterunit	character varying(80) NOT NULL,
+    loadlevelflag 		boolean NOT NULL
 );
+
+ALTER TABLE gribload.levelparameterxref
+	ADD FOREIGN KEY (levelparameterunit)
+					REFERENCES __WDB_SCHEMA__.unit(unitname)
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
 
 REVOKE ALL ON gribload.levelparameterxref FROM public;
 GRANT ALL ON gribload.levelparameterxref TO wdb_admin;
@@ -234,29 +247,32 @@ $BODY$
 LANGUAGE 'sql';
 
 
+CREATE TYPE gribload.levelparameter AS (
+	levelparameterid int,
+	levelparameterunit text
+);
+
 --
 -- LevelParameter XREF
 --
 CREATE OR REPLACE FUNCTION 
 gribload.getlevelparameter( levelParam integer )
-RETURNS SETOF integer AS
+RETURNS gribload.levelparameter AS
 $BODY$
 DECLARE
-	ret integer;
+	ret gribload.levelparameter;
 	load boolean;
 BEGIN
-	SELECT levelparameterid, loadlevelflag INTO ret, load
+	SELECT levelparameterid, levelparameterunit, loadlevelflag INTO ret.levelparameterid, ret.levelparameterunit, load
 	FROM gribload.levelparameterxref
 	WHERE
 		griblevelparameter = levelParam;
 	-- Check load
 	IF load = false THEN
-		RETURN NEXT -1;
+		ret.levelparameterid = -1;
+		RETURN ret;
 	END IF;
-	IF load = true THEN
-		RETURN NEXT ret;
-	END IF;
-	RETURN;
+	RETURN ret;
 END;
 $BODY$
 LANGUAGE 'plpgsql';

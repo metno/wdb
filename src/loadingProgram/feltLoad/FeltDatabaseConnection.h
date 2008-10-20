@@ -96,16 +96,18 @@ public:
 
     /**
      * Get the Parameter information associated with the FELT parameter.
+     * @return	valueUnit					The unit of the value parameter returned
      * @param	feltParameter				The actual FELT parameter ID
      * @param	feltLevelParameter			The level parameter of the FELT field
      * @param	feltNiveau1					The niveau1 of the FELT field (usually level)
      * @param	feltNiveau2					The niveau2 of the FELT field (levelto; alternately EPS information )
      * @return	Returns the valueparameterid
      */
-    int getFeltParameter( int feltParameter,
-                           int feltLevelParameter,
-                           int feltNiveau1,
-                           int feltNiveau2 );
+    int getFeltParameter( std::string & valueUnit,
+						  int feltParameter,
+                          int feltLevelParameter,
+                          int feltNiveau1,
+                          int feltNiveau2 );
     /**
      * Get the Parameter information associated with the FELT parameter.
      * @param	levels				A vector of the levels found
@@ -123,11 +125,12 @@ public:
 
 	/**
 	 * Get the Level Parameter information associated with the FELT level parameter.
+	 * @return	levelUnit		The unit of the level returned
 	 * @param	levelParam		The actual FELT level parameter of the field
 	 * @param	levelNiveau1	The niveau1 of the FELT field (usually level, but can also be a dummy variable)
 	 * @return	Returns the levelparameter id
 	 */
-    int getFeltLevelParameter( int levelParam, int levelNiveau1 );
+    int getFeltLevelParameter( std::string & levelUnit, int levelParam, int levelNiveau1 );
 
 
     boost::posix_time::ptime getValidTimeFrom(

@@ -134,10 +134,8 @@ LANGUAGE 'sql';
 CREATE VIEW loaderbase.unitwithconversion AS
 SELECT un.unitname, 
 	   un.unittype, 
-	   co.siunitconversioncoefficient1,
-	   co.siunitconversionterm1,
-	   co.siunitconversioncoefficient2,
-	   co.siunitconversionterm2
+	   co.siunitconversioncoefficient,
+	   co.siunitconversionterm
 FROM  
 	   __WDB_SCHEMA__.unit un
 LEFT OUTER JOIN

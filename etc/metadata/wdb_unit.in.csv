@@ -1,6 +1,9 @@
 Unit Name|Unit Type (SI Unit or Conventional Unit)|Physical Phenomenon
 metre|SI Unit|distance
+hectometre|Conventional Unit|distance
+kilometre|Conventional Unit|distance
 second|SI Unit|duration
+millisecond|Conventional Unit|duration
 kilogram|SI Unit|mass
 ampere|SI Unit|electric current
 kelvin|SI Unit|temperature
@@ -11,6 +14,8 @@ metre per square second|SI Unit|acceleration
 square metre|SI Unit|area
 mole per cubic meter|SI Unit|concentration
 pascal second|SI Unit|dynamic viscosity
+newton second per square metre|Conventional Unit|dynamic viscosity
+kilonewton second per square metre|Conventional Unit|dynamic viscosity
 coulomb|SI Unit|electric charge
 siemens|SI Unit|electric conductance
 volt|SI Unit|electric potential
@@ -26,6 +31,7 @@ watt second per square metre|Conventional Unit|surface tension
 kilowatt second per square metre|Conventional Unit|surface tension
 pascal|SI Unit|pressure
 hectopascal|Conventional Unit|pressure
+kilopascal|Conventional Unit|pressure
 joule per cubic metre|Conventional Unit|pressure
 newton per square metre|Conventional Unit|pressure
 pascal per second|SI Unit|pressure change
@@ -60,3 +66,4 @@ square metre per square second|Conventional Unit|specific energy
 kelvin per square metre|SI Unit|kpsm
 degree celsius|Conventional Unit|temperature
 kelvin per metre|SI Unit|temperature lapse rate
+none|SI Unit|proportion

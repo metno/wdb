@@ -163,7 +163,8 @@ FeltDatabaseConnection::getFeltDataProvider( int feltproducer,
 }
 
 int
-FeltDatabaseConnection::getFeltParameter( int feltParameter,
+FeltDatabaseConnection::getFeltParameter( std::string & valueUnit,
+										  int feltParameter,
 									      int feltLevelParameter,
 									      int feltNv1,
 									      int feltNv2 )
@@ -171,7 +172,7 @@ FeltDatabaseConnection::getFeltParameter( int feltParameter,
 	int ret;
 	try {
 		perform(
-			ReadValueParameter( ret, feltParameter, feltLevelParameter, feltNv1, feltNv2 ),
+			ReadValueParameter( ret, valueUnit, feltParameter, feltLevelParameter, feltNv1, feltNv2 ),
 			1
 		);
 	}
@@ -210,12 +211,12 @@ FeltDatabaseConnection::getAdditionalLevels(std::vector <wdb::database::WdbLevel
 
 
 int
-FeltDatabaseConnection::getFeltLevelParameter( int levelParam, int feltNv1 )
+FeltDatabaseConnection::getFeltLevelParameter( std::string & levelUnit, int levelParam, int feltNv1 )
 {
 	int ret;
 	try {
 		perform(
-			ReadLevelParameter( ret, levelParam , feltNv1 ),
+			ReadLevelParameter( ret, levelUnit, levelParam , feltNv1 ),
 			1
 		);
 	}

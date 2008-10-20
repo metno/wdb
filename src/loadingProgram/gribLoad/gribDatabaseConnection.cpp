@@ -173,7 +173,8 @@ GribDatabaseConnection::getGrib1DataProvider( long int genCenter,
 
 
 int
-GribDatabaseConnection::getGrib1Parameter( int generatingCenter,
+GribDatabaseConnection::getGrib1Parameter( std::string & valueUnit,
+										   int generatingCenter,
 									       int codeTable2Version,
 									       int gribParameter,
 									       int timeRange,
@@ -184,10 +185,9 @@ GribDatabaseConnection::getGrib1Parameter( int generatingCenter,
 									       int levelParameter )
 {
 	int ret;
-	std::string retUnit;
 	try {
 		perform(
-			ReadValueParameter( ret, retUnit, generatingCenter, codeTable2Version, gribParameter, timeRange,
+			ReadValueParameter( ret, valueUnit, generatingCenter, codeTable2Version, gribParameter, timeRange,
   							    parameterThresholdIndicator, parameterThresholdLower, parameterThresholdUpper,
 							    parameterThresholdScale, levelParameter ),
 			1
@@ -235,12 +235,13 @@ GribDatabaseConnection::getAdditionalLevels(std::vector <wdb::database::WdbLevel
 
 
 int
-GribDatabaseConnection::getGrib1LevelParameter( int levelParam )
+GribDatabaseConnection::getGrib1LevelParameter( std::string & levelUnit,
+												int levelParam )
 {
 	int ret;
 	try {
 		perform(
-			ReadLevelParameter( ret, levelParam ),
+			ReadLevelParameter( ret, levelUnit, levelParam ),
 			1
 		);
 	}

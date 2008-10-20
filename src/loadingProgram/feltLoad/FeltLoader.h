@@ -65,7 +65,7 @@ private:
 	boost::posix_time::ptime validTimeFrom(const FeltField & field);
 	boost::posix_time::ptime validTimeTo(const FeltField & field);
 	int validTimeIndCode(const FeltField & field);
-	int valueparameter(const FeltField & field);
+	int valueparameter(const FeltField & field, std::string & valueUnit);
 	void levels( std::vector<wdb::database::WdbLevel> & out, const FeltField & field );
 	int dataVersion(const FeltField & field);
     int qualityCode(const FeltField & field);
@@ -78,6 +78,7 @@ private:
 
 	wdb::database::FeltDatabaseConnection & connection_;
 	const wdb::LoaderConfiguration::LoadingOptions & loadingOptions_;
+
 };
 
 }

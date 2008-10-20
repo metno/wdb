@@ -103,9 +103,11 @@ public:
      * @param	parameterThresholdLower		The lower threshold given for the parameter (0 if none)
      * @param	parameterThresholdUpper		The upper threshold given for the parameter (0 if none)
      * @param	parameterThresholdScale		The threshold scale given for the parameter (0 if none)
+	 * @return valueUnit			Returns the value unit
      * @return	Returns the valueparameterid
      */
-    int getGrib1Parameter( int generatingCenter,
+    int getGrib1Parameter( std::string & valueUnit,
+						   int generatingCenter,
                            int codeTable2Version,
                            int gribParameter,
                            int timeRange,
@@ -141,9 +143,11 @@ public:
 	/**
 	 * Get the Level Parameter information associated with the GRIB level parameter.
 	 * @param	levelParam	The actual GRIB level parameter of the GRIB field
+	 * @return	levelUnit	Return the level unit of the parameter
 	 * @return	Returns the levelparameter id
 	 */
-    int getGrib1LevelParameter( int levelParam );
+    int getGrib1LevelParameter( std::string & levelUnit,
+								int levelParam );
 
 // ACCESS
 

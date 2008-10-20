@@ -74,11 +74,13 @@ public:
 	/**
 	 * Default constructor.
 	 * @param	ret			Reference to be returned to the calling instance
+	 * @param	levelUnit	Reference to the level unit
 	 * @param	gP			Query parameter
 	 */
-	ReadLevelParameter(int & ret, int gP) :
+	ReadLevelParameter(int & ret, std::string & levelUnit, int gP) :
     	pqxx::transactor<>("ReadLevelParameter"),
     	return_(ret),
+    	levelUnit_(levelUnit),
 		gribLevelParameter_(gP)
     {
     	// NOOP
@@ -98,23 +100,23 @@ public:
 	 */
   	void on_commit()
   	{
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.levelparameter" );
   		if (R.size() == 1) {
-  			R.at(0).at(0).to( return_ );
-            if ( return_ < 0 )
-            {
-                WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.levelparameter" );
-                log.infoStream() << "Level parameter is on database exclusion list, and should not be loaded";
-                throw WdbDoNotLoadException( "Should not load this level parameter", __func__ );
-            }
-  			return;
+  			if (!R.at(0).at(0).is_null()) {
+				R.at(0).at(0).to( return_ );
+				R.at(0).at(1).to( levelUnit_ );
+				if ( return_ < 0 )
+				{
+	                log.infoStream() << "Level parameter is on database exclusion list, and should not be loaded";
+	                throw WdbDoNotLoadException( "Should not load this level parameter", __func__ );
+				}
+				return;
+  			}
   		}
-  		else {
-			WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.levelparameter" );
-        	log.warnStream() << "Transaction " << Name() << " returned "
-					  		  << R.size() << " rows."
-					  		  << " LevelParameter: " << gribLevelParameter_;
-			throw WdbException("Could not identify level parameter", __func__);
-  		}
+    	log.warnStream() << "Transaction " << Name() << " returned "
+				  		  << R.size() << " rows."
+				  		  << " LevelParameter: " << gribLevelParameter_;
+		throw WdbException("Could not identify level parameter", __func__);
   	}
 
 	/**
@@ -141,6 +143,8 @@ public:
 private:
 	/// The reference used to store the result returned to the calling class
 	int & return_;
+	/// Level Unit
+	std::string & levelUnit_;
 	/// The result returned by the query
     pqxx::result R;
 	/// The GRIB level parameter

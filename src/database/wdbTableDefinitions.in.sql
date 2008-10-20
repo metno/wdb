@@ -373,10 +373,8 @@ GRANT ALL ON __WDB_SCHEMA__.unitabbreviation TO wdb_admin;
 
 CREATE TABLE __WDB_SCHEMA__.siunitconversion (
     unitname						character varying(80) NOT NULL,
-    siunitconversionterm1			real NOT NULL,
-    siunitconversioncoefficient1	real NOT NULL,
-    siunitconversionterm2			real NOT NULL,
-    siunitconversioncoefficient2	real NOT NULL
+    siunitconversioncoefficient		real NOT NULL,
+    siunitconversionterm			real NOT NULL
 );
 
 REVOKE ALL ON __WDB_SCHEMA__.siunitconversion FROM public;
