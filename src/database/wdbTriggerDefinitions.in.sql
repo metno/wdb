@@ -18,9 +18,6 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
--- Populating placepoints table when creating a regular grid
-
 CREATE TYPE __WDB_SCHEMA__.core_getAllGridPointsReturnType AS (
     i int,
     j int,
@@ -31,6 +28,26 @@ CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.core_getAllGridPoints( gridDefinition 
 RETURNS SETOF __WDB_SCHEMA__.core_getAllGridPointsReturnType AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wciGetAllGridPoints'
 LANGUAGE 'c' STRICT IMMUTABLE;
+
+-- Populating placepoints table when creating a regular grid
+CREATE FUNCTION __WDB_SCHEMA__.triggerfun_populateplacepoints() RETURNS "trigger" AS 
+$$
+DECLARE
+        gridDefinition __WDB_SCHEMA__.placespec;
+        point __WDB_SCHEMA__.core_getAllGridPointsReturnType;
+BEGIN
+        SELECT * INTO gridDefinition FROM __WDB_SCHEMA__.placespec WHERE placeid = NEW.placeid;
+
+		INSERT INTO __WDB_SCHEMA__.placepoint ( placeid, i, j, location )
+		SELECT NEW.placeid, grid.i, grid.j, geomfromtext( grid.geo, 4030 )
+		FROM __WDB_SCHEMA__.core_getAllGridPoints( gridDefinition ) grid;
+
+        RETURN NULL;
+END;
+$$
+LANGUAGE 'plpgsql' STRICT;
+
+
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.core_getAllGridPoints( place int )
 RETURNS SETOF __WDB_SCHEMA__.core_getAllGridPointsReturnType AS
@@ -50,27 +67,7 @@ END;
 $BODY$
 LANGUAGE plpgsql STRICT IMMUTABLE;
 
-CREATE FUNCTION __WDB_SCHEMA__.triggerfun_populateplacepoints() RETURNS "trigger"
-    AS $$
-DECLARE
-        gridDefinition __WDB_SCHEMA__.placespec;
-        point __WDB_SCHEMA__.core_getAllGridPointsReturnType;
-BEGIN
-        SELECT * INTO gridDefinition FROM __WDB_SCHEMA__.placespec WHERE placeid = NEW.placeid;
-		
-		INSERT INTO __WDB_SCHEMA__.placepoint ( placeid, i, j, location )
-		SELECT NEW.placeid, grid.i, grid.j, geomfromtext( grid.geo, 4030 )
-		FROM __WDB_SCHEMA__.core_getAllGridPoints( gridDefinition ) grid;
-
-        RETURN NULL;
-END;
-$$
-    LANGUAGE 'plpgsql' STRICT;
-
-
-
 -- Updating of placedefinition when inserting a regular grid
-
 create or replace function __WDB_SCHEMA__.createGeometryText(
 	iNum integer, jNum integer,
 	iIncrement float8, jIncrement float8,

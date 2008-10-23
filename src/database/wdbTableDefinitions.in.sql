@@ -608,8 +608,3 @@ REVOKE ALL ON TABLE __WDB_SCHEMA__.placepoint FROM PUBLIC;
 GRANT ALL ON TABLE __WDB_SCHEMA__.placepoint TO wdb_admin;
 GRANT INSERT ON TABLE __WDB_SCHEMA__.placepoint TO wdb_write;
 
---
--- TOC entry 1253 (class 1259 OID 20452)
--- Dependencies: 4
--- Name: __WDB_SCHEMA__.codespace; Type: TABLE; Schema: public; Owner: michaeloa; Tablespace: 
---

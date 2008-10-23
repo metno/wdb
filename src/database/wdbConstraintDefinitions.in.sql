@@ -184,9 +184,6 @@ ALTER TABLE ONLY __WDB_SCHEMA__.valueadditionallevelinfo
     ADD CONSTRAINT valueadditionallevelinfo_pkey PRIMARY KEY (valueid, valuetype);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.placepoint
-    ADD CONSTRAINT placepoint_pkey PRIMARY KEY (placeid, i, j);
-
 
 --
 -- Foreign Key Constraints
@@ -307,12 +304,6 @@ ALTER TABLE __WDB_SCHEMA__.placename
 	ADD FOREIGN KEY (placenamespaceid)
 					REFERENCES __WDB_SCHEMA__.namespace
 					ON DELETE RESTRICT
-					ON UPDATE CASCADE;
-
-ALTER TABLE __WDB_SCHEMA__.placepoint
-	ADD FOREIGN KEY (placeid)
-					REFERENCES __WDB_SCHEMA__.placedefinition
-					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
 ALTER TABLE __WDB_SCHEMA__.unit
