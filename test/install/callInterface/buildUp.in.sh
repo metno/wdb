@@ -19,15 +19,11 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 WDB_TMP_DIR=__WDB_BUILDDIR__/var/tmp
-#GRIB_FILE=$WDB_TMP_DIR/wciInstallTest.grib
-#CHECK_FILE=$WDB_TMP_DIR/wciInstallTest.check
 XML_FILE1=$WDB_TMP_DIR/wciInstallTest1.xml
 XML_FILE2=$WDB_TMP_DIR/wciInstallTest2.xml
 XML_FILE3=$WDB_TMP_DIR/wciInstallTest3.xml
 mkdir -p $WDB_TMP_DIR
 TEST_WRITE=./testWrite
-#CREATE_GRIB_FIELD=./gribWrite
-#LOAD_GRIB_FILE=./gribLoad
 LOAD_XML_FILE=./xmlLoad
 
 #

@@ -78,9 +78,10 @@ if test -n "$list"
 	else
     	XML_OUT="$XML_OUT\n`${tst} -x`"
     fi	
-    if  test $? -eq 0; then \
+    TEST_RESULT=$?
+    if  test $TEST_RESULT -eq 0; then \
 		OK_TESTS=`expr $OK_TESTS + 1`;
-    elif test $? -eq 1; then \
+    elif test $TEST_RESULT -eq 77; then \
 	  	TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`; FAILED_TESTS=`expr $FAILED_TESTS + 1`;
     else \
 	  	TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`; ERROR_TESTS=`expr $ERROR_TESTS + 1`;

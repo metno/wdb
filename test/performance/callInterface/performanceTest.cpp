@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -47,7 +47,7 @@ using namespace pqxx;
 using namespace pqxx::prepare;
 
 namespace {
-	
+
 void version( std::ostream & out )
 {
 	out << "Call Interface Performance Test (" << PACKAGE << ") " << VERSION << std::endl;
@@ -56,10 +56,18 @@ void version( std::ostream & out )
 void help( const boost::program_options::options_description & options, std::ostream & out )
 {
 	version( out );
-	out << '\n';
-    out << "Usage: performanceTest [OPTIONS] TESTSAMPLE#\n\n";
-    out << "Options:\n";
-    out << options << std::endl;
+	out << '\n'
+		<< "Usage: performanceTest [OPTIONS] TESTSAMPLE#\n\n"
+		<< "Test Samples:\n"
+        << "1  - random point retrieval (single point)"
+        << "2  - random point retrieval (multiple point)"
+        << "3  - random point retrieval (all parameters)"
+        << "31 - random bilinear point retrieval (single point)"
+        << "32 - random bilinear point retrieval (multiple point)"
+        << "33 - random bilinear point retrieval (all parameters)"
+		<< "\n\n"
+		<< "Options:\n"
+		<< options << std::endl;
 };
 
 }
@@ -72,7 +80,7 @@ int main(int argc, char *argv[])
 	using namespace boost::posix_time;
 	using namespace boost::program_options;
 	using namespace pqxx;
-	
+
 	// Options
 	PerformanceTestConfiguration conf;
     try
@@ -94,12 +102,12 @@ int main(int argc, char *argv[])
         help( conf.shownOptions(), clog );
         return 1;
     }
-	
+
 	WdbLogHandler logHandler( conf.logging().loglevel, conf.logging().logfile );
-    WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" ); 
-    log.errorStream() << "Starting WCI PerformanceTester";
-    
-    
+    WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
+    log.infoStream() << "Starting WCI PerformanceTester";
+
+
 	// Test Samples
 	try
   	{
@@ -115,12 +123,12 @@ int main(int argc, char *argv[])
 		bool isFloat = false;
 		// Grid Return
 		bool isGrid = false;
-		
-		// Start Timer  		
+
+		// Start Timer
   		ptime timeStart(microsec_clock::universal_time());
   		// Connect to the Database
     	connection C( conf.pqDatabaseConnection() );
-    	
+
 		C.perform( WciBegin( ) );
     	switch ( conf.input().sample ) {
     	case 1: // Random Point retrieval - individual points
@@ -129,21 +137,24 @@ int main(int argc, char *argv[])
 				C.perform( RandomPointTest1(resultF) );
    			}
 			break;
-    	case 2: // Random Point retrieval - multiple points 			
+    	case 2: // Random Point retrieval - multiple points
     		isFloat = true;
    			for (int i=0; i<1000; i++) {
 				C.perform( RandomPointTest2(resultF) );
    			}
    			break;
-    	case 3: // Random Point retrieval - multiple points 			
+    	case 3: // Random Point retrieval - multiple points
     		isFloat = true;
-   			for (int i=0; i<1000; i++) {
+   			for (int i=0; i<100; i++) {
 				C.perform( RandomPointTest3(resultF) );
    			}
    			break;
     	case 8: // Prepared Random Point retrieval - individual points
+    		log.errorStream() << "Prepared point test is not functional";
+    		break;
+    		/*
     		isFloat = true;
-    		C.prepare("ReadRandom1", 
+    		C.prepare("ReadRandom1",
     				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
     				  " from wci.read ( "
     		    	  "ARRAY['test wci 0'], $2, $1, $3,"
@@ -152,7 +163,7 @@ int main(int argc, char *argv[])
     				  "NULL, NULL::wci.returnFloat	)" )
     				  ("wci.timespec", treat_string )
     				  ("varchar", treat_string )
-    				  ("wci.timespec", treat_string );          
+    				  ("wci.timespec", treat_string );
 			for (int i=0; i<1000; i++) {
 				try {
 					C.perform( PreparedRandomPointTest1(resultF) );
@@ -164,6 +175,7 @@ int main(int argc, char *argv[])
 				}
    			}
 			break;
+			*/
     	case 11: // Individual simple polygon
     		isFloat = true;
 			C.perform( SimplePolygonTest(resultF) );
@@ -190,29 +202,29 @@ int main(int argc, char *argv[])
 				C.perform( BilinearPointTest1(resultF) );
    			}
 			break;
-    	case 32: // Random Point retrieval - multiple points 			
+    	case 32: // Random Point retrieval - multiple points
     		isFloat = true;
    			for (int i=0; i<1000; i++) {
 				C.perform( BilinearPointTest2(resultF) );
    			}
    			break;
-    	case 33: // Random Point retrieval - multiple points 			
+    	case 33: // Random Point retrieval - multiple points
     		isFloat = true;
-   			for (int i=0; i<1000; i++) {
+   			for (int i=0; i<100; i++) {
 				C.perform( BilinearPointTest3(resultF) );
    			}
    			break;
-		case 13: // Multiple point retrieval - Not implemented   		
-		case 5: // Multiple simple polygon retrieval - Not implemented   		
-		case 7: // Multiple complex polygon retrieval - Not implemented   		
+		case 13: // Multiple point retrieval - Not implemented
+		case 5: // Multiple simple polygon retrieval - Not implemented
+		case 7: // Multiple complex polygon retrieval - Not implemented
    		default:
-   			cerr << "Unknown test sample:" << conf.input().sample << endl; 
+   			cerr << "Unknown test sample:" << conf.input().sample << endl;
    			return 1;
    		}
 		C.perform( WciEnd( ) );
-		// Timing 	
+		// Timing
   		ptime timeEnd(microsec_clock::universal_time());
-  		time_duration timeSpent = timeEnd - timeStart; 
+  		time_duration timeSpent = timeEnd - timeStart;
   		int rowsR = 0;
   		if (isFloat) {
   			rowsR += resultF.size();
@@ -223,8 +235,8 @@ int main(int argc, char *argv[])
   			cout << endl << "Grid Rows Returned: " << resultG.size() << " rows" << endl;
   		}
   		cout << "Time Elapsed:  " << timeSpent.total_milliseconds() << " milliseconds" << endl;
-  		cout << "Throughput:    " << static_cast<double>(rowsR)/static_cast<double>(timeSpent.total_milliseconds()) * 1000.0 
-  			 << " rows per second" << endl;	
+  		cout << "Throughput:    " << static_cast<double>(rowsR)/static_cast<double>(timeSpent.total_milliseconds()) * 1000.0
+  			 << " rows per second" << endl;
 
 		// Print Out
 		if ( conf.output().printResult ) {
@@ -265,6 +277,6 @@ int main(int argc, char *argv[])
 	    log.errorStream() << "Unhandled exception";
 	    return 100;
 	}
-	
+
 	return 0;
 }

@@ -99,7 +99,6 @@ int main( int argc, char** argv )
                                           point.substr( 0, point.find_first_of( '=' ) ) );
             }
         	const std::string point = it->str();
-        	cout << point;
             grid[ index ] = it->val();
         }
 

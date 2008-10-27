@@ -21,6 +21,6 @@
 
 # Remove Test Data
 $PSQL -q <<EOF
---\o __WDB_LOGDIR__/wci_performancetest.log
-DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid=1;
+\o __WDB_LOGDIR__/wci_performancetest.log
+DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid=10;
 EOF

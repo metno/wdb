@@ -2,7 +2,7 @@
 ## 
 ## wdb - weather and water data storage
 ##
-## Copyright (C) 2008 met.no
+## Copyright (C) 2007 met.no
 ##
 ##  Contact information:
 ##  Norwegian Meteorological Institute
@@ -19,26 +19,22 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 # Script Information
-export TESTCASE_CATEGORY="001"
-export TESTCASE_PARTITION="01"
-export TESTCASE="F${TESTCASE_CATEGORY}_${TESTCASE_PARTITION}"
-export TEST_DESCRIPTION="No input file exists"
+export TESTCASE="F006_02"
+export TEST_DESCRIPTION="No loading of parameters with load set to false"
 export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/feltLoad
+
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh
 
 # DELETE
+ 
 if test "$XML_OPT" = "-x"; then
 	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
-elif test "$XML_OPT" = "-d"; then
-	echo -e "<row> <entry> F${TESTCASE_CATEGORY} </entry> <entry> Input File</entry> <entry> ${TESTCASE_PARTITION} </entry> <entry> ${TEST_DESCRIPTION} </entry> <entry> Dummy argument passed for function </entry> <entry> Log an error and abort </entry> <entry> H </entry>	</row>"			
 else
 	echo -e "fail $1 - `basename $0`\t$TEST_DESCRIPTION (not functioning)"
 fi
 exit 77
-
-# DELETE
 
 # Parse command line
 case $1 in
@@ -55,32 +51,59 @@ esac
 # Timing
 startTime=`date +%s%N`
 # Prepare Test
-NON_FILE=${TMP_PATH}/nonexistent.felt
-EXPECTED_LOG_MESSAGE="${NON_FILE}: No such file - will not load"
-EXECUTE="${FELTLOAD_PATH}/feltLoad ${NON_FILE}"
+TESTTIME=$(date +%FT12:00)
+EXPECTED_LOG_MESSAGE="Could not identify parameter"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad  --name ${TEST_FILE}"
 
 # Clean out database
 source ${TEST_PATH}/tearDown.sh
 
+# Generate Test Data
+rm -f ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 254 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
 
-# Execute Test
-rm -f ${NON_FILE}
+#Execute Test 
 $EXECUTE --logfile $LOGFILE
 
 # Check Result
-if ! grep -q -E "$EXPECTED_LOG_MESSAGE" $LOGFILE
+if ! $PSQL -Atc "select count(*) from test.oidvalue where dataprovidername='test gribload'" | grep -qE "^0$"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
-    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Did not find expected log message in logs\">\n\t</failure>\n</testcase>"
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Parameter was loaded into database\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	fi
+    source $TEST_PATH/tearDown.sh
+    exit 1
+fi
+if grep -q -E "WARN" $LOGFILE;
+then
+    # The log contains error messages
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Warning messages found in log\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	fi
+    exit 1
+fi
+if grep -q -E "ERROR" $LOGFILE;
+then
+    # The log contains error messages
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Error messages found in log\">\n\t</failure>\n</testcase>"
 	else
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
     exit 1
 fi
 
-# Clean
+# Clean up
 source ${TEST_PATH}/tearDown.sh
 
 # Exit

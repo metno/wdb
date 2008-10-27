@@ -3,8 +3,21 @@
 # WDB FeltLoad Install Tests
 #-----------------------------------------------------------------------------
 
-FELTLOADTEST_SOURCES =	test/install/loadingProgram/feltLoad/caseF001_01.in.test
-
+FELTLOADTEST_SOURCES =	test/install/loadingProgram/feltLoad/caseF001_01.in.test \
+						test/install/loadingProgram/feltLoad/caseF001_02.in.test \
+						test/install/loadingProgram/feltLoad/caseF001_03.in.test \
+						test/install/loadingProgram/feltLoad/caseF002_02.in.test \
+						test/install/loadingProgram/feltLoad/caseF003_01.in.test \
+						test/install/loadingProgram/feltLoad/caseF004_01.in.test \
+						test/install/loadingProgram/feltLoad/caseF004_03.in.test \
+						test/install/loadingProgram/feltLoad/caseF004_04.in.test \
+						test/install/loadingProgram/feltLoad/caseF005_01.in.test \
+						test/install/loadingProgram/feltLoad/caseF005_02.in.test \
+						test/install/loadingProgram/feltLoad/caseF006_01.in.test \
+						test/install/loadingProgram/feltLoad/caseF006_02.in.test \
+						test/install/loadingProgram/feltLoad/caseF006_03.in.test \
+						test/install/loadingProgram/feltLoad/caseF007_01.in.test
+												
 FELTLOADTEST_SUPPORT =	test/install/loadingProgram/feltLoad/tearDown.in.sh \
 						test/install/loadingProgram/feltLoad/testEnvironment.in.sh
 

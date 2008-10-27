@@ -602,9 +602,12 @@ CREATE TABLE __WDB_SCHEMA__.placepoint (
     i integer NOT NULL,
     j integer NOT NULL
 );
-SELECT AddGeometryColumn( '__WDB_SCHEMA__', 'placepoint', 'location', 4030, 'POINT', 2 );
+SELECT AddGeometryColumn( '__WDB_SCHEMA__', 'placepoint', 'location', 4030, 'GEOMETRY', 2 );
+-- Note that the table permits the use of geometries other than POINTs
+-- This is deliberate; restricting the geometry column to points
+-- adds a constraint to the table which we do not want due to performance
+-- issues on this table
 
 REVOKE ALL ON TABLE __WDB_SCHEMA__.placepoint FROM PUBLIC;
 GRANT ALL ON TABLE __WDB_SCHEMA__.placepoint TO wdb_admin;
 GRANT INSERT ON TABLE __WDB_SCHEMA__.placepoint TO wdb_write;
-

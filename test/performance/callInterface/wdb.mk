@@ -5,57 +5,51 @@
 
 noinst_PROGRAMS +=		wciPerformanceTester
 
-wciPerformanceTester_SOURCES =	test/performance/callInterface/performanceTest.cpp \
-				test/performance/callInterface/performanceTestConfiguration.h \
-				test/performance/callInterface/performanceTestConfiguration.cpp \
-				test/performance/callInterface/wciRowStructures.h \
-				test/performance/callInterface/transactors/wciTransactors.h \
-				test/performance/callInterface/transactors/getRandomPoint.h \
-				test/performance/callInterface/transactors/getPolygon.h \
-				test/performance/callInterface/transactors/getField.h \
-				test/performance/callInterface/transactors/getBilinearPoint.h
+wciPerformanceTester_SOURCES =\
+						test/performance/callInterface/performanceTest.cpp \
+						test/performance/callInterface/performanceTestConfiguration.h \
+						test/performance/callInterface/performanceTestConfiguration.cpp \
+						test/performance/callInterface/wciRowStructures.h \
+						test/performance/callInterface/transactors/wciTransactors.h \
+						test/performance/callInterface/transactors/getRandomPoint.h \
+						test/performance/callInterface/transactors/getPolygon.h \
+						test/performance/callInterface/transactors/getField.h \
+						test/performance/callInterface/transactors/getBilinearPoint.h
 
 wciPerformanceTester_CPPFLAGS = 	-I$(srcdir)/test/performance/callInterface
 
 wciPerformanceTester_LDFLAGS =	$(AM_LDFLAGS)	-lwdbConfiguration \
-				-lwdbLogHandler
+						-lwdbLogHandler
 
-WCIPERFTEST_SOURCES = \
-				test/performance/callInterface/caseP001_01.in.test \
-				test/performance/callInterface/caseP001_02.in.test \
-				test/performance/callInterface/caseP001_03.in.test \
-				test/performance/callInterface/caseP001_08.in.test \
-				test/performance/callInterface/caseP001_11.in.test \
-				test/performance/callInterface/caseP001_12.in.test \
-				test/performance/callInterface/caseP001_13.in.test \
-				test/performance/callInterface/caseP002_01.in.test 
+WCIPERFTEST_SOURCES =	test/performance/callInterface/caseP001_01.in.test \
+						test/performance/callInterface/caseP001_02.in.test \
+						test/performance/callInterface/caseP001_03.in.test \
+						test/performance/callInterface/caseP001_08.in.test \
+						test/performance/callInterface/caseP001_11.in.test \
+						test/performance/callInterface/caseP001_12.in.test \
+						test/performance/callInterface/caseP001_13.in.test \
+						test/performance/callInterface/caseP002_01.in.test 
 
-WCIPERFTEST_SUPPORT =		test/performance/callInterface/buildUp.in.sh \
-				test/performance/callInterface/tearDown.in.sh \
-				test/performance/callInterface/testEnvironment.in.sh
-
-
-WCIPERFTEST_SQL =		test/performance/callInterface/caseP001_01.in.sql	
+WCIPERFTEST_SUPPORT =	test/performance/callInterface/buildUp.in.sh \
+						test/performance/callInterface/tearDown.in.sh \
+						test/performance/callInterface/testEnvironment.in.sh
 
 PERFORMANCETESTS +=		wciPerformanceTest.sh
 
 noinst_SCRIPTS +=		wciPerformanceTest.sh \
-				$(WCIPERFTEST_SOURCES:.in.test=.test) \
-				$(WCIPERFTEST_SUPPORT:.in.sh=.sh) \
-				$(WCIPERFTEST_SQL:.in.sql=.sql)
+						$(WCIPERFTEST_SOURCES:.in.test=.test) \
+						$(WCIPERFTEST_SUPPORT:.in.sh=.sh)
 
 CLEANFILES +=			wciPerformanceTest.sh \
-				$(WCIPERFTEST_SOURCES:.in.test=.test) \
-				$(WCIPERFTEST_SUPPORT:.in.sh=.sh) \
-				$(WCIPERFTEST_SQL:.in.sql=.sql)
-
+						$(WCIPERFTEST_SOURCES:.in.test=.test) \
+						$(WCIPERFTEST_SUPPORT:.in.sh=.sh)
+				
 EXTRA_DIST +=			test/performance/callInterface/wciPerformanceTest.in.sh \
-				$(WCIPERFTEST_SOURCES) \
-				$(WCIPERFTEST_SUPPORT) \
-				$(WCIPERFTEST_SQL) \
-				test/performance/callInterface/wdb.mk \
-				test/performance/callInterface/Makefile.am \
-				test/performance/callInterface/Makefile.in
+						$(WCIPERFTEST_SOURCES) \
+						$(WCIPERFTEST_SUPPORT) \
+						test/performance/callInterface/wdb.mk \
+						test/performance/callInterface/Makefile.am \
+						test/performance/callInterface/Makefile.in
 
 DISTCLEANFILES +=		test/performance/callInterface/Makefile
 
