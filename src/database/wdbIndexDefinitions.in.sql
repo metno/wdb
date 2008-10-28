@@ -158,8 +158,6 @@ CREATE UNIQUE INDEX XAK1Wdb_LevelStandardParameter ON __WDB_SCHEMA__.levelphysic
 	levelparameterusage
 );
 
-
-
 CREATE INDEX XIE0Wdb_OidValue ON __WDB_SCHEMA__.OidValue
 (
 	   DataProviderId,
@@ -178,4 +176,32 @@ CREATE INDEX XIE0Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        ValueStoretime,
 	   ValueId,
        Value
+);
+
+
+CREATE INDEX XIE1Wdb_PlaceName ON __WDB_SCHEMA__.PlaceName
+(
+       PlaceId,
+       PlaceNameSpaceId
+);
+
+CREATE INDEX XIE1Wdb_DataProvider_Mv ON __WCI_SCHEMA__.dataprovider_mv
+(
+       DataProviderId,
+	   DataProviderNamespaceId,
+	   DataProviderName
+);
+
+CREATE INDEX XIE1Wdb_ValueParameter_Mv ON __WCI_SCHEMA__.valueparameter_mv
+(
+    ValueParameterId,
+	ParameterNameSpaceId,
+	ValueParameterName
+);
+
+CREATE INDEX XIE1Wdb_LevelParameter_Mv ON __WCI_SCHEMA__.levelparameter_mv
+(
+    LevelParameterId,
+	ParameterNameSpaceId,
+	LevelParameterName
 );

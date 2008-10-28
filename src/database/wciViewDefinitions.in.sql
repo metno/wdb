@@ -255,6 +255,11 @@ GRANT ALL ON __WCI_SCHEMA__.placedefinition_mv TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placedefinition_mv TO wdb_read, wdb_write;
 
 
+CREATE INDEX XIE0Wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+(
+       PlaceId
+);
+
 
 
 

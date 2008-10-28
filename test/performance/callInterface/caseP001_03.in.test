@@ -16,7 +16,7 @@ case $1 in
 esac
 
 # Prepare Test
-EXECUTE="./wciPerformanceTester 2" 
+EXECUTE="./wciPerformanceTester 3" 
 totalTime=0
 
 # Execute Test 1
