@@ -251,7 +251,7 @@ feltload.getlevelparameter(
 RETURNS feltload.levelparameter AS
 $BODY$
 DECLARE
-	ret gribload.levelparameter;
+	ret feltload.levelparameter;
 	load boolean;
 BEGIN
 	SELECT levelparameterid, levelparameterunit, loadlevelflag INTO ret.levelparameterid, ret.levelparameterunit, load
