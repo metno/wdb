@@ -88,7 +88,7 @@ public:
     /**
      * Load a new PlaceDefinition for a GRIB1 field into the database.
      * @param	geoObj		The geometry object described as a string
-     * @param	geoDatum	The datum of the geometry object. Ignored by the postgres gribload
+     * @param	geoDatum	The datum of the geometry object. %Defunct%
      * @param	iNum		Number of points along the i axis
      * @param	jNum		Number of points along the j axis
      * @param	iInc		Size of increments along the i axis

@@ -40,7 +40,7 @@
 /**
  * @file
  * Definition and implementation of level parameter retrieval transactor used in
- * the GribLoad application.
+ * the FeltLoad application.
  */
 
 // PROJECT INCLUDES

@@ -74,7 +74,9 @@ namespace
 			return "1900-01-01";
 		else if ( time == boost::posix_time::ptime(pos_infin) )
 			return "2100-01-01";
-		return to_iso_extended_string(time);
+		// ...always convert to zulu time
+		std::string ret = to_iso_extended_string(time) + "+00";
+		return ret;
 	}
 }
 

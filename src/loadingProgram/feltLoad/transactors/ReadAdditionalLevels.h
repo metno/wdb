@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -36,40 +36,40 @@
  * @addtogroup feltload
  * @{
  */
- 
-/** 
+
+/**
  * @file
- * Definition and implementation of the parameter retrieval transactor used in 
- * the GribLoad application.
+ * Definition and implementation of the parameter retrieval transactor used in
+ * the FeltLoad application.
  */
-  
+
 // PROJECT INCLUDES
 #include <wdbException.h>
 #include <wdbDoNotLoadException.h>
 #include <wdbLogHandler.h>
-#include <WdbLevel.h> 
- 
+#include <WdbLevel.h>
+
 // SYSTEM INCLUDES
 #include <pqxx/transactor>
 #include <pqxx/result>
 #include <iostream>
 #include <string>
 #include <vector>
- 
+
 // FORWARD REFERENCES
 //
 
 namespace wdb {
-	
+
 namespace database {
 
 
 /**
- * Transactor to retrieve additional level information from WDB associated with 
+ * Transactor to retrieve additional level information from WDB associated with
  * a given set of GRIB parameter codes.
  *
  * @see feltDatabaseConnection
- * 
+ *
  * @Todo: This has not been updated with level parameters yet.
  */
 class ReadAdditionalLevels : public pqxx::transactor<>
@@ -93,7 +93,7 @@ public:
     {
     	// NOOP
     }
-	
+
 	/**
 	 * Functor. The transactors functor executes the query.
 	 */
@@ -105,7 +105,7 @@ public:
 					  (feltN1_)
 					  (feltN2_).exec();
 	}
-  
+
 	/**
 	 * Commit handler. This is called if the transaction succeeds.
 	 */
@@ -170,7 +170,7 @@ private:
 	int feltN1_;
 	/// FELT Niveau 2
 	int feltN2_;
-  	
+
 };
 
 
@@ -180,7 +180,7 @@ private:
 
 /**
  * @}
- * 
+ *
  * @}
  */
 
