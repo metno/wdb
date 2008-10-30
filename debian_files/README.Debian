@@ -14,15 +14,15 @@ Nonstandard installation
 
 In order to get a basic wdb database up and running, just install the
 package, and you should be ok. If you want to use a specific setup,
-such as a nonstandard database name, or a nonstandard administartor
+such as a nonstandard database name, or a nonstandard administrator
 user name, you are ok, too. In this case you may use dbconfig-common,
 through debian's regular configuration system (dpkg-preconfigure).
 
-However, dbconfig-common does not know about clusters. This means
-that:
+However, dbconfig-common does not know about database clusters. This 
+means that:
 
 1: If the installed computer has more that one database cluster,
-   intallation will fail.
+   installation will fail.
 2: If you want to do anything nonstandard about your cluster, you must
    do it yourself, manually.
 
