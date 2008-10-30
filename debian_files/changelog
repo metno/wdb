@@ -1,0 +1,127 @@
+wdb (0.7.8-2) unstable; urgency=low
+
+  * Minor bugfix in upstream without upraded version number
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Wed, 29 Oct 2008 12:28:24 +0100
+
+wdb (0.7.8-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 17 Oct 2008 15:49:58 +0200
+
+wdb (0.7.7-4) unstable; urgency=low
+
+  * metadata again
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Tue,  7 Oct 2008 14:09:50 +0200
+
+wdb (0.7.7-3) unstable; urgency=low
+
+  * metadata upgrades
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Wed,  1 Oct 2008 15:49:23 +0200
+
+wdb (0.7.7-2) unstable; urgency=low
+
+  * Upgrade
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Wed, 24 Sep 2008 14:47:41 +0200
+
+wdb (0.7.7-1) unstable; urgency=low
+
+  * Development progress on next version
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Mon, 22 Sep 2008 15:30:31 +0200
+
+wdb (0.7.6-3) unstable; urgency=low
+
+  * Also removing wdb group on uninstall
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 19 Sep 2008 13:35:03 +0200
+
+wdb (0.7.6-2) unstable; urgency=low
+
+  * Upgraded to the official 0.7.6 (the other one was incorrect)
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 19 Sep 2008 09:01:59 +0200
+
+wdb (0.7.6-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 22 Aug 2008 16:00:30 +0200
+
+wdb (0.7.5-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Wed,  2 Jul 2008 14:44:17 +0200
+
+wdb (0.7.4-2) unstable; urgency=low
+
+  * Corrected dependencies
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Tue, 24 Jun 2008 13:09:43 +0200
+
+wdb (0.7.4-1) unstable; urgency=low
+
+  * new upstream release (informal)
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 23 May 2008 15:05:23 +0200
+
+wdb (0.7.3-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 23 May 2008 12:38:27 +0200
+
+wdb (0.7.2-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Wed,  7 May 2008 15:36:11 +0200
+
+wdb (0.7.1-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Tue, 29 Apr 2008 10:02:31 +0200
+
+wdb (0.6-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Mon,  4 Feb 2008 12:56:31 +0100
+
+wdb (0.6rc2-5) unstable; urgency=low
+
+  * fixed dependency issue blocking running of gribload
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Tue, 29 Jan 2008 14:11:12 +0100
+
+wdb (0.6rc2-4) unstable; urgency=low
+
+  * pqxx will now use unix domain sockets when host is left unspecified
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 25 Jan 2008 14:58:14 +0100
+
+wdb (0.6rc2-3) unstable; urgency=low
+
+  * added creation of wdb user account - which fixes local database
+    access problems
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 25 Jan 2008 13:12:28 +0100
+
+wdb (0.6rc2-2) unstable; urgency=low
+
+  * corrected dependencies and configuration database port number
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Tue, 15 Jan 2008 10:18:28 +0100
+
+wdb (0.6rc2-1) unstable; urgency=low
+
+  * Initial release 
+
+ -- Vegard Bønes <vegard.bones@met.no>  Wed,  9 Jan 2008 13:03:52 +0100
+

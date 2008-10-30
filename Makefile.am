@@ -512,4 +512,25 @@ include doc/doxygen/wdb.mk
 
 MOSTLYCLEANFILES += 		$(DX_CLEANFILES)
 EXTRA_DIST += 				$(DX_CONFIG)
-	
+
+
+PKG_DIR = $(PACKAGE)-$(VERSION)
+DEBIAN_DIR = $(PKG_DIR)/debian
+DEBIAN_PACKAGE = $(PACKAGE)_$(VERSION)
+DEBIAN_VERSION = 2
+ARCH = `dpkg-architecture -qDEB_HOST_ARCH_CPU`
+DEBIAN_PACKAGE_NAME = $(DEBIAN_PACKAGE)-$(DEBIAN_VERSION)_$(ARCH).deb
+
+debian:	dist clean-debian 
+	tar xvzf $(PKG_DIR).tar.gz
+	mkdir -p $(DEBIAN_DIR)
+	rm -rf $(DEBIAN_DIR)/*
+	cp -r $(top_srcdir)/debian_files/* $(DEBIAN_DIR)
+	cp $(PKG_DIR).tar.gz $(DEBIAN_PACKAGE).orig.tar.gz
+	cd $(PKG_DIR) && dpkg-buildpackage -rfakeroot -us -uc
+	lintian $(DEBIAN_PACKAGE_NAME)
+	linda $(DEBIAN_PACKAGE_NAME)
+
+clean-debian:
+	rm -rf $(PKG_DIR) $(DEBIAN_PACKAGE)*
+

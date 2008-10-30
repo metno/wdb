@@ -1,0 +1,11 @@
+Template: wdb/user_account
+Type: text
+Default: wdb
+Description: Wdb administrator account
+ A user account for the wdb administrator
+
+Template: wdb/database_name
+Type: text
+Default: wdb
+Description: Wdb database name
+ The name to use on the wdb database

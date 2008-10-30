@@ -1,0 +1,23 @@
+Source: wdb
+Section: devel
+Priority: extra
+Maintainer: Vegard Bones <vegard.bones@met.no>
+Build-Depends: debhelper (>= 5), autotools-dev, debconf,
+  dbconfig-common, libpqxx-dev (= 2.6.8-1), 
+  proj (>=4.6.0), libboost-filesystem-dev (>=1.33.1), libboost-program-options-dev
+  (>=1.33.1), libboost-regex-dev (>=1.33.1), libboost-date-time-dev
+  (>=1.33.1), liblog4cpp4-dev, libreadline5-dev, postgresql-8.1-postgis,
+  postgresql-server-dev-8.1, gribapi-dev
+Standards-Version: 3.7.2
+
+Package: wdb
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python (>=2.4),
+ postgresql-8.1, postgresql-8.1-postgis, gribapi, adduser, 
+ dbconfig-common, debconf, proj (>=4.6.0)
+Description: database for meteorological, hydrological and oceanographic data
+ wdb is designed to store MHO (Meteorological, Hydrological and
+ Oceanographic) data. The purpose of the system is to improve the
+ quality and effectiveness of IT systems for MHO production by
+ providing a complete, flexible, and effective data storage solution
+ for real-time and archive data.
