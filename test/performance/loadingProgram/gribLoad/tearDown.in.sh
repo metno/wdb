@@ -22,5 +22,5 @@
 # Remove Test Data
 $PSQL -q <<EOF
 --\o __WDB_LOGDIR__/gribLoad_performancetest.log
-DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid=3;
+DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid=30;
 EOF

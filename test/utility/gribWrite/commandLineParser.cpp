@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -49,6 +49,7 @@ CommandLineParser::CommandLineParser( GribWriter::Options & gwOpt )
     geo.add_options()
     ( "hirlam10", "Use the met.no hirlam10 grid." )
     ( "hirlam20", "Use the met.no hirlam20 grid." )
+    ( "proff", "Use the met.no proff grid." )
     ( "testGrid", "Use a simple 2x2 test grid." );
 
 
@@ -167,9 +168,12 @@ CommandLineParser::ParseResult CommandLineParser::parse( int argc, char ** argv 
     if ( vm.count( "hirlam20" ) )
         gwOpt_.geo = GribWriter::Options::Hirlam20;
 
+    if ( vm.count( "proff" ) )
+        gwOpt_.geo = GribWriter::Options::Proff;
+
     if ( vm.count( "testGrid" ) )
         gwOpt_.geo = GribWriter::Options::TestGrid;
-        
+
     if ( ! vm.count( "parameter" ) )
     {
         clog << "Missing parameter option\n\n";

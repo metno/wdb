@@ -156,9 +156,9 @@
 				usually specified.</para>
 			
 			<para>A data provider can be a software process (e.g., Hirlam), a
-				Meteorological station, an aircraft, a person, or a group of data providers. A data provider is
-				identified by a DataProviderName. DataProviderNames are used to search for the
-				data.</para>
+				Meteorological station, an aircraft, a person, or a group of data providers. 
+				A data provider is identified by a DataProviderName. DataProviderNames are 
+				used to search for the data.</para>
 			
 			<para>When searching for data, the user may specify a single DataProviderName,
 				several DataProviderNames, or NULL. NULL indicates that the user wants all
@@ -246,7 +246,7 @@
 			<para>There can be several different versions of the same data value that is
 				valid for the same time, position, etc. This can happen with probability
 				forecast calculations, or when a data value is edited (in which case the new
-				value will usually be inserted with a higher data version). A data version is
+				value may often be inserted with a higher data version). A data version is
 				always a positive whole number.</para>
 			
 			<para>The user may specify one or several data versions as search criteria in
@@ -327,10 +327,10 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 		</programlisting>
 			
 			<para>The username is used to identify the user with WCI (this is used in setting
-				up internal WCI variables); the namespace ids for data provider,
-				parameter, and level parameter initialize these variables. wci.begin can
-				also be called without setting these variables, in which case they are set to
-				the default (usually 0, 0, 0) by the system.</para>
+				up internal WCI variables). The three following numbers are the namespace
+				codes for data provider namespace, place name space, and parameter name space.
+				The wci.begin can also be called without setting these three variables, in 
+				which case they are set to the default (usually 0, 0, 0) by the system.</para>
 			
 			<para>The username of the wci user can be a different identity than the one the
 				user connected with (always assuming, of course, that your user has
@@ -347,7 +347,6 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 				ready for retrieval of data. Data is retrieved using the wci.read function,
 				and data is searched for by setting the appropriate dimensions in that
 				call.</para>
-			
 			
 			<programlisting>
 SELECT * 
@@ -402,7 +401,7 @@ PQfinish(connection_);
 		
 	</chapter>
 	
-	<chapter>
+	<chapter id="cha:wci_function_reference">
 		<title>Function Reference</title>
 		
 		<para>The following sections provide a list of the functions available for usage
@@ -419,7 +418,7 @@ PQfinish(connection_);
 			<para>The function is overloaded, and exists in two almost identical versions,
 				depending on the return type required.</para>
 			
-			<sect2>
+			<sect2 id="sec:wci.read:prerequisites">
 				<title>Prerequisites</title>
 				
 				<itemizedlist>
@@ -436,9 +435,8 @@ PQfinish(connection_);
 				
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.read:syntax">
 				<title>Syntax</title>
-				
 				
 				<programlisting>
 wci.read 
@@ -453,7 +451,6 @@ wci.read
           returnType     wci.returnoid
 )
 			</programlisting>
-				
 				
 				<programlisting>
 wci.read
@@ -537,7 +534,7 @@ wci.read
 				
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.read:expected_result">
 				<title>Expected Result</title>
 				
 				<para>Depending on the returnType specified:</para>
@@ -552,7 +549,36 @@ wci.read
 				</itemizedlist>
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.read:examples">
+				<title>Examples</title>
+				
+				<para>The following query returns Hirlam 8 data from the database using a
+					wci.read:</para>
+				
+			<programlisting>
+SELECT * 
+FROM wci.READ ( ARRAY['Hirlam 8'], -- Data provider name
+               'nearest POINT(10 60)', -- Geometry
+               ('1980-04-05 12:00:00', '1980-04-05 12:00:00', 'exact')::wci.timeSpec,  -- Reference time
+               ('1980-04-06 00:00:00', '1980-04-07 00:00:00', 'inside')::wci.timeSpec, --Valid time
+               ARRAY['pressure of air', 'temperature of air'], -- Parameter
+               NULL, -- Level
+               ARRAY[-1],  -- Data version
+               NULL::wci.returnFloat -- Return type
+             )
+		</programlisting>
+			
+			<para>The above query returns Hirlam 8 data pressure and temperature data for 
+				the point closest to 10 degrees East, 60 degrees North that is valid for
+				the twenty four hour time period of the 6th of April, 1980 and which was
+				created (has the reference time) for the 5th of April, 12:00. The query returns
+				all data that fulfills the above qualifications regardless of level, but only 
+				the latest version (dataversion) of the data available.	Values will be returned 
+				as point data.</para>
+			
+			</sect2>
+
+			<sect2 id="sec:wci.read:see">
 				<title>See Also</title>
 				
 				<itemizedlist>
@@ -570,7 +596,7 @@ wci.read
 			
 		</sect1>
 		
-		<sect1 id="sect:wci.browse">
+		<sect1 id="sec:wci.browse">
 			<title>wci.browse</title>
 			
 			<para>wci.browse is the function utilized to browse the MHO data in the
@@ -601,9 +627,8 @@ wci.read
 				
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.browse:syntax">
 				<title>Syntax</title>
-				
 				
 				<programlisting>
 wci.browse

@@ -19,6 +19,8 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 
+echo -n "# Generating test data (please wait)... "
+
 # Remove previous test data
 rm -f ${TEST_FILE}01
 rm -f ${TEST_FILE}02
@@ -32,7 +34,7 @@ rm -f ${TEST_FILE}08
 # Generate Test Data
 days="01 02 03 04 05 06 07 08"
 hours="00 06 12 18"
-params="1 2 3 4 5 6"
+params="1 3 10 11 15 16"
 timesteps="0 1 2 3 4 5 6 7 8 9 10 11"
 
 for dd in $days
@@ -44,7 +46,7 @@ for dd in $days
       do
       for timestep in $timesteps
 		do	
-		${GRIBWRITE_PATH}/gribWrite --parameter $parameter --hirlam10 --timeValue 1980-01-"$dd"T"$hh":00:00 --timeUnit 1 --P1 $timestep --P2 0 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 --generatingCentre 1 --generatingProcess 252 -P 100,100=1 ${TEST_FILE}$dd
+		${GRIBWRITE_PATH}/gribWrite --parameter $parameter --proff --timeValue 1980-02-"$dd"T"$hh":00:00 --timeUnit 1 --P1 $timestep --P2 0 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 --generatingCentre 1 --generatingProcess 252 -P 100,100=1 ${TEST_FILE}$dd
       done
    	done
   done
@@ -53,5 +55,4 @@ done
 #25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
 
 # Exit
-echo -e "# Generated test data"
-
+echo -e "done"

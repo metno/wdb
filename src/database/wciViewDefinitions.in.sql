@@ -99,6 +99,19 @@ REVOKE ALL ON TABLE __WCI_SCHEMA__.dataprovider_mv FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.dataprovider_mv TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.dataprovider_mv TO wdb_read, wdb_write;
 
+CREATE INDEX XIE0wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
+(
+    dataprovidername
+);
+
+CREATE INDEX XIE1wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
+(
+    dataprovidernameleftset,
+	dataprovidernamerightset
+);
+
+
+
 CREATE VIEW __WCI_SCHEMA__.wciuserdataprovider AS
 SELECT
 	dataproviderid,
@@ -167,14 +180,6 @@ WHERE
 	vsunit.unitname = vspp.valueparameterunitname AND
 	vsp.basevalueparameterid = vspp.valueparameterid;
 
-SELECT
-	lcp.levelparameterid, 
-	0 as parameternamespaceid, 
-	lcp.levelcodeparametername, 
-	NULL as unitname 
-FROM
-	__WDB_SCHEMA__.levelcodeparameter as lcp;
-
 REVOKE ALL ON __WCI_SCHEMA__.valueparameter FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.valueparameter TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.valueparameter TO wdb_read, wdb_write;
@@ -185,6 +190,12 @@ SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.valueparameter_mv');
 REVOKE ALL ON TABLE __WCI_SCHEMA__.valueparameter_mv FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.valueparameter_mv TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.valueparameter_mv TO wdb_read, wdb_write;
+
+CREATE INDEX XIE0wci_valueparameter_mv ON __WCI_SCHEMA__.valueparameter_mv
+(
+    valueparametername
+);
+
 
 
 CREATE VIEW __WCI_SCHEMA__.levelparameter AS
@@ -217,6 +228,12 @@ SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.levelparameter_mv');
 REVOKE ALL ON TABLE __WCI_SCHEMA__.levelparameter_mv FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.levelparameter_mv TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.levelparameter_mv TO wdb_read, wdb_write;
+
+CREATE INDEX XIE0wci_levelparameter_mv ON __WCI_SCHEMA__.levelparameter_mv
+(
+    levelparametername
+);
+
 
 
 CREATE VIEW __WCI_SCHEMA__.placedefinition AS
@@ -254,12 +271,10 @@ REVOKE ALL ON __WCI_SCHEMA__.placedefinition_mv FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.placedefinition_mv TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placedefinition_mv TO wdb_read, wdb_write;
 
-
 CREATE INDEX XIE0Wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
 (
        PlaceId
 );
-
 
 
 
@@ -334,12 +349,14 @@ GRANT SELECT ON __WCI_SCHEMA__.oidvalue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.oidvalue TO wdb_write;
 
 
+
 CREATE VIEW __WCI_SCHEMA__.floatgridvalue AS SELECT * FROM __WCI_SCHEMA__.oidvalue;
 
 REVOKE ALL ON __WCI_SCHEMA__.floatGridValue FROM public;
 GRANT ALL ON __WCI_SCHEMA__.floatGridValue TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.floatGridValue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatGridValue TO wdb_write;
+
 
 
 CREATE VIEW __WCI_SCHEMA__.floatvalue AS
@@ -396,7 +413,6 @@ REVOKE ALL ON __WCI_SCHEMA__.floatValue FROM public;
 GRANT ALL ON __WCI_SCHEMA__.floatValue TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.floatValue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatValue TO wdb_write;
-
 
 
 

@@ -134,7 +134,7 @@
 			<para>This section of the manual will discuss the bug reporting policy followed
 				by WDB. Since there is as yet no public access to our Bugzilla
 				http://wdb.bugs.met.no/, the best solution at the moment is to contact us on
-				the appropriate mailing list.</para>
+				the appropriate mailing list (usually wdb-users@list.sourceforge.net).</para>
 			
 		</sect1>
 		
@@ -221,9 +221,9 @@
 			user =          myuser
 			</programlisting>
 				
-				<para>This tells you what the connection information of your WDB database
-					is. If these are incorrect, you can change your settings by editing the
-					wdb.conf file installed in WDB's sysconfdir and save it to
+				<para>This tells you what the default connection information of your WDB database
+					is assumed to be. If these are incorrect, you can change your settings by 
+					editing the wdb.conf file installed in WDB's sysconfdir and saving it to
 					$(HOME)/.wdb</para>
 				
 				<para>If you are unsure as to whether the connection information is
@@ -242,7 +242,7 @@
 					running. If the database server is down, then obviously you can not
 					connect to it. Otherwise, you may need to consult your site
 					administrator (or if that is you) the PostgreSQL documentation to make
-					sure that your database environment is set up properly. </para>
+					sure that your database environment is set up correctly. </para>
 				
 			</sect2>
 			
@@ -254,7 +254,7 @@
 			<para>The roadmap currently calls for it to be possible to upgrade WDB simply, without
 				having to dump/reload data. This has not been implemented yet, however, so until further 
 				notice the solution for upgrading is simply to uninstall WDB (purge in Debian) and then
-				re-installing the system).</para>
+				re-installing the system.</para>
 			
 		</sect1>
 		
@@ -464,8 +464,7 @@
 			%> make install
 		</programlisting>
 			
-			<para> The rest of this chapter discusses the details of the details of
-				installing WDB. </para>
+			<para> The rest of this chapter discusses the details of installing WDB. </para>
 			
 		</sect1>
 		
@@ -505,7 +504,7 @@
 					<term>GNU tar</term>
 					<listitem>
 						<para>GNU tar or similar archiving software able to handle tar.gz
-							filesq is required to unpack the source distribution in the
+							files is required to unpack the source distribution in the
 							first place, in addition to either gzip or bzip2.</para>
 					</listitem>
 				</varlistentry>
@@ -543,7 +542,7 @@
 							version) server, to be able to install a WDB server. WDB
 							utilizes the pg_config utility to retrieve information
 							about your installed version of PostgreSQL, so take care to
-							ensure the right version of pg_config is in your path, if you
+							ensure the right version of pg_config is in your path if you
 							have multiple versions of the database server installed. If
 							you need to download PostgreSQL, see <ulink
 								url="http://www.postgresql.org">
@@ -559,8 +558,8 @@
 							determine the location of the PostGIS scripts, so care should
 							be taken that PostGIS is installed correctly (i.e., in the
 							SHAREDIR of PostgreSQL). If you need to download PostGIS, see
-								<ulink url="http://www.postgis.org">
-							http://www.postgis.org</ulink></para>
+								<ulink url="http://www.postgis.org">http://www.postgis.org</ulink>
+						</para>
 					</listitem>
 				</varlistentry>
 				

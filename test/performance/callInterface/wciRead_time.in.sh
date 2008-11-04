@@ -19,8 +19,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 
-# Remove Test Data
-$PSQL -q <<EOF
-\o __WDB_LOGDIR__/wci_performancetest.log
-DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid=10 OR dataproviderid=11 OR dataproviderid=12;
-EOF
+EXECUTE="./wciPerformanceTester"
+date +%s%N >> ${TMP_PATH}/startTime.log
+$EXECUTE $1
+date +%s%N >> ${TMP_PATH}/endTime.log

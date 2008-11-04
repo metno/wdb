@@ -36,6 +36,7 @@
 #include <transactors/wciTransactors.h>
 #include <transactors/getRandomPoint.h>
 #include <transactors/getBilinearPoint.h>
+#include <transactors/getComplexPoint.h>
 #include <transactors/getPolygon.h>
 #include <transactors/getField.h>
 #include <performanceTestConfiguration.h>
@@ -214,6 +215,18 @@ int main(int argc, char *argv[])
 				C.perform( BilinearPointTest3(resultF) );
    			}
    			break;
+    	case 41: // Complex Random Point retrieval - individual points
+    		isFloat = true;
+			for (int i=0; i<50; i++) {
+				C.perform( ComplexPointTest1(resultF) );
+   			}
+			break;
+    	case 42: // Complex Random Point retrieval - individual points
+    		isFloat = true;
+			for (int i=0; i<50; i++) {
+				C.perform( ComplexPointTest2(resultF) );
+   			}
+			break;
 		case 13: // Multiple point retrieval - Not implemented
 		case 5: // Multiple simple polygon retrieval - Not implemented
 		case 7: // Multiple complex polygon retrieval - Not implemented

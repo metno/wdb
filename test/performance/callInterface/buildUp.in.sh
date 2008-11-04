@@ -48,5 +48,50 @@ for dd in $days
   done
 done
 
+# Complex Test
+days="01"
+hours="00"
+timesteps="0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29"
+for dd in $days
+  do
+  for hh in $hours 
+    do
+    for timestep in $timesteps
+	  do
+	  vd="01"
+	  vh=`expr $timestep + $hh`
+	  if test $vh -ge 48; then
+		vh=`expr $vh - 48`
+		vd="03"
+	  fi		
+	  if test $vh -ge 24; then
+		vh=`expr $vh - 24`
+		vd="02"
+	  fi		
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'pressure of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'proportion of ozone' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'max temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'min temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'temperature of land' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'accumulated surface density of precipitation, convective' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'velocity of air (u-component)' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'velocity of air (v-component)' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'pressure of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'proportion of ozone' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'max temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'min temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'accumulated surface density of precipitation, convective' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 2' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'pressure of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 2' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'proportion of ozone' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 2' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 2' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'max temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 2' --placename 'hirlam 10' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'min temperature of air' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
+    done
+  done
+done
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-01T00:00:00+00 --valueparameter 'yr weather symbol' --validtimefrom 1980-01-01T00:00:00+00 --validtimeto 1981-01-01T00:00:00+00
+
 # Exit
 echo -e "done"

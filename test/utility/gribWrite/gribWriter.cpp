@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -65,7 +65,7 @@ GribWriter::Options::Options( TimeDefaults t, GeoDefaults g )
 size_t GribWriter::Options::sec4Size() const
 {
 	return size_t( geo.iNum * geo.jNum );
-} 
+}
 
 GribWriter::Options::Time::Time( TimeDefaults t )
 {
@@ -74,7 +74,7 @@ GribWriter::Options::Time::Time( TimeDefaults t )
 		case Today:
 		{
 			const date today = day_clock::universal_day();
-			
+
 	        year = today.year();
 	        month = today.month();
 	        day = today.day();
@@ -85,7 +85,7 @@ GribWriter::Options::Time::Time( TimeDefaults t )
 	        p2 = 0;
 	        timeRangeIndicator = 1;
 	        break;
-		}			
+		}
 		case TimeNone:
 	        year = 0;
 	        month = 0;
@@ -98,7 +98,7 @@ GribWriter::Options::Time::Time( TimeDefaults t )
 	        timeRangeIndicator = 1;
 	        break;
         default:
-        	throw logic_error( "Invalid TimeDefault" ); 
+        	throw logic_error( "Invalid TimeDefault" );
 	}
 }
 
@@ -109,12 +109,12 @@ void GribWriter::Options::Time::setStartTime( const std::string & startTime )
 		// Get closer to iso format
 		string st = startTime;
 		replace( st.begin(), st.end(), 'T', ' ' );
-		replace( st.begin(), st.end(), 't', ' ' ); 
+		replace( st.begin(), st.end(), 't', ' ' );
 
-		// The date/time parser yields incorrect values if startTime is of the 
+		// The date/time parser yields incorrect values if startTime is of the
 		// format "2007-03-28" (as opposed to "2007-03-28 00:00:00"). So we
-		// check the length of the provided string, and add "00:00:00" if the 
-		// string is too short.  		
+		// check the length of the provided string, and add "00:00:00" if the
+		// string is too short.
 		//cout << "string: " << st << endl;
 		if ( st.size() <= 11 )
 		{
@@ -122,9 +122,9 @@ void GribWriter::Options::Time::setStartTime( const std::string & startTime )
 				st.append( " 00:00:00" );
 			else
 				st.append( "00:00:00" );
-		}	
+		}
 		//cout << "string: " << st << endl;
-		
+
 		ptime t( time_from_string( st ) );
 		//cout << t << endl;
 
@@ -137,8 +137,8 @@ void GribWriter::Options::Time::setStartTime( const std::string & startTime )
 		hour = c.hours();
 		minute = c.minutes();
 		// c.seconds() = ignored
-		
-		//cout<<year<<'-'<<month<<'-'<<day<<' '<<hour<<':'<<minute<<endl; 
+
+		//cout<<year<<'-'<<month<<'-'<<day<<' '<<hour<<':'<<minute<<endl;
 	}
 	catch ( boost::bad_lexical_cast & )
 	{
@@ -184,13 +184,27 @@ GribWriter::Options::Geo::Geo( GeoDefaults g )
 	        jNum = 378;
 	        startLat = -36500;
 	        startLon = -46500;
-	        stopLat = 38900; //jNum
-	        stopLon = 46900; //iNum
+	        stopLat = 38900;
+	        stopLon = 46900;
 	        iIncrement = 200;
 	        jIncrement = 200;
 	        scanningMode = 64;
 	        southPoleLat = -25000;
 	        southPoleLon = 0;
+	        angleOfRotation = 0;
+	    	break;
+	    case Proff:
+			iNum = 850;
+	        jNum = 1100;
+	        startLat = -16039;
+	        startLon = -6739;
+	        stopLat = 0; //jNum
+	        stopLon = 0; //iNum
+	        iIncrement = 36;
+	        jIncrement = 36;
+	        scanningMode = 64;
+	        southPoleLat = -23500;
+	        southPoleLon = -24000;
 	        angleOfRotation = 0;
 	    	break;
         case GeoNone:
@@ -262,7 +276,7 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     /* 103 = Fixed height level height above mean sea level (MSL) in meters (grib1/3.table)  */
     GW_CHECK( grib_set_long( handle, "indicatorOfTypeOfLevel", opt.level.unit ) );
     GW_CHECK( grib_set_long( handle, "level", opt.level.value ) );
-    
+
     GW_CHECK( grib_set_long( handle, "yearOfCentury", opt.time.year % 100 ) );
     GW_CHECK( grib_set_long( handle, "month", opt.time.month ) );
     GW_CHECK( grib_set_long( handle, "day", opt.time.day ) );
@@ -300,7 +314,7 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     /* 136 = 10001000
     (1=1)  Direction increments given
     (2=0)  Earth assumed spherical with radius = 6367.47 km
-    (5=1)  u and v components resolved relative to the defined grid 
+    (5=1)  u and v components resolved relative to the defined grid
     See grib1/7.table */
     GW_CHECK( grib_set_long( handle, "resolutionAndComponentFlags", 136 ) );
 
@@ -312,7 +326,7 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     /* 64 = 01000000
     (1=0)  Points scan in +i direction
     (2=1)  Points scan in +j direction
-    (3=0)  Adjacent points in i direction are consecutive 
+    (3=0)  Adjacent points in i direction are consecutive
     See grib1/8.table */
     GW_CHECK( grib_set_long( handle, "scanningMode", opt.geo.scanningMode /*64*/ ) );
 
@@ -329,17 +343,17 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     (2=0)  Simple packing
     (3=0)  Floating point values are represented
     (4=0)  No additional flags at octet 14
-    See grib1/11.table */ 
+    See grib1/11.table */
     //GW_CHECK(grib_set_long(handle,"dataFlag",8),0);
     // <--  THIS DOES NOT WORK!
 
 
     GW_CHECK( grib_set_long( handle, "numberOfBitsContainingEachPackedValue", 15 ) );
-    
+
     size_t grid_size = data.size();
-    
+
     GW_CHECK( grib_set_double_array( handle, "values", & data[ 0 ], grid_size ) );
-    
+
     const void * buffer = 0;
     GW_CHECK( grib_get_message( handle, & buffer, & grid_size ) );
 

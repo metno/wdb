@@ -11,8 +11,6 @@ wdb_la_SOURCES =		src/database/wdbSetup.c \
 						src/database/databaseProjection.cpp
 
 
-
-
 DATABASE_SOURCES =		src/database/wdbConstraintDefinitions.in.sql \
 						src/database/wdbGribDefinitions.in.sql \
 						src/database/wdbFeltDefinitions.in.sql \
