@@ -187,6 +187,7 @@ public:
     	log.infoStream() <<  "Query: " << query1;
     	pqxx::result R;
 		R = T.exec(query1);
+		//std::cerr << query1 << std::endl;
 		for (int i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
 			R.at(i).at(0).to(ret->value_);
@@ -224,6 +225,7 @@ public:
         const std::string query2 = queryStr2.str();
     	log.infoStream() <<  "Query: " << query2;
 		R = T.exec(query2);
+		//std::cerr << query2 << std::endl;
 		for (int i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
 			R.at(i).at(0).to(ret->value_);
@@ -261,6 +263,7 @@ public:
         const std::string query3 = queryStr3.str();
     	log.infoStream() <<  "Query: " << query3;
 		R = T.exec(query3);
+		//std::cerr << query3 << std::endl;
 		for (int i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
 			R.at(i).at(0).to(ret->value_);
@@ -298,6 +301,7 @@ public:
         const std::string query4 = queryStr4.str();
     	log.infoStream() <<  "Query: " << query4;
 		R = T.exec(query4);
+		//std::cerr << query4 << std::endl;
 		for (int i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
 			R.at(i).at(0).to(ret->value_);

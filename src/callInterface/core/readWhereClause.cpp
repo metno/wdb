@@ -192,7 +192,10 @@ extern "C"
 		// Create where clause
 		stringstream wquery;
 		if (strcmp(timeInd, "exact") == 0) {
-	    	wquery << "v.referencetime = '" << timeFrom << "' AND v.referencetime = '" << timeTo << "'";
+			if (strcmp(timeFrom, timeTo) == 0)
+				wquery << "v.referencetime = '" << timeFrom << "'";
+			else
+				wquery << "v.referencetime = '" << timeFrom << "' AND v.referencetime = '" << timeTo << "'";
 	    }
 	    else
 	    if (strcmp(timeInd, "inside") == 0) {

@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -34,26 +34,29 @@
  * @addtogroup admin
  * @{
  */
- 
-/** 
+
+/**
  * @file
  * Definition and implementation of list tables transactor
  */
-  
+
 // PROJECT INCLUDES
-//
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 // SYSTEM INCLUDES
 #include <pqxx/transactor>
 #include <pqxx/result>
 #include <iostream>
 #include <string>
- 
+#include <sstream>
+
 // FORWARD REFERENCES
 //
 
 namespace admin {
-	
+
 /**
  * Transactor to create a user
  */
@@ -73,17 +76,19 @@ public:
     {
     	// NOOP
     }
-	
+
 	/**
 	 * Functor. The transactors functor executes the query.
 	 */
 	void operator()(argument_type &T)
   	{
-		
-		std::string query = "SELECT indexrelname, idx_scan, idx_tup_read, idx_tup_fetch FROM pg_stat_all_indexes WHERE schemaname='wdb';";
+		std::stringstream qStr;
+		qStr << "SELECT indexrelname, idx_scan, idx_tup_read, idx_tup_fetch FROM pg_stat_all_indexes WHERE schemaname='"
+			 << WCI_SCHEMA << "' OR schemaname='" << WDB_SCHEMA << "'";
+		std::string query = qStr.str();
 		r_ = T.exec( query.c_str() );
 	}
-  
+
 	/**
 	 * Commit handler. This is called if the transaction succeeds.
 	 */
