@@ -154,28 +154,32 @@ GRANT ALL ON __WCI_SCHEMA__.placename TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placename TO wdb_read, wdb_write;
 
 CREATE VIEW __WCI_SCHEMA__.placedefinition AS
-SELECT  
-	pd.placeid,
-	pd.placegeometrytype,
-	pd.placegeometry,
-	pd.placeindeterminatecode,
-	grd.originalsrid
-FROM 	
-	__WDB_SCHEMA__.placedefinition pd, 
-	__WDB_SCHEMA__.placeregulargrid grd
+SELECT pdd.placeid, placegeometrytype, placegeometry, placeindeterminatecode, originalsrid, placename, placenamespaceid
+FROM ( SELECT  
+		pd.placeid,
+		pd.placegeometrytype,
+		pd.placegeometry,
+		pd.placeindeterminatecode,
+		grd.originalsrid
+	FROM 	
+		__WDB_SCHEMA__.placedefinition pd, 
+		__WDB_SCHEMA__.placeregulargrid grd
+	WHERE
+		pd.placeid = grd.placeid
+	UNION ALL
+	SELECT  
+		pd.placeid,
+		pd.placegeometrytype,
+		pd.placegeometry,
+		pd.placeindeterminatecode,
+		4030 as originalsrid
+	FROM 	
+		__WDB_SCHEMA__.placedefinition pd
+	WHERE
+		pd.placegeometrytype != 'Grid' ) pdd, __WDB_SCHEMA__.placename pn
 WHERE
-	pd.placeid = grd.placeid
-UNION ALL
-SELECT  
-	pd.placeid,
-	pd.placegeometrytype,
-	pd.placegeometry,
-	pd.placeindeterminatecode,
-	4030 as originalsrid
-FROM 	
-	__WDB_SCHEMA__.placedefinition pd
-WHERE
-	pd.placegeometrytype != 'Grid';
+	pdd.placeid = pn.placeid;
+	
 		
 REVOKE ALL ON __WCI_SCHEMA__.placedefinition FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.placedefinition TO wdb_admin;
@@ -188,12 +192,20 @@ REVOKE ALL ON __WCI_SCHEMA__.placedefinition_mv FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.placedefinition_mv TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placedefinition_mv TO wdb_read, wdb_write;
 
-CREATE INDEX XIE0wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+CREATE INDEX XIE1wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
 (
        PlaceId
 );
 
-CREATE INDEX XIE1wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+CREATE INDEX XIE2wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+(
+       PlaceName,
+	   PlaceNameSpaceId,
+	   PlaceId
+);
+
+
+CREATE INDEX XIE0wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
 USING GIST
 (
     PlaceGeometry
@@ -322,11 +334,11 @@ SELECT
 	dp.dataprovidername,
 	dp.dataprovidernameleftset,
 	dp.dataprovidernamerightset,
-	plname.placename,
-	place.placeid, 
-	place.placegeometry,
-	place.placeindeterminatecode,
-	place.originalsrid,
+	pl.placename,
+	pl.placeid, 
+	pl.placegeometry,
+	pl.placeindeterminatecode,
+	pl.originalsrid,
 	val.referencetime, 
 	val.validtimefrom, 
 	val.validtimeto,
@@ -348,20 +360,18 @@ SELECT
 	val.valuetype
 FROM 	
 	__WDB_SCHEMA__.oidvalue val,
-	__WCI_SCHEMA__.placedefinition_mv place,
-	__WDB_SCHEMA__.placename plname,
+	__WCI_SCHEMA__.placedefinition_mv pl,
 	__WCI_SCHEMA__.dataprovider_mv dp,
 	__WCI_SCHEMA__.valueparameter_mv vp,
 	__WCI_SCHEMA__.levelparameter_mv vl,
 	__WCI_SCHEMA__.getSessionData() s
 WHERE
 	val.dataproviderid = dp.dataproviderid 
-	AND val.placeid = place.placeid
-	AND place.placeid = plname.placeid
+	AND val.placeid = pl.placeid
 	AND val.valueparameterid = vp.valueparameterid
 	AND val.levelparameterid = vl.levelparameterid
 	AND dp.dataprovidernamespaceid = s.dataprovidernamespaceid
-	AND plname.placenamespaceid = s.placenamespaceid
+	AND pl.placenamespaceid = s.placenamespaceid
 	AND vp.parameternamespaceid = s.parameternamespaceid
 	AND vl.parameternamespaceid = s.parameternamespaceid;
 

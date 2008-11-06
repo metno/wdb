@@ -42,6 +42,7 @@ using namespace boost;
 
 const int RETURN_OID 	= 0;
 const int RETURN_FLOAT 	= 1;
+const int RETURN_OID_FLOAT 	= 2;
 
 namespace
 {
@@ -155,6 +156,28 @@ string Location::query( int returnType ) const
 			// wci(internal).dwithin (really ST_DWITHIN from Postgis version > 1.2.1) is used instead of overlaps (or
 			// something similar), because the precision as we transform back and forth between the various srids will
 			// get messed up.
+		}
+		break;
+	case RETURN_OID_FLOAT:
+		// When we want to return floating points for OIDs, we don't want to check for
+		// overlap of the geometry with data. That is done later
+		if ( ! isGeometry() )
+		{
+			// Get the geometry of the placeId
+			std::string pquery = "SELECT astext(placegeo) FROM " + std::string(WCI_SCHEMA) + ".place WHERE placename = '" + location() + "'";
+			myGeometry = getPlaceQuery_( pquery.c_str(), 5000 );
+		}
+		else
+		{
+			myGeometry = location();
+		}
+		// Create query
+		if ( myGeometry == "NULL" ) {
+			q << "FALSE";
+		}
+		else {
+			q 	<< "TRUE";
+			// As long as the geometry exists, we just ignore it
 		}
 		break;
 	default:

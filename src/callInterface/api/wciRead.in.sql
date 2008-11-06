@@ -184,7 +184,7 @@ BEGIN
 		readQ := 'SELECT * ' ||
 				 __WCI_SCHEMA__.readQuery( 0, 
 										   dataprovider,
-										   __WCI_SCHEMA__.getPlaceQuery(location, 1),
+										   __WCI_SCHEMA__.getPlaceQuery(location, 2),
 										   referencetime,
 										   validtime,
 										   parameter,
@@ -203,7 +203,7 @@ BEGIN
 						entryO.dataprovidername, 
 						loc.location,
 						pointData.location,
-						entryO.referencetime, 
+						entryO.referencetime,
 						entryO.validtimefrom,
 						entryO.validtimeto, 
 						entryO.valueparametername,

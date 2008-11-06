@@ -121,19 +121,6 @@ extern "C"
 	{
 		// Extract Values
 		return extractTextDatum(in);
-//	    stringstream wquery;
-//	    	    wquery << "( transform ( geomFromText( $$"
-//	    	    	   << extractTextDatum( in )
-//	    	    	   << "$$, 4030), (SELECT originalsrid FROM wci(internal).placespec WHERE placeid=v.placeid) ) "
-//	    	    	   << " && transform ( v.placegeometry, (SELECT originalsrid FROM wci(internal).placespec WHERE placeid=v.placeid) ) )";
-
-//	    	    wquery << "( transform ( " << extractTextDatum( in ) <<", "
-//	    	    		<< "(SELECT originalsrid FROM wci(internal).placespec WHERE placeid=v.placeid) )"
-//	    	    		<< " && "
-//	    	    	   << "transform ( v.placegeometry, (SELECT originalsrid FROM wci(internal).placespec WHERE placeid=v.placeid) ) )";
-
-	    	    // Return
-		//return charFromStream(wquery);
 	}
 
 
