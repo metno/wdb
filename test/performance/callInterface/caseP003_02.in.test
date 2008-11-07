@@ -33,7 +33,7 @@ endTime=`tail -1 ${TMP_PATH}/endTime.log`
 let totalTime=totalTime+endTime-startTime
 
 averageTimeRetrieval=$(echo "$totalTime / 1000000000.0" | bc -l)
-averageRows=$(echo "4500.0 * 4 / $averageTimeRetrieval" | bc -l)
+averageRows=$(echo "22500.0 * 4 / $averageTimeRetrieval" | bc -l)
 
 echo "Average Time: $averageTimeRetrieval seconds"
 echo "Rows Returned: $averageRows per second"

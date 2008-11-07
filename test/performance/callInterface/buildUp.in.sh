@@ -93,5 +93,8 @@ for dd in $days
 done
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime 1980-02-01T00:00:00+00 --valueparameter 'yr weather symbol' --validtimefrom 1980-01-01T00:00:00+00 --validtimeto 1981-01-01T00:00:00+00
 
+# Tune database
+psql `__WDB_BINDIR__/wdbConfiguration --psqlArgs` -q -c "ANALYZE;"
+
 # Exit
 echo -e "done"

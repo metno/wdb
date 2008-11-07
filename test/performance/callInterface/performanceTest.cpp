@@ -151,20 +151,17 @@ int main(int argc, char *argv[])
    			}
    			break;
     	case 8: // Prepared Random Point retrieval - individual points
-    		log.errorStream() << "Prepared point test is not functional";
-    		break;
-    		/*
     		isFloat = true;
     		C.prepare("ReadRandom1",
     				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
-    				  " from wci.read ( "
-    		    	  "ARRAY['test wci 0'], $2, $1, $3,"
-    				  "ARRAY['instant temperature of air'], "
-    				  "(0,1000,'distance above mean sea level','any')::wci.levelspec, "
-    				  "NULL, NULL::wci.returnFloat	)" )
-    				  ("wci.timespec", treat_string )
+    				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
+    				  "(0, 0, 'distance above ground', 'exact')::wci.levelspec, "
+    				  "ARRAY[-1], NULL::wci.returnFloat	)" )
     				  ("varchar", treat_string )
-    				  ("wci.timespec", treat_string );
+					  ("varchar", treat_string )
+    				  ("wci.timespec", treat_string )
+    				  ("wci.timespec", treat_string )
+			          ("varchar", treat_string );
 			for (int i=0; i<1000; i++) {
 				try {
 					C.perform( PreparedRandomPointTest1(resultF) );
@@ -176,7 +173,6 @@ int main(int argc, char *argv[])
 				}
    			}
 			break;
-			*/
     	case 11: // Individual simple polygon
     		isFloat = true;
 			C.perform( SimplePolygonTest(resultF) );

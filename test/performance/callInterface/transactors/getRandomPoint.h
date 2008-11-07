@@ -384,14 +384,37 @@ public:
 		std::string refTime;
 		std::string valTime;
 		randomTimesP(refTime, valTime);
-		std::string point = randomPoint();
+		std::string dataProv = "test wci 0";
+		std::stringstream pt;
+		pt << "POINT(";
+		pt << -20 + 40.0*rand()/RAND_MAX;
+		pt << " ";
+		pt << 54.0 + 10.0*rand()/RAND_MAX;
+		pt << ")";
+		std::string point = pt.str();
+		int paramN = ( 5 * rand() )/RAND_MAX;
+		std::string param;
+		switch (paramN) {
+		case 0:
+			param = "pressure of air";
+		case 1:
+			param = "proportion of ozone";
+		case 2:
+			param = "temperature of air";
+		case 3:
+			param = "max temperature of air";
+		case 4:
+			param = "min temperature of air";
+		}
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
 
 		pqxx::result R;
-    	R = T.prepared("ReadRandom1")
-					  (refTime)
-					  (point)
-					  (valTime).exec();
+    	R = T.prepared( "ReadRandom1" )
+					  ( dataProv )
+					  ( point )
+					  ( refTime )
+					  ( valTime )
+					  ( param ).exec();
 
 		for (int i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
@@ -404,10 +427,10 @@ public:
 			R.at(i).at(6).to(ret->validTo_);
 			R.at(i).at(7).to(ret->parameter_);
 			R.at(i).at(8).to(ret->parameterUnit_);
-			R.at(i).at(9).to(ret->levelFrom_);
-			R.at(i).at(10).to(ret->levelTo_);
-			R.at(i).at(11).to(ret->levelParameter_);
-			R.at(i).at(12).to(ret->levelUnit_);
+			R.at(i).at(9).to(ret->levelParameter_);
+			R.at(i).at(10).to(ret->levelUnit_);
+			R.at(i).at(11).to(ret->levelFrom_);
+			R.at(i).at(12).to(ret->levelTo_);
 			R.at(i).at(13).to(ret->dataVersion_);
 			R.at(i).at(14).to(ret->quality_);
 			R.at(i).at(15).to(ret->storeTime_);
