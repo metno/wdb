@@ -195,7 +195,7 @@ BEGIN
 		FOR entryO IN
 			EXECUTE readQ
 		LOOP
-			RAISE DEBUG 'WCI.READ.FloatResult: %, %, %, %', astext(gLocation), interpolation, entryO.placeid, entryO.valueid;
+			--RAISE DEBUG 'WCI.READ.FloatResult: %, %, %, %', astext(gLocation), interpolation, entryO.placeid, entryO.valueid;
 			<<extract_points>>
 			FOR pointData IN SELECT * FROM __WCI_SCHEMA__.extractGridData( gLocation, interpolation, entryO ) LOOP
 				returnObject := ( 

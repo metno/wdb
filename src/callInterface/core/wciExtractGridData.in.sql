@@ -326,7 +326,7 @@ BEGIN
 		LOOP
 			FETCH placepoints INTO p;
 			EXIT WHEN NOT FOUND;
-			RAISE DEBUG 'Point %,% ', p.i, p.j;
+			--RAISE DEBUG 'Point %,% ', p.i, p.j;
 			idx := ((iNumber * p.j) + p.i) * readSize;
 			IF pos != idx THEN
 				pos := lo_lseek( fd, idx, 0 ); -- 0 = "SEEK_SET"

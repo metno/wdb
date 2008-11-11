@@ -178,6 +178,51 @@ CREATE INDEX XIE0Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        Value
 );
 
+CREATE INDEX XIE1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+(
+       ValueParameterId,
+	   DataProviderId,
+       PlaceId,
+       LevelParameterId
+);
+
+CREATE INDEX XIE2Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+(
+       ReferenceTime,
+       ValueParameterId,
+	   DataProviderId,
+       PlaceId,
+       LevelParameterId
+);
+
+CREATE INDEX XIE3Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+(
+       ValidTimeFrom,
+       ValidTimeTo,
+       ValueParameterId,
+	   DataProviderId,
+       PlaceId,
+       LevelParameterId
+);
+
+CREATE INDEX XIE4Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+(
+       LevelFrom,
+       LevelTo,
+       ValueParameterId,
+	   DataProviderId,
+       PlaceId,
+       LevelParameterId
+);
+
+CREATE INDEX XIE5Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+(
+       (DataVersion - MaxDataVersion - 1),
+       ValueParameterId,
+	   DataProviderId,
+       PlaceId,
+       LevelParameterId
+);
 
 CREATE INDEX XIE1Wdb_PlaceName ON __WDB_SCHEMA__.PlaceName
 (

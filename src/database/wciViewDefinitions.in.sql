@@ -69,6 +69,7 @@ RETURNS __WCI_SCHEMA__.sessionData AS
 LANGUAGE 'c' STABLE;
 
 
+
 CREATE VIEW __WCI_SCHEMA__.dataprovider AS
 SELECT
 	dp.dataproviderid,
@@ -179,7 +180,6 @@ FROM ( SELECT
 		pd.placegeometrytype != 'Grid' ) pdd, __WDB_SCHEMA__.placename pn
 WHERE
 	pdd.placeid = pn.placeid;
-	
 		
 REVOKE ALL ON __WCI_SCHEMA__.placedefinition FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.placedefinition TO wdb_admin;
@@ -192,6 +192,12 @@ REVOKE ALL ON __WCI_SCHEMA__.placedefinition_mv FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.placedefinition_mv TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placedefinition_mv TO wdb_read, wdb_write;
 
+CREATE INDEX XIE0wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+USING GIST
+(
+    PlaceGeometry
+);
+
 CREATE INDEX XIE1wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
 (
        PlaceId
@@ -202,13 +208,6 @@ CREATE INDEX XIE2wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
        PlaceName,
 	   PlaceNameSpaceId,
 	   PlaceId
-);
-
-
-CREATE INDEX XIE0wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
-USING GIST
-(
-    PlaceGeometry
 );
 
 CREATE VIEW __WCI_SCHEMA__.placepoint AS
@@ -557,9 +556,3 @@ WHERE
 REVOKE ALL ON TABLE __WCI_SCHEMA__.placespec FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.placespec TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.placespec TO wdb_read, wdb_write;
-
-CREATE INDEX XIE1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
-(
-       ReferenceTime
-);
-
