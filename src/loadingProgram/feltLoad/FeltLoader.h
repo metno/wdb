@@ -37,6 +37,7 @@
 
 namespace wdb
 {
+class WdbLogHandler;
 namespace database
 {
 class FeltDatabaseConnection;
@@ -51,7 +52,9 @@ class FeltField;
 class FeltLoader
 {
 public:
-	explicit FeltLoader(wdb::database::FeltDatabaseConnection & connection, const wdb::LoaderConfiguration::LoadingOptions & loadingOptions);
+	FeltLoader(wdb::database::FeltDatabaseConnection & connection,
+			const wdb::LoaderConfiguration::LoadingOptions & loadingOptions,
+			wdb::WdbLogHandler & logHandler);
 	~FeltLoader();
 
 	void load(const FeltFile & feltFile);
@@ -78,7 +81,7 @@ private:
 
 	wdb::database::FeltDatabaseConnection & connection_;
 	const wdb::LoaderConfiguration::LoadingOptions & loadingOptions_;
-
+	wdb::WdbLogHandler & logHandler_;
 };
 
 }

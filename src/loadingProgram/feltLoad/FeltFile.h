@@ -33,17 +33,10 @@
 #include "FeltField.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/filesystem/path.hpp>
 #include <iterator>
 #include <vector>
 #include <iosfwd>
-
-namespace boost
-{
-namespace filesystem
-{
-class path;
-}
-}
 
 namespace felt
 {
@@ -57,6 +50,8 @@ public:
 	typedef size_t size_type;
 	size_type size() const;
 	bool empty() const { return size() == 0; }
+
+	const boost::filesystem::path & fileName() const { return fileName_; }
 
 	std::string information() const;
 
@@ -93,6 +88,8 @@ private:
 	 * @param noOfWords how much to read
 	 */
 	void get_(std::vector<word> & out, size_type fromWord, size_type noOfWords) const;
+
+	const boost::filesystem::path fileName_;
 
 	/**
 	 * Should we swap the two bytes that make up a word before trying to

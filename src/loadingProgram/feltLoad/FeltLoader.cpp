@@ -45,8 +45,8 @@ using namespace boost::posix_time;
 namespace felt
 {
 
-FeltLoader::FeltLoader(FeltDatabaseConnection & connection, const wdb::LoaderConfiguration::LoadingOptions & loadingOptions)
-	: connection_(connection), loadingOptions_(loadingOptions)
+FeltLoader::FeltLoader(FeltDatabaseConnection & connection, const wdb::LoaderConfiguration::LoadingOptions & loadingOptions, wdb::WdbLogHandler & logHandler)
+	: connection_(connection), loadingOptions_(loadingOptions), logHandler_(logHandler)
 {
 	// NOOP
 }
@@ -59,11 +59,15 @@ FeltLoader::~FeltLoader()
 void FeltLoader::load(const FeltFile & file)
 {
 	WDB_LOG & log = WDB_LOG::getInstance( "wdb.feltLoad.load.file" );
-    log.debugStream() << "Starting loading of file:";
-    log.infoStream() << file.information();
 
+	log.infoStream() << file.information();
+
+    int objectNumber = 0;
     for ( FeltFile::const_iterator it = file.begin(); it != file.end(); ++ it )
+    {
+    	logHandler_.setObjectNumber(objectNumber ++);
 		load(**it);
+    }
 }
 
 namespace

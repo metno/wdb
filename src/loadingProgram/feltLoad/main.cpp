@@ -134,7 +134,7 @@ int main(int argc, char ** argv)
 		{
 			//FakeDatabaseConnection dbConnection;
 			wdb::database::FeltDatabaseConnection dbConnection(conf.database().pqDatabaseConnection());
-			felt::FeltLoader loader(dbConnection, conf.loading());
+			felt::FeltLoader loader(dbConnection, conf.loading(), logHandler);
 			for ( std::vector<boost::filesystem::path>::const_iterator it = files.begin(); it != files.end(); ++ it )
 			{
 				try

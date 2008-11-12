@@ -45,7 +45,7 @@ namespace felt
 {
 
 FeltFile::FeltFile(const path & file)
-	: changeEndianness_(false)
+	: fileName_(file), changeEndianness_(false)
 {
 	if ( ! exists(file) )
 		throw runtime_error("Cannot find file " + file.native_file_string() );
