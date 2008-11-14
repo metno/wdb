@@ -234,16 +234,22 @@ public:
   	void on_abort(const char Reason[]) throw ()
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.value" );
-		log.warnStream() << "Transaction " << Name() << " failed! "
-						  << "Attempting to write DP: " << (dataProvider_)
-						  << " PID: " << (placeId_)
-					  	  << " REFT: " << (referenceTime_)
-						  << " VTFR: " << (validTimeFrom_)
-						  << " VTTO: " << (validTimeTo_)
-						  << " VPAR: " << (valueParameter_)
-						  << " LEVL: - "
-					  	  << " DVER: " << (dataVersion_)
-					  	  << " CONF: " << (confidenceCode_);
+		log.warnStream()  << "Transaction " << Name() << " failed while trying to write: ";
+		for ( std::vector <wdb::database::WdbLevel>::const_iterator level = levels_.begin(); level != levels_.end(); ++ level )
+		{
+			log.warnStream()  << " ( DP: " << (dataProvider_)
+							  << " PID: " << (placeId_)
+							  << " REFT: " << (referenceTime_)
+							  << " VTFR: " << (validTimeFrom_)
+							  << " VTTO: " << (validTimeTo_)
+							  << " VPAR: " << (valueParameter_)
+							  << " LPAR: " << (level->levelParameter_)
+							  << " LFR: " << (level->levelFrom_)
+							  << " LTO: " << (level->levelTo_)
+							  << " DVER: " << (dataVersion_)
+							  << " CONF: " << (confidenceCode_)
+							  << " ) ";
+		}
   	}
 
 	/**

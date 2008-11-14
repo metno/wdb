@@ -83,7 +83,7 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 
 	// G4 not implemented
 
-	CPPUNIT_TEST( testG5_01_NortherHemisphere );
+	CPPUNIT_TEST( testG5_01_NorthernHemisphere );
 	CPPUNIT_TEST( testG5_02_SouthernHemisphere );
 	CPPUNIT_TEST( testG5_03_Equator );
 	CPPUNIT_TEST( testG5_04_NorthPole );
@@ -222,7 +222,7 @@ public:
 	// G4 not implemented
 
 	// Position (N/S)
-	void testG5_01_NortherHemisphere();
+	void testG5_01_NorthernHemisphere();
 	void testG5_02_SouthernHemisphere();
 	void testG5_03_Equator();
 	void testG5_04_NorthPole();

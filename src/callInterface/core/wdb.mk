@@ -27,6 +27,7 @@ check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 libwciCoreNoPostgres_la_SOURCES =\
 						src/callInterface/core/projTransform.h \
 						src/callInterface/core/projTransform.cpp
+						
 
 WCICORE_SOURCES =		src/callInterface/core/wciExtractGridData.in.sql \
 						src/callInterface/core/wciSession.in.sql \

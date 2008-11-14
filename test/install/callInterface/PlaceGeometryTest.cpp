@@ -245,7 +245,7 @@ void PlaceGeometryTest::testG3_03_SeveralDuplicates()
     NOT_FINISHED();
 }
 
-void PlaceGeometryTest::testG5_01_NortherHemisphere()
+void PlaceGeometryTest::testG5_01_NorthernHemisphere()
 {
 	double lon = 5.750 + (168 * 0.1);
 	double lat = -13.250 + (156 * 0.1);

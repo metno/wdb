@@ -35,8 +35,9 @@ LANGUAGE C IMMUTABLE;
 CREATE OR REPLACE FUNCTION
 __WCI_SCHEMA__.bilinearInterpolation
 (
-	location GEOMETRY, 
-	data __WCI_SCHEMA__.oidValue
+	placeid		bigint,
+	location	GEOMETRY, 
+	valueoid	oid
 )
 RETURNS __WCI_SCHEMA__.extractGridDataReturnType AS
 $BODY$
@@ -46,12 +47,9 @@ DECLARE
 	val float4;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-	SELECT * INTO i, j FROM __WCI_SCHEMA__.getExactIJ( location, data.placeid );
-
-	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, data.placeid, data.value );
-
+	SELECT * INTO i, j FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, placeid, valueoid );
 	ret := (location, val, -1, -1);
-
 	RETURN ret;
 END;
 $BODY$

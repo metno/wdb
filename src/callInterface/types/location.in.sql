@@ -31,7 +31,7 @@ CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.dwithin(geometry, geometry, float8)
 CREATE TYPE  __WCI_SCHEMA__.location AS (
 	interpolation 	text,
 	location 		text,
-	isGeometry boolean
+	isGeometry 		boolean
 );
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLocation( spec TEXT )

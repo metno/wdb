@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -31,17 +31,17 @@
 #define PSQLTUPLEINTERFACE_H_
 
 /**
- * @addtogroup wci 
+ * @addtogroup wci
  * @{
  */
 
 /**
  * @file
- * The functions and structs provided here exists because of problems with the 
+ * The functions and structs provided here exists because of problems with the
  * postgresql header files for using tuples (eg. rows). The problem is that the
- * header files contain C++ reserved keywords, and therefore may not be used 
- * directly from C++. 
- */ 
+ * header files contain C++ reserved keywords, and therefore may not be used
+ * directly from C++.
+ */
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -54,17 +54,17 @@ extern "C" {
 #include <fmgr.h>
 #include <access/htup.h>
 #include <utils/timestamp.h>
-	
+
 struct PlaceSpecification;
 
 /**
- * Extract fields from a wci(internal).placespec. 
- * 
+ * Extract fields from a wci(internal).placespec.
+ *
  * @param out Return value. Will contain the values extracted from indata.
- * @param indata The tuple to be parsed. 
- * 
- * @warning the provided Datum object must be convertible to a 
- * HeapTupleHeader. Otherwise behaviour is undefined.  
+ * @param indata The tuple to be parsed.
+ *
+ * @warning the provided Datum object must be convertible to a
+ * HeapTupleHeader. Otherwise behaviour is undefined.
  */
 void extractPlaceSpecification( struct PlaceSpecification * out, const Datum * indata );
 
@@ -79,22 +79,22 @@ void extractExtractGridDataReturnType( struct ExtractGridDataReturnType * out, c
 
 
 /**
- * Creates and returns a postgres tuple containing 2 float8 parameters 
+ * Creates and returns a postgres tuple containing 2 float8 parameters
  * (lat, lon).
- * 
+ *
  * @param x The first in desired result.
  * @param y The second in desired result.
  * @param fcinfo the input argument to a C function called by postgres.
- * 
- * @return A tuple in the form of a Datum object. 
+ *
+ * @return A tuple in the form of a Datum object.
  */
 Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo );
 
 
 /**
  * Returns a set of all points in a grid, along with its lon/lat position.
- * 
- * The return type is of the format (i,j,lon,lat)  
+ *
+ * The return type is of the format (i,j,lon,lat)
  */
 Datum getAllLatLonCoordinates( FunctionCallInfo fcinfo );
 

@@ -108,7 +108,7 @@ DECLARE
 	loc 			__WCI_SCHEMA__.location;
 	gLocation 		GEOMETRY;
 	interpolation 	wci.interpolationType;
-	
+
 	readQ	 		text;
 BEGIN
 	-- Location
@@ -197,7 +197,7 @@ BEGIN
 		LOOP
 			--RAISE DEBUG 'WCI.READ.FloatResult: %, %, %, %', astext(gLocation), interpolation, entryO.placeid, entryO.valueid;
 			<<extract_points>>
-			FOR pointData IN SELECT * FROM __WCI_SCHEMA__.extractGridData( gLocation, interpolation, entryO ) LOOP
+			FOR pointData IN SELECT * FROM __WCI_SCHEMA__.extractGridData( entryO.placeid, gLocation, interpolation, entryO.value ) LOOP
 				returnObject := ( 
 						pointData.value, 
 						entryO.dataprovidername, 

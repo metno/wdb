@@ -39,7 +39,6 @@
 #include <stdexcept>
 #include <sstream>
 #include <vector>
-
 #include <iostream>
 
 using namespace std;
@@ -164,7 +163,7 @@ struct lonlat rTransform( struct lonlat coords, const PlaceSpecification * p )
 	lonlat ret = coords;
 	ret.lon *= DEG_TO_RAD;
 	ret.lat *= DEG_TO_RAD;
-	{
+    {
 		WdbProjection from(getProjDefinition( "longlat", "+ellps=WGS84" ));
 		WdbProjection to(  p->projDefinition_ );
 
