@@ -82,13 +82,12 @@ __WCI_SCHEMA__.getExactPlacePoint
 	location GEOMETRY, 
 	placeid bigint 
 )
-RETURNS refcursor AS
+RETURNS __WCI_SCHEMA__.placepoint AS
 $BODY$
 DECLARE
-	ret refcursor;
+	ret __WCI_SCHEMA__.placepoint;
 BEGIN
-	OPEN ret FOR 
-		SELECT * FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.location @ location AND __WCI_SCHEMA__.placepoint.placeid = placeid;
+	SELECT * INTO ret FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.location @ location AND __WCI_SCHEMA__.placepoint.placeid = placeid;
 	return ret;
 END;
 $BODY$
@@ -134,19 +133,18 @@ __WCI_SCHEMA__.getNearestPlacePoint
 	i double precision,
 	j double precision
 )
-RETURNS refcursor AS
+RETURNS __WCI_SCHEMA__.placepoint AS
 $BODY$
 DECLARE
-	ret refcursor;
+	ret __WCI_SCHEMA__.placepoint;
 	i_i integer;
 	i_j integer;
 BEGIN
 	i_i := round(i); -- using round before cursor query improves 
 	i_j := round(j); -- performance by a factor of 50-300, for some reason
-	OPEN ret FOR 
-		SELECT * FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.placeid = placeid AND __WCI_SCHEMA__.placepoint.i = i_i AND __WCI_SCHEMA__.placepoint.j = i_j;
-		-- the following is a very slow alternative: 
-		--SELECT * from __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.placeid=placeid ORDER BY distance( __WCI_SCHEMA__.placepoint.location, location ) LIMIT 1;
+	SELECT * INTO ret FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.placeid = placeid AND __WCI_SCHEMA__.placepoint.i = i_i AND __WCI_SCHEMA__.placepoint.j = i_j;
+	-- the following is a very slow alternative: 
+	--SELECT * from __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.placeid=placeid ORDER BY distance( __WCI_SCHEMA__.placepoint.location, location ) LIMIT 1;
 	return ret;
 END;
 $BODY$
@@ -189,6 +187,28 @@ $BODY$
 LANGUAGE 'plpgsql' STRICT STABLE;
 
 
+-- Get a cursor to the exact placepoint for the given geometry and placeid. If 
+-- the given geometry does not exactly match a point in the given placeid, 
+-- nothing is returned.
+CREATE OR REPLACE FUNCTION 
+__WCI_SCHEMA__.getPolygonPlacePoints
+(
+	location GEOMETRY, 
+	placeid bigint 
+)
+RETURNS refcursor AS
+$BODY$
+DECLARE
+	ret refcursor;
+BEGIN
+	OPEN ret FOR 
+		SELECT * FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.location @ location AND __WCI_SCHEMA__.placepoint.placeid = placeid;
+	return ret;
+END;
+$BODY$
+LANGUAGE 'plpgsql' STRICT STABLE;
+
+
 -- Is the given interpolation a true derivate of data, 
 -- or is it merely a way to find one or several points 
 -- which we have data for?
@@ -206,40 +226,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE 'plpgsql' STRICT IMMUTABLE;
-		
-
--- Extract placepoints for the given placeid, according to geometry and 
--- interpolation type.
-CREATE OR REPLACE FUNCTION 
-__WCI_SCHEMA__.getPointPlacePoints
-(
-	interpolation 	wci.interpolationType, 
-	placeid 		bigint,
-	location 		GEOMETRY, 
-	i				double precision,
-	j 				double precision
-)
-RETURNS refcursor AS
-$BODY$
-DECLARE
-	ret refcursor;
-BEGIN
-	IF interpolation = 'exact'::wci.interpolationType THEN
-		RETURN __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
-
-	ELSIF interpolation = 'nearest'::wci.interpolationType THEN
-		RETURN __WCI_SCHEMA__.getNearestPlacePoint( location, placeid, i, j );
-
-	ELSIF interpolation = 'surround'::wci.interpolationType THEN 
-		RETURN __WCI_SCHEMA__.getSurroundingPlacePoint( location, placeid, i, j );
-
-	ELSE
-		RAISE EXCEPTION 'Unrecognized interpolation type: %', interpolation;
-	END IF;
-	RETURN ret;
-END;
-$BODY$
-LANGUAGE 'plpgsql' STABLE;
+	
 
 -- Extract values for all points in the provided floatgridvalue which matches 
 -- the given geometry and interpolation type, along with their exact geometry.
@@ -262,13 +249,15 @@ DECLARE
 	geomType 		CONSTANT text := geometrytype( location );
 	pSpec  			__WCI_SCHEMA__.gridPointSpec;
 	-- Cursor to a placepoint query
+	p 				__WCI_SCHEMA__.placepoint;
 	curs 			refcursor;
 BEGIN
 	isInterpolation := __WCI_SCHEMA__.isRealInterpolation(interpolation);
 	IF isInterpolation = TRUE THEN
+		-- If Interpolation is bilinear
 		IF interpolation = 'bilinear'::wci.interpolationType THEN
 			SELECT * INTO ret FROM __WCI_SCHEMA__.bilinearInterpolation( placeid, location, valueoid );
-			--IF ret IS NOT NULL THEN -- the following line also works on postgresql 8.1:
+			--IF ret IS NOT NULL THEN -- (the following line works in postgresql 8.1)
 			IF ret.location IS NOT NULL THEN 
 				RETURN NEXT ret;
 			END IF;
@@ -276,26 +265,58 @@ BEGIN
 			RAISE EXCEPTION 'Unknown interpolation type: %', interpolation; 
 		END IF;
 	ELSE
+		-- Retrieve All Points in the Grid
 		IF location IS NULL THEN
 			SELECT iNumber INTO pSpec.iNum FROM __WCI_SCHEMA__.placespec WHERE __WCI_SCHEMA__.placespec.placeid = placeid;
 			curs := __WCI_SCHEMA__.getAllPlacePoints( placeid );
+			FOR ret IN 
+				SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
+			LOOP
+				RETURN NEXT ret;
+			END LOOP;
+			RETURN;
+		-- Retrieve All Points in a Polygon
 		ELSIF geomType = 'POLYGON' THEN
 			SELECT iNumber INTO pSpec.iNum FROM __WCI_SCHEMA__.placespec WHERE __WCI_SCHEMA__.placespec.placeid = placeid;
-			curs := __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
+			curs := __WCI_SCHEMA__.getPolygonPlacePoints( location, placeid );
+			FOR ret IN 
+				SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
+			LOOP
+				RETURN NEXT ret;
+			END LOOP;
+			RETURN;
 		ELSIF geomType = 'POINT' THEN
 			SELECT * INTO pSpec FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
-			curs := __WCI_SCHEMA__.getPointPlacePoints( interpolation, placeid, location, pSpec.i, pSpec.j );
+			IF interpolation = 'exact'::wci.interpolationType THEN
+				p := __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
+				IF p IS NOT NULL THEN
+					ret := __WCI_SCHEMA__.readOneFieldPoint( valueOid, pSpec.iNum, p );
+					RETURN NEXT ret;
+				END IF;
+				RETURN;
+			ELSIF interpolation = 'nearest'::wci.interpolationType THEN
+				p := __WCI_SCHEMA__.getNearestPlacePoint( location, placeid, pSpec.i, pSpec.j );
+				IF p IS NOT NULL THEN
+					ret := __WCI_SCHEMA__.readOneFieldPoint( valueOid, pSpec.iNum, p );
+					RETURN NEXT ret;
+				END IF;
+				RETURN;
+			ELSIF interpolation = 'surround'::wci.interpolationType THEN 
+				curs := __WCI_SCHEMA__.getSurroundingPlacePoint( location, placeid, pSpec.i, pSpec.j );
+				FOR ret IN 
+					SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
+				LOOP
+					RETURN NEXT ret;
+				END LOOP;
+				RETURN;
+			ELSE
+				RAISE EXCEPTION 'Unrecognized interpolation type: %', interpolation;
+			END IF;
 		ELSIF geomType = 'LINE' THEN
 			RAISE EXCEPTION 'Usupported geometry type: %', geomType;
 		ELSE
 			RAISE EXCEPTION 'Unrecognized geometry type: %', geomType;
 		END IF;
-		-- Extract the specified point values
-		FOR ret IN 
-			SELECT * FROM __WCI_SCHEMA__.readField( valueOid, pSpec.iNum, curs ) 
-		LOOP
-			RETURN NEXT ret;
-		END LOOP;
 	END IF;
 END;
 $BODY$
@@ -303,7 +324,39 @@ LANGUAGE 'plpgsql' STABLE;
 
 
 CREATE OR REPLACE FUNCTION
-__WCI_SCHEMA__.readField
+__WCI_SCHEMA__.readOneFieldPoint
+(
+	whatFile oid,
+	iNumber integer, -- number of rows in i-direction
+	p __WCI_SCHEMA__.placepoint
+)
+RETURNS __WCI_SCHEMA__.extractGridDataReturnType AS 
+$BODY$
+DECLARE
+	fd integer;
+	idx integer;
+	pos integer := 0;
+	readSize CONSTANT int4 := 4;
+	ret __WCI_SCHEMA__.extractGridDataReturnType;
+BEGIN
+	fd := lo_open( whatFile, 262144 ); -- 262144 = "INV_READ"
+	IF -1 = fd THEN
+		RAISE EXCEPTION 'Cannot read grid: %', whatFile;
+	END IF;
+	--RAISE DEBUG 'Point %,% ', p.i, p.j;
+	idx := ((iNumber * p.j) + p.i) * readSize;
+	pos := lo_lseek( fd, idx, 0 ); -- 0 = "SEEK_SET"
+	ret := ( p.location, __WCI_SCHEMA__.binary_toReal( loread( fd, readSize ) ), p.i, p.j );
+	pos := pos + readSize;
+	PERFORM lo_close( fd );	
+	RETURN ret;
+END;
+$BODY$
+LANGUAGE plpgsql STABLE;
+
+
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__.readSetOfFieldPoints
 (
 	whatFile oid,
 	iNumber integer, -- number of rows in i-direction
