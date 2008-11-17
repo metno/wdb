@@ -189,7 +189,7 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN(wdb, doc/doxygen/doxygen.cfg)
 
 # Set Default Projection
-AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +ellps=WGS84 +nodefs"],[The default projection used in the database])
+AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +datum=WGS84 +no_defs"],[The default projection used in the database])
 
 # Set Database Install
 WDB_DATABASE_NAME

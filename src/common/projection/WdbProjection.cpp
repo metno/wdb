@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,15 +22,15 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
 
 /**
- * @addtogroup common 
+ * @addtogroup common
  * @{
- * @addtogroup projection 
+ * @addtogroup projection
  * @{
  */
 /**
@@ -56,7 +56,7 @@ using namespace std;
 using namespace wdb;
 
 
-WdbProjection::WdbProjection(const string & def) 
+WdbProjection::WdbProjection(const string & def)
 	: projText_( def )
 {
 	projDef_ = pj_init_plus( projText_.c_str() );
@@ -73,9 +73,9 @@ WdbProjection::~WdbProjection()
 void
 WdbProjection::transform(const WdbProjection & dest, size_t size, double * lon, double * lat) const
 {
-	std::vector<double> alt( size );
+	//std::vector<double> alt( size );
 
-	int error = pj_transform( projDef_, dest.projDef_, size, 0, lon, lat, &alt[0]);
+	int error = pj_transform( projDef_, dest.projDef_, size, 0, lon, lat, NULL);
 	if ( error )
 	{
 		ostringstream msg;
@@ -90,9 +90,9 @@ WdbProjection::transform(const WdbProjection & dest, size_t size, double * lon, 
 void
 WdbProjection::datumTransform(const WdbProjection & dest, size_t size, double * lon, double * lat) const
 {
-	std::vector<double> alt( size );
+	//std::vector<double> alt( size );
 
-	int error = pj_datum_transform( projDef_, dest.projDef_, size, 0, lon, lat, &alt[0]);
+	int error = pj_datum_transform( projDef_, dest.projDef_, size, 0, lon, lat, NULL);
 	if ( error )
 	{
 		ostringstream msg;
@@ -103,7 +103,7 @@ WdbProjection::datumTransform(const WdbProjection & dest, size_t size, double * 
 	}
 }
 
-const std::string & 
+const std::string &
 WdbProjection::str() const
 {
 	return projText_;
@@ -115,7 +115,7 @@ namespace {
 
 /**
  * Handles automatic initalization and deinitialization of a projPJ.
- * 
+ *
  * The underlying projPJ object can be obtained by using operator * (), eg.
  * ProjPjHandler h( ... ); whatever( * h );
  */
@@ -132,7 +132,7 @@ public:
 		: pj_( pj_init_plus( init.c_str() ) )
 	{
 		/*
-		// Doing this may be better, but it creates too much disturbances 
+		// Doing this may be better, but it creates too much disturbances
 		// in the method that use this class.
 	    if ( ! pj )
 	    {
@@ -142,7 +142,7 @@ public:
 	    }
 	    */
 	}
-	
+
 	/// Destructor
 	~ProjPjHandler()
 	{
@@ -160,8 +160,8 @@ public:
 /*
 void
 rotateCoordinates( std::vector<double> & lon, std::vector<double> & lat,
-				   std::string original,	
-				   std::string source, 
+				   std::string original,
+				   std::string source,
 				   std::string rotation )
 {
     ProjPjHandler originalPJ( original );
@@ -199,8 +199,8 @@ rotateCoordinates( std::vector<double> & lon, std::vector<double> & lat,
     // dummyAltitude is written to by pj_transform, but never used
     vector<double> dummyAltitude( lon.size() );
 
-    // First we transform from original (usually in degrees radian) to 
-    // source, which must be in meters in order to do the oblique 
+    // First we transform from original (usually in degrees radian) to
+    // source, which must be in meters in order to do the oblique
     // transform with PROJ
     int ret = pj_transform(*originalPJ,
                            *sourcePJ,
@@ -216,8 +216,8 @@ rotateCoordinates( std::vector<double> & lon, std::vector<double> & lat,
         message << pj_strerrno(ret);
         throw WdbException(message.str(), __func__);
     }
-    
-    // With the coordinates transformed, we can now rotate to identify the 
+
+    // With the coordinates transformed, we can now rotate to identify the
     // real longlat coordinates in WGS84.
     ret = pj_transform(* rotationPJ,
                        * tgtPJ,
