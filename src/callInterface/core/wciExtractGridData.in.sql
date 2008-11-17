@@ -289,14 +289,16 @@ BEGIN
 			SELECT * INTO pSpec FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
 			IF interpolation = 'exact'::wci.interpolationType THEN
 				p := __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
-				IF p IS NOT NULL THEN
+				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
+				IF p.placeid IS NOT NULL THEN
 					ret := __WCI_SCHEMA__.readOneFieldPoint( valueOid, pSpec.iNum, p );
 					RETURN NEXT ret;
 				END IF;
 				RETURN;
 			ELSIF interpolation = 'nearest'::wci.interpolationType THEN
 				p := __WCI_SCHEMA__.getNearestPlacePoint( location, placeid, pSpec.i, pSpec.j );
-				IF p IS NOT NULL THEN
+				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
+				IF p.placeid IS NOT NULL THEN
 					ret := __WCI_SCHEMA__.readOneFieldPoint( valueOid, pSpec.iNum, p );
 					RETURN NEXT ret;
 				END IF;
