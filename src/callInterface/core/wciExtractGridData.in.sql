@@ -251,6 +251,7 @@ DECLARE
 	-- Cursor to a placepoint query
 	p 				__WCI_SCHEMA__.placepoint;
 	curs 			refcursor;
+	val				float4;
 BEGIN
 	isInterpolation := __WCI_SCHEMA__.isRealInterpolation(interpolation);
 	IF isInterpolation = TRUE THEN
@@ -291,7 +292,8 @@ BEGIN
 				p := __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
 				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
 				IF p.placeid IS NOT NULL THEN
-					ret := __WCI_SCHEMA__.readOneFieldPoint( valueOid, pSpec.iNum, p );
+					val := __WCI_SCHEMA__.getSinglePointData( p.i, p.j, pSpec.iNum, valueOid );
+					ret := (p.location, val, p.i, p.j);
 					RETURN NEXT ret;
 				END IF;
 				RETURN;
@@ -299,7 +301,8 @@ BEGIN
 				p := __WCI_SCHEMA__.getNearestPlacePoint( location, placeid, pSpec.i, pSpec.j );
 				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
 				IF p.placeid IS NOT NULL THEN
-					ret := __WCI_SCHEMA__.readOneFieldPoint( valueOid, pSpec.iNum, p );
+					val := __WCI_SCHEMA__.getSinglePointData( p.i, p.j, pSpec.iNum, valueOid );
+					ret := (p.location, val, p.i, p.j);
 					RETURN NEXT ret;
 				END IF;
 				RETURN;
@@ -315,7 +318,7 @@ BEGIN
 				RAISE EXCEPTION 'Unrecognized interpolation type: %', interpolation;
 			END IF;
 		ELSIF geomType = 'LINE' THEN
-			RAISE EXCEPTION 'Usupported geometry type: %', geomType;
+			RAISE EXCEPTION 'Unsupported geometry type: %', geomType;
 		ELSE
 			RAISE EXCEPTION 'Unrecognized geometry type: %', geomType;
 		END IF;
@@ -325,36 +328,8 @@ $BODY$
 LANGUAGE 'plpgsql' STABLE;
 
 
-CREATE OR REPLACE FUNCTION
-__WCI_SCHEMA__.readOneFieldPoint
-(
-	whatFile oid,
-	iNumber integer, -- number of rows in i-direction
-	p __WCI_SCHEMA__.placepoint
-)
-RETURNS __WCI_SCHEMA__.extractGridDataReturnType AS 
-$BODY$
-DECLARE
-	fd integer;
-	idx integer;
-	pos integer := 0;
-	readSize CONSTANT int4 := 4;
-	ret __WCI_SCHEMA__.extractGridDataReturnType;
-BEGIN
-	fd := lo_open( whatFile, 262144 ); -- 262144 = "INV_READ"
-	IF -1 = fd THEN
-		RAISE EXCEPTION 'Cannot read grid: %', whatFile;
-	END IF;
-	--RAISE DEBUG 'Point %,% ', p.i, p.j;
-	idx := ((iNumber * p.j) + p.i) * readSize;
-	pos := lo_lseek( fd, idx, 0 ); -- 0 = "SEEK_SET"
-	ret := ( p.location, __WCI_SCHEMA__.binary_toReal( loread( fd, readSize ) ), p.i, p.j );
-	pos := pos + readSize;
-	PERFORM lo_close( fd );	
-	RETURN ret;
-END;
-$BODY$
-LANGUAGE plpgsql STABLE;
+
+
 
 
 CREATE OR REPLACE FUNCTION

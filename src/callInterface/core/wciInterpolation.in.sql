@@ -24,7 +24,7 @@ __WCI_SCHEMA__.getBilinearInterpolationData
 (
 	i float8,
 	j float8,
-	placeid bigint,
+	iNumber integer,
 	field oid
 )
 RETURNS float4 AS
@@ -44,12 +44,56 @@ $BODY$
 DECLARE
 	i double precision;
 	j double precision;
+	iNumber integer;
 	val float4;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-	SELECT * INTO i, j FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
-	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, placeid, valueoid );
+	SELECT * INTO i, j, iNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, iNumber, valueoid );
 	ret := (location, val, -1, -1);
+	RETURN ret;
+END;
+$BODY$
+LANGUAGE plpgsql STABLE;
+
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__.getSinglePointData
+(
+	i integer,
+	j integer,
+	iNumber integer,
+	field oid
+)
+RETURNS float4 AS
+'__WDB_LIBDIR__/__WCI_LIB__', 'getSinglePointData'
+LANGUAGE C IMMUTABLE;
+
+
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__.nearestInterpolation
+(
+	placeid		bigint,
+	location	GEOMETRY, 
+	valueoid	oid
+)
+RETURNS __WCI_SCHEMA__.extractGridDataReturnType AS
+$BODY$
+DECLARE
+	i double precision;
+	j double precision;
+	i_i integer;
+	i_j integer;
+	iNumber integer;
+	val float4;
+	ret __WCI_SCHEMA__.extractGridDataReturnType;
+BEGIN
+	SELECT * INTO i, j, iNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	i_i := round(i); -- using round before cursor query improves 
+	i_j := round(j); -- performance by a factor of 50-300, for some reason
+	RAISE DEBUG 'NEAREST: %, %, %, %', i_i, i_j, iNumber, valueoid;
+	--SELECT * INTO ret FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.placeid = placeid AND __WCI_SCHEMA__.placepoint.i = i_i AND __WCI_SCHEMA__.placepoint.j = i_j;
+	val := __WCI_SCHEMA__.getNearestInterpolationData( i_i, i_j, iNumber, valueoid );
+	ret := (location, val, i_i, i_j);
 	RETURN ret;
 END;
 $BODY$

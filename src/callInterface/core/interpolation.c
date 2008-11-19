@@ -130,16 +130,17 @@ int get_inumber(int placeid)
 	return it->iNumber;
 }
 
-int get_index(int i, int j, int placeid)
+int get_index(int i, int j, int iNumber)
 {
-	int ret = -1;
-
+	/*int ret = -1;*/
+	/*
+	 *
 	int iNumber = get_inumber(placeid);
 	if ( iNumber == -1 )
 		ereport(ERROR, (errcode(ERRCODE_INVALID_ROLE_SPECIFICATION), errmsg("no rows returned for index")));
-
-	ret = i + (j * iNumber);
-	return ret;
+	 */
+	return i + (j * iNumber);
+	/*return ret;*/
 }
 
 int doLoOpen(Oid field_id, FunctionCallInfo fci)
@@ -262,29 +263,29 @@ READ_DATA bilinearInterpolate(const READ_DATA * data, double x, double y)
 }
 
 
-void readSurround(READ_DATA out[4], double i, double j, int placeid, Oid field, FunctionCallInfo fcinfo)
+void readSurround(READ_DATA out[4], double i, double j, int iNum, Oid field, FunctionCallInfo fcinfo)
 {
-	int result = SPI_connect();
+	/*int result = SPI_connect();
 	if ( SPI_OK_CONNECT != result )
 		ereport(ERROR,
 				(errcode(ERRCODE_INVALID_ROLE_SPECIFICATION),
                 errmsg("Unable to do a SPI connect")));
-
+	 */
 	int indexes[4];
-	indexes[0] = get_index(floor(i), floor(j), placeid);
-	indexes[1] = get_index(ceil(i), floor(j), placeid);
-	indexes[2] = get_index(floor(i), ceil(j), placeid);
-	indexes[3] = get_index(ceil(i), ceil(j), placeid);
+	indexes[0] = get_index(floor(i), floor(j), iNum);
+	indexes[1] = get_index(ceil(i), floor(j), iNum);
+	indexes[2] = get_index(floor(i), ceil(j), iNum);
+	indexes[3] = get_index(ceil(i), ceil(j), iNum);
 
 	readField(out, 4, field, indexes, fcinfo);
 
-	SPI_finish();
+	/*SPI_finish();*/
 }
 
-READ_DATA getBilinearInterpolatedValue(float i, float j, int placeid, Oid field, FunctionCallInfo fcinfo)
+READ_DATA getBilinearInterpolatedValue(float i, float j, int iNum, Oid field, FunctionCallInfo fcinfo)
 {
 	READ_DATA surround[4];
-	readSurround(surround, i, j, placeid, field, fcinfo);
+	readSurround(surround, i, j, iNum, field, fcinfo);
 
 	READ_DATA ret = bilinearInterpolate(surround, i, j);
 
@@ -296,10 +297,25 @@ Datum getBilinearInterpolationData(PG_FUNCTION_ARGS)
 {
 	double i = PG_GETARG_FLOAT8(0);
 	double j = PG_GETARG_FLOAT8(1);
-	long placeid = PG_GETARG_INT64(2);
+	int iNum = PG_GETARG_INT32(2);
 	Oid field = PG_GETARG_OID(3);
 
-	float ret = getBilinearInterpolatedValue(i, j, placeid, field, fcinfo); // fcinfo is from PG_FUUCTION_ARGS
+	float ret = getBilinearInterpolatedValue(i, j, iNum, field, fcinfo); // fcinfo is from PG_FUUCTION_ARGS
+
+	PG_RETURN_FLOAT4(ret);
+}
+
+PG_FUNCTION_INFO_V1(getSinglePointData);
+Datum getSinglePointData(PG_FUNCTION_ARGS)
+{
+	int i = PG_GETARG_INT32(0);
+	int j = PG_GETARG_INT32(1);
+	int iNum = PG_GETARG_INT32(2);
+	Oid field = PG_GETARG_OID(3);
+
+	int index = get_index(i, j, iNum);
+	float ret;
+	readField( &ret, 1, field, &index, fcinfo);
 
 	PG_RETURN_FLOAT4(ret);
 }
