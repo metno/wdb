@@ -517,7 +517,7 @@ EXTRA_DIST += 				$(DX_CONFIG)
 PKG_DIR = $(PACKAGE)-$(VERSION)
 DEBIAN_DIR = $(PKG_DIR)/debian
 DEBIAN_PACKAGE = $(PACKAGE)_$(VERSION)
-DEBIAN_VERSION = 2
+DEBIAN_VERSION = 5
 ARCH = `dpkg-architecture -qDEB_HOST_ARCH_CPU`
 DEBIAN_PACKAGE_NAME = $(DEBIAN_PACKAGE)-$(DEBIAN_VERSION)_$(ARCH).deb
 
@@ -532,5 +532,6 @@ debian:	dist clean-debian
 	linda $(DEBIAN_PACKAGE_NAME)
 
 clean-debian:
+	debclean
 	rm -rf $(PKG_DIR) $(DEBIAN_PACKAGE)*
 

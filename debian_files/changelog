@@ -1,3 +1,21 @@
+wdb (0.7.8-5) unstable; urgency=low
+
+  * Metadata added
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Tue, 25 Nov 2008 12:48:57 +0100
+
+wdb (0.7.8-4) unstable; urgency=low
+
+  * Minor improvements
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Mon, 24 Nov 2008 12:39:19 +0100
+
+wdb (0.7.8-3) unstable; urgency=low
+
+  * Performance enhancements
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri,  7 Nov 2008 11:00:15 +0100
+
 wdb (0.7.8-2) unstable; urgency=low
 
   * Minor bugfix in upstream without upraded version number
