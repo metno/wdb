@@ -135,12 +135,13 @@
 				its geographic position, its altitude (or depth), the time the data item was
 				created, the origin of the data item, etc.</para>
 			
-			<para>To access the data items in WDB, the user must have an understanding of the
-				dimensions as they are the entry point into the database. To retrieve data
-				from the database, a set of search criteria is given for each of the
+			<para>In order to access the data items in WDB, the user should have an understanding of the
+				dimensions as they are the entry point into the database. When data is retrieved from
+				the database, a set of search criteria is given for each of the
 				WCI dimensions. If the search criteria for a dimension is
-				not specified, it is assumed the user wants to retrieve all data items,
-				regardless of their description in that dimension.</para>
+				not specified (i.e., all NULLs), it is assumed the user wants to retrieve all data items,
+				regardless of their dimension description. Please do not attempt this unless the database 
+				you are querying is extremely small.</para>
 			
 			<para>The dimensions are described in the following sections.</para>
 			
@@ -153,17 +154,37 @@
 				<emphasis>the entity that provides the data</emphasis>. Where multiple
 				sources could be identified as the source of the data, the entity that can be
 				identified closest to the creation of the data item at the time of loading is
-				usually specified.</para>
+				usually used.</para>
 			
 			<para>A data provider can be a software process (e.g., Hirlam), a
-				Meteorological station, an aircraft, a person, or a group of data providers. 
-				A data provider is identified by a DataProviderName. DataProviderNames are 
-				used to search for the data.</para>
+				meteorological or climate station, an aircraft, or a person. A data provider 
+				is identified by a DataProviderName. DataProviderNames are 
+				used to search for the data. For convenience, Data Providers may be
+				collected into groups; e.g., the DataProviderName "Hirlam" might be used
+			    to search for any of the various hirlam processes: "Hirlam 4", "Hirlam 8", 
+				etc.</para>
 			
 			<para>When searching for data, the user may specify a single DataProviderName,
-				several DataProviderNames, or NULL. NULL indicates that the user wants all
-				data items, regardless of the data source.</para>
+				a list of DataProviderNames (specified using an ARRAY constructor), or NULL. 
+				NULL indicates that the user wants all 	data items, regardless of the data 
+				source.</para>
+
+			<para>DataProviderNames exist within a data provider namespace. A namespace can be defined by
+			the WDB administrator, in order to permit the user or an application to retrieve data in
+			an accustomed language or code set. The default namespace of WDB is the DataProviderNameSpaceId
+				0, and is always based on English language names and international standard codes. The 
+				data provider namespace being used in a querying session can be defined by the user when
+				starting up the session.
+			</para>
 			
+			<para>To retrieve all of the DataProviderNames (excluding data provider groups) that are
+				currently stored in the database for the currently specified namespace, the following 
+				wci.browse function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
+		</programlisting>
+						
 		</sect1>
 		
 		<sect1>
@@ -179,11 +200,26 @@
 			<para>In addition to using geometry objects to retrieve data, the user can also
 				use a PlaceName - a pre-specified name that defines a geometry object in the
 				database - to specify location.</para>
+
+			<para>As for DataProviderName, PlaceNames exist within a place namespace that can be defined
+				by the WDB administrator. The default namespace of WDB is the PlaceNameSpaceId 0; defined
+				in international english. As for the data provider namespace, the place namespace can be 
+				defined by the user when starting up the session. 
+			</para>
 			
+			<para>To retrieve the full list of the PlaceNames for the data values currently being stored
+			in the database, use the following wci.browse function call:</para>
+
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browseplace );
+		</programlisting>
+									
 			<para>At the same time as the user specifies a location to retrieve data from, it
 				is also possible to specify an interpolation option for location
 				calculations. These permit the user a great deal of flexibility in
-				searching.</para>
+				searching. Currently, interpolations such as "exact", "nearest" (retrieve the
+			data value closest to the specified place), and "bilinear" (retrieve the closest data
+			values and perform a bilinear interpolation of those values).</para>
 			
 			<para>Specifying NULL for the place definition of a query is logically
 				equivalent to asking for all of the data items in the database, irrespective
@@ -195,23 +231,41 @@
 			<title>Reference Time</title>
 			
 			<para>The reference time of a data item is the moment when the data item is
-				referenced from.</para>
+				referenced from. For forecast data, this would typically be the reference
+				time of the data values the forecast is based upon; for observation data,
+				it would typically be the time when the observation data was recorded.</para>
 			
 			<para>When searching for data, the user specifies the reference time (with time
 				zone), or NULL. NULL indicates that the user wants all data items,
-				regardless of the reference time of the data.</para>
+				regardless of the reference time of the data. Time is specified in WCI as
+			    a text string with datetime's that are interpreted by the WCI parser.</para>
+
+			<para>To retrieve a list of the reference times currently being stored in the
+				database, use the wci.browse functionality:</para>
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsereferencetime );
+		</programlisting>
 			
 		</sect1>
-		
+				
 		<sect1>
 			<title>Valid Time</title>
 			
-			<para>The valid time of a data item is the moment for which the data item is
-				valid.</para>
+			<para>The valid time of a data item is the time period for which the data item is
+				valid. The valid time is always stored in the database as a time interval.</para>
 			
 			<para>When searching for data, the user specifies the valid time (with time
 				zone), or NULL. NULL indicates that the user wants all data items,
-				regardless of the valid time of the data.</para>
+				regardless of the valid time of the data. Time is specified in WCI as
+			    a text string with datetime's that are interpreted by the WCI parser.</para>
+			
+			<para>To retrieve a list of the valid times currently being stored in the
+				database, use the wci.browse functionality:</para>
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsevalidtime );
+		</programlisting>
 			
 		</sect1>
 		
@@ -222,6 +276,21 @@
 				parameter is a name that describes the physics or code table basis of the
 				parameter value. The value parameter concept in WCI is broadly similar to
 				the concept of meteorological parameter used in, e.g., GRIB files.</para>
+						
+			<para>The user searches the database for a specific parameter in the database
+			using the ValueParameterName. ValueParameterNames are specified within a 
+			parameter namespace. As with the other namespaces, the ParameterNameSpaceId 0
+			is reserved for the default WDB namespace, and is based on international 
+				english. Additional namespaces can be defined by the administrator of the
+				database.
+			</para>
+			
+			<para>To retrieve a list of the value parameters currently being stored in the
+				database, use the wci.browse functionality:</para>
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsevalueparameter );
+		</programlisting>
 			
 		</sect1>
 		
@@ -229,15 +298,31 @@
 			<title>Level (Altitude)</title>
 			
 			<para>The <emphasis>Level</emphasis> dimension is used to designate the
-				altitude or depth of the data value. Level is designated using a level
-				parameter (e.g., height above sea level, pressure), and a height interval
-				(level from and to). The user can also specify a level interpolation option;
-				this permits the user flexibility when expressing searches.</para>
+				altitude or depth of the data value. Level is designated using a level interval (height 
+				from and to) and a level parameter (e.g., height above sea level, pressure). The level
+				definition can be prefixed with a level interpolation option that permits the
+				user a large degree of flexibility in expressing searches. Levels are specified using
+				a level specification in string form that is parsed by the WCI.</para>
 			
 			<para>Specifying <emphasis>ANY</emphasis> for the level interpolation is
 				logically equivalent to specifying a NULL for the level; i.e., it retrieves
 				all data items regardless of their level (height).</para>
+
+			<para>The level parameter is specified using a LevelParameterName. LevelParameterNames
+				are specified within the parameter namespace. Consequently, it is not possible
+				to mix usage of ValueParameterNames and LevelParameterNames from different namespaces
+				without defining a new parameter namespace. The default WDB ParameterNameSpaceId is 0
+				and is based on international english. 
+			</para>
 			
+			<para>To retrieve a full list of the level parameters currently being stored in the
+				database, use the wci.browse functionality:</para>
+			
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
+		</programlisting>
+						
 		</sect1>
 		
 		<sect1>
@@ -245,16 +330,19 @@
 			
 			<para>There can be several different versions of the same data value that is
 				valid for the same time, position, etc. This can happen with probability
-				forecast calculations, or when a data value is edited (in which case the new
+				forecast calculations or when a data value is edited (in which case the new
 				value may often be inserted with a higher data version). A data version is
 				always a positive whole number.</para>
 			
 			<para>The user may specify one or several data versions as search criteria in
 				WCI, as well as NULL. NULL indicates that the user wants all versions of the
 				data items specified. In addition, the user may specify the data version as
-				<emphasis>-1</emphasis>. Specifying <emphasis>-1</emphasis>
-				retrieves only the most recent version of the data item inserted into the
-				database.</para>
+				a negative number; e.g., <emphasis>-1</emphasis>. Specifying <emphasis>-1</emphasis>
+				retrieves the maximum data version in the database (i.e., the most recent version of the data item), 
+				<emphasis>-2</emphasis> retrieves the second most recent, and so on.</para>
+			
+			<para>There is no wci.browse functionality to list all of the data versions of the data in the 
+			database.</para>
 			
 		</sect1>
 		
@@ -309,7 +397,7 @@ connection_ = PQconnectdb("dbname=wdb user=myuser host=localhost");
 			
 			<para>The connection must be open and valid as long as commands are being sent and
 				data retrieved from the database. It is worth noting that connections are a
-				limited resource; the database may thus have limits on how many connections
+				limited resource; the database will have limits on how many connections
 				can be open at the same time. This is particularly important in massively
 				multi-user applications (e.g., web applications). In such cases, the
 				database connections must be managed with some care. </para>
@@ -320,7 +408,7 @@ connection_ = PQconnectdb("dbname=wdb user=myuser host=localhost");
 			<title>Initialize WCI</title>
 			
 			<para>Before WCI may be used by the user, it should be initialized.</para>
-			
+		
 			
 			<programlisting>
 SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
@@ -337,7 +425,11 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 				appropriate rights). This allows, for instance, for a single system to act
 				as a multiplexing front-end to retrieve data available from several
 				distinct users.</para>
+
+			<para>Name spaces are used to identify what set of names should be used for searching the database. 
+				</para>
 			
+						
 		</sect1>
 		
 		<sect1>

@@ -1,6 +1,7 @@
 Value Domain|Description
 of undefined|Undefined parameter usage. This is used for temporary, experimental, and/or not yet defined parameters.
 of air|The value describes a property of air
+of air, kalman|The value of a kalman-filtered air parameter
 of air, anomaly|The value describes an anomalous property of air
 of air, virtual|The value describes a virtual property of air
 of air, potential|The value describes a potential property of air

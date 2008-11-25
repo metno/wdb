@@ -8,6 +8,7 @@ Id|Unit|Usage
 9|metre|of land, height standard deviation
 10|dobson|of ozone
 11|kelvin|of air
+1105|kelvin|of air, kalman
 12|kelvin|of air, virtual
 13|kelvin|of air, potential
 14|kelvin|of air, pseudo-abiadetic potential

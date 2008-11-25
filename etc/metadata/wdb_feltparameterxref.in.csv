@@ -102,6 +102,7 @@ FeltParameter|FeltLevel|Niveau1|Niveau2|ParameterId|ParameterUnit|Load
 1101|2|1000|0|1101|metre|t
 1103|2|1000|0|60|percent|t
 1104|2|1000|0|1104|percent|t
+1105|2|1000|0|1105|kelvin|t
 10|1|1000|0|52|percent|t
 18|1|1000|0|13|kelvin|t
 1006|2|1000|0|1006|kelvin per metre|t
