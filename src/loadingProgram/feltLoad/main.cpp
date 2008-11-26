@@ -144,6 +144,7 @@ int main(int argc, char ** argv)
 				catch ( std::exception & e )
 				{
 					log.errorStream() << "Unable to load file " << it->native_file_string();
+					log.errorStream() << "Reason: " << e.what();
 				}
 			}
 		}
