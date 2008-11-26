@@ -187,7 +187,7 @@ SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
 						
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:place">
 			<title>Place (Geographic Location)</title>
 			
 			<para>The place (geographic location) of a data item is the position of the item
@@ -227,7 +227,7 @@ SELECT * FROM wci.browse( NULL::wci.browseplace );
 			
 		</sect1>
 		
-		<sect1>
+		<sect1  id="sec:reftime">
 			<title>Reference Time</title>
 			
 			<para>The reference time of a data item is the moment when the data item is
@@ -249,7 +249,7 @@ SELECT * FROM wci.browse( NULL::wci.browsereferencetime );
 			
 		</sect1>
 				
-		<sect1>
+		<sect1 id="sec:validtime">
 			<title>Valid Time</title>
 			
 			<para>The valid time of a data item is the time period for which the data item is
@@ -269,7 +269,7 @@ SELECT * FROM wci.browse( NULL::wci.browsevalidtime );
 			
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:value_parameter">
 			<title>Value Parameter</title>
 			
 			<para>Each data value can be described using a "value parameter". The value
@@ -294,7 +294,7 @@ SELECT * FROM wci.browse( NULL::wci.browsevalueparameter );
 			
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:level">
 			<title>Level (Altitude)</title>
 			
 			<para>The <emphasis>Level</emphasis> dimension is used to designate the
@@ -325,7 +325,7 @@ SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 						
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:data_version">
 			<title>Data Version</title>
 			
 			<para>There can be several different versions of the same data value that is
@@ -348,16 +348,16 @@ SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 		
 	</chapter>
 	
-	<chapter>
+	<chapter id="cha:using_wci">
 		<title>Using the WCI</title>
 		
 		<para>This section gives an overview on how to use the WCI to retrieve data values from
 			WDB.</para>
 		
-		<sect1>
+		<sect1 id="sec:using_outline">
 			<title>Outline</title>
 			
-			<para>The following list gives a brief overview of the actions that the user
+			<para>The following list provides a brief overview of the actions that the user
 				takes in order to retrieve data from WCI.</para>
 			
 			<itemizedlist>
@@ -368,7 +368,7 @@ SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 					<para>Initialize WCI</para>
 				</listitem>
 				<listitem>
-					<para>Read from WCI (one or more times)</para>
+					<para>Read data from WDB using WCI functions (one or more times)</para>
 				</listitem>
 				<listitem>
 					<para>Release WCI</para>
@@ -380,7 +380,7 @@ SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 			
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:open_connection">
 			<title>Open a connection</title>
 			
 			<para>To enable communication with WCI, the user must open a connection to the
@@ -390,25 +390,26 @@ SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 			
 			<para>Using libpq,</para>
 			
-			
 			<programlisting>
 connection_ = PQconnectdb("dbname=wdb user=myuser host=localhost");
 		</programlisting>
 			
 			<para>The connection must be open and valid as long as commands are being sent and
 				data retrieved from the database. It is worth noting that connections are a
-				limited resource; the database will have limits on how many connections
-				can be open at the same time. This is particularly important in massively
+				resource; the database will have limits on how many connections
+				can be open at the same time. This is particularly important for massively
 				multi-user applications (e.g., web applications). In such cases, the
-				database connections must be managed with some care. </para>
-			
+				database connections must be managed with some care. There is also an amount 
+			overhead involved with setting up a connection, so it will always be more efficient 
+			to connect once and perform multiple database operations, than to connect repeatedly
+			for each operation.</para>
+						
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:initialize_wci">
 			<title>Initialize WCI</title>
 			
-			<para>Before WCI may be used by the user, it should be initialized.</para>
-		
+			<para>Before WCI may be used by the user, it must be initialized.</para>
 			
 			<programlisting>
 SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
@@ -426,13 +427,17 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 				as a multiplexing front-end to retrieve data available from several
 				distinct users.</para>
 
-			<para>Name spaces are used to identify what set of names should be used for searching the database. 
+			<para>Name spaces are used to identify what set of names should be used for searching 
+				the database. While the user is in a namespace, only the data defined in that
+				namespace is visible to the user. If the user should wish, for some reason, to
+				combine data from different namespaces within an application, it will be necessary
+				to call wci.begin repeatedly; once for each time the application needs to change its
+				namespace.
 				</para>
-			
 						
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:reading_wci">
 			<title>Read from the WCI</title>
 			
 			<para>As soon as the user has initialized WCI using wci.begin, the database is
@@ -442,26 +447,53 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 			
 			<programlisting>
 SELECT * 
-FROM wci.READ ( ARRAY['Hirlam'], -- Data provider name
-               'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Geometry
+FROM wci.read ( ARRAY['Hirlam'], -- Data provider name
+               'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Place
                ('1980-01-01 12:00:00', '1980-01-01 18:00:00', 'inside')::wci.timeSpec,  -- Reference time
                ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'any')::wci.timeSpec, --Valid time
-               ARRAY['% temperature of air'], -- Parameter
+               ARRAY['temperature of air'], -- Value Parameter
                (0,1000,'of isobaric surface','any')::wci.levelSpec, -- Level
                ARRAY[-1],  -- Data version
                NULL::wci.returnFloat -- Return type
              )
 		</programlisting>
 			
-			<para>The above query returns Hirlam data for a specific region (given by the
-				geometry), whose referencetime is on or between 12 to 18 o'clock on January
-				1, 1980; the query will return data for any valid times, for air temperature.
+			<para>The above query returns Hirlam data for a specific region (given by the place
+				geometry), whose referencetime is on or between 12:00 to 18:00 on January
+				1, 1980; the query will return data for any valid times, for any air temperature.
 				It will return data for any level, but only the latest version of such data.
 				Values will be returned as point data.</para>
 			
+			<para>The data provider, place definition, value parameter and level parameter must all
+			be defined within the namespaces given in the wci.begin call that preceded the wci.read
+			call. In this particular case, the place definition is a geometry definition, but it would
+			also have been possible to use a placename. Consider, for example, the following query:</para>
+
+			<programlisting>
+SELECT * 
+FROM wci.read ( ARRAY['proff'], -- Data provider name
+               'nearest Oslo', -- Place
+               ('1980-01-02 12:00:00', '1980-01-02 12:00:00', 'exact')::wci.timespec,  -- Reference time
+               ('1980-01-02 12:00:00', '1980-01-12 12:00:00', 'inside')::wci.timespec, --Valid time
+               ARRAY['%precipitation%'], -- Value Parameter
+               NULL, -- Level
+               NULL,  -- Data version
+               NULL::wci.returnFloat -- Return type
+             )
+		</programlisting>
+			
+			<para>The above call returns all precipitation parameters valid for the 10 days following the 
+				given referencetime measured at the nearest point to oslo. Oslo, in this case, is a place name
+			usually defined as a geographical point within the database. Prefixing the place name is the 
+			interpolation that we wish to use when retrieving points; we could also have used any of the
+			alternatives defined in the reference manual below. Note the use of SQL wildcard characters in the
+			value parameter; although these slow down queries (since wildcard searching is not as efficient
+			as a straight comparison), it is possible to use the wci.read call in this way. Note also that names 
+				can be written in upper or lower case; the wci.read function call is not case-sensitive.</para>
+						
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:reLEASE_wci">
 			<title>Release WCI</title>
 			
 			<para>Once the user has finished retrieving data using WCI, it is a good idea to
@@ -477,7 +509,7 @@ SELECT wci.end();
 			
 		</sect1>
 		
-		<sect1>
+		<sect1 id="sec:close_connection">
 			<title>Close Connection</title>
 			
 			<para>Closes down the connection to the database, freeing up the resources on
@@ -499,6 +531,183 @@ PQfinish(connection_);
 		<para>The following sections provide a list of the functions available for usage
 			through the WDB Call Interface.</para>
 		
+		<sect1 id="sec:wci.begin">
+			<title>wci.begin</title>
+			
+			<para>The function wci.begin initializes the WDB Call Interface for a
+				specified user.</para>
+			
+			<sect2 id="sec:wci.begin.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>A connection must be open to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have been set up as a WDB user (i.e., have access to one 
+							of the wdb user groups</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.begin.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.begin 
+(
+	user                    name,
+	dataproviderNameSpaceId integer,
+	placeNameSpaceId        integer,
+	parameterNameSpaceId    integer
+)
+</programlisting>
+				
+	<programlisting>
+wci.begin (
+	user                    name
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.begin.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.begin parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>user</entry>
+								<entry>The userid to initialize the connection
+									with</entry>
+							</row>
+							<row>
+								<entry>dataprovidernamespaceid</entry>
+								<entry>The namespace to be used for dataprovider
+									names in the session</entry>
+							</row>
+							<row>
+								<entry>placenamespaceid</entry>
+								<entry>The namespace to be used for place
+									names in the session</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The namespace to be used for parameter
+									names in the session</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.begin.result">
+				<title>Expected Result</title>
+				
+				<para>No return expected.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.begin.example">
+				<title>Example</title>
+				
+				<para>An example setting up the user "michael" with the data provider and parameter name
+				spaces associated with the code 1, while retaining use of the default place names:</para>
+				
+				<programlisting>
+SELECT wci.begin ( 'michael', 1, 0, 1 );
+</programlisting>
+								
+				<para>Note that the default namespaces can be defined by the WDB administrator. Consequently,
+					the user may frequently want to just install using this namespace, which would be donw
+				with the following wci.begin call:</para>
+
+				<programlisting>
+SELECT wci.begin ( 'michael' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.begin.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.end</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sec:wci.end">
+			<title>wci.end</title>
+			
+			<para>The function wci.end unsets any settings and frees up resources that may
+				have been initialized by wci.begin.</para>
+			
+			<sect2 id="sec:wci.end.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>A connection must be open to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have successfully called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				<programlisting>
+wci.end 
+(
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>No return expected.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.begin</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 		<sect1 id="sec:wci.read">
 			<title>wci.read</title>
 			
@@ -1209,168 +1418,6 @@ wci.write
 			
 		</sect1>
 		
-		<sect1>
-			<title>wci.begin</title>
-			
-			<para>The function wci.begin initializes the WDB Call Interface for a
-				specified user.</para>
-			
-			<sect2>
-				<title>Prerequisites</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>A connection must be open to the database</para>
-					</listitem>
-					<listitem>
-						<para>The user must have access to one of the wdb user
-							groups</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-			<sect2>
-				<title>Syntax</title>
-				
-				
-				<programlisting>
-wci.begin 
-(
-          user                    name,
-          dataproviderNameSpaceId integer,
-          placeNameSpaceId        integer,
-          parameterNameSpaceId    integer
-)
-</programlisting>
-				
-				
-				<programlisting>
-wci.begin (
-          user                    name
-)
-</programlisting>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Parameters</title>
-				
-				<table frame="all">
-					<title>wci.begin parameters</title>
-					<tgroup cols="2">
-						<colspec align="left"/>
-						<colspec align="left"/>
-						<thead>
-							<row>
-								<entry> Parameter </entry>
-								<entry> Description </entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>user</entry>
-								<entry>The userid to initialize the connection
-									with</entry>
-							</row>
-							<row>
-								<entry>dataprovidernamespaceid</entry>
-								<entry>The namespace to be used for dataprovider
-									names</entry>
-							</row>
-							<row>
-								<entry>placenamespaceid</entry>
-								<entry>The namespace to be used for parameter
-									names</entry>
-							</row>
-							<row>
-								<entry>parameternamespaceid</entry>
-								<entry>The namespace to be used for level parameter
-									names</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Expected Result</title>
-				
-				<para>No return expected.</para>
-				
-			</sect2>
-			
-			<sect2>
-				<title>See Also</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.end</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-		</sect1>
-		
-		<sect1>
-			<title>wci.end</title>
-			
-			<para>The function wci.end unsets any settings and frees up resources that may
-				have been initialized by wci.begin.</para>
-			
-			<sect2>
-				<title>Prerequisites</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>A connection must be open to the database.</para>
-					</listitem>
-					<listitem>
-						<para>The user must have access to one of the wdb user
-							groups</para>
-					</listitem>
-					<listitem>
-						<para>The user must have called wci.begin</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-			<sect2>
-				<title>Syntax</title>
-				
-				<programlisting>
-wci.end 
-(
-)
-</programlisting>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Parameters</title>
-				
-				<para>None.</para>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Expected Result</title>
-				
-				<para>No return expected.</para>
-				
-			</sect2>
-			
-			<sect2>
-				<title>See Also</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.begin</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-		</sect1>
 		
 	</chapter>
 	
