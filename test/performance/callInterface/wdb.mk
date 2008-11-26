@@ -35,7 +35,8 @@ WCIPERFTEST_SOURCES =	test/performance/callInterface/caseP001_01.in.test \
 						test/performance/callInterface/caseP003_03.in.test \
 						test/performance/callInterface/caseP003_04.in.test \
 						test/performance/callInterface/caseP004_01.in.test \
-						test/performance/callInterface/caseP004_02.in.test
+						test/performance/callInterface/caseP004_02.in.test \
+						test/performance/callInterface/caseP004_03.in.test
 
 WCIPERFTEST_SUPPORT =	test/performance/callInterface/buildUp.in.sh \
 						test/performance/callInterface/tearDown.in.sh \
