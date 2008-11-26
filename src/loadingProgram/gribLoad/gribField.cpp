@@ -499,9 +499,9 @@ GribField::convertValues( database::GribDatabaseConnection & db )
     float coeff = 1.0, term = 0.0;
     db.readUnit( valueUnit_, &coeff, &term );
     // Scale the data
-    if (( coeff != 1.0 )&&( term != 0.0)) {
+    if (( coeff != 1.0 ) or ( term != 0.0)) {
     	for ( int i=0; i<sizeOfValues_; i++ ) {
-    		values_[i] = ( ( values_[i] * coeff ) + term );
+    		values_[i] = ( ( values_[i] * coeff ) + term ) / 10;
     	}
     }
 }
