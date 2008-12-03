@@ -50,6 +50,7 @@
 //#include <pqxx/connection>
 #include <string>
 #include <ostream>
+#include <cstring>
 
 // FORWARD REFERENCES
 //
