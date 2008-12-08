@@ -17,4 +17,4 @@
 ##  (at your option) any later version.
 ##
 
-psql wdb -c "SELECT cleanupdb()"
+psql `__WDB_BINDIR__/wdbConfiguration --psqlArgs` -c "SELECT cleanupdb()"
