@@ -30,6 +30,7 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 			 			| sed s:__WDB_DATADIR__:$(wdbdatadir):g \
 			 			| sed s:__WDB_SYSCONFDIR__:@sysconfdir@:g \
 			 			| sed s:__WDB_LOCALSTATEDIR__:@localstatedir@:g \
+			 			| sed s:__WDB_BINDIR__:@bindir@:g \
 						| sed s:__POSTGIS_DIR__:@postgis_SQL@:g \
 						| sed s:__WDB_DBNAME__:$(DATABASE_NAME):g \
 						| sed s:__WDB_SCHEMA__:wdb_$(DATABASE_SCHEMA):g \

@@ -20,7 +20,7 @@ DISTCLEANFILES +=		src/cleaningProgram/Makefile
 pkglib_SCRIPTS += src/cleaningProgram/clean_wdb.sh
 
 src/cleaningProgram/clean_wdb.sh: src/cleaningProgram/clean_wdb.in.sh
-	cp $< $@
+	$(SED_SUBSTITUTION)
 
 EXTRA_DIST += src/cleaningProgram/clean_wdb.in.sh
 CLEANFILES += src/cleaningProgram/clean_wdb.sh
