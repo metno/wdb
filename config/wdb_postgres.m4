@@ -252,33 +252,55 @@ AC_DEFUN([WDB_POSTGIS_CHECK],
 AC_ARG_WITH([postgis],
 	    AS_HELP_STRING([--with-postgis=PATH], 
 	    [Specify the directory in which postgis is installed (default is the PostgreSQL contrib directory)]),
-	    [postgis_SQL="${with_postgis}"],
-	    [postgis_SQL=`${PGCONFIG} --sharedir`]
+	    [postgis_CHECK="${with_postgis}"],
+	    [postgis_CHECK=`${PGCONFIG} --sharedir`]
 )
 
 required_postgis_version=ifelse([$1], [], [1.1.x], [$1])
+postgis_SQL=""
 # no obvious way to check for PostGIS version
 
 AC_MSG_CHECKING(for postgis)
-if test ! -f ${postgis_SQL}/lwpostgis.sql; then
-	postgis_SQL=${postgis_SQL}/../
-	if test ! -f ${postgis_SQL}/lwpostgis.sql; then
-		postgis_SQL=${postgis_SQL}/../postgresql-8.1-postgis
-		if test ! -f ${postgis_SQL}/lwpostgis.sql; then
-			AC_MSG_RESULT(no)
-			AC_MSG_ERROR([
+# Check specified director
+if test -f ${postgis_CHECK}/lwpostgis.sql; then
+	postgis_SQL=${postgis_CHECK}
+fi
+# Usr Share
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/lwpostgis.sql; then
+		postgis_SQL=/usr/share
+	fi
+fi
+# Debian Directories
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql; then
+		postgis_SQL=/usr/share/postgresql-8.3-postgis
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-8.2-postgis/lwpostgis.sql; then
+		postgis_SQL=/usr/share/postgresql-8.2-postgis
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-8.1-postgis/lwpostgis.sql; then
+		postgis_SQL=/usr/share/postgresql-8.1-postgis
+	fi
+fi
+# Error
+if test -z ${postgis_SQL}; then
+	AC_MSG_RESULT(no)
+	AC_MSG_ERROR([
 -------------------------------------------------------------------------
     Cannot find postgis SQL files. Ensure that these files are 
     installed in the share directory of your PostgreSQL installation, 
     or explicitly specify its location using the --with-postgis=PATH 
     option.
 -------------------------------------------------------------------------
-			])
-		fi
-	fi
+	])
 fi
+# Continue
 AC_MSG_RESULT(yes)
-
 AC_SUBST(postgis_SQL)
 
 # Specify default SRID 
