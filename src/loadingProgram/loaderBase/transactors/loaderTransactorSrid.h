@@ -88,7 +88,7 @@ public:
 	void operator()(argument_type &T)
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wdb.loaderBaseLoad.dataPlaceId" );
-  		log.infoStream() << "Attempting to identify srid: " << srid_;
+  		log.debugStream() << "Attempting to identify srid: " << srid_;
 		R = T.prepared("ReadSrid")
 					  (srid_).exec();
   		if ( R.size() == 1 ) {
@@ -99,7 +99,7 @@ public:
 	  			if ( R.size() == 1 ) {
 	  				R.at(0).at(0).to( return_ );
 	  			}
-		  		log.infoStream() << "Did not find original srid in spatial_ref_sys";
+		  		log.debugStream() << "Did not find original srid in spatial_ref_sys";
 		       	if (return_ < getMinimumSrid()) return_ = getMinimumSrid();
 		       	return_ ++;
 				R = T.prepared("WriteSrid")
@@ -112,7 +112,7 @@ public:
 			}
 			else {
 				R.at(0).at(0).to( return_ );
-	 			log.infoStream() << "Identified original srid: " << return_;
+	 			log.debugStream() << "Identified original srid: " << return_;
 			}
   		}
   		if ( R.size() != 1 ) {

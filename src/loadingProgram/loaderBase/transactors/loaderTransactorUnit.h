@@ -90,12 +90,12 @@ public:
 	void operator()(argument_type &T)
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.loaderBase.unit" );
-  		log.infoStream() << "Checking unit conversion information for: " << unit_;
+  		log.debugStream() << "Checking unit conversion information for: " << unit_;
 		R = T.prepared("ReadUnitData")
 					  (unit_).exec();
   		if ( R.size() == 1 ) {
   			if ( R.at(0).at(2).is_null() ) {
-				log.infoStream() << "Did not find any conversion data for " << unit_ ;
+				log.debugStream() << "Did not find any conversion data for " << unit_ ;
 				//throw WdbEmptyResultException("Unit did not have any conversion data", __func__ );
 			}
 			else {
