@@ -527,7 +527,7 @@ GRANT ALL ON __WCI_SCHEMA__.placegeo TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placegeo TO wdb_read;
 GRANT SELECT ON __WCI_SCHEMA__.placegeo TO wdb_write;
 
-CREATE VIEW __WCI_SCHEMA__.placespec AS SELECT 
+CREATE VIEW __WCI_SCHEMA__.placespec_v AS SELECT 
 	pd.placeid,
 	pn.placename,
 	pn.placenamespaceid,
@@ -553,6 +553,18 @@ WHERE
 	AND (pd.placeid = pn.placeid)
 	AND (pit.placeindeterminatecode = pd.placeindeterminatecode);
 
+REVOKE ALL ON TABLE __WCI_SCHEMA__.placespec_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.placespec_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.placespec_v TO wdb_read, wdb_write;
+
+SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.placespec', '__WCI_SCHEMA__.placespec_v');
+SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placespec');
+
 REVOKE ALL ON TABLE __WCI_SCHEMA__.placespec FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.placespec TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.placespec TO wdb_read, wdb_write;
+
+CREATE INDEX XIE0wci_placespec_mv ON __WCI_SCHEMA__.placespec
+(
+	placeid
+);

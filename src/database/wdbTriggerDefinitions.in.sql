@@ -215,6 +215,30 @@ CREATE TRIGGER trigger_updateplacedefinition_mv2
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
 	EXECUTE PROCEDURE updateplacedefinition_mv();
 
+CREATE OR REPLACE FUNCTION updateplacespec_mv() RETURNS "trigger"
+	AS $$
+BEGIN
+	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placespec');
+	RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_updateplacespec_mv1
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
+	EXECUTE PROCEDURE updateplacespec_mv();
+
+CREATE TRIGGER trigger_updateplacespec_mv2
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
+	EXECUTE PROCEDURE updateplacespec_mv();
+
+CREATE TRIGGER trigger_updateplacespec_mv3
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placeregulargrid
+	EXECUTE PROCEDURE updateplacespec_mv();
+
+CREATE TRIGGER trigger_updateplacespec_mv4
+	AFTER INSERT OR UPDATE ON spatial_ref_sys
+	EXECUTE PROCEDURE updateplacespec_mv();
+
 
 CREATE OR REPLACE FUNCTION updatevalueparameter_mv() RETURNS "trigger"
 	AS $$
