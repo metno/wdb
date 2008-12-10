@@ -63,9 +63,13 @@ void help( const boost::program_options::options_description & options, std::ost
         << "1  - random point retrieval (single point)"
         << "2  - random point retrieval (multiple point)"
         << "3  - random point retrieval (all parameters)"
+        << "4  - random point retrieval (large query)"
+        << "8  - prepared random point retrieval (single point)"
         << "31 - random bilinear point retrieval (single point)"
         << "32 - random bilinear point retrieval (multiple point)"
         << "33 - random bilinear point retrieval (all parameters)"
+        << "41 - complex point tests 1"
+        << "42 - complex point tests 2"
 		<< "\n\n"
 		<< "Options:\n"
 		<< options << std::endl;
@@ -134,20 +138,26 @@ int main(int argc, char *argv[])
     	switch ( conf.input().sample ) {
     	case 1: // Random Point retrieval - individual points
     		isFloat = true;
-			for (int i=0; i<1000; i++) {
+			for (int i=0; i<500; i++) {
 				C.perform( RandomPointTest1(resultF) );
    			}
 			break;
     	case 2: // Random Point retrieval - multiple points
     		isFloat = true;
-   			for (int i=0; i<1000; i++) {
+   			for (int i=0; i<500; i++) {
 				C.perform( RandomPointTest2(resultF) );
    			}
    			break;
     	case 3: // Random Point retrieval - multiple points
     		isFloat = true;
-   			for (int i=0; i<100; i++) {
+   			for (int i=0; i<50; i++) {
 				C.perform( RandomPointTest3(resultF) );
+   			}
+   			break;
+    	case 4: // Random Point retrieval - simple multiple point query
+    		isFloat = true;
+   			for (int i=0; i<10; i++) {
+				C.perform( RandomPointTest4(resultF) );
    			}
    			break;
     	case 8: // Prepared Random Point retrieval - individual points
@@ -201,25 +211,25 @@ int main(int argc, char *argv[])
 			break;
     	case 32: // Random Point retrieval - multiple points
     		isFloat = true;
-   			for (int i=0; i<1000; i++) {
+   			for (int i=0; i<500; i++) {
 				C.perform( BilinearPointTest2(resultF) );
    			}
    			break;
     	case 33: // Random Point retrieval - multiple points
     		isFloat = true;
-   			for (int i=0; i<100; i++) {
+   			for (int i=0; i<50; i++) {
 				C.perform( BilinearPointTest3(resultF) );
    			}
    			break;
     	case 41: // Complex Random Point retrieval - individual points
     		isFloat = true;
-			for (int i=0; i<50; i++) {
+			for (int i=0; i<5; i++) {
 				C.perform( ComplexPointTest1(resultF) );
    			}
 			break;
     	case 42: // Complex Random Point retrieval - individual points
     		isFloat = true;
-			for (int i=0; i<50; i++) {
+			for (int i=0; i<5; i++) {
 				C.perform( ComplexPointTest2(resultF) );
    			}
 			break;

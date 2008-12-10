@@ -1,92 +1,92 @@
 dataproviderid|placeid|referencetime|validtimefrom|validtimeto|validtimeindeterminatecode|valueparametername|valueunitname|levelparametername|levelunitname|levelfrom|levelto|levelindeterminatecode|dataversion|confidencecode
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|1000|1000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|3000|3000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|5000|5000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|7000|7000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|10000|10000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|15000|15000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|20000|20000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|25000|25000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|30000|30000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|40000|40000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|50000|50000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|70000|70000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|85000|85000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|92500|92500|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|100000|100000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|1000|1000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|3000|3000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|5000|5000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|7000|7000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|10000|10000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|15000|15000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|20000|20000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|25000|25000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|30000|30000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|40000|40000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|50000|50000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|70000|70000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|85000|85000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|92500|92500|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|100000|100000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|1000|1000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|3000|3000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|5000|5000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|7000|7000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|10000|10000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|15000|15000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|20000|20000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|25000|25000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|30000|30000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|40000|40000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|50000|50000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|70000|70000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|85000|85000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|92500|92500|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|100000|100000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|1000|1000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|3000|3000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|5000|5000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|7000|7000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|10000|10000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|15000|15000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|20000|20000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|25000|25000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|30000|30000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|40000|40000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|50000|50000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|70000|70000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|85000|85000|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|92500|92500|0|0|0
-1096|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|100000|100000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|1000|1000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|3000|3000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|5000|5000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|7000|7000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|10000|10000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|15000|15000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|20000|20000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|25000|25000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|30000|30000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|40000|40000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|50000|50000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|70000|70000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|85000|85000|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|92500|92500|0|0|0
-1096|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|100000|100000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|1000|1000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|3000|3000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|5000|5000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|7000|7000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|10000|10000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|15000|15000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|20000|20000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|25000|25000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|30000|30000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|40000|40000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|50000|50000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|70000|70000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|85000|85000|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|92500|92500|0|0|0
-1096|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|100000|100000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|1000|1000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|3000|3000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|5000|5000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|7000|7000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|10000|10000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|15000|15000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|20000|20000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|25000|25000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|30000|30000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|40000|40000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|50000|50000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|70000|70000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|85000|85000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|92500|92500|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of vertical velocity|pascal per second|pressure of isobaric surface|pascal|100000|100000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|1000|1000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|3000|3000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|5000|5000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|7000|7000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|10000|10000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|15000|15000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|20000|20000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|25000|25000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|30000|30000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|40000|40000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|50000|50000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|70000|70000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|85000|85000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|92500|92500|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|relative humidity|ratio|pressure of isobaric surface|pascal|100000|100000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|1000|1000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|3000|3000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|5000|5000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|7000|7000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|10000|10000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|15000|15000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|20000|20000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|25000|25000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|30000|30000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|40000|40000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|50000|50000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|70000|70000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|85000|85000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|92500|92500|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific energy of land, geopotential height|square metre per square second|pressure of isobaric surface|pascal|100000|100000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|1000|1000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|3000|3000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|5000|5000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|7000|7000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|10000|10000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|15000|15000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|20000|20000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|25000|25000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|30000|30000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|40000|40000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|50000|50000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|70000|70000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|85000|85000|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|92500|92500|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air, potential|kelvin|pressure of isobaric surface|pascal|100000|100000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|1000|1000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|3000|3000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|5000|5000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|7000|7000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|10000|10000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|15000|15000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|20000|20000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|25000|25000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|30000|30000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|40000|40000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|50000|50000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|70000|70000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|85000|85000|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|92500|92500|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|pressure of isobaric surface|pascal|100000|100000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|1000|1000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|3000|3000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|5000|5000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|7000|7000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|10000|10000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|15000|15000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|20000|20000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|25000|25000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|30000|30000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|40000|40000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|50000|50000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|70000|70000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|85000|85000|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|92500|92500|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|pressure of isobaric surface|pascal|100000|100000|0|0|0
 (90 rows)

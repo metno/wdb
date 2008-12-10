@@ -23,22 +23,58 @@ rm -f ${TMP_PATH}/startTime.log
 rm -f ${TMP_PATH}/endTime.log
 touch ${TMP_PATH}/startTime.log
 touch ${TMP_PATH}/endTime.log
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
-${TEST_PATH}/wciRead_time.sh 42 &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-1.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-2.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-3.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-4.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-5.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-6.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-7.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-8.out &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
 let totalTime=totalTime+endTime-startTime
 
-averageTimeRetrieval=$(echo "$totalTime / 1000000000.0" | bc -l)
-averageRows=$(echo "601 * 50.0 * 8 / $averageTimeRetrieval" | bc -l)
-averageTrans=$(echo "50.0 * 8 / $averageTimeRetrieval" | bc -l)
+# Execute Test 1
+rm -f ${TMP_PATH}/startTime.log
+rm -f ${TMP_PATH}/endTime.log
+touch ${TMP_PATH}/startTime.log
+touch ${TMP_PATH}/endTime.log
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-1.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-2.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-3.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-4.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-5.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-6.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-7.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-8.out &
+wait
+startTime=`head -1 ${TMP_PATH}/startTime.log`
+endTime=`tail -1 ${TMP_PATH}/endTime.log`
+let totalTime=totalTime+endTime-startTime
+
+# Execute Test 1
+rm -f ${TMP_PATH}/startTime.log
+rm -f ${TMP_PATH}/endTime.log
+touch ${TMP_PATH}/startTime.log
+touch ${TMP_PATH}/endTime.log
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-1.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-2.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-3.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-4.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-5.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-6.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-7.out &
+${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-8.out &
+wait
+startTime=`head -1 ${TMP_PATH}/startTime.log`
+endTime=`tail -1 ${TMP_PATH}/endTime.log`
+let totalTime=totalTime+endTime-startTime
+
+averageTimeRetrieval=$(echo "$totalTime / 3000000000.0" | bc -l)
+averageRows=$(echo "601 * 5.0 * 8 / $averageTimeRetrieval" | bc -l)
+averageTrans=$(echo "5.0 * 8 / $averageTimeRetrieval" | bc -l)
 
 echo "Average Time: $averageTimeRetrieval seconds"
 echo "Rows Returned: $averageRows per second"

@@ -461,6 +461,82 @@ public:
 
 
 
+/**
+ * Random Point Test
+ * Test of individual random point retrieval with different location, time, and parameter
+ */
+class RandomPointTest4 : public pqxx::transactor<>
+{
+	std::vector <FloatRow *> & rows_;
+public:
+	RandomPointTest4(std::vector <FloatRow *> & rows) :
+    pqxx::transactor<>("RandomPointTest1"), rows_(rows) {}
+
+	void operator()(argument_type &T)
+  	{
+		std::string refTime;
+		std::string valTime;
+		randomTimes(refTime, valTime);
+		std::stringstream queryStr;
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+				 << "from wci.read ( "
+				 << randomDataProvider() << ", "
+				 << randomPoint() << ", "
+				 << refTime << "::wci.timeSpec, "
+				 << "NULL, "
+				 << "NULL, "
+				 << "NULL, "
+				 << "ARRAY[-1], "
+				 << "NULL::wci.returnFloat )";
+    	const std::string query = queryStr.str();
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
+    	log.infoStream() <<  "Query: " << query;
+    	pqxx::result R;
+		R = T.exec(query);
+		for (int i=0; i<R.size(); i++) {
+			FloatRow * ret = new FloatRow();
+			R.at(i).at(0).to(ret->value_);
+			R.at(i).at(1).to(ret->dataProvider_);
+			R.at(i).at(2).to(ret->placeName_);
+			R.at(i).at(3).to(ret->placeGeo_);
+			R.at(i).at(4).to(ret->referenceTime_);
+			R.at(i).at(5).to(ret->validFrom_);
+			R.at(i).at(6).to(ret->validTo_);
+			R.at(i).at(7).to(ret->parameter_);
+			R.at(i).at(8).to(ret->parameterUnit_);
+			R.at(i).at(9).to(ret->levelParameter_);
+			R.at(i).at(10).to(ret->levelUnit_);
+			R.at(i).at(11).to(ret->levelFrom_);
+			R.at(i).at(12).to(ret->levelTo_);
+			R.at(i).at(13).to(ret->dataVersion_);
+			R.at(i).at(14).to(ret->quality_);
+			R.at(i).at(15).to(ret->storeTime_);
+			R.at(i).at(16).to(ret->valueId_);
+			R.at(i).at(17).to(ret->valueType_);
+			rows_.push_back(ret);
+		}
+	};
+
+  	void on_abort(const char Reason[]) throw ()
+  	{
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
+    	log.errorStream() <<  "pqxx::transactor " << Name() << " failed: " << Reason;
+  	};
+
+  	void on_commit()
+  	{
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
+    	log.infoStream() <<  "pqxx::transactor " << Name() << " successful";
+  	};
+
+  	void on_doubt() throw ()
+  	{
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
+    	log.errorStream() <<  "pqxx::transactor " << Name() << " in indeterminate state!";
+  	};
+};
+
+
 } // namespace test
 
 } // namespace wdb

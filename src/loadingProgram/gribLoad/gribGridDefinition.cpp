@@ -270,7 +270,7 @@ GribGridDefinition::regularLatLonProjDefinition()
     {
         srcProjDef << " +a=6367470.0";
     }
-    srcProjDef << " +no_defs";
+    srcProjDef << " +towgs84=0,0,0 +no_defs";
 
 	// Set the PROJ string for SRID
     return srcProjDef.str();

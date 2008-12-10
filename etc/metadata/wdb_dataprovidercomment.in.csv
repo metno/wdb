@@ -16,7 +16,7 @@ Data Provider Id|Comment|Store Time
 102|Data received from WDB FeltLoad|08/06/2008 12:00:00
 103|Data received from WDB XmlLoad|08/06/2008 12:00:00
 1000|Hirlam Grib Process|04/19/2007 16:00:00
-1096|wcitestwriter (for wciWriteTest)|09/06/2007 14:00:00
+1096|wcitestwriter (for wciWriteTest)|04/19/2007 16:00:00
 1088|Kvalobs Observation|10/16/2007 09:00:00
 5000|Met.No Ensembler Process|05/13/2008 12:00:00
 1006|Derived eps fields|05/28/2008 12:00:00
@@ -30,6 +30,9 @@ Data Provider Id|Comment|Store Time
 10015|proff.um4|06/26/2008 12:00:00
 10016|proff.approved|06/26/2008 12:00:00
 11008|Hirlam 8 Lapse Rate Felt|06/26/2008 12:00:00
-98132|ECMWF ensemble fields|06/26/2008 12:00:00
-98133|ECMWF ensemble fields|06/26/2008 12:00:00
+88001|Hirlam Model, Norway|06/26/2008 12:00:00
+88067|WAM Model, Norway|06/26/2008 12:00:00
+88501|Model derived from ECMWF ensemble for yr.no by the pgen_probability program|06/26/2008 12:00:00
+88502|Percentile parameters derived from ECMWF ensemble for yr.no|06/26/2008 12:00:00
+98100|ECMWF Atmospheric Model|06/26/2008 12:00:00
 1000000|Base writer for wci|06/26/2008 12:00:00

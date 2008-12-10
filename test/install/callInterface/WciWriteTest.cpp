@@ -29,6 +29,7 @@
 
 #include "WciWriteTest.h"
 #include <sstream>
+#include <cstring>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(wciWriteTest);
 

@@ -651,7 +651,286 @@ SELECT wci.begin ( 'michael' );
 			</sect2>
 			
 		</sect1>
-		
+
+		<sect1 id="sec:wci.browse">
+			<title>wci.browse</title>
+			
+			<para>The wci.browse function is utilized to browse the meteorological, hydrological and oceanographic data in the
+				database. Essentially, it can be used to retrieve summary data about what data values exist in
+				the database. The function takes as input the same search parameters as the
+				wci.read call, but returns summarized rather than detailed data about the
+				values in the database. Using wci.browse will usually be significantly
+				faster than performing a similar wci.read call followed by
+				aggregation.</para>
+			
+			<para>The function is overloaded, and exists in many different versions,
+				depending on the return type required.</para>
+			
+			<sect2 id="sec:wci.browse.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.browse:syntax">
+				<title>Syntax</title>
+				
+				<programlisting>
+wci.browse
+(
+	dataProviders  ARRAY[text],
+	place          text,
+	referenceTime  text,
+	validtime      text,
+	parameters     ARRAY[text],
+	level          text,
+	dataVersions   ARRAY[integer],
+	returnType     wci.browsedataprovider
+)
+			</programlisting>
+
+				<programlisting>
+wci.browse
+(
+	returnType     wci.browsedataprovider
+)
+			</programlisting>				
+													
+				<programlisting>
+wci.browse
+(
+	dataProviders  ARRAY[text],
+	place          text,
+	referenceTime  text,
+	validtime      text,
+	parameters     ARRAY[text],
+	level          text,
+	dataVersions   ARRAY[integer],
+	returnType     wci.browseplace
+)
+			</programlisting>
+
+				<programlisting>
+wci.browse
+(
+	returnType     wci.browseplace
+)
+			</programlisting>				
+								
+				<programlisting>
+wci.browse
+(
+	dataProviders  ARRAY[text],
+	place          text,
+	referenceTime  text,
+	validtime      text,
+	parameters     ARRAY[text],
+	level          text,
+	dataVersions   ARRAY[integer],
+	returnType     wci.browsereferencetime
+)
+			</programlisting>
+
+				<programlisting>
+wci.browse
+(
+	returnType     wci.browsereferencetime
+)
+			</programlisting>				
+												
+				<programlisting>
+wci.browse
+(
+	dataProviders  ARRAY[text],
+	place          text,
+	referenceTime  text,
+	validtime      text,
+	parameters     ARRAY[text],
+	level          text,
+	dataVersions   ARRAY[integer],
+	returnType     wci.browsevalidtime
+)
+			</programlisting>
+
+				<programlisting>
+wci.browse
+(
+	returnType     wci.browsevalidtime
+)
+			</programlisting>				
+								
+				<programlisting>
+wci.browse
+(
+	dataProviders  ARRAY[text],
+	place          text,
+	referenceTime  text,
+	validtime      text,
+	parameters     ARRAY[text],
+	level          text,
+	dataVersions   ARRAY[integer],
+	returnType     wci.browsevalueparameter
+)
+			</programlisting>
+
+				<programlisting>
+wci.browse
+(
+	returnType     wci.browsevalueparameter
+)
+			</programlisting>				
+				
+				<programlisting>
+wci.browse
+(
+	dataProviders  ARRAY[text],
+	place          text,
+	referenceTime  text,
+	validtime      text,
+	parameters     ARRAY[text],
+	level          text,
+	dataVersions   ARRAY[integer],
+	returnType     wci.browselevelparameter
+)
+			</programlisting>
+
+				<programlisting>
+wci.browse
+(
+	returnType     wci.browselevelparameter
+)
+			</programlisting>				
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.browse.parameters">
+				<title>Parameters</title>
+				
+				<para>All the wci.browse input parameters, except the returnType, are
+					precisely the same as the input paramaters to a wci.read call (see
+					Section <xref linkend="sec:wci.read:parameters"></xref>). Calling a function
+					with only the "returnType"
+					parameter specified is basically equivalent to calling the wci.browse function
+					with all NULLs (indicating that all data is required). 
+					</para>
+				
+				<para>The returnType specifies which of the six different types of
+					summarized metadata the user wants to retrieve.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.browse.result">
+				<title>Expected Result</title>
+				
+				<para>Depending on the returnType specified:</para>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.browsedataprovider</para>
+						<para>This returns a list of the data providers that exist in the
+							database for the parameter definitions given in the
+							wci.browse call and the utilized namespace. For each
+							dataprovider, the number of data records and the earliest and
+							latest referencetimes that exist for that data value is also
+							listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browseplace</para>
+						<para>This returns a list of the place definitions that exist in
+							the database for the parameter definitions given by the
+							wci.browse call and the used namespace. For each place
+							definition, the number of data records in the database are
+							listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsereferencetime</para>
+						<para>This returns a list of the referencetimes that exist in the
+							database for the parameter definitions given by the
+							wci.browse call. For each referencetime, the number of data
+							records in the database are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsevalidtime</para>
+						<para>This returns a list of the validtimes that exist in the
+							database for the parameter definitions given by the
+							wci.browse call. For each validtime, the number of data
+							records in the database are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsevalueparameter</para>
+						<para>This returns a list of the value parameters that exist in the
+							database for the parameter definitions given by the
+							wci.browse call and the used namespace. For each
+							valueparameter, the number of data records in the database
+							are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browselevelparameter</para>
+						<para>This returns a list of the level parameters that exist in the
+							database for the parameter definitions given by the
+							wci.browse call and the utilized namespace. For each level
+							parameter, the number of data records in the database are
+							listed.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.browse.example">
+				<title>Example</title>
+				
+				<para>The following browse query could be used to retrieve the data provider names 
+					of all data providers in the database.</para>
+				
+				<programlisting>
+SELECT * FROM wci.browse ( NULL::wci.browsedataprovider );					
+				</programlisting>
+				
+				<para>A follow up question could then utilize a result from this query to ask a 
+					follow-up determining the reference times of  a specific data provider.</para>
+				
+				<programlisting>
+SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], 
+						   NULL, NULL, NULL, NULL, NULL,
+					       NULL::wci.browsereferencetime );   					
+				</programlisting>
+
+				<para>The results from this query (a list of referencetimes), can then be used to
+					drill down further into the data mass of the database. The following example 
+					retrieves the list of parameters for the given data provider and reference time.
+				</para>				
+				
+				<programlisting>
+SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], NULL, 
+						   'exact 1980-03-15 12:00:00+00', 
+						   NULL, NULL, NULL,
+					       NULL::wci.browsereferencetime );			
+				</programlisting>
+				
+			</sect2>
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+			<sect2 id="sec:wci.browse.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.read</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>				
+				
 		<sect1 id="sec:wci.end">
 			<title>wci.end</title>
 			
@@ -671,7 +950,7 @@ SELECT wci.begin ( 'michael' );
 				</itemizedlist>
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.end.syntax">
 				<title>Syntax</title>
 				
 				<programlisting>
@@ -682,21 +961,31 @@ wci.end
 				
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.end.parameters">
 				<title>Parameters</title>
 				
 				<para>None.</para>
 				
 			</sect2>
 			
-			<sect2>
+			<sect2 id="sec:wci.end.result">
 				<title>Expected Result</title>
 				
 				<para>No return expected.</para>
 				
 			</sect2>
 			
-			<sect2>
+			<sect2  id="sec:wci.end.example">
+				<title>Example</title>
+				
+				<para>The wci.end function is just a simple functional call:</para>
+				
+				<programlisting>
+SELECT wci.end ( );
+</programlisting>				
+			</sect2>
+			
+			<sect2 id="sec:wci.end.see">
 				<title>See Also</title>
 				
 				<itemizedlist>
@@ -707,7 +996,167 @@ wci.end
 			</sect2>
 			
 		</sect1>
-
+	
+		<sect1 id="sect:wci.info">
+			<title>wci.info</title>
+			
+			<para>wci.info is the function utilized to retrieve the metadata in the
+				database; for example, it can be used to return a lists of all parameters
+				possible in the database, a list of the dataproviders registered, etc.
+				Where wci.browse returns information about the data stored in the
+				database, wci.info returns information about the data that is possible to
+				store in the database. The function usually takes as its input a string as its
+				search parameter. </para>
+			
+			<para>The function is overloaded, and exists in four different versions,
+				depending on the return type required. Calling the function with a NULL in
+				place of the search parameter will return the complete list of
+				parameters.</para>
+			
+			<sect2>
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Syntax</title>
+				
+				
+				<programlisting>
+wci.info
+(
+          dataProvider   text,
+          returnType     wci.infodataprovider
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.info
+(
+          place          text,
+          returnType     wci.infoplace
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.info
+(
+          valueParameter text,
+          returnType     wci.infovalueparameter
+)
+			</programlisting>
+				
+				
+				<programlisting>
+wci.info
+(
+          levelParameter text,
+          returnType     wci.infolevelparameter
+)
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.info parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProvider</entry>
+								<entry>A text string representing the data providers to
+									list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>place</entry>
+								<entry>A text string representing the place names to
+									list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>valueParameter</entry>
+								<entry>A text string representing the value parameters
+									to list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>levelParameter</entry>
+								<entry>A text string representing the level parameters
+									to list. Wild cards may be used in the string. NULL
+									represents all.</entry>
+							</row>
+							<row>
+								<entry>returnType</entry>
+								<entry>What type of data the user wants
+									returned</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+				<para>>Geospatial definitions are defined using well-known-text. Only
+					POINTs and POLYGONs are currently supported.</para>
+				
+			</sect2>
+			
+			<sect2>
+				<title>Expected Result</title>
+				
+				<para>Depending on the returnType specified:</para>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.infodataprovider</para>
+					</listitem>
+					<listitem>
+						<para>wci.infoplace</para>
+					</listitem>
+					<listitem>
+						<para>wci.infovalueparameter</para>
+					</listitem>
+					<listitem>
+						<para>wci.infolevelparameter</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2>
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.read</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
 		<sect1 id="sec:wci.read">
 			<title>wci.read</title>
 			
@@ -895,376 +1344,7 @@ FROM wci.READ ( ARRAY['Hirlam 8'], -- Data provider name
 				</itemizedlist>
 			</sect2>
 			
-		</sect1>
-		
-		<sect1 id="sec:wci.browse">
-			<title>wci.browse</title>
-			
-			<para>wci.browse is the function utilized to browse the MHO data in the
-				database; it is used to retrieve summary data about what data values exist in
-				the database. The function takes as input the same search parameters as the
-				wci.read call, but returns summarized rather than detailed data about the
-				values in the database. Using wci.browse will usually be significantly
-				faster than performing a similar wci.read call followed by
-				aggregation.</para>
-			
-			<para>The function is overloaded, and exists in many different versions,
-				depending on the return type required.</para>
-			
-			<sect2>
-				<title>Prerequisites</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>The user must be connected to the database</para>
-					</listitem>
-					<listitem>
-						<para>The user must have access to group role wdb_read</para>
-					</listitem>
-					<listitem>
-						<para>The user must have called wci.begin</para>
-					</listitem>
-				</itemizedlist>
-				
-			</sect2>
-			
-			<sect2 id="sec:wci.browse:syntax">
-				<title>Syntax</title>
-				
-				<programlisting>
-wci.browse
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
-          parameters     ARRAY[text],
-          level          wci.levelspec,
-          dataVersions   ARRAY[integer],
-          returnType     wci.browsedataprovider
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.browse
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
-          parameters     ARRAY[text],
-          level          wci.levelspec,
-          dataVersions   ARRAY[integer],
-          returnType     wci.browseplace
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.browse
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
-          parameters     ARRAY[text],
-          level          wci.levelspec,
-          dataVersions   ARRAY[integer],
-          returnType     wci.browsereferencetime
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.browse
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
-          parameters     ARRAY[text],
-          level          wci.levelspec,
-          dataVersions   ARRAY[integer],
-          returnType     wci.browsevalidtime
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.browse
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
-          parameters     ARRAY[text],
-          level          wci.levelspec,
-          dataVersions   ARRAY[integer],
-          returnType     wci.browsevalueparameter
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.browse
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
-          parameters     ARRAY[text],
-          level          wci.levelspec,
-          dataVersions   ARRAY[integer],
-          returnType     wci.browselevelparameter
-)
-			</programlisting>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Parameters</title>
-				
-				<para>All the wci.browse input parameters, except the returnType, are
-					precisely the same as the input paramaters to a wci.read call (see
-					Section <xref linkend="sec:wci.read:parameters"></xref>). It is also 
-					possible to call each of the functions above with only the "returnType"
-					parameter specified; this is equivalent to calling the wci.browse function
-					with all NULLs (indicating that all data is required). 
-					</para>
-				
-				<para>The returnType specifies which of the six different types of
-					summarized metadata the user wants to retrieve.</para>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Expected Result</title>
-				
-				<para>Depending on the returnType specified:</para>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.browsedataprovider</para>
-						<para>This returns a list of the data providers that exist in the
-							database for the parameter definitions given in the
-							wci.browse call and the utilized namespace. For each
-							dataprovider, the number of data records and the earliest and
-							latest referencetimes that exist for that data value is also
-							listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browseplace</para>
-						<para>This returns a list of the place definitions that exist in
-							the database for the parameter definitions given by the
-							wci.browse call and the used namespace. For each place
-							definition, the number of data records in the database are
-							listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browsereferencetime</para>
-						<para>This returns a list of the referencetimes that exist in the
-							database for the parameter definitions given by the
-							wci.browse call. For each referencetime, the number of data
-							records in the database are listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browsevalidtime</para>
-						<para>This returns a list of the validtimes that exist in the
-							database for the parameter definitions given by the
-							wci.browse call. For each validtime, the number of data
-							records in the database are listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browsevalueparameter</para>
-						<para>This returns a list of the value parameters that exist in the
-							database for the parameter definitions given by the
-							wci.browse call and the used namespace. For each
-							valueparameter, the number of data records in the database
-							are listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browselevelparameter</para>
-						<para>This returns a list of the level parameters that exist in the
-							database for the parameter definitions given by the
-							wci.browse call and the utilized namespace. For each level
-							parameter, the number of data records in the database are
-							listed.</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-			<sect2>
-				<title>See Also</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.read</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-		</sect1>
-		
-		<sect1 id="sect:wci.info">
-			<title>wci.info</title>
-			
-			<para>wci.info is the function utilized to retrieve the metadata in the
-				database; for example, it can be used to return a lists of all parameters
-				possible in the database, a list of the dataproviders registered, etc.
-				Where wci.browse returns information about the data stored in the
-				database, wci.info returns information about the data that is possible to
-				store in the database. The function usually takes as its input a string as its
-				search parameter. </para>
-			
-			<para>The function is overloaded, and exists in four different versions,
-				depending on the return type required. Calling the function with a NULL in
-				place of the search parameter will return the complete list of
-				parameters.</para>
-			
-			<sect2>
-				<title>Prerequisites</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>The user must be connected to the database</para>
-					</listitem>
-					<listitem>
-						<para>The user must have access to group role wdb_read</para>
-					</listitem>
-					<listitem>
-						<para>The user must have called wci.begin</para>
-					</listitem>
-				</itemizedlist>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Syntax</title>
-				
-				
-				<programlisting>
-wci.info
-(
-          dataProvider   text,
-          returnType     wci.infodataprovider
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.info
-(
-          place          text,
-          returnType     wci.infoplace
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.info
-(
-          valueParameter text,
-          returnType     wci.infovalueparameter
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.info
-(
-          levelParameter text,
-          returnType     wci.infolevelparameter
-)
-			</programlisting>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Parameters</title>
-				
-				<table frame="all">
-					<title>wci.info parameters</title>
-					<tgroup cols="2">
-						<colspec align="left"/>
-						<colspec align="left"/>
-						<thead>
-							<row>
-								<entry> Parameter </entry>
-								<entry> Description </entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>dataProvider</entry>
-								<entry>A text string representing the data providers to
-									list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>place</entry>
-								<entry>A text string representing the place names to
-									list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>valueParameter</entry>
-								<entry>A text string representing the value parameters
-									to list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>levelParameter</entry>
-								<entry>A text string representing the level parameters
-									to list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>returnType</entry>
-								<entry>What type of data the user wants
-									returned</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
-				
-				<para>>Geospatial definitions are defined using well-known-text. Only
-					POINTs and POLYGONs are currently supported.</para>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Expected Result</title>
-				
-				<para>Depending on the returnType specified:</para>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.infodataprovider</para>
-					</listitem>
-					<listitem>
-						<para>wci.infoplace</para>
-					</listitem>
-					<listitem>
-						<para>wci.infovalueparameter</para>
-					</listitem>
-					<listitem>
-						<para>wci.infolevelparameter</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-			<sect2>
-				<title>See Also</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.read</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-		</sect1>
+		</sect1>		
 		
 		<sect1>
 			<title>wci.write</title>
