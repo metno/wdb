@@ -2,11 +2,11 @@ Data Provider Id|Comment|Store Time
 -1|Data provider used for testing of invalid data|04/19/2007 16:00:00
 0|WDB Test Data|11/21/2006 14:04:00
 1|WDB Test Writer|11/21/2006 14:04:00
-10|WDB Call  Interface Test Process|04/19/2007 16:00:00
-11|WDB Call  Interface Test Process|04/19/2007 16:00:00
-12|WDB Call  Interface Test Process|04/19/2007 16:00:00
-13|WDB Call  Interface Test Process|04/19/2007 16:00:00
-14|WDB Call  Interface Test Process|04/19/2007 16:00:00
+10|WDB Call  Interface Test Process 0|04/19/2007 16:00:00
+11|WDB Call  Interface Test Process 1|04/19/2007 16:00:00
+12|WDB Call  Interface Test Process 2|04/19/2007 16:00:00
+13|WDB Call  Interface Test Process 3|04/19/2007 16:00:00
+14|WDB Call  Interface Test Process 4|04/19/2007 16:00:00
 20|WDB CleanDB Test Process|04/19/2007 16:00:00
 30|WDB GribLoad Test Process|09/06/2007 14:00:00
 40|WDB FeltLoad Test Process|09/06/2007 14:00:00
@@ -15,11 +15,7 @@ Data Provider Id|Comment|Store Time
 101|Data received from WDB GribLoad|08/06/2008 12:00:00
 102|Data received from WDB FeltLoad|08/06/2008 12:00:00
 103|Data received from WDB XmlLoad|08/06/2008 12:00:00
-1000|Hirlam Grib Process|04/19/2007 16:00:00
-1096|wcitestwriter (for wciWriteTest)|04/19/2007 16:00:00
-1088|Kvalobs Observation|10/16/2007 09:00:00
 5000|Met.No Ensembler Process|05/13/2008 12:00:00
-1006|Derived eps fields|05/28/2008 12:00:00
 10000|Proff Felter|06/26/2008 12:00:00
 10001|proff.raw|06/26/2008 12:00:00
 10010|proff.std|06/26/2008 12:00:00
