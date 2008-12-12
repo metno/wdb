@@ -25,10 +25,9 @@ Data Provider Id|Comment|Store Time
 10014|proff.h4|06/26/2008 12:00:00
 10015|proff.um4|06/26/2008 12:00:00
 10016|proff.approved|06/26/2008 12:00:00
-11008|Hirlam 8 Lapse Rate Felt|06/26/2008 12:00:00
 88001|Hirlam Model, Norway|06/26/2008 12:00:00
 88067|WAM Model, Norway|06/26/2008 12:00:00
 88501|Model derived from ECMWF ensemble for yr.no by the pgen_probability program|06/26/2008 12:00:00
-88502|Percentile parameters derived from ECMWF ensemble for yr.no|06/26/2008 12:00:00
+88502|Percentile parameters derived from ECMWF ensemble forecasts using the derived_product_eps SMS-job|06/26/2008 12:00:00
 98100|ECMWF Atmospheric Model|06/26/2008 12:00:00
 1000000|Base writer for wci|06/26/2008 12:00:00
