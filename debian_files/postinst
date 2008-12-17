@@ -40,6 +40,7 @@ case "$1" in
 	    echo "database = $DB_NAME" > /etc/wdb.conf
 	    PORT=`pg_lsclusters -h | grep main | xargs echo | cut -d' ' -f3`
 	    echo "port = $PORT" >> /etc/wdb.conf
+	    echo "user = $DB_USER" >> /etc/wdb.conf
 	fi
 
 	su postgres -c "psql -c \"ALTER USER $DB_USER WITH SUPERUSER\"" >> /dev/null
