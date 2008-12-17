@@ -54,12 +54,9 @@ class LevelTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL1_01A_ValidLevel );
 	CPPUNIT_TEST( testL1_02A_InvalidLevel );
 	CPPUNIT_TEST( testL1_02A_InvalidLevel );
-	CPPUNIT_TEST( testL1_03A_NullLevel );
-	CPPUNIT_TEST( testL1_03A_NullLevel );
-	CPPUNIT_TEST( testL1_04A_NullLevelParameter );
-	CPPUNIT_TEST( testL1_04A_NullLevelParameter );
-	CPPUNIT_TEST( testL1_05A_NullLevelInterpolation );
-	CPPUNIT_TEST( testL1_05A_NullLevelInterpolation );
+
+	CPPUNIT_TEST( levelRangeOid );
+	CPPUNIT_TEST( levelRangePoint );
 
 	CPPUNIT_TEST( testL2_01A_Exact );
 	CPPUNIT_TEST( testL2_01B_Exact );
@@ -110,6 +107,10 @@ public:
 	void testL1_04B_NullLevelParameter();
 	void testL1_05A_NullLevelInterpolation();
 	void testL1_05B_NullLevelInterpolation();
+
+	// Range
+	void levelRangeOid();
+	void levelRangePoint();
 
 	// Interpolation
 	void testL2_01A_Exact();

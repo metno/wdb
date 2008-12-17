@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------
 
 wci_la_SOURCES += 		src/callInterface/types/levelIndeterminateType.cpp \
+						src/callInterface/types/levelIndeterminateType.h \
 						src/callInterface/types/timeIndeterminateType.cpp \
 						src/callInterface/types/wciLocation.cpp \
 						src/callInterface/types/interpolationType.cpp \
@@ -14,6 +15,8 @@ wci_la_SOURCES += 		src/callInterface/types/levelIndeterminateType.cpp \
 						src/callInterface/types/indeterminateType.h \
 						src/callInterface/types/getPlaceQuery.h \
 						src/callInterface/types/getPlaceQuery.c \
+						src/callInterface/types/timeSpec.cpp \
+						src/callInterface/types/levelSpec.cpp \
 						$(libwciTypesNoPostgres_la_SOURCES)
 
 noinst_LTLIBRARIES = 	libwciTypesNoPostgres.la
@@ -26,7 +29,11 @@ libwciTypesNoPostgres_la_SOURCES =\
 						src/callInterface/types/wciNamedInteger.cpp \
 						src/callInterface/types/wciNamedInteger.h \
 						src/callInterface/types/location.cpp \
-						src/callInterface/types/location.h
+						src/callInterface/types/location.h \
+						src/callInterface/types/TimeSpecification.cpp \
+						src/callInterface/types/TimeSpecification.h \
+						src/callInterface/types/LevelSpecification.cpp \
+						src/callInterface/types/LevelSpecification.h
 
 WCITYPES_SOURCES =		src/callInterface/types/wciTimeSpec.in.sql \
 						src/callInterface/types/wciLevelSpec.in.sql \

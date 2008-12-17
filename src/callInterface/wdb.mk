@@ -1,7 +1,7 @@
 lib_LTLIBRARIES +=		wci.la
 wci_la_SOURCES =
 wci_la_LDFLAGS = 		-module $(LIBTOOL_VERSION_FLAG)
-wci_la_CPPFLAGS = 		-I`pg_config --includedir-server`
+wci_la_CPPFLAGS = 		-I`pg_config --includedir-server` -I$(srcdir)/src/callInterface/
 wci_la_LIBADD =			libwdbProjection.a libwdbMath.a libwdbException.a
 
 wcidir = $(sqldir)/wci

@@ -139,6 +139,7 @@ include src/callInterface/wdb.mk
 include src/callInterface/core/wdb.mk
 include src/callInterface/types/wdb.mk
 include src/callInterface/api/wdb.mk
+include src/callInterface/util/wdb.mk
 
 include src/cleaningProgram/wdb.mk
 include src/common/configuration/wdb.mk

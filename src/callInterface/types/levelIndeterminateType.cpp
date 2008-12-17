@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,12 +22,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
 
-#include "wciNamedInteger.h"
+#include "levelIndeterminateType.h"
 #include <stdexcept>
 
 namespace
@@ -36,8 +36,8 @@ namespace
 	const std::string levelIndetTypes[ noLevelIndetTypes ] = {
 		"exact", "inside", "above", "below", "any"
 	};
-	wciNamedInteger indeterminate( levelIndetTypes, levelIndetTypes + noLevelIndetTypes ); 
 }
+wciNamedInteger levelIndeterminate( levelIndetTypes, levelIndetTypes + noLevelIndetTypes );
 
 extern "C"
 {
@@ -50,7 +50,7 @@ Datum levelIndeterminateType_in( PG_FUNCTION_ARGS )
 {
 	try
 	{
-		int4 ret = indeterminate[ PG_GETARG_CSTRING( 0 ) ];
+		int4 ret = levelIndeterminate[ PG_GETARG_CSTRING( 0 ) ];
 		PG_RETURN_INT32( ret );
 	}
 	catch ( std::out_of_range & e )
@@ -67,7 +67,7 @@ Datum levelIndeterminateType_out( PG_FUNCTION_ARGS )
 {
 	try
 	{
-		const std::string & val = indeterminate[ PG_GETARG_INT32( 0 ) ];
+		const std::string & val = levelIndeterminate[ PG_GETARG_INT32( 0 ) ];
 		char * ret = (char *) palloc( val.size() +1 );
 		char * end = std::copy( val.begin(), val.end(), ret );
 		* end = '\0';
@@ -78,7 +78,7 @@ Datum levelIndeterminateType_out( PG_FUNCTION_ARGS )
 		ereport( ERROR,
 	             ( errcode(ERRCODE_INVALID_BINARY_REPRESENTATION),
 	               errmsg( e.what() )));
-	}          
+	}
    PG_RETURN_NULL(); // Never reached
 }
 

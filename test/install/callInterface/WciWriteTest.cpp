@@ -63,10 +63,10 @@ void wciWriteTest::testCanInsert1()
 	const string select = "SELECT * FROM wci.read("
 		"ARRAY['wcitestwriter'],"
 		"'Hirlam 10'::text,"
-		"('2006-04-21 07:00:00+00','2006-04-21 07:00:00+00','exact'),"
-		"('2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00','exact'),"
+		"'2006-04-21 07:00:00+00',"
+		"'2006-04-01 06:00:00+00',"
 		"ARRAY['instant pressure of air'],"
-		"(0,100,'distance above ground','exact'),"
+		"'0 TO 100 distance above ground',"
 		"NULL,"
 		"NULL::wci.returnoid)";
 
@@ -95,10 +95,10 @@ void wciWriteTest::testCanInsert2()
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
 						  "'Hirlam 10'::text,"
-						  "('2006-04-21 07:00:00+00','2006-04-21 07:00:00+00','exact'),"
-						  "('2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00','exact'),"
+						  "'2006-04-21 07:00:00+00',"
+						  "'2006-04-01 06:00:00+00',"
 						  "ARRAY['instant temperature of air'], "
-						  "(0,100,'distance above ground','exact'), "
+						  "'0 TO 100 distance above ground', "
 						  "NULL,"
 						  "NULL::wci.returnoid)";
 
@@ -140,10 +140,10 @@ void wciWriteTest::testMultipleInserts2()
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
 						  "'Hirlam 10'::text,"
-						  "('2006-04-21 07:00:00+00','2006-04-21 07:00:00+00','exact'),"
-						  "('2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00','exact'),"
+						  "'2006-04-21 07:00:00+00',"
+						  "'2006-04-01 06:00:00+00',"
 						  "ARRAY['instant pressure change of air'], "
-						  "(0,100,'distance above ground','exact'), "
+						  "'0 TO 100 distance above ground', "
 						  "NULL, "
 						  "NULL::wci.returnoid)";
 
@@ -410,10 +410,10 @@ string wciWriteTest::controlStatement_(const std::string & resultSet,
 	else
 		st << "ARRAY['"<< dataprovider << "'], ";
 	st << "'test grid, rotated'::text, "
-	   << "('"<< referenceTime << "','"<< referenceTime << "','exact'), "
-	   << "('today', 'today', 'exact'), "
+	   << "'" << referenceTime << "', "
+	   << "'today', "
 	   << "'{\"instant temperature of air\"}', "
-	   << "(0, 0, 'distance above mean sea level', 'exact'), "
+	   << "'0 distance above mean sea level', "
 	   << "NULL, "
 	   << "NULL::wci.returnoid )";
 	return st.str();
@@ -426,10 +426,10 @@ std::string wciWriteTest::controlStatementWithParameter_(const std::string param
 	st << "SELECT "<< resultSet << " FROM wci.read( "
 	   << "ARRAY['wcitestwriter'], "
 	   << "'test grid, rotated'::text, "
-	   << "('2004-12-24 07:00:00+00','2004-12-24 07:00:00+00','exact'), "
-	   << "('today', 'today', 'exact'), "
+	   << "'2004-12-24 07:00:00+00', "
+	   << "'today', "
        << "ARRAY['" << parameter << "'], "
-	   << "(0, 0, 'distance above mean sea level', 'exact'), "
+	   << "'0 distance above mean sea level', "
 	   << "NULL, "
 	   << "NULL::wci.returnoid )";
 

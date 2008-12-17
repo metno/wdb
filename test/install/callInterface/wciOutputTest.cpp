@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,14 +22,14 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
 
 #include "wciOutputTest.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( wciOutputTest ); 
+CPPUNIT_TEST_SUITE_REGISTRATION( wciOutputTest );
 
 wciOutputTest::wciOutputTest()
 {}
@@ -42,13 +42,13 @@ void wciOutputTest::testInvalidFieldSizeInDatabaseQueryOnOidThrows()
 	t->exec(
 		"SELECT * FROM wci.read("
 		"'{1}',"
-		"('2004-12-24 06:00:00+00','2004-12-24 06:00:00+00','exact'),"
+		"'2004-12-24 06:00:00+00',"
 		"ARRAY[1000],"
 		"NULL,"
 		"NULL,"
 		"'{\"instant pressure of air\"}',"
 		"(0,10,'of isobaric surface','exact'),"
-		"('2004-12-24 06:00:00+00', '2004-12-24 06:00:00+00', 'exact'),"
+		"'2004-12-24 06:00:00+00',"
 		"0::oid)"
 	);
 }
@@ -58,13 +58,13 @@ void wciOutputTest::testInvalidFieldSizeInDatabaseQueryOnFloatThrows()
 	t->exec(
 		"SELECT * FROM wci.read("
 		"'{1}',"
-		"('2004-12-24 06:00:00+00','2004-12-24 06:00:00+00','exact'),"
+		"'2004-12-24 06:00:00+00',"
 		"'POINT(11.34 60.75)',"
 		"'nearest',"
 		"NULL,"
 		"'{\"instant pressure of air\"}',"
 		"(0,10,'of isobaric surface','exact'),"
-		"('2004-12-24 06:00:00+00', '2004-12-24 06:00:00+00', 'exact'),"
+		"'2004-12-24 06:00:00+00',"
 		"0::float)"
 	);
 }

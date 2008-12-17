@@ -27,10 +27,10 @@
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
-		    referencetime 		wci.timeSpec,
-		    validtime 			wci.timeSpec,
+		    referencetime 		text,
+		    validtime 			text,
 		    parameter 			text[],
-		    level 				wci.levelSpec,
+		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsedataprovider
 )	
@@ -40,20 +40,15 @@ DECLARE
 	infoQuery 		text;
 	entry 			wci.browsedataprovider;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	-- Create Query to Run
 	infoQuery := 'SELECT dataprovidername, min(referencetime), max(referencetime), count(*) ' ||
 				  __WCI_SCHEMA__.readQuery( 0, 
 										    dataprovider,
 											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											referencetime,
-											validtime,
+											__WCI_SCHEMA__.getTimeSpec(referencetime),
+											__WCI_SCHEMA__.getTimeSpec(validtime),
 											parameter,
-											level,
+											__WCI_SCHEMA__.getLevelSpec(level),
 											dataversion ) ||
                   ' group by dataprovidername';
 	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
@@ -90,10 +85,10 @@ LANGUAGE 'sql' STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
-		    referencetime 		wci.timeSpec,
-		    validtime 			wci.timeSpec,
+		    referencetime 		text,
+		    validtime 			text,
 		    parameter 			text[],
-		    level 				wci.levelSpec,
+		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browseplace
 )	
@@ -103,20 +98,15 @@ DECLARE
 	infoQuery 		text;
 	entry 			wci.browseplace;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	-- Create Query to Run
 	infoQuery := 'SELECT placename, min(referencetime), max(referencetime), count(*) ' ||
 				  __WCI_SCHEMA__.readQuery( 0,
 										    dataprovider,
 											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											referencetime,
-											validtime,
+											__WCI_SCHEMA__.getTimeSpec(referencetime),
+											__WCI_SCHEMA__.getTimeSpec(validtime),
 											parameter,
-											level,
+											__WCI_SCHEMA__.getLevelSpec(level),
 											dataversion ) ||
                   ' group by placename';
 	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
@@ -153,10 +143,10 @@ LANGUAGE 'sql' STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
-		    referencetime 		wci.timeSpec,
-		    validtime 			wci.timeSpec,
+		    referencetime 		text,
+		    validtime 			text,
 		    parameter 			text[],
-		    level 				wci.levelSpec,
+		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsereferencetime
 )	
@@ -166,20 +156,15 @@ DECLARE
 	infoQuery 		text;
 	entry 			wci.browsereferencetime;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	-- Create Query to Run
 	infoQuery := 'SELECT referencetime, count(*) ' ||
 				  __WCI_SCHEMA__.readQuery( 0, 
 											dataprovider,
 											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											referencetime,
-											validtime,
+											__WCI_SCHEMA__.getTimeSpec(referencetime),
+											__WCI_SCHEMA__.getTimeSpec(validtime),
 											parameter,
-											level,
+											__WCI_SCHEMA__.getLevelSpec(level),
 											dataversion ) ||
                   ' group by referencetime';
 	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
@@ -216,10 +201,10 @@ LANGUAGE 'sql' STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
-		    referencetime 		wci.timeSpec,
-		    validtime 			wci.timeSpec,
+		    referencetime 		text,
+		    validtime 			text,
 		    parameter 			text[],
-		    level 				wci.levelSpec,
+		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsevalidtime
 )	
@@ -229,20 +214,15 @@ DECLARE
 	infoQuery 		text;
 	entry 			wci.browsevalidtime;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	-- Create Query to Run
 	infoQuery := 'SELECT validtimefrom, validtimeto, count(*) ' ||
 				  __WCI_SCHEMA__.readQuery( 0,
 											dataprovider,
 											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											referencetime,
-											validtime,
+											__WCI_SCHEMA__.getTimeSpec(referencetime),
+											__WCI_SCHEMA__.getTimeSpec(validtime),
 											parameter,
-											level,
+											__WCI_SCHEMA__.getLevelSpec(level),
 											dataversion ) ||
                   ' group by validtimefrom, validtimeto';
 	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
@@ -278,10 +258,10 @@ LANGUAGE 'sql' STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
-		    referencetime 		wci.timeSpec,
-		    validtime 			wci.timeSpec,
+		    referencetime 		text,
+		    validtime 			text,
 		    parameter 			text[],
-		    level 				wci.levelSpec,
+		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsevalueparameter
 )	
@@ -291,20 +271,15 @@ DECLARE
 	infoQuery 		text;
 	entry 			wci.browsevalueparameter;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	-- Create Query to Run
 	infoQuery := 'SELECT valueparametername, valueunitname, count(*) ' ||
 				  __WCI_SCHEMA__.readQuery( 0,
 											dataprovider,
 											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											referencetime,
-											validtime,
+											__WCI_SCHEMA__.getTimeSpec(referencetime),
+											__WCI_SCHEMA__.getTimeSpec(validtime),
 											parameter,
-											level,
+											__WCI_SCHEMA__.getLevelSpec(level),
 											dataversion ) ||
                   ' group by valueparametername, valueunitname';
 	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
@@ -342,10 +317,10 @@ LANGUAGE 'sql' STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
-		    referencetime 		wci.timeSpec,
-		    validtime 			wci.timeSpec,
+		    referencetime 		text,
+		    validtime 			text,
 		    parameter 			text[],
-		    level 				wci.levelSpec,
+		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browselevelparameter
 )	
@@ -355,20 +330,15 @@ DECLARE
 	infoQuery 		text;
 	entry 			wci.browselevelparameter;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	-- Create Query to Run
 	infoQuery := 'SELECT levelparametername, levelunitname, min(levelfrom), max(levelto), count(*) ' ||
 				  __WCI_SCHEMA__.readQuery( 0,
 											dataprovider,
 											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											referencetime,
-											validtime,
+											__WCI_SCHEMA__.getTimeSpec(referencetime),
+											__WCI_SCHEMA__.getTimeSpec(validtime),
 											parameter,
-											level,
+											__WCI_SCHEMA__.getLevelSpec(level),
 											dataversion ) ||
                   ' group by levelparametername, levelunitname';
 	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;

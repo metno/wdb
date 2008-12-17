@@ -11,7 +11,12 @@ wdbUnitTest_SOURCES += 		src/callInterface/types/test/wciNamedIntegerTest.cpp \
 							src/callInterface/types/test/ValueParameterTypeTest.cpp \
 							src/callInterface/types/test/ValueParameterTypeTest.h \
 							src/callInterface/types/test/LevelParameterTypeTest.cpp \
-							src/callInterface/types/test/LevelParameterTypeTest.h
+							src/callInterface/types/test/LevelParameterTypeTest.h \
+							src/callInterface/types/test/TimeSpecificationTest.cpp \
+							src/callInterface/types/test/TimeSpecificationTest.h \
+							src/callInterface/types/test/LevelSpecificationTest.cpp \
+							src/callInterface/types/test/LevelSpecificationTest.h
+							
 
 #src/callInterface/types/test/locationTest.cpp 
 #src/callInterface/types/test/locationTest.h 

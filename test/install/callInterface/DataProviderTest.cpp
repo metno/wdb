@@ -435,7 +435,7 @@ std::string DataProviderTest::statementOid_( const std::string & provider ) cons
     	st << "NULL";
 	else
 		st << provider;
-    st << ", NULL, ('2004-12-24 06:00:00+00','2004-12-24 06:00:00+00','exact'), NULL, ";
+    st << ", NULL, '2004-12-24 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
     st << "NULL, NULL, NULL::wci.returnoid )";
 
@@ -450,7 +450,7 @@ std::string DataProviderTest::statementFloat_( const std::string & provider ) co
     	st << "NULL";
 	else
 		st << provider;
-    st << ", 'POINT(-40 68.1332)', ('2004-12-24 06:00:00+00','2004-12-24 06:00:00+00','exact'), NULL, ";
+    st << ", 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
     st << "NULL, NULL, NULL::wci.returnfloat )";
 

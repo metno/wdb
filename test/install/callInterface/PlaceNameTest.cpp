@@ -191,7 +191,7 @@ std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 		st << "NULL";
 	else
 		st << "'" << placeDef << "'";
-	st << ", ('2004-12-25 06:00:00+00','2004-12-25 06:00:00+00','exact'), NULL, ";
+	st << ", '2004-12-25 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
 	st << "NULL, NULL, NULL::wci.returnoid )";
 
@@ -206,7 +206,7 @@ std::string PlaceNameTest::statementFloat_( const std::string & placeDef ) const
 		st << "NULL";
 	else
 		st << "'" << placeDef << "'";
-	st << ", ('2004-12-25 06:00:00+00','2004-12-25 06:00:00+00','exact'), NULL, ";
+	st << ", '2004-12-25 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
 	st << "NULL, NULL, NULL::wci.returnfloat )";
 

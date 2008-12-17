@@ -28,6 +28,7 @@
 
 
 #include "placePointInternal.h"
+#include <util/conversion.h>
 #include <wdbMathC.h>
 #include <ProjectionCache.h>
 #include <psqlTupleInterface.h>
@@ -164,22 +165,6 @@ Datum getAllLatLonCoordinates2( FunctionCallInfo fcinfo )
     SRF_RETURN_NEXT( funcctx, HeapTupleGetDatum( ht ) );
 }
 
-text * getText(const char * str)
-{
-	int size = strlen(str);
-	text * ret = palloc(size + VARHDRSZ);
-
-#ifdef SET_VARSIZE
-	SET_VARSIZE(ret, VARHDRSZ + size);
-#else
-	VARATT_SIZEP( ret ) = VARHDRSZ + size;
-#endif
-	memcpy( VARDATA( ret ), str, size );
-
-
-	return ret;
-}
-
 void * call_palloc(size_t size_to_allocate)
 {
 	return palloc(size_to_allocate);
@@ -234,7 +219,7 @@ Datum getAllLatLonCoordinates( FunctionCallInfo fcinfo )
     Datum * ret = ( Datum * ) palloc( 3 * sizeof( Datum ) );
     ret[0] = Int32GetDatum( pp.i );
     ret[1] = Int32GetDatum( pp.j );
-    ret[2] = PointerGetDatum( getText(pp.geometry) );
+    ret[2] = PointerGetDatum( textFromCString(pp.geometry) );
 
     bool isNull[ 3 ] = {false, false, false};
     HeapTuple ht = ( HeapTuple ) heap_form_tuple( funcctx->tuple_desc, ret, isNull );

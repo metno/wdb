@@ -57,18 +57,62 @@ CREATE TYPE wci.timeSpec AS (
 	indeterminate wci.timeIndeterminateType
 );
 
+CREATE TYPE __WCI_SCHEMA__.timeSpec AS (
+	indeterminate wci.timeIndeterminateType,
+	timefrom timestamp with time zone,
+	timeto timestamp with time zone,
+	timeInterval interval
+);
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.verify( what wci.timespec )
-RETURNS VOID AS
+
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__.refineTimeSpec(spec __WCI_SCHEMA__.timeSpec)
+RETURNS wci.timeSpec AS
 $BODY$
+DECLARE
+	ret wci.timeSpec;
 BEGIN
-	IF what.timeFrom > what.timeTo THEN
-		RAISE EXCEPTION 'Timespec FROM cannot be after TO.';
+	ret.indeterminate := spec.indeterminate;
+	ret.timefrom := spec.timefrom;
+	IF spec.timeto IS NULL THEN
+		ret.timeto := ret.timefrom + spec.timeInterval;
+	ELSE
+		ret.timeto := spec.timeto;
 	END IF;
+	
+	IF ret.timefrom > ret.timeto THEN
+	DECLARE
+		tmp timestamp with time zone;
+	BEGIN
+		tmp := ret.timefrom;
+		ret.timefrom := ret.timeto;
+		ret.timeto := tmp;
+	END;
+	END IF;
+	
+	RETURN ret;
 END;
 $BODY$
-LANGUAGE 'plpgsql' IMMUTABLE;
+LANGUAGE plpgsql IMMUTABLE STRICT;
 
+CREATE OR REPLACE FUNCTION 
+__WCI_SCHEMA__.timespecification(spec text)
+RETURNS __WCI_SCHEMA__.timeSpec
+AS '__WDB_LIBDIR__/__WCI_LIB__', 'timeSpec'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__.getTimeSpec(spec text)
+RETURNS wci.timeSpec AS
+$BODY$
+DECLARE
+	tmpStore wci.timeSpec;
+BEGIN
+	tmpStore := __WCI_SCHEMA__.refineTimeSpec(__WCI_SCHEMA__.timespecification(spec));
+	RETURN tmpStore;
+END;
+$BODY$
+LANGUAGE plpgsql IMMUTABLE STRICT;
 
 -- Does the given time spec match timeFrom to timeTo?
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.matches( timeFrom timestamp with time zone, timeTo timestamp with time zone, timeIndCode integer, what wci.timeSpec ) RETURNS boolean AS

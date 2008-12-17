@@ -60,7 +60,8 @@ ValidTimeTest::~ValidTimeTest()
 
 void ValidTimeTest::testR1_01A_ValidInterval()
 {
-	result r = t->exec( statementOid_( "2007-02-12 06:00:00+00", "2007-02-15 06:00:00+00", "inside" ) );
+//	result r = t->exec( statementOid_("inside 2007-02-12 06:00:00+00 TO 2007-02-15 06:00:00+00") );
+	result r = t->exec( statementOid_("inside 2007-02-12 06:00:00+00 FOR 3 days") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(2), r.size() );
 
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
@@ -69,7 +70,8 @@ void ValidTimeTest::testR1_01A_ValidInterval()
 
 void ValidTimeTest::testR1_01B_ValidInterval()
 {
-	result r = t->exec( statementFloat_( "2007-02-12 06:00:00+00", "2007-02-15 06:00:00+00", "inside" ) );
+//	result r = t->exec( statementFloat_("inside 2007-02-12 06:00:00+00 TO 2007-02-15 06:00:00+00") );
+	result r = t->exec( statementFloat_("inside 2007-02-12 06:00:00+00 FOR 3 days") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(10), r.size() );
 
 	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
@@ -78,7 +80,7 @@ void ValidTimeTest::testR1_01B_ValidInterval()
 
 void ValidTimeTest::testR1_02A_ValidTimePoint()
 {
-	result r = t->exec( statementOid_( "2007-02-12 06:00:00+00", "2007-02-12 06:00:00+00", "exact" ) );
+	result r = t->exec( statementOid_("2007-02-12 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
 
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
@@ -86,7 +88,7 @@ void ValidTimeTest::testR1_02A_ValidTimePoint()
 
 void ValidTimeTest::testR1_02B_ValidTimePoint()
 {
-	result r = t->exec( statementFloat_( "2007-02-12 06:00:00+00", "2007-02-12 06:00:00+00", "exact" ) );
+	result r = t->exec( statementFloat_("2007-02-12 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(5), r.size() );
 
 	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
@@ -94,75 +96,64 @@ void ValidTimeTest::testR1_02B_ValidTimePoint()
 
 void ValidTimeTest::testContainsIndeterminateTypeDefault()
 {
-	result r = t->exec(statementFloat_("2007-12-24 08:00:00+00", "2007-12-24 08:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-24 08:00:00+00"));
 	CPPUNIT_ASSERT_EQUAL(result::size_type(4), r.size());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeAtExact()
 {
-	result r = t->exec(statementFloat_("2007-12-24 06:00:00+00", "2007-12-24 12:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-24 06:00:00+00 TO 2007-12-24 12:00:00+00"));
 	CPPUNIT_ASSERT_EQUAL(result::size_type(4), r.size());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeInside()
 {
-	result r = t->exec(statementFloat_("2007-12-23 04:00:00+00", "2007-12-25 08:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-23 04:00:00+00 TO 2007-12-25 08:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeOverlappingBefore()
 {
-	result r = t->exec(statementFloat_("2007-12-24 04:00:00+00", "2007-12-24 08:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-24 04:00:00+00 TO 2007-12-24 08:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeOverlappingAfter()
 {
-	result r = t->exec(statementFloat_("2007-12-24 11:00:00+00", "2007-12-24 15:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-24 11:00:00+00 TO 2007-12-24 15:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeBefore()
 {
-	result r = t->exec(statementFloat_("2007-12-23 06:00:00+00", "2007-12-23 12:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-23 06:00:00+00 TO 2007-12-23 12:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeAfter()
 {
-	result r = t->exec(statementFloat_("2007-12-25 06:00:00+00", "2007-12-25 12:00:00+00", "contains"));
+	result r = t->exec(statementFloat_("contains 2007-12-25 06:00:00+00 TO 2007-12-25 12:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
-}
-
-
-void ValidTimeTest::testR1_03A_IncorrectInterval()
-{
-	CPPUNIT_ASSERT_THROW( t->exec( statementOid_( "2007-02-15 06:00:00+00", "2007-02-12 06:00:00+00", "exact" ) ), sql_error );
-}
-
-void ValidTimeTest::testR1_03B_IncorrectInterval()
-{
-	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_( "2007-02-15 06:00:00+00", "2007-02-12 06:00:00+00", "exact" ) ), sql_error );
 }
 
 void ValidTimeTest::testR1_04A_InvalidTime()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementOid_( "2007-11-31 06:00:00+00", "2007-02-12 06:00:00+00", "exact" ) ), data_exception );
+	CPPUNIT_ASSERT_THROW( t->exec( statementOid_("exact 2007-11-31 06:00:00+00 TO 2007-02-12 06:00:00+00") ), data_exception );
 }
 
 void ValidTimeTest::testR1_04B_InvalidTime()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_( "2007-11-31 06:00:00+00", "2007-02-12 06:00:00+00", "exact" ) ), data_exception );
+	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_("exact 2007-11-31 06:00:00+00 TO 2007-02-12 06:00:00+00") ), data_exception );
 }
 
 void ValidTimeTest::testR1_05A_NotATimestamp()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementOid_( "hallo?", "2007-02-12 06:00:00+00", "exact" ) ), data_exception );
+	CPPUNIT_ASSERT_THROW( t->exec( statementOid_("exact hallo? TO 2007-02-12 06:00:00+00") ), data_exception );
 }
 
 void ValidTimeTest::testR1_05B_NotATimestamp()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_( "hallo?", "2007-02-12 06:00:00+00", "exact" ) ), data_exception );
+	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_("hallo? TO 2007-02-12 06:00:00+00") ), data_exception );
 }
 
 void ValidTimeTest::testR1_06A_Null()
@@ -185,14 +176,14 @@ void ValidTimeTest::testR1_06B_Null()
 
 void ValidTimeTest::testR2_01A_Now()
 {
-	result r = t->exec( statementOid_( "now", "now", "exact" ) );
+	result r = t->exec( statementOid_("now") );
 
 	CPPUNIT_ASSERT( r.empty() );
 }
 
 void ValidTimeTest::testR2_01B_Now()
 {
-	result r = t->exec( statementFloat_( "now", "now", "exact" ) );
+	result r = t->exec( statementFloat_("now") );
 
 	CPPUNIT_ASSERT( r.empty() );
 }
@@ -200,7 +191,7 @@ void ValidTimeTest::testR2_01B_Now()
 void ValidTimeTest::testR2_02A_Past()
 {
 	// Same as testValidInterval
-	result r = t->exec( statementOid_( "2007-02-12 06:00:00+00", "2007-02-15 06:00:00+00", "inside" ) );
+	result r = t->exec( statementOid_("inside 2007-02-12 06:00:00+00 TO 2007-02-15 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(2), r.size() );
 
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
@@ -210,7 +201,7 @@ void ValidTimeTest::testR2_02A_Past()
 void ValidTimeTest::testR2_02B_Past()
 {
 	// Same as testValidInterval
-	result r = t->exec( statementFloat_( "2007-02-12 06:00:00+00", "2007-02-15 06:00:00+00", "inside" ) );
+	result r = t->exec( statementFloat_("inside 2007-02-12 06:00:00+00 TO 2007-02-15 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(10), r.size() );
 
 	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
@@ -219,54 +210,61 @@ void ValidTimeTest::testR2_02B_Past()
 
 void ValidTimeTest::testR2_03A_Future()
 {
-	result r = t->exec( statementOid_( "2100-02-12 06:00:00+00", "2100-02-12 18:00:00+00", "exact" ) );
+	result r = t->exec( statementOid_("exact 2100-02-12 06:00:00+00 TO 2100-02-12 18:00:00+00") );
 
 	CPPUNIT_ASSERT( r.empty() );
 }
 
 void ValidTimeTest::testR2_03B_Future()
 {
-	result r = t->exec( statementFloat_( "2100-02-12 06:00:00+00", "2100-02-12 18:00:00+00", "exact" ) );
+	result r = t->exec( statementFloat_("exact 2100-02-12 06:00:00+00 TO 2100-02-12 18:00:00+00") );
 
 	CPPUNIT_ASSERT( r.empty() );
 }
 
-std::string ValidTimeTest::statementOid_( const std::string & from, const std::string & to, const std::string & indeterminate ) const
+namespace
+{
+std::string getTimeSpec(const std::string & from, const std::string & to, const std::string & indeterminate)
 {
 	ostringstream time;
-	time << "( '" << t->esc(from) << "', '" << t->esc(to) << "', '" << t->esc(indeterminate) << "' )";
-	return statementOid_( time.str() );
+	time << "'";
+	if ( indeterminate != "exact" )
+		time << indeterminate << ' ';
+	time << from;
+	if ( to != from )
+		time << " TO " << to;
+	time << "'";
+
+	return time.str();
+}
 }
 
 std::string ValidTimeTest::statementOid_( const std::string & timeSpec ) const
 {
-	ostringstream st;
-	st << "set time zone 'UTC'; "
-	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, NULL, "
-	   << timeSpec
-	   << ", "
-	   << "'{\"" << defaultParameter << "\"}', "
+	ostringstream ss;
+	ss << "set time zone 'UTC'; "
+	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, NULL, ";
+	if ( timeSpec != "NULL" )
+		ss << "'" << timeSpec << "', ";
+	else
+		ss << timeSpec << ", ";
+	ss << "'{\"" << defaultParameter << "\"}', "
 	   << "NULL, NULL, NULL::wci.returnOid )";
 
-	return st.str();
-}
-
-std::string ValidTimeTest::statementFloat_( const std::string & from, const std::string & to, const std::string & indeterminate ) const
-{
-	ostringstream time;
-	time << "( '" << t->esc(from) << "', '" << t->esc(to) << "', '" << t->esc(indeterminate) << "' )";
-	return statementFloat_( time.str() );
+	return ss.str();
 }
 
 std::string ValidTimeTest::statementFloat_( const std::string & timeSpec ) const
 {
-	ostringstream st;
-	st << "set time zone 'UTC'; "
-	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, NULL, "
-	   << timeSpec
-	   << ", "
-	   << "'{\"" << defaultParameter << "\"}', "
+	ostringstream ss;
+	ss << "set time zone 'UTC'; "
+	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, NULL, ";
+	if ( timeSpec != "NULL" )
+		ss << "'" << timeSpec << "', ";
+	else
+		ss << timeSpec << ", ";
+	ss << "'{\"" << defaultParameter << "\"}', "
 	   << "NULL, NULL, NULL::wci.returnFloat )";
 
-	return st.str();
+	return ss.str();
 }

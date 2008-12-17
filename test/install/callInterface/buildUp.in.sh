@@ -105,7 +105,7 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --refti
 
 # Level
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-28 06:00:00+00' --levelparameter 'distance above ground' --levelfrom 0 --levelto 0
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-28 06:00:00+00' --levelparameter 'distance above ground' --levelfrom 10 --levelto 10
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-28 06:00:00+00' --levelparameter 'distance above ground' --levelfrom 5 --levelto 10
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-28 06:00:00+00' --levelparameter 'distance above mean sea level' --levelfrom 10 --levelto 10
 
 # DataVersion

@@ -26,6 +26,7 @@ src_subdirs="			src/callInterface/api \
 				     	src/callInterface/core/test \
 				     	src/callInterface/types \
 				     	src/callInterface/types/test \
+				     	src/callInterface/util \
 				     	src/cleaningProgram \
 				     	src/common/configuration \
 				     	src/common/exception \
@@ -64,6 +65,7 @@ build_subdirs="			doc \
 						src/callInterface/core/test \
 						src/callInterface/types \
 						src/callInterface/types/test \
+						src/callInterface/util \
 						src/common/configuration \
 						src/common/exception \
 						src/common/logHandler \
@@ -241,6 +243,7 @@ AC_CONFIG_FILES([Makefile
 				 src/callInterface/core/test/Makefile
 				 src/callInterface/types/Makefile
 				 src/callInterface/types/test/Makefile
+				 src/callInterface/util/Makefile
 				 src/cleaningProgram/Makefile
 				 src/database/Makefile
 				 src/admin/Makefile

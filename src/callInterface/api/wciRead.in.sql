@@ -23,10 +23,10 @@
 CREATE OR REPLACE FUNCTION 
 wci.read( dataprovider 		text[],
 		  location 			text,
-		  referencetime 	wci.timeSpec,
-		  validtime 		wci.timeSpec,
+		  referencetime 	text,
+		  validtime 		text,
 		  parameter 		text[],
-		  level 			wci.levelSpec,
+		  level 			text,
 		  dataversion 		integer[],
 		  returntype 		wci.returnOid
 )	
@@ -37,20 +37,15 @@ DECLARE
 	entry 			__WCI_SCHEMA__.oidValue;
 	returnObject 	wci.returnOid;
 BEGIN
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
-	-- Create Query to Run
 	readQ := 'SELECT * ' ||
+	-- Create Query to Run
 			  __WCI_SCHEMA__.readQuery( 0,
 										dataprovider,
 										__WCI_SCHEMA__.getPlaceQuery(location, 0),
-										referencetime,
-										validtime,
+										__WCI_SCHEMA__.getTimeSpec(referencetime),
+										__WCI_SCHEMA__.getTimeSpec(validtime),
 										parameter,
-										level,
+										__WCI_SCHEMA__.getLevelSpec(level),
 										dataversion );
 	RAISE DEBUG 'WCI.READ.Query: %', readQ;
 
@@ -89,10 +84,10 @@ LANGUAGE 'plpgsql' STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.read( dataprovider 		text[],
 		  location 			text,
-		  referencetime 	wci.timeSpec,
-		  validtime 		wci.timeSpec,
+		  referencetime 	text,
+		  validtime 		text,
 		  parameter 		text[],
-		  level 			wci.levelSpec,
+		  level 			text,
 		  dataversion 		integer[],
 		  returntype 		wci.returnFloat
 )
@@ -129,11 +124,6 @@ BEGIN
 	ELSE
 		gLocation := NULL;
 	END IF;
-	-- Reference Time
-	PERFORM __WCI_SCHEMA__.verify( referencetime );
-	-- Valid Time
-	PERFORM __WCI_SCHEMA__.verify( validtime );
-
 	--
 	-- Return Point Values
 	--
@@ -143,10 +133,10 @@ BEGIN
 				 __WCI_SCHEMA__.readQuery( 1, 
 										   dataprovider,
 										   __WCI_SCHEMA__.getPlaceQuery(location, 1),
-										   referencetime,
-										   validtime,
+										   __WCI_SCHEMA__.getTimeSpec(referencetime),
+										   __WCI_SCHEMA__.getTimeSpec(validtime),
 										   parameter,
-										   level,
+										   __WCI_SCHEMA__.getLevelSpec(level),
 										   dataversion );
 		RAISE DEBUG 'WCI.READ.Query: %', readQ;
 		<<float_select>>
@@ -185,10 +175,10 @@ BEGIN
 				 __WCI_SCHEMA__.readQuery( 0, 
 										   dataprovider,
 										   __WCI_SCHEMA__.getPlaceQuery(location, 2),
-										   referencetime,
-										   validtime,
+										   __WCI_SCHEMA__.getTimeSpec(referencetime),
+										   __WCI_SCHEMA__.getTimeSpec(validtime),
 										   parameter,
-										   level,
+										   __WCI_SCHEMA__.getLevelSpec(level),
 										   dataversion );
 		RAISE DEBUG 'WCI.READ.Query: %', readQ;
 		<<grid_select>>

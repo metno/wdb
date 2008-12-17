@@ -1148,7 +1148,7 @@ std::string PlaceGeometryTest::statement_( const std::string & geo, int paramid 
     else {
         st << "'" << geo << "'";
     }
-    st << ", ('2004-12-26 06:00:00+00','2004-12-26 06:00:00+00','exact'), ";
+    st << ", '2004-12-26 06:00:00+00', ";
     st << "NULL, '{\"" << specFromParamNumber_.find( paramid )->second << "\"}', NULL, NULL, NULL::wci.returnfloat )";
 
     return st.str();

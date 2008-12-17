@@ -53,8 +53,6 @@ class ReferenceTimeTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testR1_01B_ValidInterval );
 	CPPUNIT_TEST( testR1_02A_ValidTimePoint );
 	CPPUNIT_TEST( testR1_02B_ValidTimePoint );
-	CPPUNIT_TEST( testR1_03A_IncorrectInterval );
-	CPPUNIT_TEST( testR1_03B_IncorrectInterval );
 	CPPUNIT_TEST( testR1_04A_InvalidTime );
 	CPPUNIT_TEST( testR1_04B_InvalidTime );
 	CPPUNIT_TEST( testR1_05A_NotATimestamp );
@@ -79,8 +77,6 @@ public:
 	void testR1_01B_ValidInterval();
 	void testR1_02A_ValidTimePoint();
 	void testR1_02B_ValidTimePoint();
-	void testR1_03A_IncorrectInterval();
-	void testR1_03B_IncorrectInterval();
 	void testR1_04A_InvalidTime();
 	void testR1_04B_InvalidTime();
 	void testR1_05A_NotATimestamp();
@@ -97,9 +93,7 @@ public:
 	void testR2_03B_Future();
 
 private:
-	std::string statementOid_( const std::string & from, const std::string & to, const std::string & indeterminate ) const;
 	std::string statementOid_( const std::string & timeSpec ) const;
-	std::string statementFloat_( const std::string & from, const std::string & to, const std::string & indeterminate ) const;
 	std::string statementFloat_( const std::string & timeSpec ) const;
 };
 

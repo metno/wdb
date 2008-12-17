@@ -64,6 +64,11 @@ CREATE TYPE wci.levelSpec AS (
 	indeterminate wci.levelIndeterminateType
 );
 
+CREATE FUNCTION 
+__WCI_SCHEMA__.getLevelSpec(spec text)
+RETURNS wci.levelSpec 
+AS '__WDB_LIBDIR__/__WCI_LIB__', 'levelSpec'
+LANGUAGE C IMMUTABLE STRICT;
 
 -- Does the given level spec match level parameter, from and to?
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.matches( levelFrom real, levelTo real, levelparametername text, what wci.levelSpec ) 
