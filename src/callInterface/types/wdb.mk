@@ -6,7 +6,6 @@
 wci_la_SOURCES += 		src/callInterface/types/levelIndeterminateType.cpp \
 						src/callInterface/types/levelIndeterminateType.h \
 						src/callInterface/types/timeIndeterminateType.cpp \
-						src/callInterface/types/timeIndeterminateType.h \
 						src/callInterface/types/wciLocation.cpp \
 						src/callInterface/types/interpolationType.cpp \
 						src/callInterface/types/wciValueParameter.cpp \
