@@ -97,7 +97,6 @@ string getEarthShape(const string & projDefinition)
 	return ret.str();
 }
 
-
 void transform_( double * lon, double * lat, size_t elements, const struct PlaceSpecification & p )
 {
 	for ( size_t i = 0; i < elements; ++ i )
@@ -125,6 +124,10 @@ void transform_( double * lon, double * lat, size_t elements, const struct Place
 
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// @todo This is painfully slow since we only transform one point per call. Improve speed.
 struct lonlat transform( int i, int j, const struct PlaceSpecification * p )
 {
@@ -139,7 +142,7 @@ struct lonlat transform( int i, int j, const struct PlaceSpecification * p )
 }
 
 
-extern "C" void transformAll( double * lonOut, double * latOut, const struct PlaceSpecification * p )
+void transformAll( double * lonOut, double * latOut, const struct PlaceSpecification * p )
 {
 	if ( ! p )
 		return;
@@ -155,7 +158,7 @@ extern "C" void transformAll( double * lonOut, double * latOut, const struct Pla
 	transform_( lonOut, latOut, elements, * p );
 }
 
-struct lonlat rTransform( struct lonlat coords, const PlaceSpecification * p )
+struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification * p )
 {
 	if ( ! p )
 		return lonlat();
@@ -176,3 +179,7 @@ struct lonlat rTransform( struct lonlat coords, const PlaceSpecification * p )
 
 	return ret;
 }
+
+#ifdef __cplusplus
+}
+#endif

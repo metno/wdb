@@ -328,7 +328,17 @@ $BODY$
 LANGUAGE 'plpgsql' STABLE;
 
 
-
+--CREATE OR REPLACE FUNCTION 
+--__WCI_SCHEMA__.extractGridData
+--(
+--	placeid			bigint,
+--	location 		GEOMETRY,
+--	interpolation 	wci.interpolationType, 
+--	valueOid		oid 
+--)
+--RETURNS SETOF __WCI_SCHEMA__.extractGridDataReturnType AS
+--'__WDB_LIBDIR__/__WCI_LIB__', 'extractGridData'
+--LANGUAGE 'c' STABLE;
 
 
 

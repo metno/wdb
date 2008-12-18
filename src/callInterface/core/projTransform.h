@@ -40,6 +40,10 @@
  * Functions for doing reprojections.
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Return value from a call to transform.
  */
@@ -77,7 +81,7 @@ struct lonlat transform( int i, int j, const struct PlaceSpecification * place )
  * @param[out] latOut Latitude values will be placed here.
  * @param[in] p the specification for the place to generate coordinates for.
  */
-extern "C" void transformAll( double * lonOut, double * latOut, const struct PlaceSpecification * p );
+void transformAll( double * lonOut, double * latOut, const struct PlaceSpecification * p );
 
 
 /**
@@ -91,9 +95,11 @@ extern "C" void transformAll( double * lonOut, double * latOut, const struct Pla
  *
  * @todo return type should not be lonlat.
  */
-struct lonlat rTransform( struct lonlat coords, const PlaceSpecification * p );
+struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification * p );
 
-
+#ifdef __cplusplus
+}
+#endif
 
 /// @}
 
