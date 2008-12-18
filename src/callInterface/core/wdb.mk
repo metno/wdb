@@ -20,8 +20,7 @@ wci_la_SOURCES +=		src/callInterface/core/binaryInterpretation.cpp \
 						src/callInterface/core/placePointInternal.h \
 						src/callInterface/core/ProjectionCache.cpp \
 						src/callInterface/core/ProjectionCache.h \
-						$(libwciCoreNoPostgres_la_SOURCES) \
-						src/callInterface/core/extractGridData.c
+						$(libwciCoreNoPostgres_la_SOURCES)
 
 check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 
