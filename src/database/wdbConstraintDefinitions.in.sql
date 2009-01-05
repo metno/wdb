@@ -67,14 +67,6 @@ ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidercomment
     ADD CONSTRAINT dataprovidercomment_pkey PRIMARY KEY (dataproviderid, dataprovidercommentstoretime);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.gribgeneratingprocess
-    ADD CONSTRAINT gribgeneratingprocess_pkey PRIMARY KEY (dataproviderid);
-
-
-ALTER TABLE ONLY __WDB_SCHEMA__.feltgeneratingprocess
-    ADD CONSTRAINT feltgeneratingprocess_pkey PRIMARY KEY (dataproviderid);
-
-
 ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
     ADD CONSTRAINT dataprovidername_pkey PRIMARY KEY (dataproviderid, dataprovidernamespaceid);
 
@@ -104,8 +96,8 @@ ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
     ADD CONSTRAINT timeindeterminatetype_pkey PRIMARY KEY (timeindeterminatecode);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.statisticstype
-    ADD CONSTRAINT statisticstype_pkey PRIMARY KEY (statisticstype);
+ALTER TABLE ONLY __WDB_SCHEMA__.parameterfunctiontype
+    ADD CONSTRAINT parameterfunctiontype_pkey PRIMARY KEY (parameterfunctiontype);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.physicalphenomenon
@@ -251,19 +243,6 @@ ALTER TABLE __WDB_SCHEMA__.softwareversion
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.gribgeneratingprocess
-	ADD FOREIGN KEY (dataproviderid)
-					REFERENCES __WDB_SCHEMA__.dataprovider
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.feltgeneratingprocess
-	ADD FOREIGN KEY (dataproviderid)
-					REFERENCES __WDB_SCHEMA__.dataprovider
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
 
 ALTER TABLE __WDB_SCHEMA__.dataprovidername
 	ADD FOREIGN KEY (dataproviderid)
@@ -336,7 +315,7 @@ ALTER TABLE __WDB_SCHEMA__.valuephysicalparameter
 
 ALTER TABLE __WDB_SCHEMA__.valuestatisticsparameter
 	ADD FOREIGN KEY (valueparameterstatisticstype)
-					REFERENCES __WDB_SCHEMA__.statisticstype
+					REFERENCES __WDB_SCHEMA__.parameterfunctiontype
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 

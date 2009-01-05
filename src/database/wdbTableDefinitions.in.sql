@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007 met.no
+-- Copyright (C) 2007-2009 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -19,7 +19,7 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
--- wdb is the core schema of the WDB system. It contains the core data 
+-- wdb_x_x_x is the core schema of the WDB system. It contains the core data 
 -- tables, functions, and views
 CREATE SCHEMA __WDB_SCHEMA__;
 REVOKE ALL ON SCHEMA __WDB_SCHEMA__ FROM PUBLIC;
@@ -28,6 +28,8 @@ GRANT USAGE ON SCHEMA __WDB_SCHEMA__ TO wdb_write;
 GRANT ALL ON SCHEMA __WDB_SCHEMA__ TO wdb_clean;
 
 
+-- currentconfiguration stores the WDB version information in
+-- the database
 CREATE TABLE __WDB_SCHEMA__.currentconfiguration (
     singleton					integer NOT NULL,
     softwareversionpartyid		integer NOT NULL,
@@ -45,6 +47,7 @@ REVOKE ALL ON __WDB_SCHEMA__.currentconfiguration FROM public;
 GRANT ALL ON __WDB_SCHEMA__.currentconfiguration TO wdb_admin;
 
 
+-- Namespace descriptors
 CREATE TABLE __WDB_SCHEMA__.namespace (
     namespaceid					integer NOT NULL,
     namespacename				character varying(80) NOT NULL,
@@ -59,6 +62,8 @@ REVOKE ALL ON __WDB_SCHEMA__.namespace FROM public;
 GRANT ALL ON __WDB_SCHEMA__.namespace TO wdb_admin;
 
 
+-- A party represents an actor wrt to the data in the database; either
+-- a person, an organization of a piece of software
 CREATE TABLE __WDB_SCHEMA__.party (
     partyid						serial NOT NULL,
     partytype 					character varying(80) NOT NULL,
@@ -79,7 +84,6 @@ CREATE TABLE __WDB_SCHEMA__.partycomment (
 	partycomment				character varying(255) NOT NULL,
     partycommentstoretime		timestamp with time zone NOT NULL
 );
-
 
 REVOKE ALL ON __WDB_SCHEMA__.partycomment FROM public;
 GRANT ALL ON __WDB_SCHEMA__.partycomment TO wdb_admin;
@@ -114,6 +118,7 @@ REVOKE ALL ON __WDB_SCHEMA__.organizationalias FROM public;
 GRANT ALL ON __WDB_SCHEMA__.organizationalias TO wdb_admin;
 
 
+-- This is a standard person schema
 CREATE TABLE __WDB_SCHEMA__.person (
     partyid 					integer NOT NULL,
     firstname 					character varying(80),
@@ -149,6 +154,9 @@ REVOKE ALL ON __WDB_SCHEMA__.softwareversion FROM public;
 GRANT ALL ON __WDB_SCHEMA__.softwareversion TO wdb_admin;
 
 
+-- A data provider is the closest identifiable entity to the creation
+-- of the data. In general, this will tend to be the creator or collector 
+-- of the data.
 CREATE TABLE __WDB_SCHEMA__.dataprovider (
     dataproviderid 				bigserial NOT NULL,
     dataprovidertype 			character varying(80) NOT NULL,
@@ -156,12 +164,11 @@ CREATE TABLE __WDB_SCHEMA__.dataprovider (
     dataproviderstoretime 		timestamp with time zone NOT NULL,
     CONSTRAINT dataprovider_dataprovidertype_check 
 	CHECK (	((dataprovidertype)::text = 'Data Provider Group'::text) OR
-			((dataprovidertype)::text = 'GRIB Generating Process'::text) OR 
 			((dataprovidertype)::text = 'WCI User'::text) OR 
+			((dataprovidertype)::text = 'Computer System'::text) OR 
 			((dataprovidertype)::text = 'Named Observation Site'::text) OR
 			((dataprovidertype)::text = 'Ship'::text) OR 
-			((dataprovidertype)::text = 'Aeroplane'::text) OR 
-			((dataprovidertype)::text = 'Computer System'::text) ),
+			((dataprovidertype)::text = 'Aeroplane'::text) ),
     CONSTRAINT dataprovider_spatialdomaindelivery_check 
 	CHECK (	((spatialdomaindelivery)::text = 'Any'::text) OR
 			((spatialdomaindelivery)::text = 'Point'::text) OR 
@@ -174,10 +181,23 @@ GRANT ALL ON __WDB_SCHEMA__.dataprovider TO wdb_admin;
 SELECT setval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass, 1000000);
 
 
+CREATE TABLE __WDB_SCHEMA__.dataprovidername (
+	dataproviderid 					bigint NOT NULL,
+	dataprovidernamespaceid 		integer NOT NULL,
+	dataprovidername 				character varying(255) NOT NULL,
+    dataprovidernamevalidfrom 		date NOT NULL,
+    dataprovidernamevalidto 		date NOT NULL,
+	dataprovidernameleftset			bigint NOT NULL,
+	dataprovidernamerightset		bigint NOT NULL
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.dataprovidername FROM public;
+GRANT ALL ON __WDB_SCHEMA__.dataprovidername TO wdb_admin;
+
 
 CREATE TABLE __WDB_SCHEMA__.dataprovidercomment (
-    dataproviderid 					bigserial NOT NULL,
-	dataprovidercomment				character varying(254) NOT NULL,
+    dataproviderid 					bigint NOT NULL,
+	dataprovidercomment				character varying(255) NOT NULL,
     dataprovidercommentstoretime	timestamp with time zone NOT NULL
 );
 
@@ -185,57 +205,17 @@ REVOKE ALL ON __WDB_SCHEMA__.dataprovidercomment FROM public;
 GRANT ALL ON __WDB_SCHEMA__.dataprovidercomment TO wdb_admin;
 
 
-CREATE TABLE __WDB_SCHEMA__.gribgeneratingprocess
-(
-    dataproviderid  			bigint NOT NULL,
-    generatingcenterid 			integer NOT NULL,
-    generatingprocessid 		integer NOT NULL,
-    generatingprocessvalidfrom 	timestamp with time zone NOT NULL,
-    generatingprocessvalidto 	timestamp with time zone NOT NULL	
-);
-
-REVOKE ALL ON __WDB_SCHEMA__.gribgeneratingprocess FROM public;
-GRANT ALL ON __WDB_SCHEMA__.gribgeneratingprocess TO wdb_admin;
-
-
-CREATE TABLE __WDB_SCHEMA__.feltgeneratingprocess
-(
-    dataproviderid  			bigint NOT NULL,
-    producerid 					integer NOT NULL,
-    gridareanumber		 		integer NOT NULL,
-    feltprocessvalidfrom	 	timestamp with time zone NOT NULL,
-    feltprocessvalidto		 	timestamp with time zone NOT NULL	
-);
-
-REVOKE ALL ON __WDB_SCHEMA__.feltgeneratingprocess FROM public;
-GRANT ALL ON __WDB_SCHEMA__.feltgeneratingprocess TO wdb_admin;
-
-
 CREATE TABLE __WDB_SCHEMA__.wciuserdataprovider
 (
   	dataproviderid 				bigint NOT NULL,
   	rolname						text NOT NULL
-	--, partyid						integer NOT NULL
 );
 
 REVOKE ALL ON __WDB_SCHEMA__.wciuserdataprovider FROM public;
 GRANT ALL ON __WDB_SCHEMA__.wciuserdataprovider TO wdb_admin;
 
 
-CREATE TABLE __WDB_SCHEMA__.dataprovidername (
-	dataproviderid 				bigint NOT NULL,
-	dataprovidernamespaceid 	integer NOT NULL,
-	dataprovidername 			character varying(255) NOT NULL,
-    dataprovidernamevalidfrom 	timestamp with time zone NOT NULL,
-    dataprovidernamevalidto 	timestamp with time zone NOT NULL,
-	dataprovidernameleftset		bigint NOT NULL,
-	dataprovidernamerightset	bigint NOT NULL
-);
-
-REVOKE ALL ON __WDB_SCHEMA__.dataprovidername FROM public;
-GRANT ALL ON __WDB_SCHEMA__.dataprovidername TO wdb_admin;
-
-
+-- Place definition encodes a location on the earth
 CREATE TABLE __WDB_SCHEMA__.placedefinition (
     placeid						bigserial NOT NULL,
     placeindeterminatecode 		integer NOT NULL,
@@ -251,8 +231,8 @@ ALTER SEQUENCE __WDB_SCHEMA__.placedefinition_placeid_seq RESTART WITH 100000;
 
 REVOKE ALL ON __WDB_SCHEMA__.placedefinition FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placedefinition TO wdb_admin;
-GRANT SELECT, DELETE ON __WDB_SCHEMA__.placedefinition TO wdb_clean;
 GRANT INSERT ON __WDB_SCHEMA__.placedefinition TO wdb_write;
+GRANT SELECT, DELETE ON __WDB_SCHEMA__.placedefinition TO wdb_clean;
 REVOKE ALL ON __WDB_SCHEMA__.placedefinition_placeid_seq FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placedefinition_placeid_seq TO wdb_admin;
 GRANT SELECT,UPDATE ON __WDB_SCHEMA__.placedefinition_placeid_seq TO wdb_write;
@@ -307,13 +287,22 @@ REVOKE ALL ON __WDB_SCHEMA__.timeindeterminatetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.timeindeterminatetype TO wdb_admin;
 
 
-CREATE TABLE __WDB_SCHEMA__.statisticstype (
-    statisticstype 				character varying(80) NOT NULL,
-    statisticsdescription 		character varying(255) NOT NULL
+CREATE TABLE __WDB_SCHEMA__.parameterfunctiontype (
+    parameterfunctiontype 			character varying(80) NOT NULL,
+    parameterfunctiondescription 	character varying(255) NOT NULL
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.statisticstype FROM public;
-GRANT ALL ON __WDB_SCHEMA__.statisticstype TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.parameterfunctiontype FROM public;
+GRANT ALL ON __WDB_SCHEMA__.parameterfunctiontype TO wdb_admin;
+
+
+CREATE TABLE __WDB_SCHEMA__.valueparameterusage (
+    valueparameterusage				character varying(80) NOT NULL,
+	valueparameterusagedescription	character varying(255) NOT NULL
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.valueparameterusage FROM public;
+GRANT ALL ON __WDB_SCHEMA__.valueparameterusage TO wdb_admin;
 
 
 CREATE TABLE __WDB_SCHEMA__.physicalphenomenon (
@@ -329,24 +318,6 @@ CREATE TABLE __WDB_SCHEMA__.physicalphenomenon (
 
 REVOKE ALL ON __WDB_SCHEMA__.physicalphenomenon FROM public;
 GRANT ALL ON __WDB_SCHEMA__.physicalphenomenon TO wdb_admin;
-
-
-CREATE TABLE __WDB_SCHEMA__.valueparameterusage (
-    valueparameterusage			character varying(80) NOT NULL,
-	valueparameterusagedescription	character varying(255) NOT NULL
-);
-
-REVOKE ALL ON __WDB_SCHEMA__.valueparameterusage FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valueparameterusage TO wdb_admin;
-
-
-CREATE TABLE __WDB_SCHEMA__.levelparameterusage (
-    levelparameterusage			character varying(80) NOT NULL,
-    levelparameterusagedescription	character varying(255) NOT NULL
-);
-
-REVOKE ALL ON __WDB_SCHEMA__.levelparameterusage FROM public;
-GRANT ALL ON __WDB_SCHEMA__.levelparameterusage TO wdb_admin;
 
 
 CREATE TABLE __WDB_SCHEMA__.unit (
@@ -437,6 +408,15 @@ CREATE TABLE __WDB_SCHEMA__.valueparametername (
 
 REVOKE ALL ON __WDB_SCHEMA__.valueparametername FROM public;
 GRANT ALL ON __WDB_SCHEMA__.valueparametername TO wdb_admin;
+
+
+CREATE TABLE __WDB_SCHEMA__.levelparameterusage (
+    levelparameterusage			character varying(80) NOT NULL,
+    levelparameterusagedescription	character varying(255) NOT NULL
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.levelparameterusage FROM public;
+GRANT ALL ON __WDB_SCHEMA__.levelparameterusage TO wdb_admin;
 
 
 CREATE TABLE __WDB_SCHEMA__.levelparameter (

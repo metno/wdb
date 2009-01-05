@@ -24,7 +24,7 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_placedefinition.in.csv \
 						etc/metadata/wdb_placeregulargrid.in.csv \
 						etc/metadata/wdb_placename.in.csv \
-						etc/metadata/wdb_statisticstype.in.csv \
+						etc/metadata/wdb_parameterfunctiontype.in.csv \
 						etc/metadata/wdb_physicalphenomenon.in.csv \
 						etc/metadata/wdb_unit.in.csv \
 						etc/metadata/wdb_siunitconversion.in.csv \

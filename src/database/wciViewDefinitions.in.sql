@@ -461,17 +461,17 @@ GRANT SELECT ON __WCI_SCHEMA__.unit TO wdb_read;
 GRANT SELECT ON __WCI_SCHEMA__.unit TO wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.statisticstype AS
+CREATE VIEW __WCI_SCHEMA__.parameterfunctiontype AS
 	SELECT  
-		statisticstype,
-		statisticsdescription
+		parameterfunctiontype,
+		parameterfunctiondescription
 	FROM 	
-		__WDB_SCHEMA__.statisticstype;
+		__WDB_SCHEMA__.parameterfunctiontype;
 		
-REVOKE ALL ON __WCI_SCHEMA__.statisticstype FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.statisticstype TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.statisticstype TO wdb_read;
-GRANT SELECT ON __WCI_SCHEMA__.statisticstype TO wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.parameterfunctiontype FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_read;
+GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_write;
 
 
 CREATE VIEW __WCI_SCHEMA__.physicalphenomenon AS

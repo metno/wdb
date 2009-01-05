@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.7.8, [wdb@met.no])
+AC_INIT(wdb, 0.8.0dev, [wdb@met.no])
 # Config
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([config/config.h.in])

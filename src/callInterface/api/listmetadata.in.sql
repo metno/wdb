@@ -61,19 +61,19 @@ LANGUAGE 'sql';
 --
 -- @return A set of statistics types with description matching the wildcard
 CREATE OR REPLACE FUNCTION
-wci.listStatisticsType
+wci.listParameterFunctionType
 (
           stattype character varying(80)
 )
-RETURNS SETOF __WCI_SCHEMA__.statisticstype AS
+RETURNS SETOF __WCI_SCHEMA__.parameterfunctiontype AS
 $BODY$
 	SELECT 
 		* 
 	FROM 
-		__WCI_SCHEMA__.statisticstype
+		__WCI_SCHEMA__.parameterfunctiontype
 	WHERE 
 		$1 IS NULL OR
-		statisticstype ILIKE $1 ;
+		parameterfunctiontype ILIKE $1 ;
 $BODY$
 LANGUAGE 'sql';
 
@@ -81,12 +81,12 @@ LANGUAGE 'sql';
 -- List all of the Statistics Types available in the database
 -- Equivalent to wci.listStatisticsType ( NULL )
 CREATE OR REPLACE FUNCTION
-wci.listStatisticsType
+wci.listParameterFunctionType
 (
 )
-RETURNS SETOF __WCI_SCHEMA__.statisticstype AS
+RETURNS SETOF __WCI_SCHEMA__.parameterfunctiontype AS
 $BODY$
-	SELECT  wci.listStatisticsType ( NULL );
+	SELECT  wci.listParameterFunctionType ( NULL );
 $BODY$
 LANGUAGE 'sql';
 

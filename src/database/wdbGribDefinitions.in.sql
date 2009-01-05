@@ -26,6 +26,29 @@ GRANT ALL ON SCHEMA gribload TO wdb_admin;
 GRANT USAGE ON SCHEMA gribload TO wdb_grib;
 
 
+CREATE TABLE __WDB_SCHEMA__.gribgeneratingprocess
+(
+    dataproviderid  				bigint NOT NULL,
+    generatingcenterid 				integer NOT NULL,
+    generatingprocessid 			integer NOT NULL,
+    generatingprocessvalidfrom 		timestamp with time zone NOT NULL,
+    generatingprocessvalidto 		timestamp with time zone NOT NULL	
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.gribgeneratingprocess FROM public;
+GRANT ALL ON __WDB_SCHEMA__.gribgeneratingprocess TO wdb_admin;
+
+
+ALTER TABLE ONLY __WDB_SCHEMA__.gribgeneratingprocess
+    ADD CONSTRAINT gribgeneratingprocess_pkey PRIMARY KEY (dataproviderid);
+
+
+ALTER TABLE __WDB_SCHEMA__.gribgeneratingprocess
+	ADD FOREIGN KEY (dataproviderid)
+					REFERENCES __WDB_SCHEMA__.dataprovider
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
+
 CREATE TABLE gribload.valueparameterxref (
     generatingcenterid integer NOT NULL,
     gribcodetable2version integer NOT NULL,

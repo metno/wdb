@@ -56,7 +56,7 @@ COPY __WDB_SCHEMA__.placeregulargrid FROM '__WDB_DATADIR__/sql/wdb_placeregularg
 COPY __WDB_SCHEMA__.placename FROM '__WDB_DATADIR__/sql/wdb_placename.csv' CSV HEADER DELIMITER '|';
 
 -- Parameters & Units
-COPY __WDB_SCHEMA__.statisticstype FROM '__WDB_DATADIR__/sql/wdb_statisticstype.csv' CSV HEADER DELIMITER '|';
+COPY __WDB_SCHEMA__.parameterfunctiontype FROM '__WDB_DATADIR__/sql/wdb_parameterfunctiontype.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.physicalphenomenon FROM '__WDB_DATADIR__/sql/wdb_physicalphenomenon.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.unit FROM '__WDB_DATADIR__/sql/wdb_unit.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.siunitconversion FROM '__WDB_DATADIR__/sql/wdb_siunitconversion.csv' CSV HEADER DELIMITER '|';
