@@ -98,7 +98,8 @@ CREATE TYPE __WCI_SCHEMA__.gridPointSpec AS
 (
 	i		double precision,
 	j		double precision,
-	iNum	integer
+	iNum	integer,
+	jNum	integer
 );
 
 -- Get the exact (i,j) index for a given geometry and placeid, as two doubles
@@ -118,6 +119,7 @@ BEGIN
 	SELECT * INTO placeSpec FROM __WCI_SCHEMA__.placespec WHERE __WCI_SCHEMA__.placespec.placeid=placeid;
 	SELECT * INTO ret.i, ret.j FROM __WCI_SCHEMA__.indexFromLonLat( placeSpec, X(location), Y(location) );
 	ret.iNum = placespec.inumber;
+	ret.jNum = placespec.jnumber;
 	RETURN ret;
 END;
 $BODY$

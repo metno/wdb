@@ -1014,9 +1014,8 @@ void PlaceGeometryTest::testG23_03_BilinearJustOutsideGrid()
 
 	ostringstream pt;
 	pt << "bilinear POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
-	CPPUNIT_ASSERT_THROW( t->exec( statement_( pt.str(), 34 ) ), sql_error );
-	// The bilinear point algorithm searches for values outside the
-	// grid. This should return an error.
+	result r =  t->exec( statement_( pt.str(), 34 ) );
+	CPPUNIT_ASSERT(r.empty());
 }
 
 void PlaceGeometryTest::testG23_04_BilinearFarOutsideGrid()
@@ -1027,9 +1026,8 @@ void PlaceGeometryTest::testG23_04_BilinearFarOutsideGrid()
 
 	ostringstream pt;
 	pt << "bilinear POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
-	CPPUNIT_ASSERT_THROW( t->exec( statement_( pt.str(), 34 ) ), sql_error );
-	// The bilinear point algorithm searches for values outside the
-	// grid. This should return an error.
+	result r = t->exec( statement_( pt.str(), 34 ) );
+	CPPUNIT_ASSERT(r.empty());
 }
 
 void PlaceGeometryTest::testG24_01_BilinearReturnsCorrectGeometry()

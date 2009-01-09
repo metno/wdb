@@ -45,10 +45,16 @@ DECLARE
 	i double precision;
 	j double precision;
 	iNumber integer;
+	jNumber integer;
 	val float4;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-	SELECT * INTO i, j, iNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	SELECT * INTO i, j, iNumber, jNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	
+	IF i < 0 OR j < 0 OR i >= iNumber-1 OR j >= jNumber-1 THEN
+		RETURN NULL;
+	END IF;
+	
 	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, iNumber, valueoid );
 	ret := (location, val, -1, -1);
 	RETURN ret;
@@ -84,10 +90,11 @@ DECLARE
 	i_i integer;
 	i_j integer;
 	iNumber integer;
+	jNumber integer;
 	val float4;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-	SELECT * INTO i, j, iNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	SELECT * INTO i, j, iNumber, jNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
 	i_i := round(i); -- using round before cursor query improves 
 	i_j := round(j); -- performance by a factor of 50-300, for some reason
 	RAISE DEBUG 'NEAREST: %, %, %, %', i_i, i_j, iNumber, valueoid;
