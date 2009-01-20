@@ -170,7 +170,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbConstraintDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbMaterializedView.sql
 \i $WDB_DATAMODEL_PATH/wdbViewDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
 EOF
 if [ 0 != $? ]; then
@@ -193,6 +193,8 @@ if [ 0 != $? ]; then
 else
     echo "done"
 fi
+
+exit
 
 # Install Metadata
 echo -n "installing new materialized views... "
@@ -242,14 +244,14 @@ echo done
 
 echo -n "installing upgraded wci core... "
 cd __WDB_DATADIR__/sql/wci
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP
-\i types/wciInterpolationSpec.sql
-\i core/wciSession.sql
-\i core/wciWriteInternals.sql
-\i core/wciExtractGridData.sql
-EOF
+#psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+#SET CLIENT_MIN_MESSAGES TO "WARNING";
+#\set ON_ERROR_STOP
+#\i types/wciInterpolationSpec.sql
+#\i core/wciSession.sql
+#\i core/wciWriteInternals.sql
+#\i core/wciExtractGridData.sql
+#EOF
 
 #\i core/readWhereClause.sql
 #\i core/readOidQuery.sql
@@ -257,17 +259,17 @@ EOF
 #\i core/wciInterpolation.sql
 
 
-#for FILE in `ls -1f core/*.sql | grep -v [.]in[.]sql | grep -v wciSession.sql | grep -v wciInterpolation.sql` ; do
-#	echo $FILE
-#    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME  <<EOF
-#SET CLIENT_MIN_MESSAGES TO "WARNING";
-#\set ON_ERROR_STOP
-#\i $FILE
-#EOF
-#    if [ 0 != $? ]; then
-#	echo "ERROR when installing $FILE"; exit 1
-#    fi
-#done
+for FILE in `ls -1f core/*.sql | grep -v [.]in[.]sql | grep -v wciSession.sql | grep -v wciInterpolation.sql` ; do
+	echo $FILE
+    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME  <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\i $FILE
+EOF
+    if [ 0 != $? ]; then
+	echo "ERROR when installing $FILE"; exit 1
+    fi
+done
 echo done
 
 # Data Migration

@@ -65,8 +65,8 @@ void wciWriteTest::testCanInsert1()
 		"'Hirlam 10'::text,"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
-		"ARRAY['instant pressure of air'],"
-		"'0 TO 100 distance above ground',"
+		"ARRAY['air pressure'],"
+		"'0 TO 100 height above ground distance',"
 		"NULL,"
 		"NULL::wci.returnoid)";
 
@@ -78,8 +78,8 @@ void wciWriteTest::testCanInsert1()
 		"'Hirlam 10',"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
-		"'instant pressure of air',"
-		"'distance above ground',0,100)";
+		"'air pressure',"
+		"'height above ground distance',0,100)";
 	t->exec(write);
 
 	r = t->exec(select);
@@ -97,8 +97,8 @@ void wciWriteTest::testCanInsert2()
 						  "'Hirlam 10'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['instant temperature of air'], "
-						  "'0 TO 100 distance above ground', "
+						  "ARRAY['air temperature'], "
+						  "'0 TO 100 height above ground distance', "
 						  "NULL,"
 						  "NULL::wci.returnoid)";
 
@@ -142,8 +142,8 @@ void wciWriteTest::testMultipleInserts2()
 						  "'Hirlam 10'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['instant pressure change of air'], "
-						  "'0 TO 100 distance above ground', "
+						  "ARRAY['air pressure change'], "
+						  "'0 TO 100 height above ground distance', "
 						  "NULL, "
 						  "NULL::wci.returnoid)";
 
@@ -213,25 +213,25 @@ void wciWriteTest::testAutoIncrementVersion()
 
 void wciWriteTest::testNullDataProviderThrows()
 {
-	t->exec("SELECT wci.write( NULL, 24944, 'today', 0, 500, 'watt', 'max power of air (potential)', 0, 0, 'metre', 'distance above mean sea level', 'today', 'today')");
+	t->exec("SELECT wci.write( NULL, 24944, 'today', 0, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
 }
 
 void wciWriteTest::testNullDataVersionThrows()
 {
-	t->exec("SELECT wci.write( 53, 24944, 'today', NULL, 500, 'watt', 'max power of air (potential)', 0, 0, 'metre', 'distance above mean sea level', 'today', 'today')");
+	t->exec("SELECT wci.write( 53, 24944, 'today', NULL, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
 }
 
 
 void wciWriteTest::testNullParameterThrows()
 {
-	t->exec("SELECT wci.write( 24944, 'today', 500, NULL, 0, 0, 'metre', 'distance above mean sea level', 'today', 'today')");
+	t->exec("SELECT wci.write( 24944, 'today', 500, NULL, 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
 }
 
 void wciWriteTest::testIncompatibleUnitAndParamterThrows()
 {
 	const std::string statement = "SELECT wci.write(24944,'today',500,"
-		"'metre', 'instant pressure instant of air',"
-		"0,0,'metre','distance above mean sea level',"
+		"'metre', 'air pressure',"
+		"0,0,'metre','height above mean sea level distance',"
 		"'today','today')";
 
 	t->exec(statement);
@@ -240,8 +240,8 @@ void wciWriteTest::testIncompatibleUnitAndParamterThrows()
 void wciWriteTest::testIncompatibleLevelUnitAndParameterThrows()
 {
 	const std::string statement = "SELECT wci.write(24944,'today',500,"
-		"'hectopascal per second', 'instant pressure instant of air',"
-		"0,0,'ohm','distance above mean sea level',"
+		"'hectopascal per second', 'air pressure change',"
+		"0,0,'ohm','height above mean sea level distance',"
 		"'today','today')";
 
 	t->exec(statement);
@@ -270,13 +270,13 @@ void wciWriteTest::testAllowedFormattingOfParameter()
 
 	const int expectedResultSize = 5;
 
-	t->exec(statementWithParameter_("instant temperature of air"));
-	t->exec(statementWithParameter_("instant     temperature of  air"));
-	t->exec(statementWithParameter_("iNSTAnt Temperature of  air"));
-	t->exec(statementWithParameter_("instant\ttemPErature OF air"));
-	t->exec(statementWithParameter_("Instant     Temperature of  Air"));
+	t->exec(statementWithParameter_("max air temperature"));
+	t->exec(statementWithParameter_("max     air  temperature"));
+	t->exec(statementWithParameter_("mAx air Temperature"));
+	t->exec(statementWithParameter_("max\tair temPErature"));
+	t->exec(statementWithParameter_("Max     Air   Temperature"));
 
-	pqxx::result r = t->exec(controlStatementWithParameter_("instant temperature of air","dataversion") + " ORDER by dataversion");
+	pqxx::result r = t->exec(controlStatementWithParameter_("max air temperature","dataversion") + " ORDER by dataversion");
 	CPPUNIT_ASSERT_EQUAL(result::size_type(expectedResultSize), r.size() );
 
 	result::const_iterator result = r.begin();
@@ -310,7 +310,7 @@ void wciWriteTest::testAutoRegistrationOfNewParameters()
 
 void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongStatisticsTypeThrows()
 {
-	const std::string newParameter = "FOO power of air (potential)";
+	const std::string newParameter = "FOO air temperature";
 	const std::string query = statementWithParameter_(newParameter);
 //	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
@@ -318,7 +318,7 @@ void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongStatisticsTypeThr
 
 void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongPhysicalPhenomenonThrows()
 {
-	const std::string newParameter = "instant FOO of air (potential)";
+	const std::string newParameter = "air FOO";
 	const std::string query = statementWithParameter_(newParameter);
 //	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
@@ -326,7 +326,7 @@ void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongPhysicalPhenomeno
 
 void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongParameterUsageThrows()
 {
-	const std::string newParameter = "instant power of FOO";
+	const std::string newParameter = "FOO temperature";
 	const std::string query = statementWithParameter_(newParameter);
 //	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
@@ -334,7 +334,7 @@ void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongParameterUsageThr
 
 void wciWriteTest::testInconsistencyBetweenPhysicalPhenomenaAndUnitThrows()
 {
-	const std::string newParameter = "instant power of air (potential)";
+	const std::string newParameter = "air velocity";
 	const std::string query = statementWithParameter_(newParameter);
 //	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
@@ -378,8 +378,8 @@ string wciWriteTest::statement_(const string & referenceTime) const
 		<< "'test grid, rotated', "
 		<< "'"<< referenceTime << "', "
 		<< "'today', 'today', "
-		<< "'instant temperature of air', "
-		<< "'distance above mean sea level', 0.0, 0.0 ) ";
+		<< "'air temperature', "
+		<< "'height above mean sea level distance', 0.0, 0.0 ) ";
 
 	return ret.str();
 }
@@ -393,7 +393,7 @@ std::string wciWriteTest::statementWithParameter_(const std::string parameter) c
 		<< "'2004-12-24 07:00:00+00', "
 		<< "'today', 'today', "
 		<< "'" << parameter << "', "
-		<< "'distance above mean sea level', 0.0, 0.0 )";
+		<< "'height above mean sea level distance', 0.0, 0.0 )";
 
 	return ret.str();
 
@@ -412,8 +412,8 @@ string wciWriteTest::controlStatement_(const std::string & resultSet,
 	st << "'test grid, rotated'::text, "
 	   << "'" << referenceTime << "', "
 	   << "'today', "
-	   << "'{\"instant temperature of air\"}', "
-	   << "'0 distance above mean sea level', "
+	   << "'{\"air temperature\"}', "
+	   << "'0 height above mean sea level distance', "
 	   << "NULL, "
 	   << "NULL::wci.returnoid )";
 	return st.str();
@@ -429,7 +429,7 @@ std::string wciWriteTest::controlStatementWithParameter_(const std::string param
 	   << "'2004-12-24 07:00:00+00', "
 	   << "'today', "
        << "ARRAY['" << parameter << "'], "
-	   << "'0 distance above mean sea level', "
+	   << "'0 height above mean sea level distance', "
 	   << "NULL, "
 	   << "NULL::wci.returnoid )";
 

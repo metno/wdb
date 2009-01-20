@@ -296,6 +296,15 @@ REVOKE ALL ON __WDB_SCHEMA__.parameterfunctiontype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.parameterfunctiontype TO wdb_admin;
 
 
+CREATE TABLE __WDB_SCHEMA__.parameterquantitytype (
+    parameterquantitytype				character varying(80) NOT NULL,
+	parameterquantitytypedescription	character varying(255) NOT NULL
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.parameterquantitytype FROM public;
+GRANT ALL ON __WDB_SCHEMA__.parameterquantitytype TO wdb_admin;
+
+
 CREATE TABLE __WDB_SCHEMA__.valueparameterusage (
     valueparameterusage				character varying(80) NOT NULL,
 	valueparameterusagedescription	character varying(255) NOT NULL
@@ -365,8 +374,9 @@ GRANT ALL ON __WDB_SCHEMA__.valueparameter TO wdb_admin;
 
 CREATE TABLE __WDB_SCHEMA__.valuephysicalparameter (
 	valueparameterid 				integer NOT NULL,
+	valueparameterusage 			character varying(80) NOT NULL,
 	valueparameterunitname 			character varying(80) NOT NULL,
-	valueparameterusage 			character varying(80) NOT NULL
+	parameterquantitytype			character varying(80) NOT NULL
 );
 
 REVOKE ALL ON __WDB_SCHEMA__.valuephysicalparameter FROM public;
@@ -391,14 +401,16 @@ CREATE TABLE __WDB_SCHEMA__.valuecodeparameter (
 REVOKE ALL ON __WDB_SCHEMA__.valuecodeparameter FROM public;
 GRANT ALL ON __WDB_SCHEMA__.valuecodeparameter TO wdb_admin;
 
-CREATE TABLE __WDB_SCHEMA__.valuestatisticsparameter (
+CREATE TABLE __WDB_SCHEMA__.valuefunctionparameter (
 	valueparameterid 				integer NOT NULL,
-    valueparameterstatisticstype	character varying(80) NOT NULL,
-	basevalueparameterid 			integer NOT NULL
+    parameterfunctiontype			character varying(80) NOT NULL,
+	valueparameterusage 			character varying(80) NOT NULL,
+	valueparameterunitname 			character varying(80) NOT NULL,
+	parameterquantitytype			character varying(80) NOT NULL
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.valuestatisticsparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valuestatisticsparameter TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.valuefunctionparameter FROM public;
+GRANT ALL ON __WDB_SCHEMA__.valuefunctionparameter TO wdb_admin;
 
 CREATE TABLE __WDB_SCHEMA__.valueparametername (
 	valueparameterid 			integer NOT NULL,

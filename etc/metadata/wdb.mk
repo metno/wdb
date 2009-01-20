@@ -34,7 +34,7 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_valuephysicalparameter.in.csv \
 						etc/metadata/wdb_valuedimensionlessparameter.in.csv \
 						etc/metadata/wdb_valuecodeparameter.in.csv \
-						etc/metadata/wdb_valuestatisticsparameter.in.csv \
+						etc/metadata/wdb_valuefunctionparameter.in.csv \
 						etc/metadata/wdb_levelparameter.in.csv \
 						etc/metadata/wdb_levelphysicalparameter.in.csv \
 						etc/metadata/wdb_levelcodeparameter.in.csv \

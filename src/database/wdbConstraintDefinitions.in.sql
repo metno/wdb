@@ -313,8 +313,8 @@ ALTER TABLE __WDB_SCHEMA__.valuephysicalparameter
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.valuestatisticsparameter
-	ADD FOREIGN KEY (valueparameterstatisticstype)
+ALTER TABLE __WDB_SCHEMA__.valuefunctionparameter
+	ADD FOREIGN KEY (parameterfunctiontype)
 					REFERENCES __WDB_SCHEMA__.parameterfunctiontype
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;

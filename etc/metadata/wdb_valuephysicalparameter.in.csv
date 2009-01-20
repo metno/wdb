@@ -1,109 +1,93 @@
-Id|Unit|Usage
-1|hectopascal|of air
-3|pascal per second|of air
-4|kelvin square metre per kilogram second|of air
-5|metre|of atmosphere, standard icao reference height
-6|square metre per square second|of land, geopotential height
-8|metre|of land, geometrical height
-9|metre|of land, height standard deviation
-10|dobson|of ozone
-11|kelvin|of air
-1105|kelvin|of air, kalman
-12|kelvin|of air, virtual
-13|kelvin|of air, potential
-14|kelvin|of air, pseudo-abiadetic potential
-17|kelvin|of air, dew point
-18|kelvin|of air, dew point depression
-19|kelvin per square metre|of air, lapse rate
-20|metre|of air, visibility
-24|kelvin|of parcel lifted index
-25|kelvin|of air, anomaly
-26|pascal|of air, anomaly
-27|square metre per square second|of air, anomaly
-32|metre per second|of air
-33|metre per second|of air (u-component)
-34|metre per second|of air (v-component)
-35|square metre per second|of air, stream function
-36|square metre per second|of air, velocity potential
-37|square metre per square second|of air, montgomery stream function
-38|per second|of vertical velocity, sigma coordinate
-39|pascal per second|of vertical velocity
-40|metre per second|of vertical velocity
-41|per second|of air, absolute vorticity
-42|per second|or air, absolute divergence
-43|per second|of air, relative vorticity
-44|per second|or air, relative divergence
-45|per second|of vertical shear (u component)
-46|per second|of vertical shear (v component)
-48|metre per second|of current
-49|metre per second|of current (u component)
-50|metre per second|of current (v component)
-54|kilogram per square metre|of water, precipitable
-55|pascal|of vapour
-56|pascal|of saturation deficit
-57|kilogram per square metre|of evaporation
-58|kilogram per square metre|of cloud ice
-59|kilogram per square metre second|of precipitation
-10062|kilogram per square metre|of precipitation, large scale
-10063|kilogram per square metre|of precipitation, convective
-64|kilogram per square metre second|of snow, water equivalent
-10065|kilogram per square metre|of snow, water equivalent
-66|metre|of snow
-67|metre|of mixed layer depth
-68|metre|of transient thermocline depth
-69|metre|of main thermocline depth
-70|metre|of main thermocline anomaly
-76|kilogram per square metre|of cloud water
-77|kelvin|of best lifted index
-78|kilogram per square metre|of snow, convective
-79|kilogram per square metre|of snow, large scale
-80|kelvin|of water, precipitable
-82|metre|of sea level, deviation from mean
-83|metre|of land, surface roughness
-85|kelvin|of soil
-86|kilogram per square metre|of soil
-88|kilogram per kilogram|of water, salinity
-89|kilogram per cubic metre|of water
-90|kilogram per square metre|of water, run-off
-92|metre|of ice, thickness
-94|metre per second|of ice drift
-95|metre per second|of ice drift (u component)
-96|metre per second|of ice drift (v component)
-97|metre per second|of ice, growth rate
-98|per second|of ice, divergence
-99|kilogram per square metre|of snow melt
-100|metre|of combined wind waves and swell, significant height
-102|metre|of wind waves, significant height
-10103|second|of wind waves
-105|metre|of swell waves, significant height
-10106|second|of swell waves
-10108|second|of primary waves
-10110|second|of secondary waves
-10111|watt per square metre|of surface radiation, short-wave 
-10112|watt per square metre|of surface radiation, long-wave 
-10113|watt per square metre|of top of atmosphere radiation, short-wave 
-10114|watt per square metre|of top of atmosphere radiation, long-wave 
-115|watt per square metre|of radiation, long-wave
-116|watt per square metre|of radiation, short-wave
-117|watt per square metre|of global radiation
-118|kelvin|of brightness
-119|watt per metre steradian|of radiance (with respect to wave number)
-120|watt per metre steradian|of radiance (with respect to wave length)
-121|watt per square metre|of latent heat
-122|watt per square metre|of sensible heat
-123|watt per square metre|of boundary layer dissipation
-124|newton per square metre|of momentum flux (u component)
-125|newton per square metre|of momentum flux (v component)
-126|joule|of wind mixing energy
-140|kelvin|of land
-10142|metre|of precipitation, large scale
-10143|metre|of precipitation, convective
-144|metre|of snow fall
-151|pascal|of mean sea level
-189|minute|of sunshine
-228|kilogram per square metre|of precipitation
-254|ratio|of undefined
-351|metre|of sea, geometrical depth
-1006|kelvin per metre|of air
-1101|metre|of land topography, model
-6100|millimetre|of precipitation, total
+Id|Value Domain|Unit|QuantityType
+1|air|hectopascal|scalar
+3|air|pascal per second|scalar
+4|air|kelvin square metre per kilogram second|scalar
+5|icao standard atmospheric reference|metre|scalar
+6|geopotential height|square metre per square second|scalar
+8|geometrical height|metre|scalar
+10|ozone dobson|dobson|scalar
+11|air|kelvin|scalar
+1105|kalman air|kelvin|scalar
+12|virtual air|kelvin|scalar
+13|potential air|kelvin|scalar
+14|pseudo-abiadetic potential air|kelvin|scalar
+17|dew point|kelvin|scalar
+18|dew point depression|kelvin|scalar
+19|air|kelvin per metre|scalar
+20|visibility|metre|scalar
+24|parcel lifted index|kelvin|scalar
+25|air anomaly|kelvin|scalar
+26|air anomaly|pascal|scalar
+27|geopotential height anomaly|square metre per square second|scalar
+32|wind|metre per second|scalar
+33|wind|metre per second|u vector
+34|wind|metre per second|v vector
+35|stream function|square metre per second|scalar
+36|potential air|square metre per second|scalar
+37|montgomery stream function|square metre per square second|scalar
+38|sigma coordinate vertical|per second|scalar
+39|vertical|pascal per second|scalar
+40|vertical|metre per second|scalar
+41|absolute vorticity|per second|scalar
+42|absolute divergence|per second|scalar
+43|relative vorticity|per second|scalar
+44|relative divergence|per second|scalar
+45|vertical shear|per second|u vector
+46|vertical shear|per second|v vector
+48|current|metre per second|scalar
+49|current|metre per second|u vector
+50|current|metre per second|v vector
+54|precipitable water|kilogram per square metre|scalar
+55|vapour|pascal|scalar
+56|saturation deficit|pascal|scalar
+57|evaporation|kilogram per square metre|scalar
+58|cloud ice|kilogram per square metre|scalar
+59|precipitation|kilogram per square metre second|scalar
+64|water equivalent snow|kilogram per square metre second|scalar
+66|snow depth|metre|scalar
+67|mixed layer depth|metre|scalar
+68|transient thermocline depth|metre|scalar
+69|main thermocline depth|metre|scalar
+70|main thermocline anomaly|metre|scalar
+76|cloud water|kilogram per square metre|scalar
+77|best lifted index|kelvin|scalar
+78|convective snow|kilogram per square metre|scalar
+79|large scale snow|kilogram per square metre|scalar
+80|precipitable water|kelvin|scalar
+82|deviation from mean sea level|metre|scalar
+83|surface roughness|metre|scalar
+85|soil|kelvin|scalar
+86|soil|kilogram per square metre|scalar
+88|water salinity|kilogram per kilogram|scalar
+89|water|kilogram per cubic metre|scalar
+90|water run-off|kilogram per square metre|scalar
+92|ice thickness|metre|scalar
+94|ice drift|metre per second|scalar
+95|ice drift|metre per second|u vector
+96|ice drift|metre per second|v vector
+97|ice growth rate|metre per second|scalar
+98|ice divergence|per second|scalar
+99|snow melt|kilogram per square metre|scalar
+100|significant combined wind waves and swell height|metre|scalar
+102|significant wind waves height|metre|scalar
+105|significant swell waves height|metre|scalar
+115|long-wave|watt per square metre|scalar
+116|short-wave|watt per square metre|scalar
+117|global|watt per square metre|scalar
+118|brightness|kelvin|scalar
+119|wave number|watt per metre steradian|u vector
+120|wave number|watt per metre steradian|v vector
+121|latent heat|watt per square metre|scalar
+122|sensible heat|watt per square metre|scalar
+123|boundary layer dissipation|watt per square metre|scalar
+124|momentum flux|newton per square metre|u vector
+125|momentum flux|newton per square metre|v vector
+126|wind mixing|joule|scalar
+140|land|kelvin|scalar
+144|snow fall|metre|scalar
+189|sunshine|minute|scalar
+228|rain|kilogram per square metre|scalar
+254|undefined|ratio|scalar
+351|geometrical sea depth|metre|scalar
+1101|model topography|metre|scalar
+6100|total precipitation|millimetre|scalar

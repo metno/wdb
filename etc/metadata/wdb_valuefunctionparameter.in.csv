@@ -1,0 +1,20 @@
+ParameterId|ParameterFunction|Value Domain|Unit|QuantityType
+9|stddev|height|metre|scalar
+15|max|air|kelvin|scalar
+16|min|air|kelvin|scalar
+61|accumulated|precipitation|kilogram per square metre|scalar
+62|accumulated|large scale precipitation|kilogram per square metre|scalar
+63|accumulated|convective precipitation|kilogram per square metre|scalar
+65|accumulated|water equivalent snow|kilogram per square metre|scalar
+103|mean|wind waves|second|scalar
+106|mean|swell waves|second|scalar
+108|mean|primary waves|second|scalar
+110|mean|secondary waves|second|scalar
+111|accumulated|short wave|watt per square metre|scalar
+112|accumulated|long wave|watt per square metre|scalar
+113|accumulated|top atmosphere short-wave |watt per square metre|scalar
+114|accumulated|top atmosphere long-wave |watt per square metre|scalar
+142|accumulated|large scale precipitation|metre|scalar
+143|accumulated|convective precipitation|metre|scalar
+151|mean|sea level|pascal|scalar
+189|accumulated|sunshine|minute|scalar

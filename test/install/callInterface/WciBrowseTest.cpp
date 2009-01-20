@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -65,7 +65,7 @@ void WciBrowseTest::tearDown()
 }
 
 
-// Todo: Reestablish Info Tests 
+// Todo: Reestablish Info Tests
 
 void WciBrowseTest::testBrowseDataProvider()
 {
@@ -86,9 +86,9 @@ void WciBrowseTest::testBrowseDataProvider()
     CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 1" ) );
     CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 2" ) );
-	
+
 }
-	
+
 void WciBrowseTest::testBrowsePlace()
 {
 	const string select0 = "SELECT * "
@@ -108,7 +108,7 @@ void WciBrowseTest::testBrowsePlace()
     CPPUNIT_ASSERT( count_val( rS, "placename", "test grid, rotated" ) );
     CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 10" ) );
     CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 20" ) );
-	
+
 }
 
 void WciBrowseTest::testBrowseReferenceTime()
@@ -127,7 +127,7 @@ void WciBrowseTest::testBrowseReferenceTime()
 
 	// There is at least one browse row
 	CPPUNIT_ASSERT( rS.size() );
-	
+
 }
 
 void WciBrowseTest::testBrowseValueParameter()
@@ -167,6 +167,6 @@ void WciBrowseTest::testBrowseLevelParameter()
 	// There is at least one browse row
 	CPPUNIT_ASSERT( rS.size() );
 	// Check base valparam
-    CPPUNIT_ASSERT( count_val( rS, "levelparametername", "distance above mean sea level" ) );
+    CPPUNIT_ASSERT( count_val( rS, "levelparametername", "height above mean sea level distance" ) );
 }
 

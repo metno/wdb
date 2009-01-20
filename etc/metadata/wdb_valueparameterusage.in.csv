@@ -1,120 +1,110 @@
 Value Domain|Description
-of undefined|Undefined parameter usage. This is used for temporary, experimental, and/or not yet defined parameters.
-of air|The value describes a property of air
-of air, kalman|The value of a kalman-filtered air parameter
-of air, anomaly|The value describes an anomalous property of air
-of air, virtual|The value describes a virtual property of air
-of air, potential|The value describes a potential property of air
-of air, visibility|Unknown
-of air, pseudo-abiadetic potential|Unknown
-of air, dew point|The value describes a property of air at the point where water vapor condenses into water
-of air, dew point depression|Unknown
-of air, lapse rate|Unknown
-of air (u-component)|U-component of a wind vector
-of air (v-component)|V-component of a wind vector
-of air, stream function|Unknown
-of air, velocity potential|Unknown
-of air, montgomery stream function|Unknown
-of air, absolute vorticity|Unknown
-or air, absolute divergence|Unknown
-of air, relative vorticity|Unknown
-or air, relative divergence|Unknown
-of ozone|The value describes a property of ozone
-of fog|Unknown
-of cloud water|Unknown
-of atmosphere, standard icao reference height|ICAO Standard Atmosphere reference height
-of precipitation|Unknown
-of precipitation, total|Unknown
-of precipitation, large scale|Unknown
-of precipitation, convective|Unknown
-of vapour|Unknown
-of saturation deficit|Unknown
-of evaporation|Unknown
-of cloud ice|Unknown
-of snow|Unknown
-of snow, convective|Unknown
-of snow, large scale|Unknown
-of snow, water equivalent|Unknown
-of snow melt|Unknown
-of snow fall|Unknown
-of mixed layer depth|Unknown
-of transient thermocline depth|Unknown
-of main thermocline depth|Unknown
-of main thermocline anomaly|Unknown
-of soil|The value describes a property of the soil
-of land|Unknown
-of land, surface roughness|Unknown
-of land, geopotential height|Geopotential height
-of land, geometrical height|Geometrical height
-of land, height standard deviation|Standard deviation of land height
-of parcel lifted index|Unknown
-of best lifted index|Unknown
-of vertical velocity|Unknown
-of vertical velocity, sigma coordinate|Unknown
-of vertical shear (u component)|Unknown
-of vertical shear (v component)|Unknown
-of sea, geometrical depth|Depth of sea bottom
-of current|Unknown
-of current, direction|Unknown
-of current (u component)|Unknown
-of current (v component)|Unknown
-of water, precipitable|Unknown
-of water|Unknown
-of water, salinity|Unknown
-of water, run-off|Unknown
-of salinity|Unknown
-of sea level, deviation from mean|Unknown
-of combined wind waves and swell, significant height|Unknown
-of wind waves, significant height|Unknown
-of swell waves, significant height|Unknown
-of primary waves|Unknown
-of secondary waves|Unknown
-of ice, cover|Unknown
-of ice, thickness|Unknown
-of ice, growth rate|Unknown
-of ice, divergence|Unknown
-of ice drift|Unknown
-of ice drift (u component)|Unknown
-of ice drift (v component)|Unknown
-of surface radiation, short-wave |Unknown
-of surface radiation, long-wave |Unknown
-of top of atmosphere radiation, short-wave |Unknown
-of top of atmosphere radiation, long-wave |Unknown
-of radiation, long-wave|Unknown
-of radiation, short-wave|Unknown
-of global radiation|Unknown
-of brightness|Unknown
-of radiance (with respect to wave number)|Unknown
-of radiance (with respect to wave length)|Unknown
-of latent heat|Unknown
-of sensible heat|Unknown
-of boundary layer dissipation|Unknown
-of momentum flux (u component)|Unknown
-of momentum flux (v component)|Unknown
-of wind mixing energy|Unknown
-of inorganic nitrate|WAM
-of phosphate|WAM
-of silicate|WAM
-of detritus|WAM
-of diatomer (algae)|WAM
-of flagellate (algae)|WAM
-of oxygen|WAM
-of biogenic silica|WAM
-of type 2 sediments|WAM
-of other sediments|WAM
-of wave|WAM
-of swell|WAM
-of drag with waves|WAM
-of total sea|WAM
-of stokes drift (u-component)|WAM
-of stokes drift (v-component)|WAM
-of friction|WAM
-of 1d spectra|WAM
-of 2d wave spectra|WAM
-of combined wind waves and swell|WAM
-of wind waves|WAM
-of swell waves|WAM
-of land topography, model|PROFET
-of land, model|PROFET
-of mean sea level|EPS
-of sunshine|EPS
+undefined|Undefined parameter usage. This is used for temporary, experimental, and/or not yet defined parameters.
+air|The value describes a property air
+kalman air|The value a kalman-filtered air parameter
+air anomaly|The value describes an anomalous property air
+virtual air|The value describes a virtual property air
+potential air|The value describes a potential property air
+wind|Unknown
+visibility|Unknown
+pseudo-abiadetic potential air|Unknown
+dew point|The value describes a property air at the point where water vapor condenses into water
+dew point depression|Unknown
+stream function|Unknown
+montgomery stream function|Unknown
+absolute vorticity|Unknown
+absolute divergence|Unknown
+relative vorticity|Unknown
+relative divergence|Unknown
+ozone dobson|The ozone dobson parameter describes the thickness of the layer which would be formed by the total ozone in a column reduced to the pressure of 760 Torr and temperature of 0 degree Celsius.
+fog|Unknown
+cloud water|Unknown
+icao standard atmospheric reference|ICAO Standard Atmosphere reference height
+precipitation|Unknown
+total precipitation|Unknown
+large scale precipitation|Unknown
+convective precipitation|Unknown
+vapour|Unknown
+saturation deficit|Unknown
+evaporation|Unknown
+cloud ice|Unknown
+snow|Unknown
+convective snow|Unknown
+large scale snow|Unknown
+water equivalent snow|Unknown
+snow melt|Unknown
+snow fall|Unknown
+snow depth|Unknown
+mixed layer depth|Unknown
+transient thermocline depth|Unknown
+main thermocline depth|Unknown
+main thermocline anomaly|Unknown
+soil|The value describes a property the soil
+land|Unknown
+surface roughness|Unknown
+geopotential height|Geopotential height
+geopotential height anomaly|Unknown
+geometrical height|Geometrical height
+height|Standard deviation land height
+parcel lifted index|Unknown
+best lifted index|Unknown
+vertical|Unknown
+sigma coordinate vertical|Unknown
+vertical shear|Unknown
+geometrical sea depth|Depth sea bottom
+current|Unknown
+precipitable water|Unknown
+rain|Unknown
+water|Unknown
+water run-off|Unknown
+water salinity|Unknown
+deviation from mean sea level|Unknown
+significant combined wind waves and swell height|Unknown
+significant wind waves height|Unknown
+significant swell waves height|Unknown
+primary waves|Unknown
+secondary waves|Unknown
+ice cover|Unknown
+ice thickness|Unknown
+ice growth rate|Unknown
+ice divergence|Unknown
+ice drift|Unknown
+surface short-wave |Unknown
+surface long-wave |Unknown
+top atmosphere short-wave |Unknown
+top atmosphere long-wave |Unknown
+long-wave|Unknown
+short-wave|Unknown
+global|Unknown
+brightness|Unknown
+wave number|Unknown
+latent heat|Unknown
+sensible heat|Unknown
+boundary layer dissipation|Unknown
+momentum flux|Unknown
+wind mixing|Unknown
+inorganic nitrate|WAM
+phosphate|WAM
+silicate|WAM
+detritus|WAM
+diatomer (algae)|WAM
+flagellate (algae)|WAM
+oxygen|WAM
+biogenic silica|WAM
+type 2 sediments|WAM
+other sediments|WAM
+wave|WAM
+swell|WAM
+drag with waves|WAM
+total sea|WAM
+stokes drift|WAM
+friction|WAM
+1d spectra|WAM
+2d wave spectra|WAM
+combined wind waves and swell|WAM
+wind waves|WAM
+swell waves|WAM
+model topography|PROFET
+model|PROFET
+sea level|EPS
+sunshine|EPS

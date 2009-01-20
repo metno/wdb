@@ -1,15 +1,15 @@
 dataproviderid|placeid|referencetime|validtimefrom|validtimeto|validtimeindeterminatecode|valueparametername|valueunitname|levelparametername|levelunitname|levelfrom|levelto|levelindeterminatecode|dataversion|confidencecode
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|distance of land, surface roughness|metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|ice cover|ratio|distance above mean sea level|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land albedo|ratio|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|distance above ground|metre|901|901|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|distance above ground|metre|902|902|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|distance above ground|metre|903|903|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|distance above ground|metre|904|904|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|distance above ground|metre|905|905|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|specific energy of land, geopotential height|square metre per square second|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|surface density of soil|kilogram per square metre|distance above ground|metre|998|998|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|temperature of air|kelvin|distance above ground|metre|998|998|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|temperature of air|kelvin|distance above mean sea level|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|air temperature|kelvin|height above ground distance|metre|998|998|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|air temperature|kelvin|height above mean sea level distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|geopotential height specific energy|square metre per square second|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|ice cover|ratio|height above mean sea level distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land albedo|ratio|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|height above ground distance|metre|901|901|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|height above ground distance|metre|902|902|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|height above ground distance|metre|903|903|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|height above ground distance|metre|904|904|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|land cover|ratio|height above ground distance|metre|905|905|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|soil surface density|kilogram per square metre|height above ground distance|metre|998|998|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|0|surface roughness distance|metre|height above ground distance|metre|0|0|0|0|0
 (13 rows)

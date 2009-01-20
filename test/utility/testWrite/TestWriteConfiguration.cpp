@@ -54,8 +54,8 @@ TestWriteConfiguration::TestWriteConfiguration( )
 								  "test grid, rotated",
 								  "now",
 								  "now",
-								  "instant pressure of air",
-								  "distance above ground",
+								  "air pressure",
+								  "height above ground distance",
 								  0.0 )
 {
 	configOptions().add( getDataOpt( ) );

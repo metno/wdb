@@ -57,13 +57,12 @@ coefficient|Conventional Unit|proportion
 square slope|Conventional Unit|proportion
 per second|Conventional Unit|frequency
 kelvin square metre per kilogram second|SI Unit|potential vorticity
-dobson|SI Unit|proportion
+dobson|Conventional Unit|distance
 square metre per second|SI Unit|angular momentum
 kilogram per square metre second|SI Unit|surface density change
 steradian|Conventional Unit|proportion
-watt per metre steradian|SI Unit|wpmsr
+watt per metre steradian|SI Unit|radiance
 square metre per square second|Conventional Unit|specific energy
-kelvin per square metre|SI Unit|kpsm
 degree celsius|Conventional Unit|temperature
 kelvin per metre|SI Unit|temperature lapse rate
 none|SI Unit|proportion

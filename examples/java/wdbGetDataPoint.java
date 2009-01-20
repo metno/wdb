@@ -67,8 +67,8 @@ import java.sql.*;
  *           validtime     wci.timeSpec,   - ('2008-03-06 12:00:00', '2008-03-06 18:00:00', 'inside')
  *           parameter     text[],         - array['instantaneous pressure of air',
  *                                                 'instantaneous temperature of air',
- *                                                 'instantaneous velocity of air (u-component)',
- *                                                 'instantaneous velocity of air (v-component) ]
+ *                                                 'instantaneous velocity of air (u vector)',
+ *                                                 'instantaneous velocity of air (v vector) ]
  *           level         wci.levelSpec,  - ( 2, 2, 'above ground', 'exact' )
  *           dataversion   integer[],      - array[-1] 
  *           returntype    wci.returnFloat - NULL::wci.returnFloat
@@ -125,8 +125,8 @@ public class wdbGetDataPoint {
                    "                NULL, " + 
                    "                array['instant pressure of air', " +
                    "                      'instant temperature of air', " +
-                   "                      'instant velocity of air (u-component)', " +
-                   "                      'instant velocity of air (v-component)'], " +  
+                   "                      'instant velocity of air (u vector)', " +
+                   "                      'instant velocity of air (v vector)'], " +  
                    "                ( 2, 2, 'distance above ground', 'exact' ), " + 
                    "                array[-1], " +
                    "                NULL::wci.returnFloat )";

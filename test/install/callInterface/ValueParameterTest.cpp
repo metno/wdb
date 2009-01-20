@@ -94,25 +94,25 @@ void ValueParameterTest::testP2_01B_NoParameter()
 
 void ValueParameterTest::testP2_02A_OneParameter()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air'" ) );
+	result r = t->exec( statementOid_( "'air pressure'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
 void ValueParameterTest::testP2_02B_OneParameter()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air'" ) );
+	result r = t->exec( statementFloat_( "'air pressure'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
 void ValueParameterTest::testP2_03A_MultipleParameters()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air', 'instant temperature of air', 'instant temperature of soil'" ) );
+	result r = t->exec( statementOid_( "'air pressure', 'air temperature', 'soil temperature'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
 void ValueParameterTest::testP2_03B_MultipleParameters()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air', 'instant temperature of air', 'instant temperature of soil'" ) );
+	result r = t->exec( statementFloat_( "'air pressure', 'air temperature', 'soil temperature'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
@@ -122,8 +122,8 @@ void ValueParameterTest::testP2_04A_MoreThan255Parameters()
 	stringstream param;
 	// 270 parameters
 	for (int i=0; i<85; i++)
-		param << "'instant pressure of air', 'instant temperature of air', 'instant pressure change of air', ";
-	param << "'instant proportion of humidity, relative'";
+		param << "'air pressure', 'air temperature', 'air pressure change', ";
+	param << "'relative humidity'";
 
 	result r = t->exec( statementOid_( param.str() ) );
 
@@ -135,8 +135,8 @@ void ValueParameterTest::testP2_04B_MoreThan255Parameters()
 	stringstream param;
 	// 270 parameters
 	for (int i=0; i<85; i++)
-		param << "'instant pressure of air', 'instant temperature of air', 'instant pressure change of air', ";
-	param << "'instant proportion of humidity, relative'";
+		param << "'air pressure', 'air temperature', 'air pressure change', ";
+	param << "'relative humidity'";
 
 	result r = t->exec( statementFloat_( param.str() ) );
 
@@ -162,7 +162,7 @@ ValueParameterTest::testP2_05B_NullParameter()
 void ValueParameterTest::testP3_01A_LowerCase()
 {
 	stringstream param;
-	param << "'instant pressure of air'";
+	param << "'air pressure'";
 	result r = t->exec( statementOid_( param.str() ) );
 
 	CPPUNIT_ASSERT( not r.empty() );
@@ -171,7 +171,7 @@ void ValueParameterTest::testP3_01A_LowerCase()
 void ValueParameterTest::testP3_01B_LowerCase()
 {
 	stringstream param;
-	param << "'instant pressure of air'";
+	param << "'air pressure'";
 	result r = t->exec( statementFloat_( param.str() ) );
 
 	CPPUNIT_ASSERT( not r.empty() );
@@ -179,160 +179,159 @@ void ValueParameterTest::testP3_01B_LowerCase()
 
 void ValueParameterTest::testP3_02A_UpperCase()
 {
-	result r = t->exec( statementOid_( "'INSTANT PRESSURE OF AIR'" ) );
+	result r = t->exec( statementOid_( "'AIR PRESSURE'" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "valueparametername", "pressure of air" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "valueparametername", "air pressure" ) );
 }
 
 void ValueParameterTest::testP3_02B_UpperCase()
 {
-	result r = t->exec( statementFloat_( "'INSTANT PRESSURE OF AIR'" ) );
+	result r = t->exec( statementFloat_( "'AIR PRESSURE'" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(3), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(3), count_val( r, "valueparametername", "pressure of air" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(3), count_val( r, "valueparametername", "air pressure" ) );
 }
 
 void ValueParameterTest::testP3_03A_MixedCase()
 {
-	result r = t->exec( statementOid_( "'iNsTANt Pressure oF aIR'" ) );
+	result r = t->exec( statementOid_( "'aIR Pressure'" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "valueparametername", "pressure of air" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "valueparametername", "air pressure" ) );
 }
 
 void ValueParameterTest::testP3_03B_MixedCase()
 {
-	result r = t->exec( statementFloat_( "'iNsTANt Pressure oF aIR'" ) );
+	result r = t->exec( statementFloat_( "'aIR Pressure'" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(3), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(3), count_val( r, "valueparametername", "pressure of air" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(3), count_val( r, "valueparametername", "air pressure" ) );
 }
 
 void ValueParameterTest::testP4_01A_AllParametersExist()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air', 'max temperature of air', 'min temperature of air'" ) );
+	result r = t->exec( statementOid_( "'air pressure', 'max air temperature', 'min air temperature'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "pressure of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "max temperature of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "min temperature of air" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air pressure" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "max air temperature" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "min air temperature" ) );
 }
 
 void ValueParameterTest::testP4_01B_AllParametersExist()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air', 'max temperature of air', 'min temperature of air'" ) );
+	result r = t->exec( statementFloat_( "'air pressure', 'max air temperature', 'min air temperature'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "pressure of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "max temperature of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "min temperature of air" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air pressure" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "max air temperature" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "min air temperature" ) );
 }
 
 void ValueParameterTest::testP4_02A_NoRequestedParametersExist()
 {
-	result r = t->exec( statementOid_( "'instant velocity of soil', 'instant surface density of air', 'instant pressure of soil'" ) );
+	result r = t->exec( statementOid_( "'soil velocity', 'air surface density', 'soil pressure'" ) );
 	CPPUNIT_ASSERT( r.empty() );
 }
 
 void ValueParameterTest::testP4_02B_NoRequestedParametersExist()
 {
-	result r = t->exec( statementFloat_( "'instant velocity of soil', 'instant surface density of air', 'instant pressure of soil'" ) );
+	result r = t->exec( statementFloat_( "'soil velocity', 'air surface density', 'soil pressure'" ) );
 	CPPUNIT_ASSERT( r.empty() );
 }
 
 void ValueParameterTest::testP4_03A_SomeParametersExist()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air', 'instant temperature of air', 'instant pressure change of air', 'instant velocity of soil', 'instant surface density of air', 'instant pressure of soil'" ) );
+	result r = t->exec( statementOid_( "'air pressure', 'air temperature', 'air pressure change', 'soil velocity', 'air surface density', 'soil pressure'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "pressure of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "temperature of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "pressure change of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "velocity of soil" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "surface density of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "pressure of soil" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air pressure" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air temperature" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air pressure change" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "soil velocity" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "air surface density" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "soil pressure" ) );
 }
 
 void ValueParameterTest::testP4_03B_SomeParametersExist()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air', 'instant temperature of air', 'instant velocity of air', 'instant velocity of soil', 'instant surface density of air', 'instant pressure of soil'" ) );
+	result r = t->exec( statementFloat_( "'air pressure', 'air temperature', 'wind velocity', 'soil velocity', 'air surface density', 'soil pressure'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "pressure of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "temperature of air" ) );
-	CPPUNIT_ASSERT( count_val( r, "valueparametername", "velocity of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "velocity of soil" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "surface density of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "pressure of soil" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air pressure" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air temperature" ) );
+	CPPUNIT_ASSERT( count_val( r, "valueparametername", "wind velocity" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "soil velocity" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "air surface density" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(0), count_val( r, "valueparametername", "soil pressure" ) );
 }
 
 void ValueParameterTest::testP5_01A_NoDuplicates()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air', 'instant temperature of air', 'instant pressure change of air'" ) );
+	result r = t->exec( statementOid_( "'air pressure', 'air temperature', 'air pressure change'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
 void ValueParameterTest::testP5_01B_NoDuplicates()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air', 'instant temperature of air', 'instant velocity of air'" ) );
+	result r = t->exec( statementFloat_( "'air pressure', 'air temperature', 'wind velocity'" ) );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
 void ValueParameterTest::testP5_02A_OneDuplicate()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air', 'instant temperature of air', 'instant temperature of air'" ) );
-	result c = t->exec( statementOid_( "'instant pressure of air', 'instant temperature of air'" ) );
+	result r = t->exec( statementOid_( "'air pressure', 'air temperature', 'air temperature'" ) );
+	result c = t->exec( statementOid_( "'air pressure', 'air temperature'" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( c.size() ) , size_t( r.size() ) );
 }
 
 void ValueParameterTest::testP5_02B_OneDuplicate()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air', 'instant temperature of air', 'instant temperature of air'" ) );
-	result c = t->exec( statementFloat_( "'instant pressure of air', 'instant temperature of air'" ) );
+	result r = t->exec( statementFloat_( "'air pressure', 'air temperature', 'air temperature'" ) );
+	result c = t->exec( statementFloat_( "'air pressure', 'air temperature'" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( c.size() ) , size_t( r.size() ) );
 }
 
 void ValueParameterTest::testP5_03A_SeveralDuplicates()
 {
-	result r = t->exec( statementOid_( "'instant pressure of air', 'instant pressure of air', 'instant temperature of air', 'instant temperature of air'" ) );
-	result c = t->exec( statementOid_( "'instant pressure of air', 'instant temperature of air'" ) );
+	result r = t->exec( statementOid_( "'air pressure', 'air pressure', 'air temperature', 'air temperature'" ) );
+	result c = t->exec( statementOid_( "'air pressure', 'air temperature'" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( c.size() ) , size_t( r.size() ) );
 }
 
 void ValueParameterTest::testP5_03B_SeveralDuplicates()
 {
-	result r = t->exec( statementFloat_( "'instant pressure of air', 'instant pressure of air', 'instant temperature of air', 'instant temperature of air'" ) );
-	result c = t->exec( statementFloat_( "'instant pressure of air', 'instant temperature of air'" ) );
+	result r = t->exec( statementFloat_( "'air pressure', 'air pressure', 'air temperature', 'air temperature'" ) );
+	result c = t->exec( statementFloat_( "'air pressure', 'air temperature'" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( c.size() ) , size_t( r.size() ) );
 }
 
 void ValueParameterTest::testWildCardStatistic()
 {
-	result r1 = t->exec( statementOid_( "'% temperature of air'" ) );
+	result r1 = t->exec( statementOid_( "'% air temperature'" ) );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(2), r1.size() );
 
 }
 
 void ValueParameterTest::testWildCardPhysical()
 {
-	result r2 = t->exec( statementOid_( "'% of air'" ) );
-	CPPUNIT_ASSERT_EQUAL( result::size_type(6), r2.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "pressure of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "pressure change of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "temperature of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "max temperature of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "min temperature of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "velocity of air" ) );
+	result r2 = t->exec( statementOid_( "'%air%'" ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(5), r2.size() );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "air pressure" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "air pressure change" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "air temperature" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "max air temperature" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r2, "valueparametername", "min air temperature" ) );
 }
 
 void ValueParameterTest::testWildCardUsage()
 {
-	result r3 = t->exec( statementOid_( "'instant velocity %'" ) );
+	result r3 = t->exec( statementOid_( "'wind %'" ) );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(3), r3.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r3, "valueparametername", "velocity of air" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r3, "valueparametername", "velocity of air (u-component)" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r3, "valueparametername", "velocity of air (v-component)" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r3, "valueparametername", "wind velocity" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r3, "valueparametername", "wind velocity (u vector)" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r3, "valueparametername", "wind velocity (v vector)" ) );
 }
 
 void ValueParameterTest::testWildCardOnlyStatistic()
@@ -343,14 +342,14 @@ void ValueParameterTest::testWildCardOnlyStatistic()
 
 void ValueParameterTest::testWildCardOnlyPhysical()
 {
-	result r = t->exec( statementOid_( "'velocity %'" ) );
+	result r = t->exec( statementOid_( "'%velocity%'" ) );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(3), r.size() );
 }
 
 void ValueParameterTest::testWildCardOnlyUsage()
 {
-	result r = t->exec( statementOid_( "'% of air'" ) );
-	CPPUNIT_ASSERT_EQUAL( result::size_type(6), r.size() );
+	result r = t->exec( statementOid_( "'air %'" ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(3), r.size() );
 }
 
 void ValueParameterTest::testWildCardAll()

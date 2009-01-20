@@ -170,7 +170,7 @@ CREATE VIEW xmlload.levelparameterxref AS
 SELECT
 	lpp.levelparameterid,
 	0 AS parameternamespaceid,
-	unit.physicalphenomenon || ' ' || lpp.levelparameterusage AS levelparametername,
+	lpp.levelparameterusage || ' ' || unit.physicalphenomenon AS levelparametername,
 	unit.unitname AS levelunitname
 FROM
 	__WDB_SCHEMA__.levelphysicalparameter AS lpp, 

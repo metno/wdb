@@ -256,7 +256,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << "::wci.timeSpec, "
 				  << valTime << "::wci.timeSpec, "
-				  << "ARRAY['velocity of air (u-component)', 'velocity of air (v-component)' ], "
+				  << "ARRAY['velocity of air (u vector)', 'velocity of air (v vector)' ], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";

@@ -229,13 +229,26 @@ CREATE VIEW __WCI_SCHEMA__.valueparameter AS
 SELECT
 	vpp.valueparameterid,
 	0 AS parameternamespaceid,
-	unit.physicalphenomenon || ' ' || vpp.valueparameterusage AS valueparametername,
+	vpp.valueparameterusage || ' ' || unit.physicalphenomenon AS valueparametername,
 	unit.unitname AS valueunitname
 FROM
 	__WDB_SCHEMA__.valuephysicalparameter AS vpp, 
 	__WDB_SCHEMA__.unit AS unit
 WHERE
-	unit.unitname = vpp.valueparameterunitname
+	unit.unitname = vpp.valueparameterunitname AND
+	vpp.parameterquantitytype = 'scalar'
+UNION ALL
+SELECT
+	vpp.valueparameterid,
+	0 AS parameternamespaceid,
+	vpp.valueparameterusage || ' ' || unit.physicalphenomenon || ' (' || vpp.parameterquantitytype || ')' AS valueparametername,
+	unit.unitname AS valueunitname
+FROM
+	__WDB_SCHEMA__.valuephysicalparameter AS vpp, 
+	__WDB_SCHEMA__.unit AS unit
+WHERE
+	unit.unitname = vpp.valueparameterunitname AND
+	vpp.parameterquantitytype <> 'scalar'
 UNION ALL
 SELECT
 	vdp.valueparameterid,
@@ -254,17 +267,28 @@ FROM
 	__WDB_SCHEMA__.valuecodeparameter AS vcp
 UNION ALL
 SELECT
-	vsp.valueparameterid,
+	vfp.valueparameterid,
 	0 AS parameternamespaceid,
-	vsp.valueparameterstatisticstype || ' ' || vsunit.physicalphenomenon || ' ' || vspp.valueparameterusage AS valueparametername,
+	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.physicalphenomenon  AS valueparametername,
 	vsunit.unitname AS valueunitname
 FROM
-	__WDB_SCHEMA__.valuestatisticsparameter AS vsp,
-	__WDB_SCHEMA__.valuephysicalparameter AS vspp, 
+	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
 	__WDB_SCHEMA__.unit AS vsunit
 WHERE
-	vsunit.unitname = vspp.valueparameterunitname AND
-	vsp.basevalueparameterid = vspp.valueparameterid;
+	vsunit.unitname = vfp.valueparameterunitname AND
+	vfp.parameterquantitytype = 'scalar'
+UNION ALL
+SELECT
+	vfp.valueparameterid,
+	0 AS parameternamespaceid,
+	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.physicalphenomenon || ' (' || vfp.parameterquantitytype || ')' AS valueparametername,
+	vsunit.unitname AS valueunitname
+FROM
+	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
+	__WDB_SCHEMA__.unit AS vsunit
+WHERE
+	vsunit.unitname = vfp.valueparameterunitname AND
+	vfp.parameterquantitytype <> 'scalar';
 
 REVOKE ALL ON __WCI_SCHEMA__.valueparameter FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.valueparameter TO wdb_admin;
@@ -290,7 +314,7 @@ CREATE VIEW __WCI_SCHEMA__.levelparameter AS
 SELECT
 	lpp.levelparameterid,
 	0 AS parameternamespaceid,
-	unit.physicalphenomenon || ' ' || lpp.levelparameterusage AS levelparametername,
+	lpp.levelparameterusage || ' ' || unit.physicalphenomenon AS levelparametername,
 	unit.unitname AS levelunitname
 FROM
 	__WDB_SCHEMA__.levelphysicalparameter AS lpp, 

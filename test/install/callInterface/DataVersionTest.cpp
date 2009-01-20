@@ -451,7 +451,7 @@ string DataVersionTest::writeStatement_() const
 	ostringstream ret;
 	ret << "SELECT wci.write( "<< 24944 << "::oid, "<< "'Test Grid, Rotated'::text, '2008-02-01 00:00:00'::timestamp,"
 			<< "'2008-02-01 00:00:00'::timestamp, '2008-02-01 00:00:00'::timestamp, "
-			<< "'instant temperature of air', 'distance above mean sea level', "<< 0 << ", "<< 0
+			<< "'air temperature', 'distance above mean sea level', "<< 0 << ", "<< 0
 			<< " )";
 	return ret.str();
 }
@@ -469,16 +469,16 @@ map<int, string> getSpecFromParamNumber()
 {
     map<int, string> ret;
 
-    ret[ 1 ] = "instant pressure of air";
-    ret[ 3 ] = "instant pressure change of air";
-    ret[ 10 ] = "instant proportion of ozone";
-    ret[ 11 ] = "instant temperature of air";
-    ret[ 15 ] = "max temperature of air";
-    ret[ 16 ] = "min temperature of air";
-    ret[ 32 ] = "instant velocity of air";
-    ret[ 33 ] = "instant velocity of air (u-component)";
-    ret[ 34 ] = "instant velocity of air (v-component)";
-    ret[ 66 ] = "instant distance of snow";
+    ret[ 1 ] = "air pressure";
+    ret[ 3 ] = "air pressure change";
+    ret[ 10 ] = "ozone dobson distance";
+    ret[ 11 ] = "air temperature";
+    ret[ 15 ] = "max air temperature";
+    ret[ 16 ] = "min air temperature";
+    ret[ 32 ] = "wind velocity";
+    ret[ 33 ] = "wind velocity (u vector)";
+    ret[ 34 ] = "wind velocity (v vector)";
+    ret[ 66 ] = "snow depth distance";
 
     return ret;
 }

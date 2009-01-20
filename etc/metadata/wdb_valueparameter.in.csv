@@ -5,7 +5,7 @@ Id|Type
 5|Physical Parameter
 6|Physical Parameter
 8|Physical Parameter
-9|Physical Parameter
+9|Statistical Parameter
 10|Physical Parameter
 11|Physical Parameter
 12|Physical Parameter
@@ -128,7 +128,7 @@ Id|Type
 142|Statistical Parameter
 143|Statistical Parameter
 144|Physical Parameter
-151|Physical Parameter
+151|Statistical Parameter
 164|Physical Parameter
 189|Statistical Parameter
 228|Physical Parameter

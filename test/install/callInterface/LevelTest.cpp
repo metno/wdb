@@ -56,13 +56,13 @@ LevelTest::~LevelTest()
 
 void LevelTest::testL1_01A_ValidLevel()
 {
-	result r = t->exec( statementOid_( "above 5 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "above 5 height above mean sea level distance" ) );
 	CPPUNIT_ASSERT( ! r.empty() );
 }
 
 void LevelTest::testL1_01B_ValidLevel()
 {
-	result r = t->exec( statementFloat_( "above 5 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "above 5 height above mean sea level distance" ) );
 	CPPUNIT_ASSERT( ! r.empty() );
 }
 
@@ -84,63 +84,63 @@ void LevelTest::testL1_02B_InvalidLevel()
 
 void LevelTest::levelRangeOid()
 {
-	result r = t->exec(statementOid_( "5 TO 10 distance above ground"));
+	result r = t->exec(statementOid_( "5 TO 10 height above ground distance"));
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
 }
 
 void LevelTest::levelRangePoint()
 {
-	result r = t->exec(statementFloat_( "5 TO 10 distance above ground"));
+	result r = t->exec(statementFloat_( "5 TO 10 height above ground distance"));
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
 }
 
 void LevelTest::testL2_01A_Exact()
 {
-	result r = t->exec( statementOid_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL2_01B_Exact()
 {
-	result r = t->exec( statementFloat_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL2_02A_Above()
 {
-	result r = t->exec( statementOid_( "above 5 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "above 5 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL2_02B_Above()
 {
-	result r = t->exec( statementFloat_( "above 5 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "above 5 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL2_03A_Below()
 {
-	result r = t->exec( statementOid_( "below 15 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "below 15 height above mean sea level distance" ) );
 
 	// we expect several results.
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT( count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT( count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT( count_val( r, "levelto", 10 ) );
 
@@ -151,11 +151,11 @@ void LevelTest::testL2_03A_Below()
 
 void LevelTest::testL2_03B_Below()
 {
-	result r = t->exec( statementFloat_( "below 15 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "below 15 height above mean sea level distance" ) );
 
 	// we expect several results.
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT( count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT( count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT( count_val( r, "levelto", 10 ) );
 
@@ -166,11 +166,11 @@ void LevelTest::testL2_03B_Below()
 
 void LevelTest::testL2_04A_Any()
 {
-	result r = t->exec( statementOid_( "any 0 distance above ground" ) );
+	result r = t->exec( statementOid_( "any 0 height above ground distance" ) );
 
 	// we expect several results.
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "levelparametername", "distance above ground" ) );
+	CPPUNIT_ASSERT( count_val( r, "levelparametername", "height above ground distance" ) );
 	CPPUNIT_ASSERT( count_val( r, "levelfrom", 0 ) );
 	CPPUNIT_ASSERT( count_val( r, "levelto", 0 ) );
 
@@ -181,11 +181,11 @@ void LevelTest::testL2_04A_Any()
 
 void LevelTest::testL2_04B_Any()
 {
-	result r = t->exec( statementFloat_( "any 0 distance above ground" ) );
+	result r = t->exec( statementFloat_( "any 0 height above ground distance" ) );
 
 	// we expect several results.
 	CPPUNIT_ASSERT( not r.empty() );
-	CPPUNIT_ASSERT( count_val( r, "levelparametername", "distance above ground" ) );
+	CPPUNIT_ASSERT( count_val( r, "levelparametername", "height above ground distance" ) );
 	CPPUNIT_ASSERT( count_val( r, "levelfrom", 0 ) );
 	CPPUNIT_ASSERT( count_val( r, "levelto", 0 ) );
 
@@ -196,46 +196,46 @@ void LevelTest::testL2_04B_Any()
 
 void LevelTest::testL3_01A_CorrectSpec()
 {
-	result r = t->exec( statementOid_( "0 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "0 height above mean sea level distance" ) );
 }
 
 void LevelTest::testL3_01B_CorrectSpec()
 {
-	result r = t->exec( statementFloat_( "0 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "0 height above mean sea level distance" ) );
 }
 
 void LevelTest::testL3_02A_IncorrectSpec()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementOid_( "any tf TO 0 distance above mean sea level" ) ), sql_error );
+	CPPUNIT_ASSERT_THROW( t->exec( statementOid_( "any tf TO 0 height above mean sea level distance" ) ), sql_error );
 	// if you use pqxx version 2.6.9, this is correct. The above is correct
 	// for version 2.6.8, which is the current debian release of pqxx:
-	// CPPUNIT_ASSERT_THROW( t->exec( statement_( "tf", "0", "distance above mean sea level", "any" ) ), undefined_column );
+	// CPPUNIT_ASSERT_THROW( t->exec( statement_( "tf", "0", "height above mean sea level distance", "any" ) ), undefined_column );
 }
 
 void LevelTest::testL3_02B_IncorrectSpec()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_( "any tf TO 0 distance above mean sea level" ) ), sql_error );
+	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_( "any tf TO 0 height above mean sea level distance" ) ), sql_error );
 	// if you use pqxx version 2.6.9, this is correct. The above is correct
 	// for version 2.6.8, which is the current debian release of pqxx:
-	// CPPUNIT_ASSERT_THROW( t->exec( statement_( "tf", "0", "distance above mean sea level", "any" ) ), undefined_column );
+	// CPPUNIT_ASSERT_THROW( t->exec( statement_( "tf", "0", "height above mean sea level distance", "any" ) ), undefined_column );
 }
 
 void LevelTest::testL4_01A_Existing()
 {
-	result r = t->exec( statementOid_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL4_01B_Existing()
 {
-	result r = t->exec( statementFloat_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
@@ -258,120 +258,120 @@ void LevelTest::testL4_02B_NonExisting()
 
 void LevelTest::testL5_01A_LowerCase()
 {
-	result r = t->exec( statementOid_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL5_01B_LowerCase()
 {
-	result r = t->exec( statementFloat_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL5_02A_UpperCase()
 {
-	result r = t->exec( statementOid_( "10 DISTANCE ABOVE MEAN SEA LEVEL" ) );
+	result r = t->exec( statementOid_( "10 HEIGHT ABOVE MEAN SEA LEVEL DISTANCE" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL5_02B_UpperCase()
 {
-	result r = t->exec( statementFloat_( "10 DISTANCE ABOVE MEAN SEA LEVEL" ) );
+	result r = t->exec( statementFloat_( "10 HEIGHT ABOVE MEAN SEA LEVEL DISTANCE" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL5_03A_MixedCase()
 {
-	result r = t->exec( statementOid_( "10 DIstance aBOVe Mean SEA level" ) );
+	result r = t->exec( statementOid_( "10 HeiGHT aBOVe Mean SEA level dISTance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL5_03B_MixedCase()
 {
-	result r = t->exec( statementFloat_( "10 DIstance aBOVe Mean SEA level" ) );
+	result r = t->exec( statementFloat_( "10 HeiGHT aBOVe Mean SEA level dISTance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL6_01A_LowerCaseInterpolation()
 {
-	result r = t->exec( statementOid_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "exact 10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL6_01B_LowerCaseInterpolation()
 {
-	result r = t->exec( statementFloat_( "10 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "exact 10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL6_02A_UpperCaseInterpolation()
 {
-	result r = t->exec( statementOid_( "EXACT 10 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "EXACT 10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL6_02B_UpperCaseInterpolation()
 {
-	result r = t->exec( statementFloat_( "EXACT 10 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "EXACT 10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL6_03A_MixedCaseInterpolation()
 {
-	result r = t->exec( statementOid_( "eXAct 10 distance above mean sea level" ) );
+	result r = t->exec( statementOid_( "eXAct 10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
 void LevelTest::testL6_03B_MixedCaseInterpolation()
 {
-	result r = t->exec( statementFloat_( "eXAct 10 distance above mean sea level" ) );
+	result r = t->exec( statementFloat_( "eXAct 10 height above mean sea level distance" ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "distance above mean sea level" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelparametername", "height above mean sea level distance" ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelfrom", 10 ) );
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }

@@ -149,7 +149,8 @@ CREATE INDEX XIE1Wdb_PlacePoint ON __WDB_SCHEMA__.placepoint
 CREATE UNIQUE INDEX XAK1Wdb_ValueStandardParameter ON __WDB_SCHEMA__.valuephysicalparameter
 (
     valueparameterunitname,
-	valueparameterusage
+	valueparameterusage,
+	parameterquantitytype
 );
 
 CREATE UNIQUE INDEX XAK1Wdb_LevelStandardParameter ON __WDB_SCHEMA__.levelphysicalparameter

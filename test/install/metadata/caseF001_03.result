@@ -1,31 +1,31 @@
 dataproviderid|placeid|referencetime|validtimefrom|validtimeto|validtimeindeterminatecode|valueparametername|valueunitname|levelparametername|levelunitname|levelfrom|levelto|levelindeterminatecode|dataversion|confidencecode
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|irradiance of latent heat|watt per square metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|irradiance of sensible heat|watt per square metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|pressure of momentum flux (u component)|newton per square metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|distance of land, surface roughness|metre|distance above mean sea level|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|distance of snow|metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure change of air|pascal per second|pressure of isobaric surface|pascal|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|pressure of air|hectopascal|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|surface density of cloud water|kilogram per square metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|surface density of soil|kilogram per square metre|distance above ground|metre|0|0|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|surface density of soil|kilogram per square metre|distance above ground|metre|999|999|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|801|801|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|802|802|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|803|803|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|804|804|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|temperature of air|kelvin|distance above ground|metre|805|805|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|distance above ground|metre|801|801|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|distance above ground|metre|802|802|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|distance above ground|metre|803|803|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|distance above ground|metre|804|804|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|distance above ground|metre|805|805|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|distance above ground|metre|801|801|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|distance above ground|metre|802|802|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|distance above ground|metre|803|803|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|distance above ground|metre|804|804|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|distance above ground|metre|805|805|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|hybrid level||39|39|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (u-component)|metre per second|hybrid level||40|40|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|hybrid level||39|39|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|velocity of air (v-component)|metre per second|hybrid level||40|40|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|latent heat irradiance|watt per square metre|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|momentum flux pressure (u vector)|newton per square metre|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|sensible heat irradiance|watt per square metre|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air pressure|hectopascal|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air pressure change|pascal per second|isobaric surface pressure|pascal|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air temperature|kelvin|height above ground distance|metre|801|801|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air temperature|kelvin|height above ground distance|metre|802|802|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air temperature|kelvin|height above ground distance|metre|803|803|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air temperature|kelvin|height above ground distance|metre|804|804|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|air temperature|kelvin|height above ground distance|metre|805|805|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|snow depth distance|metre|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|soil surface density|kilogram per square metre|height above ground distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|soil surface density|kilogram per square metre|height above ground distance|metre|999|999|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|surface roughness distance|metre|height above mean sea level distance|metre|0|0|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|height above ground distance|metre|801|801|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|height above ground distance|metre|802|802|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|height above ground distance|metre|803|803|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|height above ground distance|metre|804|804|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|height above ground distance|metre|805|805|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|height above ground distance|metre|801|801|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|height above ground distance|metre|802|802|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|height above ground distance|metre|803|803|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|height above ground distance|metre|804|804|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|height above ground distance|metre|805|805|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||39|39|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||40|40|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||39|39|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||40|40|0|0|0
 (29 rows)

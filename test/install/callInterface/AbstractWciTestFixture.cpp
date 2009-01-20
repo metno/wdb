@@ -71,6 +71,6 @@ void AbstractWciTestFixture::endTransaction()
     AbstractWdbTestFixture::endTransaction();
 }
 
-const char * AbstractWciTestFixture::defaultParameter = "instant pressure of air";
+const char * AbstractWciTestFixture::defaultParameter = "air pressure";
 
 const std::string AbstractWciTestFixture::defaultUser_ = "wcitest";

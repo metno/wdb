@@ -262,7 +262,7 @@ ProcessXml::decodeLocation( xmlTextReaderPtr reader )
 		}
 	}
 	if (alt != 0) {
-		int levPar = conn_.getXmlLevelParameter( "distance above mean sea level" );
+		int levPar = conn_.getXmlLevelParameter( "height above mean sea level distance" );
 		float altitude;
 		if (! from_string<float>( altitude, alt, std::dec ) )
 		    throw WdbException("Couldn't decode altitude", __func__);

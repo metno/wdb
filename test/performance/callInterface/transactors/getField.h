@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -47,7 +47,7 @@
 #include <wciRowStructures.h>
 
 namespace wdb {
-	
+
 namespace test {
 
 
@@ -56,11 +56,11 @@ class SingleFieldTest : public pqxx::transactor<>
 	std::vector <GridRow *> & rows_;
 	char * buffer_;
 	int bufferSize_;
-		
+
 public:
 	SingleFieldTest(std::vector <GridRow *> & rows, char * buf, int bufSiz) :
     pqxx::transactor<>("SingleFieldTest"), rows_(rows), buffer_(buf), bufferSize_(bufSiz) {}
-	
+
 	void operator()(argument_type &T)
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
@@ -105,10 +105,10 @@ public:
 			read = fieldObject->read(buffer_, bufferSize_);
 	    	log.infoStream() <<  "Read " << read << " bytes";
 			delete fieldObject;
-		}				
+		}
 	}
-  
-	  
+
+
   	void on_abort(const char Reason[]) throw ()
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
@@ -133,11 +133,11 @@ class MultipleFieldTest : public pqxx::transactor<>
 	std::vector <GridRow *> & rows_;
 	char * buffer_;
 	int bufferSize_;
-		
+
 public:
 	MultipleFieldTest(std::vector <GridRow *> & rows, char * buf, int bufSiz) :
     pqxx::transactor<>("MultipleFieldTest"), rows_(rows), buffer_(buf), bufferSize_(bufSiz) {}
-	
+
 	void operator()(argument_type &T)
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
@@ -148,8 +148,8 @@ public:
     	queryStr << "'hirlam 10', "; // Place
     	queryStr << "('1980-01-01 12:00:00', '1980-01-01 18:00:00', 'exact')::wci.timeSpec, "; // Reference Time
     	queryStr << "('1980-01-01 19:00:00', '1980-01-01 19:00:00', 'exact')::wci.timeSpec, "; // Valid Time
-    	queryStr << "ARRAY['instant temperature of air', 'instant pressure of air', 'instant pressure change of air',"
-    			<<  "'instant temperature of air (potential)' ], "; // Parameter
+    	queryStr << "ARRAY['air temperature', 'air pressure', 'air pressure change',"
+    			<<  "'air temperature (potential)' ], "; // Parameter
     	queryStr << "(0,1000,'of isobaric surface','any')::wci.levelSpec, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
     	queryStr << "NULL::wci.returnoid	)"; // Return Type
@@ -183,10 +183,10 @@ public:
 			read = fieldObject->read(buffer_, bufferSize_);
 	    	log.infoStream() <<  "Read " << read << " bytes";
 			delete fieldObject;
-		}				
+		}
 	}
-  
-	  
+
+
   	void on_abort(const char Reason[]) throw ()
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
