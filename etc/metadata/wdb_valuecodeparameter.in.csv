@@ -1,9 +1,9 @@
 ParameterId|Code|Code Reference
-21|Radar Spectra 1|WMO Code Table 2
-22|Radar Spectra 2|WMO Code Table 2
-23|Radar Spectra 3|WMO Code Table 2
-28|Wave Spectra 1|WMO Code Table 2
+21|radar spectra 1|WMO Code Table 2
+22|radar spectra 2|WMO Code Table 2
+23|radar spectra 3|WMO Code Table 2
+28|wave spectra 1|WMO Code Table 2
 29|Wave Spectra 3|WMO Code Table 2
 30|Wave Spectra 3|WMO Code Table 2
-127|Image Data|WMO Code Table 2
+127|image data|WMO Code Table 2
 800|yr weather symbol|www.yr.no

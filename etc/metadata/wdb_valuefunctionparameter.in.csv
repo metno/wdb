@@ -1,20 +1,30 @@
 ParameterId|ParameterFunction|Value Domain|Unit|QuantityType
-9|stddev|height|metre|scalar
-15|max|air|kelvin|scalar
-16|min|air|kelvin|scalar
-61|accumulated|precipitation|kilogram per square metre|scalar
-62|accumulated|large scale precipitation|kilogram per square metre|scalar
-63|accumulated|convective precipitation|kilogram per square metre|scalar
-65|accumulated|water equivalent snow|kilogram per square metre|scalar
-103|mean|wind waves|second|scalar
-106|mean|swell waves|second|scalar
-108|mean|primary waves|second|scalar
-110|mean|secondary waves|second|scalar
-111|accumulated|short wave|watt per square metre|scalar
-112|accumulated|long wave|watt per square metre|scalar
-113|accumulated|top atmosphere short-wave |watt per square metre|scalar
-114|accumulated|top atmosphere long-wave |watt per square metre|scalar
-142|accumulated|large scale precipitation|metre|scalar
-143|accumulated|convective precipitation|metre|scalar
-151|mean|sea level|pascal|scalar
-189|accumulated|sunshine|minute|scalar
+9|stddev|height|m|scalar
+15|max|air|K|scalar
+16|min|air|K|scalar
+61|accumulated|precipitation|kg/m2|scalar
+62|accumulated|large scale precipitation|kg/m2|scalar
+63|accumulated|convective precipitation|kg/m2|scalar
+65|accumulated|water equivalent snow|kg/m2|scalar
+103|mean|wind waves|s|scalar
+106|mean|swell waves|s|scalar
+108|mean|primary waves|s|scalar
+110|mean|secondary waves|s|scalar
+111|accumulated|short wave|W/m2|scalar
+112|accumulated|long wave|W/m2|scalar
+113|accumulated|top atmosphere short-wave |W/m2|scalar
+114|accumulated|top atmosphere long-wave |W/m2|scalar
+142|accumulated|large scale precipitation|m|scalar
+143|accumulated|convective precipitation|m|scalar
+151|mean|sea level|Pa|scalar
+189|accumulated|sunshine|s|scalar
+700|10th percentile|air|K|scalar
+701|25th percentile|air|K|scalar
+702|50th percentile|air|K|scalar
+703|75th percentile|air|K|scalar
+704|90th percentile|air|K|scalar
+710|10th percentile accumulated|precipitation|kg/m2|scalar
+711|25th percentile accumulated|precipitation|kg/m2|scalar
+712|50th percentile accumulated|precipitation|kg/m2|scalar
+713|75th percentile accumulated|precipitation|kg/m2|scalar
+714|90th percentile accumulated|precipitation|kg/m2|scalar

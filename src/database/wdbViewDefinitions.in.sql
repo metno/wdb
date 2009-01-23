@@ -26,7 +26,7 @@
 CREATE VIEW __WDB_SCHEMA__.unitwithabbreviation AS
        SELECT un.unitname, 
 			  un.unittype, 
-			  un.physicalphenomenon, 
+			  un.measure, 
               ua.unitabbreviation
        FROM __WDB_SCHEMA__.unit un, 
 			__WDB_SCHEMA__.unitabbreviation ua

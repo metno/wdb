@@ -96,12 +96,8 @@ ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
     ADD CONSTRAINT timeindeterminatetype_pkey PRIMARY KEY (timeindeterminatecode);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.parameterfunctiontype
-    ADD CONSTRAINT parameterfunctiontype_pkey PRIMARY KEY (parameterfunctiontype);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.physicalphenomenon
-    ADD CONSTRAINT physicalphenomenon_pkey PRIMARY KEY (physicalphenomenon);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.valueparameterusage
@@ -112,8 +108,6 @@ ALTER TABLE ONLY __WDB_SCHEMA__.levelparameterusage
     ADD CONSTRAINT levelparameterusage_pkey PRIMARY KEY (levelparameterusage);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.unit
-    ADD CONSTRAINT unit_pkey PRIMARY KEY (unitname);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.unitabbreviation
@@ -128,8 +122,8 @@ ALTER TABLE ONLY __WDB_SCHEMA__.valueparameter
     ADD CONSTRAINT valueparameter_pkey PRIMARY KEY (valueparameterid);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.valuephysicalparameter
-    ADD CONSTRAINT valuephysicalparameter_pkey PRIMARY KEY (valueparameterid);
+ALTER TABLE ONLY __WDB_SCHEMA__.valuemeasureparameter
+    ADD CONSTRAINT valuemeasureparameter_pkey PRIMARY KEY (valueparameterid);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.valuecodeparameter
@@ -144,8 +138,8 @@ ALTER TABLE ONLY __WDB_SCHEMA__.levelparameter
     ADD CONSTRAINT levelparameter_pkey PRIMARY KEY (levelparameterid);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.levelphysicalparameter
-    ADD CONSTRAINT levelphysicalparameter_pkey PRIMARY KEY (levelparameterid);
+ALTER TABLE ONLY __WDB_SCHEMA__.levelmeasureparameter
+    ADD CONSTRAINT levelmeasureparameter_pkey PRIMARY KEY (levelparameterid);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.levelcodeparameter
@@ -285,11 +279,6 @@ ALTER TABLE __WDB_SCHEMA__.placename
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
-ALTER TABLE __WDB_SCHEMA__.unit
-	ADD FOREIGN KEY (physicalphenomenon)
-					REFERENCES __WDB_SCHEMA__.physicalphenomenon
-					ON DELETE RESTRICT
-					ON UPDATE CASCADE;
 
 
 ALTER TABLE __WDB_SCHEMA__.unitabbreviation
@@ -306,7 +295,7 @@ ALTER TABLE __WDB_SCHEMA__.siunitconversion
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.valuephysicalparameter
+ALTER TABLE __WDB_SCHEMA__.valuemeasureparameter
 	ADD FOREIGN KEY (valueparameterid)
 					REFERENCES __WDB_SCHEMA__.valueparameter
 					ON DELETE CASCADE
@@ -320,14 +309,14 @@ ALTER TABLE __WDB_SCHEMA__.valuefunctionparameter
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.valuephysicalparameter
+ALTER TABLE __WDB_SCHEMA__.valuemeasureparameter
 	ADD FOREIGN KEY (valueparameterunitname)
 					REFERENCES __WDB_SCHEMA__.unit
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.valuephysicalparameter
+ALTER TABLE __WDB_SCHEMA__.valuemeasureparameter
 	ADD FOREIGN KEY (valueparameterusage)
 					REFERENCES __WDB_SCHEMA__.valueparameterusage
 					ON DELETE CASCADE
@@ -355,21 +344,21 @@ ALTER TABLE __WDB_SCHEMA__.valueparametername
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.levelphysicalparameter
+ALTER TABLE __WDB_SCHEMA__.levelmeasureparameter
 	ADD FOREIGN KEY (levelparameterid)
 					REFERENCES __WDB_SCHEMA__.levelparameter
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.levelphysicalparameter
+ALTER TABLE __WDB_SCHEMA__.levelmeasureparameter
 	ADD FOREIGN KEY (levelparameterunitname)
 					REFERENCES __WDB_SCHEMA__.unit
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.levelphysicalparameter
+ALTER TABLE __WDB_SCHEMA__.levelmeasureparameter
 	ADD FOREIGN KEY (levelparameterusage)
 					REFERENCES __WDB_SCHEMA__.levelparameterusage
 					ON DELETE CASCADE

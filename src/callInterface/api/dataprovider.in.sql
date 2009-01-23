@@ -94,7 +94,7 @@ BEGIN
 		id := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
 
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
-		(id, 'WCI User', 'Any', 'now');
+		(id, 'WCI User', 'Any', '1 day', 'now');
 	
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		(id, 'wci user', 'now');

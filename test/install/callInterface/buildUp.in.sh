@@ -66,7 +66,7 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-
 # G5 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air pressure change' -P 168,156=2
 # G6 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20' --reftime '2004-12-26 06:00:00+00' --valueparameter 'ozone dobson distance' -P280,135=2 -P90,42=3 -P233,17=4 -P233,377=5 -P232,374=6
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20' --reftime '2004-12-26 06:00:00+00' --valueparameter 'ozone dobson surface density' -P280,135=2 -P90,42=3 -P233,17=4 -P233,377=5 -P232,374=6
 # G9 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2
 # G11 Test
@@ -123,11 +123,11 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 # V6
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'ozone dobson distance' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'ozone dobson surface density' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
-$TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'ozone dobson distance' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'ozone dobson surface density' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 

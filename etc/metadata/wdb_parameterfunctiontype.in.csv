@@ -5,4 +5,14 @@ min|Minimum value for the period specified by the valid time interval
 max|Maximum value for the period specified by the valid time interval
 mean|Mean (average) value for the period specified by the valid time interval
 stddev|Standard deviation of the value for the period specified by the valid time interval
+10th percentile|Percentile
+25th percentile|Percentile
+50th percentile|Percentile
+75th percentile|Percentile
+90th percentile|Percentile
+10th percentile accumulated|Percentile of accumulated value
+25th percentile accumulated|Percentile of accumulated value
+50th percentile accumulated|Percentile of accumulated value
+75th percentile accumulated|Percentile of accumulated value
+90th percentile accumulated|Percentile of accumulated value
 unknown|The statistics type is unknown

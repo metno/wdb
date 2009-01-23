@@ -229,10 +229,10 @@ CREATE VIEW __WCI_SCHEMA__.valueparameter AS
 SELECT
 	vpp.valueparameterid,
 	0 AS parameternamespaceid,
-	vpp.valueparameterusage || ' ' || unit.physicalphenomenon AS valueparametername,
+	vpp.valueparameterusage || ' ' || unit.measure AS valueparametername,
 	unit.unitname AS valueunitname
 FROM
-	__WDB_SCHEMA__.valuephysicalparameter AS vpp, 
+	__WDB_SCHEMA__.valuemeasureparameter AS vpp, 
 	__WDB_SCHEMA__.unit AS unit
 WHERE
 	unit.unitname = vpp.valueparameterunitname AND
@@ -241,10 +241,10 @@ UNION ALL
 SELECT
 	vpp.valueparameterid,
 	0 AS parameternamespaceid,
-	vpp.valueparameterusage || ' ' || unit.physicalphenomenon || ' (' || vpp.parameterquantitytype || ')' AS valueparametername,
+	vpp.valueparameterusage || ' ' || unit.measure || ' (' || vpp.parameterquantitytype || ')' AS valueparametername,
 	unit.unitname AS valueunitname
 FROM
-	__WDB_SCHEMA__.valuephysicalparameter AS vpp, 
+	__WDB_SCHEMA__.valuemeasureparameter AS vpp, 
 	__WDB_SCHEMA__.unit AS unit
 WHERE
 	unit.unitname = vpp.valueparameterunitname AND
@@ -269,7 +269,7 @@ UNION ALL
 SELECT
 	vfp.valueparameterid,
 	0 AS parameternamespaceid,
-	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.physicalphenomenon  AS valueparametername,
+	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.measure  AS valueparametername,
 	vsunit.unitname AS valueunitname
 FROM
 	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
@@ -281,7 +281,7 @@ UNION ALL
 SELECT
 	vfp.valueparameterid,
 	0 AS parameternamespaceid,
-	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.physicalphenomenon || ' (' || vfp.parameterquantitytype || ')' AS valueparametername,
+	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.measure || ' (' || vfp.parameterquantitytype || ')' AS valueparametername,
 	vsunit.unitname AS valueunitname
 FROM
 	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
@@ -314,10 +314,10 @@ CREATE VIEW __WCI_SCHEMA__.levelparameter AS
 SELECT
 	lpp.levelparameterid,
 	0 AS parameternamespaceid,
-	lpp.levelparameterusage || ' ' || unit.physicalphenomenon AS levelparametername,
+	lpp.levelparameterusage || ' ' || unit.measure AS levelparametername,
 	unit.unitname AS levelunitname
 FROM
-	__WDB_SCHEMA__.levelphysicalparameter AS lpp, 
+	__WDB_SCHEMA__.levelmeasureparameter AS lpp, 
 	__WDB_SCHEMA__.unit AS unit
 WHERE
 	unit.unitname = lpp.levelparameterunitname
@@ -475,7 +475,7 @@ CREATE VIEW __WCI_SCHEMA__.unit AS
 	SELECT  
 		unitname,
 		unittype,
-		physicalphenomenon
+		measure
 	FROM 	
 		__WDB_SCHEMA__.unit;
 		
@@ -498,16 +498,16 @@ GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_read;
 GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.physicalphenomenon AS
+CREATE VIEW __WCI_SCHEMA__.measure AS
 	SELECT  
-		physicalphenomenon
+		measure
 	FROM 	
-		__WDB_SCHEMA__.physicalphenomenon;
+		__WDB_SCHEMA__.measure;
 		
-REVOKE ALL ON __WCI_SCHEMA__.physicalphenomenon FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.physicalphenomenon TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.physicalphenomenon TO wdb_read;
-GRANT SELECT ON __WCI_SCHEMA__.physicalphenomenon TO wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.measure FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.measure TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.measure TO wdb_read;
+GRANT SELECT ON __WCI_SCHEMA__.measure TO wdb_write;
 
 
 CREATE VIEW __WCI_SCHEMA__.valuedomain AS

@@ -249,7 +249,7 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger_updatevalueparameter_mv
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.valuephysicalparameter
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.valuemeasureparameter
 	EXECUTE PROCEDURE updatevalueparameter_mv();
 
 
@@ -262,6 +262,6 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger_updatelevelparameter_mv
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.levelphysicalparameter
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.levelmeasureparameter
 	EXECUTE PROCEDURE updatelevelparameter_mv();
 

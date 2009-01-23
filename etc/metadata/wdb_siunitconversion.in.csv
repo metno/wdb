@@ -1,29 +1,25 @@
 Unit Name|coefficient|term
-milligram per cubic metre|0.0000010|0
-millimetre|0.0010000|0
-hectometre|100.0000000|0
-kilometre|1000.0000000|0
-hectopascal|100.0000000|0
-kilopascal|1000.0000000|0
-joule per cubic metre|1.0000000|0
-newton per square metre|1.0000000|0
-hectopascal per second|100.0000000|0
-joule per square metre|1.0000000|0
-hour|3600.0000000|0
-minute|60.0000000|0
-millisecond|0.0010000|0
-level number|1.0000000|0
-degree|0.0174533|0
-percent|0.0100000|0
-kilogram per kilogram|1.0000000|0
-cubic metre per cubic metre|1.0000000|0
-fraction|1.0000000|0
-coefficient|1.0000000|0
-square slope|1.0000000|0
-per second|1.0000000|0
-square metre per square second|1.0000000|0
-degree celsius|1.0000000|273.15
-kilowatt second per square metre|0.0010000|0
-watt second per square metre|1.0000000|0
-newton second per square metre|1.0000000|0
-kilonewton second per square metre|1000.0000000|0
+mg/m3|0.0000010|0
+mm|0.0010000|0
+hm|100.0000000|0
+km|1000.0000000|0
+hPa|100.0000000|0
+kPa|1000.0000000|0
+J/m3|1.0000000|0
+N/m2|1.0000000|0
+hPa/s|100.0000000|0
+J/m2|1.0000000|0
+h|3600.0000000|0
+min|60.0000000|0
+ms|0.0010000|0
+deg|0.0174533|0
+%|0.0100000|0
+kg/kg|1.0000000|0
+m3/m3|1.0000000|0
+/s|1.0000000|0
+m2/s2|1.0000000|0
+Cel|1.0000000|273.15
+kW.s/m2|0.0010000|0
+W.s/m2|1.0000000|0
+N.s/m2|1.0000000|0
+kN.s/m2|1000.0000000|0

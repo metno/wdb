@@ -10,6 +10,7 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_person.in.csv \
 						etc/metadata/wdb_softwareversion.in.csv \
 						etc/metadata/wdb_namespace.in.csv \
+						etc/metadata/wdb_measure.in.csv \
 						etc/metadata/wdb_currentconfiguration.in.csv \
 						etc/metadata/wdb_defaultCodespace.in.csv \
 						etc/metadata/wdb_placeindeterminatetype.in.csv \
@@ -31,12 +32,12 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_valueparameterusage.in.csv \
 						etc/metadata/wdb_levelparameterusage.in.csv \
 						etc/metadata/wdb_valueparameter.in.csv \
-						etc/metadata/wdb_valuephysicalparameter.in.csv \
+						etc/metadata/wdb_valuemeasureparameter.in.csv \
 						etc/metadata/wdb_valuedimensionlessparameter.in.csv \
 						etc/metadata/wdb_valuecodeparameter.in.csv \
 						etc/metadata/wdb_valuefunctionparameter.in.csv \
 						etc/metadata/wdb_levelparameter.in.csv \
-						etc/metadata/wdb_levelphysicalparameter.in.csv \
+						etc/metadata/wdb_levelmeasureparameter.in.csv \
 						etc/metadata/wdb_levelcodeparameter.in.csv \
 						etc/metadata/wdb_qualityconfidencecode.in.csv \
 						etc/metadata/wdb_qualitycontrolstage.in.csv \

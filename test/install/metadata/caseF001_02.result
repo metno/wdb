@@ -1,124 +1,124 @@
 dataproviderid|placeid|referencetime|validtimefrom|validtimeto|validtimeindeterminatecode|valueparametername|valueunitname|levelparametername|levelunitname|levelfrom|levelto|levelindeterminatecode|dataversion|confidencecode
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||1|1|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||2|2|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||3|3|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||4|4|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||5|5|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||6|6|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||7|7|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||8|8|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||9|9|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||10|10|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||11|11|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||12|12|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||13|13|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||14|14|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||15|15|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||16|16|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||17|17|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||18|18|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||19|19|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||20|20|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||21|21|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||22|22|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||23|23|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||24|24|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||25|25|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||26|26|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||27|27|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||28|28|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||29|29|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||30|30|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||31|31|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||32|32|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||33|33|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||34|34|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||35|35|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||36|36|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||37|37|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||38|38|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||39|39|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kilogram per square metre|hybrid level||40|40|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||1|1|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||2|2|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||3|3|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||4|4|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||5|5|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||6|6|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||7|7|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||8|8|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||9|9|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||10|10|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||11|11|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||12|12|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||13|13|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||14|14|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||15|15|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||16|16|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||17|17|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||18|18|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||19|19|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||20|20|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||21|21|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||22|22|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||23|23|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||24|24|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||25|25|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||26|26|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||27|27|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||28|28|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||29|29|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||30|30|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||31|31|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||32|32|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||33|33|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||34|34|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||35|35|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||36|36|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||37|37|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||38|38|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||39|39|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kilogram per square metre|hybrid level||40|40|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||1|1|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||2|2|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||3|3|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||4|4|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||5|5|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||6|6|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||7|7|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||8|8|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||9|9|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||10|10|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||11|11|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||12|12|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||13|13|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||14|14|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||15|15|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||16|16|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||17|17|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||18|18|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||19|19|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||20|20|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||21|21|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||22|22|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||23|23|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||24|24|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||25|25|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||26|26|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||27|27|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||28|28|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||29|29|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||30|30|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||31|31|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||32|32|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||33|33|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||34|34|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||35|35|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||36|36|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||37|37|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||38|38|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||39|39|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|kelvin|hybrid level||40|40|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||1|1|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||2|2|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||3|3|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||4|4|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||5|5|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||6|6|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||7|7|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||8|8|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||9|9|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||10|10|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||11|11|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||12|12|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||13|13|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||14|14|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||15|15|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||16|16|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||17|17|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||18|18|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||19|19|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||20|20|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||21|21|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||22|22|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||23|23|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||24|24|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||25|25|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||26|26|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||27|27|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||28|28|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||29|29|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||30|30|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||31|31|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||32|32|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||33|33|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||34|34|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||35|35|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||36|36|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||37|37|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||38|38|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||39|39|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|0|accumulated precipitation surface density|kg/m2|hybrid level||40|40|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||1|1|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||2|2|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||3|3|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||4|4|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||5|5|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||6|6|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||7|7|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||8|8|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||9|9|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||10|10|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||11|11|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||12|12|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||13|13|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||14|14|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||15|15|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||16|16|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||17|17|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||18|18|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||19|19|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||20|20|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||21|21|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||22|22|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||23|23|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||24|24|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||25|25|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||26|26|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||27|27|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||28|28|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||29|29|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||30|30|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||31|31|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||32|32|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||33|33|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||34|34|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||35|35|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||36|36|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||37|37|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||38|38|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||39|39|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|cloud water surface density|kg/m2|hybrid level||40|40|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||1|1|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||2|2|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||3|3|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||4|4|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||5|5|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||6|6|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||7|7|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||8|8|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||9|9|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||10|10|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||11|11|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||12|12|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||13|13|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||14|14|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||15|15|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||16|16|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||17|17|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||18|18|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||19|19|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||20|20|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||21|21|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||22|22|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||23|23|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||24|24|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||25|25|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||26|26|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||27|27|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||28|28|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||29|29|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||30|30|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||31|31|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||32|32|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||33|33|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||34|34|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||35|35|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||36|36|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||37|37|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||38|38|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||39|39|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|potential air temperature|K|hybrid level||40|40|0|0|0
 88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific humidity|ratio|hybrid level||1|1|0|0|0
 88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific humidity|ratio|hybrid level||2|2|0|0|0
 88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific humidity|ratio|hybrid level||3|3|0|0|0
@@ -159,164 +159,164 @@ dataproviderid|placeid|referencetime|validtimefrom|validtimeto|validtimeindeterm
 88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific humidity|ratio|hybrid level||38|38|0|0|0
 88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific humidity|ratio|hybrid level||39|39|0|0|0
 88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|specific humidity|ratio|hybrid level||40|40|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||1|1|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||2|2|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||3|3|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||4|4|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||5|5|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||6|6|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||7|7|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||8|8|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||9|9|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||10|10|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||11|11|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||12|12|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||13|13|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||14|14|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||15|15|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||16|16|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||17|17|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||18|18|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||19|19|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||20|20|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||21|21|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||22|22|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||23|23|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||24|24|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||25|25|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||26|26|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||27|27|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||28|28|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||29|29|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||30|30|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||31|31|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||32|32|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||33|33|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||34|34|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||35|35|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||36|36|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||37|37|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||38|38|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||39|39|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|pascal per second|hybrid level||40|40|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||1|1|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||2|2|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||3|3|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||4|4|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||5|5|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||6|6|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||7|7|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||8|8|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||9|9|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||10|10|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||11|11|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||12|12|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||13|13|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||14|14|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||15|15|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||16|16|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||17|17|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||18|18|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||19|19|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||20|20|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||21|21|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||22|22|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||23|23|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||24|24|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||25|25|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||26|26|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||27|27|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||28|28|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||29|29|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||30|30|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||31|31|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||32|32|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||33|33|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||34|34|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||35|35|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||36|36|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||37|37|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||38|38|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||39|39|0|0|0
-88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|metre per second|hybrid level||40|40|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||1|1|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||2|2|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||3|3|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||4|4|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||5|5|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||6|6|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||7|7|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||8|8|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||9|9|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||10|10|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||11|11|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||12|12|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||13|13|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||14|14|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||15|15|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||16|16|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||17|17|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||18|18|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||19|19|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||20|20|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||21|21|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||22|22|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||23|23|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||24|24|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||25|25|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||26|26|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||27|27|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||28|28|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||29|29|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||30|30|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||31|31|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||32|32|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||33|33|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||34|34|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||35|35|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||36|36|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||37|37|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||38|38|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||39|39|0|0|0
-88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|metre per second|hybrid level||40|40|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||1|1|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||2|2|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||3|3|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||4|4|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||5|5|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||6|6|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||7|7|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||8|8|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||9|9|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||10|10|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||11|11|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||12|12|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||13|13|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||14|14|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||15|15|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||16|16|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||17|17|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||18|18|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||19|19|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||20|20|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||21|21|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||22|22|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||23|23|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||24|24|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||25|25|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||26|26|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||27|27|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||28|28|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||29|29|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||30|30|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||31|31|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||32|32|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||33|33|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||34|34|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||35|35|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||36|36|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||37|37|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||38|38|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||39|39|0|0|0
-88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|metre per second|hybrid level||40|40|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||1|1|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||2|2|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||3|3|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||4|4|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||5|5|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||6|6|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||7|7|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||8|8|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||9|9|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||10|10|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||11|11|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||12|12|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||13|13|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||14|14|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||15|15|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||16|16|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||17|17|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||18|18|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||19|19|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||20|20|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||21|21|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||22|22|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||23|23|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||24|24|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||25|25|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||26|26|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||27|27|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||28|28|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||29|29|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||30|30|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||31|31|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||32|32|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||33|33|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||34|34|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||35|35|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||36|36|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||37|37|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||38|38|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||39|39|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical pressure change|Pa/s|hybrid level||40|40|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||1|1|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||2|2|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||3|3|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||4|4|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||5|5|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||6|6|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||7|7|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||8|8|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||9|9|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||10|10|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||11|11|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||12|12|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||13|13|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||14|14|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||15|15|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||16|16|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||17|17|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||18|18|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||19|19|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||20|20|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||21|21|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||22|22|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||23|23|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||24|24|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||25|25|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||26|26|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||27|27|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||28|28|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||29|29|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||30|30|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||31|31|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||32|32|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||33|33|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||34|34|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||35|35|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||36|36|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||37|37|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||38|38|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||39|39|0|0|0
+88001|1000|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|vertical velocity|m/s|hybrid level||40|40|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||1|1|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||2|2|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||3|3|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||4|4|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||5|5|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||6|6|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||7|7|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||8|8|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||9|9|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||10|10|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||11|11|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||12|12|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||13|13|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||14|14|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||15|15|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||16|16|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||17|17|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||18|18|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||19|19|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||20|20|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||21|21|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||22|22|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||23|23|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||24|24|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||25|25|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||26|26|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||27|27|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||28|28|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||29|29|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||30|30|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||31|31|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||32|32|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||33|33|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||34|34|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||35|35|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||36|36|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||37|37|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||38|38|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||39|39|0|0|0
+88001|1001|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (u vector)|m/s|hybrid level||40|40|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||1|1|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||2|2|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||3|3|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||4|4|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||5|5|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||6|6|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||7|7|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||8|8|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||9|9|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||10|10|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||11|11|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||12|12|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||13|13|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||14|14|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||15|15|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||16|16|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||17|17|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||18|18|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||19|19|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||20|20|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||21|21|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||22|22|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||23|23|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||24|24|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||25|25|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||26|26|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||27|27|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||28|28|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||29|29|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||30|30|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||31|31|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||32|32|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||33|33|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||34|34|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||35|35|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||36|36|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||37|37|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||38|38|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||39|39|0|0|0
+88001|1002|2006-12-05 12:00:00+00|2006-12-05 18:00:00+00|2006-12-05 18:00:00+00|0|wind velocity (v vector)|m/s|hybrid level||40|40|0|0|0
 (320 rows)

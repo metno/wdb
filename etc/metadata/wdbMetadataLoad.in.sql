@@ -57,18 +57,18 @@ COPY __WDB_SCHEMA__.placename FROM '__WDB_DATADIR__/sql/wdb_placename.csv' CSV H
 
 -- Parameters & Units
 COPY __WDB_SCHEMA__.parameterfunctiontype FROM '__WDB_DATADIR__/sql/wdb_parameterfunctiontype.csv' CSV HEADER DELIMITER '|';
-COPY __WDB_SCHEMA__.physicalphenomenon FROM '__WDB_DATADIR__/sql/wdb_physicalphenomenon.csv' CSV HEADER DELIMITER '|';
+COPY __WDB_SCHEMA__.measure FROM '__WDB_DATADIR__/sql/wdb_measure.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.unit FROM '__WDB_DATADIR__/sql/wdb_unit.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.siunitconversion FROM '__WDB_DATADIR__/sql/wdb_siunitconversion.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.valueparameterusage FROM '__WDB_DATADIR__/sql/wdb_valueparameterusage.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.levelparameterusage FROM '__WDB_DATADIR__/sql/wdb_levelparameterusage.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.valueparameter FROM '__WDB_DATADIR__/sql/wdb_valueparameter.csv' CSV HEADER DELIMITER '|'; 
-COPY __WDB_SCHEMA__.valuephysicalparameter FROM '__WDB_DATADIR__/sql/wdb_valuephysicalparameter.csv' CSV HEADER DELIMITER '|'; 
+COPY __WDB_SCHEMA__.valuemeasureparameter FROM '__WDB_DATADIR__/sql/wdb_valuemeasureparameter.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.valuedimensionlessparameter FROM '__WDB_DATADIR__/sql/wdb_valuedimensionlessparameter.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.valuecodeparameter FROM '__WDB_DATADIR__/sql/wdb_valuecodeparameter.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.valuefunctionparameter FROM '__WDB_DATADIR__/sql/wdb_valuefunctionparameter.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.levelparameter FROM '__WDB_DATADIR__/sql/wdb_levelparameter.csv' CSV HEADER DELIMITER '|'; 
-COPY __WDB_SCHEMA__.levelphysicalparameter FROM '__WDB_DATADIR__/sql/wdb_levelphysicalparameter.csv' CSV HEADER DELIMITER '|'; 
+COPY __WDB_SCHEMA__.levelmeasureparameter FROM '__WDB_DATADIR__/sql/wdb_levelmeasureparameter.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.levelcodeparameter FROM '__WDB_DATADIR__/sql/wdb_levelcodeparameter.csv' CSV HEADER DELIMITER '|'; 
 -- AutoGenerate
 --COPY __WDB_SCHEMA__.valueparametername FROM '__WDB_DATADIR__/sql/wdb_valueparametername.csv' CSV HEADER DELIMITER '|';

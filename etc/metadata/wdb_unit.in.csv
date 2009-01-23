@@ -1,68 +1,64 @@
-Unit Name|Unit Type (SI Unit or Conventional Unit)|Physical Phenomenon
-metre|SI Unit|distance
-hectometre|Conventional Unit|distance
-kilometre|Conventional Unit|distance
-second|SI Unit|duration
-millisecond|Conventional Unit|duration
-kilogram|SI Unit|mass
-ampere|SI Unit|electric current
-kelvin|SI Unit|temperature
-mole|SI Unit|amount of substance
-candela|SI Unit|luminous intensity
-radian|Conventional Unit|proportion
-metre per square second|SI Unit|acceleration
-square metre|SI Unit|area
-mole per cubic meter|SI Unit|concentration
-pascal second|SI Unit|dynamic viscosity
-newton second per square metre|Conventional Unit|dynamic viscosity
-kilonewton second per square metre|Conventional Unit|dynamic viscosity
-coulomb|SI Unit|electric charge
-siemens|SI Unit|electric conductance
-volt|SI Unit|electric potential
-ohm|SI Unit|electric resistance
-joule|SI Unit|energy
-newton|SI Unit|force
-hertz|SI Unit|frequency
-kilogram per cubic metre|SI Unit|mass density
-milligram per cubic metre|Conventional Unit|mass density
-watt|SI Unit|power
-watt per square metre|SI Unit|irradiance
-watt second per square metre|Conventional Unit|surface tension
-kilowatt second per square metre|Conventional Unit|surface tension
-pascal|SI Unit|pressure
-hectopascal|Conventional Unit|pressure
-kilopascal|Conventional Unit|pressure
-joule per cubic metre|Conventional Unit|pressure
-newton per square metre|Conventional Unit|pressure
-pascal per second|SI Unit|pressure change
-hectopascal per second|Conventional Unit|pressure change
-joule per kilogram|SI Unit|specific energy
-cubic metre per kilogram|SI Unit|specific volume
-kilogram per square metre|SI Unit|surface density
-newton per metre|SI Unit|surface tension
-joule per square metre|Conventional Unit|surface tension
-metre per second|SI Unit|velocity
-cubic metre|SI Unit|volume
-millimetre|Conventional Unit|distance
-hour|Conventional Unit|duration
-minute|Conventional Unit|duration
-ratio|SI Unit|proportion
-level number|SI Unit|proportion
-degree|Conventional Unit|proportion
-percent|Conventional Unit|proportion
-kilogram per kilogram|Conventional Unit|proportion
-cubic metre per cubic metre|Conventional Unit|proportion
-fraction|Conventional Unit|proportion
-coefficient|Conventional Unit|proportion
-square slope|Conventional Unit|proportion
-per second|Conventional Unit|frequency
-kelvin square metre per kilogram second|SI Unit|potential vorticity
-dobson|Conventional Unit|distance
-square metre per second|SI Unit|angular momentum
-kilogram per square metre second|SI Unit|surface density change
-steradian|Conventional Unit|proportion
-watt per metre steradian|SI Unit|radiance
-square metre per square second|Conventional Unit|specific energy
-degree celsius|Conventional Unit|temperature
-kelvin per metre|SI Unit|temperature lapse rate
-none|SI Unit|proportion
+Unit Name|Unit Type (SI Unit or Conventional Unit)|Physical Phenomenon|Description
+%|Base Unit|proportion|percent
+ratio|Base Unit|proportion|ratio
+none|Base Unit|proportion|none
+m|SI Unit|distance|metre
+hm|Conventional Unit|distance|hectometre
+km|Conventional Unit|distance|kilometre
+s|SI Unit|duration|second
+ms|Conventional Unit|duration|millisecond
+kg|SI Unit|mass|kilogram
+C|SI Unit|electric charge|coulumb
+K|SI Unit|temperature|kelvin
+mol|SI Unit|amount of substance|mole
+cd|SI Unit|luminous intensity|candela
+rad|SI Unit|plane angle|radian
+m/s2|SI Unit|acceleration|metre per square second
+m2|SI Unit|area|square metre
+mol/m3|SI Unit|concentration|mole per cubic meter
+Pa.s|SI Unit|dynamic viscosity|pascal second
+N.s/m2|Conventional Unit|dynamic viscosity|newton second per square metre
+kN.s/m2|Conventional Unit|dynamic viscosity|kilonewton second per square metre
+A|SI Unit|electric current|ampere
+S|SI Unit|electric conductance|siemens
+V|SI Unit|electric potential|volt
+Ohm|SI Unit|electric resistance|ohm
+J|SI Unit|energy|joule
+N|SI Unit|force|newton
+Hz|SI Unit|frequency|hertz
+kg/m3|SI Unit|mass density|kilogram per cubic metre
+mg/m3|Conventional Unit|mass density|milligram per cubic metre
+W|SI Unit|power|watt
+W/m2|SI Unit|irradiance|watt per square metre
+W.s/m2|Conventional Unit|surface tension|watt second per square metre
+kW.s/m2|Conventional Unit|surface tension|kilowatt second per square metre
+Pa|SI Unit|pressure|pascal
+hPa|Conventional Unit|pressure|hectopascal
+kPa|Conventional Unit|pressure|kilopascal
+J/m3|Conventional Unit|pressure|joule per cubic metre
+N/m2|Conventional Unit|pressure|newton per square metre
+Pa/s|SI Unit|pressure change|pascal per second
+hPa/s|Conventional Unit|pressure change|hectopascal per second
+J/kg|SI Unit|specific energy|joule per kilogram
+m3/kg|SI Unit|specific volume|cubic metre per kilogram
+kg/m2|SI Unit|surface density|kilogram per square metre
+N/m|SI Unit|surface tension|newton per metre
+J/m2|Conventional Unit|surface tension|joule per square metre
+m/s|SI Unit|velocity|metre per second
+m3|SI Unit|volume|cubic metre
+mm|Conventional Unit|distance|millimetre
+h|Conventional Unit|duration|hour
+min|Conventional Unit|duration|minute
+deg|Conventional Unit|plane angle|degree
+kg/kg|Conventional Unit|proportion|kilogram per kilogram
+m3/m3|Conventional Unit|proportion|cubic metre per cubic metre
+/s|Conventional Unit|frequency|per second
+K.m2/(kg.s)|SI Unit|potential vorticity|kelvin square metre per kilogram second
+{DU}|Conventional Unit|surface density|dobson
+m2/s|SI Unit|angular momentum|square metre per second
+kg/(m2.s)|SI Unit|surface density change|kilogram per square metre second
+sr|SI Unit|solid angle|steradian
+W/(m.sr)|SI Unit|radiance|watt per metre steradian
+m2/s2|Conventional Unit|specific energy|square metre per square second
+Cel|Conventional Unit|temperature|degree celsius
+K/m|SI Unit|temperature lapse rate|kelvin per metre

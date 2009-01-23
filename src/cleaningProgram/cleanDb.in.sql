@@ -32,7 +32,7 @@ BEGIN
 	FOR provider IN SELECT * FROM __WDB_SCHEMA__.dataprovider LOOP
 		DECLARE
 			-- A dataprovider's Time To Live
-			ttl INTERVAL := INTERVAL '1 day';
+			ttl INTERVAL := provider.dataproviderlife;
 			-- Maximum allowed age for a given dataprovider
 			oldest_allowed TIMESTAMP := TIMESTAMP 'today' - ttl;
 		BEGIN

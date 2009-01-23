@@ -41,7 +41,7 @@ esac
 # Timing
 startTime=`date +%s%N`
 # Calculate Test time
-TESTTIME=$(date +%FT%R:%S --date "2 days ago")
+TESTTIME=$(date +%FT%R:%S --date "3 days ago")
 
 # Clean out database
 source $TEST_PATH/tearDown.sh

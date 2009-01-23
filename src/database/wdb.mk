@@ -18,6 +18,7 @@ DATABASE_SOURCES =		src/database/wdbConstraintDefinitions.in.sql \
 						src/database/wdbIndexDefinitions.in.sql \
 						src/database/wdbMaterializedView.in.sql \
 						src/database/wdbSchemaDefinitions.in.sql \
+						src/database/wdbBaseMeasureTables.in.sql \
 						src/database/wdbTableDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql \
 						src/database/wdbTriggerDefinitions.in.sql \

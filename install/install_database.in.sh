@@ -329,6 +329,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
 \i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbBaseMeasureTables.sql
 \i $WDB_DATAMODEL_PATH/wdbTableDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbConstraintDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbMaterializedView.sql

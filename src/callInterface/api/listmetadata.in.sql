@@ -98,19 +98,19 @@ LANGUAGE 'sql';
 --
 -- @return A set of physical phenomena matching the wildcard
 CREATE OR REPLACE FUNCTION
-wci.listPhysicalPhenomena
+wci.listMeasures
 (
           pp character varying(80)
 )
-RETURNS SETOF __WCI_SCHEMA__.physicalphenomenon AS
+RETURNS SETOF __WCI_SCHEMA__.measure AS
 $BODY$
 	SELECT 
 		* 
 	FROM 
-		__WCI_SCHEMA__.physicalphenomenon
+		__WCI_SCHEMA__.measure
 	WHERE 
 		$1 IS NULL OR
-		physicalphenomenon ILIKE $1 ;
+		measure ILIKE $1 ;
 $BODY$
 LANGUAGE 'sql';
 
@@ -118,12 +118,12 @@ LANGUAGE 'sql';
 -- List all of the physical phenomena available in the database
 -- Equivalent to wci.listPhysicalPhenomena ( NULL )
 CREATE OR REPLACE FUNCTION
-wci.listPhysicalPhenomena
+wci.listMeasures
 (
 )
-RETURNS SETOF __WCI_SCHEMA__.physicalphenomenon AS
+RETURNS SETOF __WCI_SCHEMA__.measure AS
 $BODY$
-	SELECT  wci.listPhysicalPhenomena ( NULL );
+	SELECT  wci.listmeasures ( NULL );
 $BODY$
 LANGUAGE 'sql';
 

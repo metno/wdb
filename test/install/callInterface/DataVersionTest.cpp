@@ -471,7 +471,7 @@ map<int, string> getSpecFromParamNumber()
 
     ret[ 1 ] = "air pressure";
     ret[ 3 ] = "air pressure change";
-    ret[ 10 ] = "ozone dobson distance";
+    ret[ 10 ] = "ozone dobson surface density";
     ret[ 11 ] = "air temperature";
     ret[ 15 ] = "max air temperature";
     ret[ 16 ] = "min air temperature";

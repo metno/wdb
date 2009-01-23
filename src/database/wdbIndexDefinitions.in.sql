@@ -75,15 +75,17 @@ CREATE UNIQUE INDEX XAK1Wdb_Organization ON __WDB_SCHEMA__.Organization
        OrganizationName
 );
 
-CREATE UNIQUE INDEX XAK1Wdb_PhysicalPhenomenon ON __WDB_SCHEMA__.PhysicalPhenomenon
+
+CREATE UNIQUE INDEX XAK1wdb_measure ON __WDB_SCHEMA__.measure
 (
-       LengthPower,
-       MassPower,
-       TimePower,
-       LuminosityPower,
-       ElectricCurrentPower,
-       TemperaturePower,
-       SubstanceAmountPower
+    distancepower,
+	masspower,
+	timepower,
+	luminositypower,
+	electriccurrentpower,
+	temperaturepower,
+	substanceamountpower,
+	anglepower
 );
 
 CREATE UNIQUE INDEX XAK1Wdb_PlaceIndeterminateType ON __WDB_SCHEMA__.PlaceIndeterminateType
@@ -146,14 +148,14 @@ CREATE INDEX XIE1Wdb_PlacePoint ON __WDB_SCHEMA__.placepoint
       USING GIST ( location GIST_GEOMETRY_OPS );
 
 
-CREATE UNIQUE INDEX XAK1Wdb_ValueStandardParameter ON __WDB_SCHEMA__.valuephysicalparameter
+CREATE UNIQUE INDEX XAK1Wdb_ValueStandardParameter ON __WDB_SCHEMA__.valuemeasureparameter
 (
     valueparameterunitname,
 	valueparameterusage,
 	parameterquantitytype
 );
 
-CREATE UNIQUE INDEX XAK1Wdb_LevelStandardParameter ON __WDB_SCHEMA__.levelphysicalparameter
+CREATE UNIQUE INDEX XAK1Wdb_LevelStandardParameter ON __WDB_SCHEMA__.levelmeasureparameter
 (
     levelparameterunitname,
 	levelparameterusage
