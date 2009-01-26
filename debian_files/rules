@@ -52,7 +52,8 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
-	rm -rf grib_api-1.3.0
+	#rm -rf grib_api-1.3.0
+
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
@@ -103,7 +104,7 @@ binary-arch: build install
 #	dh_installmime
 #	dh_python
 	dh_installinit
-#	dh_installcron
+	dh_installcron
 #	dh_installinfo
 	dh_installman
 	dh_link

@@ -60,7 +60,7 @@ SUFFIXES = 				.in.cron .cron \
 						.in.sql .sql \
 						.in.test .test
 
-				
+
 # Compile Rules
 .in.cron.cron:
 						$(CRON_COMPILE)
@@ -234,10 +234,6 @@ uninstall-local:
 		echo "Run <$(MAKE) uninstall-database> to drop the database and its users"; \
 		echo "-------------------------------------------------------------------------------"; \
 	fi
-
-foo:
-	@echo $(ac_grib_path)
-		
 
 DISTCHECK_DATABASE_NAME = wdb_distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-database-install --with-database-name=$(DISTCHECK_DATABASE_NAME)
@@ -519,7 +515,7 @@ EXTRA_DIST += 				$(DX_CONFIG)
 PKG_DIR = $(PACKAGE)-$(VERSION)
 DEBIAN_DIR = $(PKG_DIR)/debian
 DEBIAN_PACKAGE = $(PACKAGE)_$(VERSION)
-DEBIAN_VERSION = 5
+DEBIAN_VERSION = 1
 ARCH = `dpkg-architecture -qDEB_HOST_ARCH_CPU`
 DEBIAN_PACKAGE_NAME = $(DEBIAN_PACKAGE)-$(DEBIAN_VERSION)_$(ARCH).deb
 
@@ -533,7 +529,17 @@ debian:	dist clean-debian
 	lintian $(DEBIAN_PACKAGE_NAME)
 	linda $(DEBIAN_PACKAGE_NAME)
 
+update-debian:
+	rm -rf $(DEBIAN_DIR)/*
+	cp -r $(top_srcdir)/debian_files/* $(DEBIAN_DIR)
+	cd $(PKG_DIR) && dpkg-buildpackage -rfakeroot -us -uc -nc
+	lintian $(DEBIAN_PACKAGE_NAME)
+	linda $(DEBIAN_PACKAGE_NAME)
+
+
 clean-debian:
 	debclean
 	rm -rf $(PKG_DIR) $(DEBIAN_PACKAGE)*
 
+foo: 
+	@echo $(DEBIAN_PACKAGE_NAME)
