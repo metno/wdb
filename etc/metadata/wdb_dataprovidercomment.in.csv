@@ -1,33 +1,33 @@
 Data Provider Id|Comment|Store Time
--1|Data provider used for testing of invalid data|04/19/2007 16:00:00
-0|WDB Test Data|11/21/2006 14:04:00
-1|WDB Test Writer|11/21/2006 14:04:00
-10|WDB Call  Interface Test Process 0|04/19/2007 16:00:00
-11|WDB Call  Interface Test Process 1|04/19/2007 16:00:00
-12|WDB Call  Interface Test Process 2|04/19/2007 16:00:00
-13|WDB Call  Interface Test Process 3|04/19/2007 16:00:00
-14|WDB Call  Interface Test Process 4|04/19/2007 16:00:00
-20|WDB CleanDB Test Process|04/19/2007 16:00:00
-30|WDB GribLoad Test Process|09/06/2007 14:00:00
-40|WDB FeltLoad Test Process|09/06/2007 14:00:00
-50|WDB XmlLoad Test Process|09/06/2007 14:00:00
-100|Data received from WDB loading programs|08/06/2008 12:00:00
-101|Data received from WDB GribLoad|08/06/2008 12:00:00
-102|Data received from WDB FeltLoad|08/06/2008 12:00:00
-103|Data received from WDB XmlLoad|08/06/2008 12:00:00
-5000|Met.No Ensembler Process|05/13/2008 12:00:00
-10000|Proff Felter|06/26/2008 12:00:00
-10001|proff.raw|06/26/2008 12:00:00
-10010|proff.std|06/26/2008 12:00:00
-10011|proff.h8|06/26/2008 12:00:00
-10012|proff.h8h4|06/26/2008 12:00:00
-10013|proff.h8um4|06/26/2008 12:00:00
-10014|proff.h4|06/26/2008 12:00:00
-10015|proff.um4|06/26/2008 12:00:00
-10016|proff.approved|06/26/2008 12:00:00
-88001|Hirlam Model, Norway|06/26/2008 12:00:00
-88067|WAM Model, Norway|06/26/2008 12:00:00
-88501|Model derived from ECMWF ensemble for yr.no by the pgen_probability program|06/26/2008 12:00:00
-88502|Percentile parameters derived from ECMWF ensemble forecasts using the derived_product_eps SMS-job|06/26/2008 12:00:00
-98100|ECMWF Atmospheric Model|06/26/2008 12:00:00
-1000000|Base writer for wci|06/26/2008 12:00:00
+-1|Data provider used for testing of invalid data|2007-04-19T16:00:00Z
+0|WDB Test Data|2006-11-21T14:04:00Z
+1|WDB Test Writer|2006-11-21T14:04:00Z
+10|WDB Call  Interface Test Process 0|2007-04-19T16:00:00Z
+11|WDB Call  Interface Test Process 1|2007-04-19T16:00:00Z
+12|WDB Call  Interface Test Process 2|2007-04-19T16:00:00Z
+13|WDB Call  Interface Test Process 3|2007-04-19T16:00:00Z
+14|WDB Call  Interface Test Process 4|2007-04-19T16:00:00Z
+20|WDB CleanDB Test Process|2007-04-19T16:00:00Z
+30|WDB GribLoad Test Process|2007-09-06T14:00:00Z
+40|WDB FeltLoad Test Process|2007-09-06T14:00:00Z
+50|WDB XmlLoad Test Process|2007-09-06T14:00:00Z
+100|Data received from WDB loading programs|2008-08-06T12:00:00Z
+101|Data received from WDB GribLoad|2008-08-06T12:00:00Z
+102|Data received from WDB FeltLoad|2008-08-06T12:00:00Z
+103|Data received from WDB XmlLoad|2008-08-06T12:00:00Z
+5000|Met.No Ensembler Process|2008-05-13T12:00:00Z
+10000|Proff Felter|2008-06-26T12:00:00Z
+10001|proff.raw|2008-06-26T12:00:00Z
+10010|proff.std|2008-06-26T12:00:00Z
+10011|proff.h8|2008-06-26T12:00:00Z
+10012|proff.h8h4|2008-06-26T12:00:00Z
+10013|proff.h8um4|2008-06-26T12:00:00Z
+10014|proff.h4|2008-06-26T12:00:00Z
+10015|proff.um4|2008-06-26T12:00:00Z
+10016|proff.approved|2008-06-26T12:00:00Z
+88001|Hirlam Model, Norway|2008-06-26T12:00:00Z
+88067|WAM Model, Norway|2008-06-26T12:00:00Z
+88501|Model derived from ECMWF ensemble for yr.no by the pgen_probability program|2008-06-26T12:00:00Z
+88502|Percentile parameters derived from ECMWF ensemble forecasts using the derived_product_eps SMS-job|2008-06-26T12:00:00Z
+98100|ECMWF Atmospheric Model|2008-06-26T12:00:00Z
+1000000|Base writer for wci|2008-06-26T12:00:00Z
