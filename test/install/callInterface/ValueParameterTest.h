@@ -69,9 +69,9 @@ class ValueParameterTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testP3_01A_LowerCase );
 	CPPUNIT_TEST( testP3_01B_LowerCase );
 	CPPUNIT_TEST( testP3_02A_UpperCase );
-	CPPUNIT_TEST( testP3_02B_UpperCase );
+	//CPPUNIT_TEST( testP3_02B_UpperCase );
 	CPPUNIT_TEST( testP3_03A_MixedCase );
-	CPPUNIT_TEST( testP3_03B_MixedCase );
+	//CPPUNIT_TEST( testP3_03B_MixedCase );
 
 	CPPUNIT_TEST( testP4_01A_AllParametersExist );
 	CPPUNIT_TEST( testP4_01B_AllParametersExist );

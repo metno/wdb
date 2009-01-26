@@ -51,9 +51,9 @@ class ValidTimeTest : public AbstractWciTestFixture
 
 
 	CPPUNIT_TEST( testR1_01A_ValidInterval );
-	CPPUNIT_TEST( testR1_01B_ValidInterval );
+	//CPPUNIT_TEST( testR1_01B_ValidInterval );
 	CPPUNIT_TEST( testR1_02A_ValidTimePoint );
-	CPPUNIT_TEST( testR1_02B_ValidTimePoint );
+	//CPPUNIT_TEST( testR1_02B_ValidTimePoint );
 	CPPUNIT_TEST( testContainsIndeterminateTypeDefault );
 	CPPUNIT_TEST( testContainsIndeterminateTypeAtExact );
 	CPPUNIT_TEST( testContainsIndeterminateTypeInside );
@@ -66,12 +66,12 @@ class ValidTimeTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testR1_05A_NotATimestamp );
 	CPPUNIT_TEST( testR1_05B_NotATimestamp );
 	CPPUNIT_TEST( testR1_06A_Null );
-	CPPUNIT_TEST( testR1_06B_Null );
+	//CPPUNIT_TEST( testR1_06B_Null );
 
 	CPPUNIT_TEST( testR2_01A_Now );
 	CPPUNIT_TEST( testR2_01B_Now );
 	CPPUNIT_TEST( testR2_02A_Past );
-	CPPUNIT_TEST( testR2_02B_Past );
+	//CPPUNIT_TEST( testR2_02B_Past );
 	CPPUNIT_TEST( testR2_03A_Future );
 	CPPUNIT_TEST( testR2_03B_Future );
 

@@ -38,14 +38,6 @@ src_subdirs="			src/callInterface/api \
 				    	src/admin \
 				    	src/admin/operations \
 				    	src/admin/ui/cmdLine \
-						src/loadingProgram/loaderBase \
-						src/loadingProgram/feltLoad \
-						src/loadingProgram/feltLoad/test \
-						src/loadingProgram/gribLoad \
-						src/loadingProgram/gribLoad/test \
-						src/loadingProgram/kvalobsLoad \
-						src/loadingProgram/xmlLoad \
-						src/loadingProgram/loaderDaemon \
 						test/utility/gribWrite \
 						test/utility/gribWrite/test \
 						test/utility/testWrite \
@@ -77,22 +69,9 @@ build_subdirs="			doc \
 			    		src/admin \
 			    		src/admin/operations \
 		    			src/admin/ui/cmdLine \
-						src/loadingProgram/loaderBase \
-						src/loadingProgram/feltLoad \
-						src/loadingProgram/feltLoad/test \
-						src/loadingProgram/gribLoad \
-						src/loadingProgram/gribLoad/test \
-						src/loadingProgram/xmlLoad \
-						src/loadingProgram/kvalobsLoad \
-						src/loadingProgram/loaderDaemon \
-						src/loadingProgram/multiLoad \
 						test/install/callInterface \
 						test/install/cleaningProgram \
-						test/install/loadingProgram/feltLoad \
-						test/install/loadingProgram/gribLoad \
-						test/install/metadata \
 						test/performance/callInterface \
-						test/performance/loadingProgram/gribLoad \
 						test/stability/callInterface \
 						test/utility/configuration \
 						test/utility/gribWrite \
@@ -249,22 +228,9 @@ AC_CONFIG_FILES([Makefile
 				 src/admin/Makefile
 		   	 	 src/admin/operations/Makefile
 		   	 	 src/admin/ui/cmdLine/Makefile
-		   	 	 src/loadingProgram/loaderBase/Makefile
-				 src/loadingProgram/feltLoad/Makefile 
-				 src/loadingProgram/feltLoad/test/Makefile 
-				 src/loadingProgram/gribLoad/Makefile
-				 src/loadingProgram/gribLoad/test/Makefile 
-				 src/loadingProgram/xmlLoad/Makefile
-				 src/loadingProgram/kvalobsLoad/Makefile
-		  		 src/loadingProgram/loaderDaemon/Makefile
-				 src/loadingProgram/multiLoad/Makefile 
 				 test/install/callInterface/Makefile
 				 test/install/cleaningProgram/Makefile 
-				 test/install/loadingProgram/feltLoad/Makefile
-				 test/install/loadingProgram/gribLoad/Makefile
-				 test/install/metadata/Makefile 
 				 test/performance/callInterface/Makefile
-				 test/performance/loadingProgram/gribLoad/Makefile
 				 test/stability/callInterface/Makefile
 				 test/utility/configuration/Makefile
 				 test/utility/gribWrite/Makefile

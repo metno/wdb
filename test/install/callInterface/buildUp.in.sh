@@ -146,9 +146,9 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29
 
 # Load Test Data
 #$LOAD_GRIB_FILE --loadPlaceDefinition $GRIB_FILE
-$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE1
-$LOAD_XML_FILE --dataprovider "test wci 4" $XML_FILE2
-$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE3
+#$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE1
+#$LOAD_XML_FILE --dataprovider "test wci 4" $XML_FILE2
+#$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE3
 
 # Clean up Test File
 #rm -f $GRIB_FILE

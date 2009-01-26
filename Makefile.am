@@ -154,21 +154,9 @@ include src/admin/wdb.mk
 include src/admin/operations/wdb.mk
 include src/admin/ui/cmdLine/wdb.mk
 
-include src/loadingProgram/loaderBase/wdb.mk
-include src/loadingProgram/feltLoad/wdb.mk
-include src/loadingProgram/gribLoad/wdb.mk
-include src/loadingProgram/multiLoad/wdb.mk
-include src/loadingProgram/xmlLoad/wdb.mk
-include src/loadingProgram/kvalobsLoad/wdb.mk
-include src/loadingProgram/loaderDaemon/wdb.mk
-
 include test/install/callInterface/wdb.mk
 include test/install/cleaningProgram/wdb.mk
-include test/install/metadata/wdb.mk
-include test/install/loadingProgram/feltLoad/wdb.mk
-include test/install/loadingProgram/gribLoad/wdb.mk
 include test/performance/callInterface/wdb.mk
-include test/performance/loadingProgram/gribLoad/wdb.mk
 include test/stability/callInterface/wdb.mk
 include test/utility/configuration/wdb.mk
 include test/utility/gribWrite/wdb.mk
@@ -178,8 +166,6 @@ include test/utility/testWrite/wdb.mk
 include src/common/projection/test/wdb.mk
 include src/callInterface/core/test/wdb.mk
 include src/callInterface/types/test/wdb.mk
-include src/loadingProgram/feltLoad/test/wdb.mk
-include src/loadingProgram/gribLoad/test/wdb.mk
 include test/utility/gribWrite/test/wdb.mk
 
 include examples/wdb.mk

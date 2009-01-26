@@ -54,7 +54,7 @@ class PlaceNameTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL1_02A_OnePlaceName );
 	CPPUNIT_TEST( testL1_02B_OnePlaceName );
 	CPPUNIT_TEST( testL1_03A_NullPlaceName );
-	CPPUNIT_TEST( testL1_03B_NullPlaceName );
+	//CPPUNIT_TEST( testL1_03B_NullPlaceName );
 	CPPUNIT_TEST( testL2_01A_PlaceNamesExist );
 	CPPUNIT_TEST( testL2_01B_PlaceNamesExist );
 	CPPUNIT_TEST( testL2_02A_PlaceNamesDoNotExist );
