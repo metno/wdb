@@ -147,7 +147,7 @@ WDB_PROJ_CHECK
 WDB_CPPUNIT
 
 # Should we build kvalobsLoad?
-WDB_KVALOBS_CHECK
+#WDB_KVALOBS_CHECK
 
 
 AM_PATH_PYTHON(2.4,, [:])
