@@ -101,19 +101,19 @@ LDFLAGSS="$LDFLAGS $pgsql_LDFLAGS"
 # Check PQ Libraries
 # Search for the libpq Library
 # automatically adds -lpq to the LIBS variable
-AC_SEARCH_LIBS(PQexec, 
-	       	[pq],	 
-	       	[pgsql_LIBS="$pgsql_LIBS -lpq"],
-			[
-		 	AC_MSG_ERROR([
--------------------------------------------------------------------------
-    Unable to link with libpq. If the library is installed, make sure 
-    -L(PGSQL_PATH)/lib is in your LDFLAGS, or specify the path in which 
-    postgres is installed with --with-pgsql=PATH
--------------------------------------------------------------------------
-			])
-			]
-)
+#AC_SEARCH_LIBS(PQexec, 
+#	       	[pq],	 
+#	       	[pgsql_LIBS="$pgsql_LIBS -lpq"],
+#			[
+#		 	AC_MSG_ERROR([
+#-------------------------------------------------------------------------
+#    Unable to link with libpq. If the library is installed, make sure 
+#    -L(PGSQL_PATH)/lib is in your LDFLAGS, or specify the path in which 
+#    postgres is installed with --with-pgsql=PATH
+#-------------------------------------------------------------------------
+#			])
+#			]
+#)
 
 AC_SUBST(pgsql_CFLAGS)
 AC_SUBST(pgsql_LDFLAGS)
