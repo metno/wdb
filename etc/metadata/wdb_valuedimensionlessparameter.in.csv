@@ -1,4 +1,5 @@
 ParameterId|Parameter Name|Value Parameter Description
+0|null parameter|Used for reference in cross-reference parameters to NULL
 31|wind direction|Wind direction in degrees radian
 47|current direction|Direction of current in degrees radian
 51|specific humidity|Specific humidity
@@ -19,6 +20,7 @@ ParameterId|Parameter Name|Value Parameter Description
 104|swell waves direction|NA
 107|primary waves direction|NA
 109|secondary waves direction|NA
+184|sea albedo|NA
 720|probability of precipitation >0.1mm|Probability of precipitation exceeding 0.1 mm
 721|probability of precipitation >0.2mm|Probability of precipitation exceeding 0.2 mm
 722|probability of precipitation >0.5mm|Probability of precipitation exceeding 0.5 mm
@@ -34,3 +36,10 @@ ParameterId|Parameter Name|Value Parameter Description
 1104|probability of fog|NA
 1181|proportion of land, model|NA
 7100|fog cover|NA
+10349|wtsurf|Hav and kyst
+10352|alfaF|Hav and kyst
+10353|alfaU|Hav and kyst
+10354|alfaV|Hav and kyst
+10355|river map 1|Hav and kyst
+10356|river map 2|Hav and kyst
+10357|mpp processor map|Hav and kyst

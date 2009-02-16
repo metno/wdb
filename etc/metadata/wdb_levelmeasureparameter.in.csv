@@ -3,4 +3,5 @@ ParameterId|Level Unit|Level Parameter
 1|Pa|isobaric surface
 2|m|height above mean sea level
 3|m|height above ground
+5|m|depth below sea level
 113|K|isentropic (theta) level

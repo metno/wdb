@@ -91,3 +91,25 @@ Id|Value Domain|Unit|QuantityType
 351|geometrical sea depth|m|scalar
 1101|model topography|m|scalar
 6100|total precipitation|mm|scalar
+10351|sea bottom topography|m|scalar
+10291|stokes drift|m/s|u vector
+10292|stokes drift|m/s|v vector
+10299|wind|rad|scalar
+10301|sea surface|m|scalar
+10302|sea current|m/s|u vector
+10303|sea current|m/s|v vector
+10308|sea|K|scalar
+10309|surface stress|m2/s2|u vector
+10310|surface stress|m2/s2|v vector
+10314|horizontal eddy viscosity|m2/s|scalar
+10340|sea ice concentration|%|scalar
+10341|sea ice depth|m|scalar
+10342|sea ice drift|m/s|u vector
+10343|sea ice drift|m/s|v vector
+10371|inorganic nitrate|kg/m3|scalar
+10372|phosphate|kg/m3|scalar
+10373|silicate|kg/m3|scalar
+10374|detritus|kg/m3|scalar
+10375|diatomer|kg/m3|scalar
+10376|flagellates|kg/m3|scalar
+10377|oxygen|kg/m3|scalar

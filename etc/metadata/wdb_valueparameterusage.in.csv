@@ -83,28 +83,37 @@ sensible heat|Unknown
 boundary layer dissipation|Unknown
 momentum flux|Unknown
 wind mixing|Unknown
-inorganic nitrate|WAM
-phosphate|WAM
-silicate|WAM
-detritus|WAM
-diatomer (algae)|WAM
-flagellate (algae)|WAM
-oxygen|WAM
 biogenic silica|WAM
 type 2 sediments|WAM
 other sediments|WAM
-wave|WAM
-swell|WAM
 drag with waves|WAM
 total sea|WAM
-stokes drift|WAM
 friction|WAM
 1d spectra|WAM
 2d wave spectra|WAM
-combined wind waves and swell|WAM
-wind waves|WAM
-swell waves|WAM
 model topography|PROFET
 model|PROFET
 sea level|EPS
 sunshine|EPS
+sea|HaK
+combined wind waves and swell|HaK
+wave|HaK
+wind wave|HaK
+swell wave|HaK
+stokes drift|HaK
+sea bottom topography|HaK
+sea surface|HaK
+sea current|HaK
+salinity|HaK
+surface stress|HaK
+sea ice concentration|HaK
+sea ice depth|HaK
+sea ice drift|HaK
+horizontal eddy viscosity|HaK
+inorganic nitrate|HaK
+phosphate|HaK
+silicate|HaK
+detritus|HaK
+diatomer|HaK
+flagellates|HaK
+oxygen|HaK

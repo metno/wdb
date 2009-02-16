@@ -28,3 +28,16 @@ ParameterId|ParameterFunction|Value Domain|Unit|QuantityType
 712|50th percentile accumulated|precipitation|kg/m2|scalar
 713|75th percentile accumulated|precipitation|kg/m2|scalar
 714|90th percentile accumulated|precipitation|kg/m2|scalar
+10201|peak|wave|s|scalar
+10202|significant|wave|s|scalar
+10203|peak|wave|rad|scalar
+10204|mean|wave|rad|scalar
+10210|significant|wind wave|m|scalar
+10211|peak|wind wave|s|scalar
+10212|peak|wind wave|rad|scalar
+10214|mean|wind wave|rad|scalar
+10220|significant|swell wave|m|scalar
+10221|peak|swell wave|s|scalar
+10222|peak|swell wave|rad|scalar
+10223|mean|swell wave|s|scalar
+10224|mean|swell wave|rad|scalar

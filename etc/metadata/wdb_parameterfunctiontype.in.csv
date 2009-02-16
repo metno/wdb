@@ -16,3 +16,5 @@ stddev|Standard deviation of the value for the period specified by the valid tim
 75th percentile accumulated|Percentile of accumulated value
 90th percentile accumulated|Percentile of accumulated value
 unknown|The statistics type is unknown
+peak|Peak value
+significant|Significant value
