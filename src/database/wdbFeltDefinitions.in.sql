@@ -40,7 +40,7 @@ GRANT ALL ON __WDB_SCHEMA__.feltgeneratingprocess TO wdb_admin;
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.feltgeneratingprocess
-    ADD CONSTRAINT feltgeneratingprocess_pkey PRIMARY KEY (dataproviderid);
+    ADD CONSTRAINT feltgeneratingprocess_pkey PRIMARY KEY (producerid, gridareanumber, feltprocessvalidfrom);
 
 ALTER TABLE __WDB_SCHEMA__.feltgeneratingprocess
 	ADD FOREIGN KEY (dataproviderid)
@@ -52,12 +52,19 @@ ALTER TABLE __WDB_SCHEMA__.feltgeneratingprocess
 CREATE TABLE feltload.valueparameterxref (
     feltparameter		integer NOT NULL,
 	feltlevelparameter	integer NOT NULL,
-    feltniveau1 		integer NOT NULL,
+    feltniveau1lower	integer NOT NULL,
+    feltniveau1upper	integer NOT NULL,
     feltniveau2			integer NOT NULL,
     valueparameterid	integer NOT NULL,
 	valueparameterunit  character varying(80) NOT NULL,
     loadvalueflag 		boolean NOT NULL
 );
+
+ALTER TABLE feltload.valueparameterxref
+	ADD FOREIGN KEY (valueparameterid)
+					REFERENCES __WDB_SCHEMA__.valueparameter(valueparameterid)
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
 
 ALTER TABLE feltload.valueparameterxref
 	ADD FOREIGN KEY (valueparameterunit)
@@ -78,6 +85,13 @@ CREATE TABLE feltload.levelparameterxref (
 	levelparameterunit	character varying(80) NOT NULL,
     loadlevelflag 		boolean NOT NULL
 );
+
+
+ALTER TABLE feltload.levelparameterxref
+	ADD FOREIGN KEY (levelparameterid)
+					REFERENCES __WDB_SCHEMA__.levelparameter(levelparameterid)
+					ON DELETE CASCADE
+					ON UPDATE CASCADE;
 
 ALTER TABLE feltload.levelparameterxref
 	ADD FOREIGN KEY (levelparameterunit)
@@ -208,7 +222,7 @@ feltload.getvalueparameter(
 	feltnv1			integer,
 	feltnv2			integer
 )
-RETURNS feltload.valueparameter AS
+RETURNS SETOF feltload.valueparameter AS
 $BODY$
 DECLARE
 	ret feltload.valueparameter;
@@ -219,14 +233,17 @@ BEGIN
 	WHERE
         feltparameter = feltparam AND
 		feltlevelparameter = feltlevelparam AND
-		feltniveau1 = feltnv1 AND
+		feltniveau1lower <= feltnv1 AND
+		feltniveau1upper >= feltnv1 AND
 		feltniveau2 = feltnv2;
 	-- Check load
 	IF load = false THEN
 		ret.valueparameterid = -1;
-		RETURN ret;
+		RETURN NEXT ret;
 	END IF;
-	RETURN ret;
+	IF load = true THEN
+		RETURN NEXT ret;
+	END IF;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STRICT STABLE;
@@ -271,7 +288,7 @@ feltload.getlevelparameter(
 	levelParam integer, 
 	levelnv1 integer 
 )
-RETURNS feltload.levelparameter AS
+RETURNS SETOF feltload.levelparameter AS
 $BODY$
 DECLARE
 	ret feltload.levelparameter;
@@ -286,9 +303,11 @@ BEGIN
 	-- Check load
 	IF load = false THEN
 		ret.levelparameterid = -1;
-		RETURN ret;
+		RETURN NEXT ret;
 	END IF;
-	RETURN ret;
+	IF load = true THEN
+		RETURN NEXT ret;
+	END IF;
 END;
 $BODY$
 LANGUAGE 'plpgsql';

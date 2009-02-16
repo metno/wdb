@@ -69,9 +69,12 @@ LANGUAGE plpgsql STRICT IMMUTABLE;
 
 -- Updating of placedefinition when inserting a regular grid
 create or replace function __WDB_SCHEMA__.createGeometryText(
-	iNum integer, jNum integer,
-	iIncrement float8, jIncrement float8,
-	startLongitude float8, startLatitude float8,
+	xNum 		integer, 
+	yNum 		integer,
+	xIncrement 	float8, 
+	yIncrement 	float8,
+	startX 		float8, 
+	startY 		float8,
 	projDefinition text
 )
 returns text as
@@ -98,6 +101,8 @@ begin
 		grid.startlatitude, 
 		projdef
 	); 
+	
+	RAISE DEBUG 'Geo is %', geo;
 
 	return geomfromtext(
 		geo,

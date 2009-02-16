@@ -99,10 +99,12 @@ string getEarthShape(const string & projDefinition)
 
 void transform_( double * lon, double * lat, size_t elements, const struct PlaceSpecification & p )
 {
-	for ( size_t i = 0; i < elements; ++ i )
-	{
-		lon[i] *= DEG_TO_RAD;
-		lat[i] *= DEG_TO_RAD;
+	if ( not isMetric( p.projDefinition_ ) ) {
+		for ( size_t i = 0; i < elements; ++ i )
+		{
+			lon[i] *= DEG_TO_RAD;
+			lat[i] *= DEG_TO_RAD;
+		}
 	}
 
 	{
@@ -164,8 +166,10 @@ struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification 
 		return lonlat();
 
 	lonlat ret = coords;
-	ret.lon *= DEG_TO_RAD;
-	ret.lat *= DEG_TO_RAD;
+	if ( not isMetric( p->projDefinition_ ) ) {
+		ret.lon *= DEG_TO_RAD;
+		ret.lat *= DEG_TO_RAD;
+	}
     {
 		WdbProjection from(getProjDefinition( "longlat", "+ellps=WGS84" ));
 		WdbProjection to(  p->projDefinition_ );

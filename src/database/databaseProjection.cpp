@@ -25,7 +25,7 @@ Datum createGeometryText(PG_FUNCTION_ARGS)
 	std::string geoText;
 	try
 	{
-		GridGeometry geo(projDefinition, GridGeometry::LeftUpperHorizontal, iNum, jNum, iIncrement, jIncrement, startLongitude, startLatitude);
+		GridGeometry geo(projDefinition, GridGeometry::LeftLowerHorizontal, iNum, jNum, iIncrement, jIncrement, startLongitude, startLatitude);
 		geoText = geo.wktRepresentation();
 	}
 	catch ( std::exception & e )

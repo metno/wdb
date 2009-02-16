@@ -60,7 +60,7 @@ AC_DEFUN([WDB_PROJ_CHECK],
 
 	# Search for the Library
 	# automatically adds -lproj to the LIBS variable
-	AC_SEARCH_LIBS(pj_init_plus, 
+	AC_SEARCH_LIBS(pj_transform, 
 				   [proj],, 
 				   [AC_MSG_ERROR([
 -------------------------------------------------------------------------

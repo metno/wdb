@@ -23,19 +23,6 @@
 -- Convenience Views
 --
 
-CREATE VIEW __WDB_SCHEMA__.unitwithabbreviation AS
-       SELECT un.unitname, 
-			  un.unittype, 
-			  un.measure, 
-              ua.unitabbreviation
-       FROM __WDB_SCHEMA__.unit un, 
-			__WDB_SCHEMA__.unitabbreviation ua
-       WHERE un.unitname = ua.unitname;
-
-REVOKE ALL ON __WDB_SCHEMA__.unitwithabbreviation FROM public;
-GRANT ALL ON __WDB_SCHEMA__.unitwithabbreviation TO wdb_admin;
-
-
 CREATE VIEW __WDB_SCHEMA__.placespec AS SELECT 
 	pd.placeid,
 	pd.placegeometry, 

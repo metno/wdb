@@ -72,13 +72,13 @@ public:
 		LeftLowerHorizontal = 64  // 01000000
 	};
 
-
 	GridGeometry(
 			const std::string & projDef,
 			Orientation o,
-			size_type iNum, size_type jNum,
-			double iIncrement, double jIncrement,
-			double startLon, double startLat);
+			size_type xNum, size_type yNum,
+			double xIncrement, double yIncrement,
+			double startingX, double startingY
+		);
 
 	GridGeometry(const PlaceSpecification & ps, Orientation o);
 

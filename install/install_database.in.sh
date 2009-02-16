@@ -150,7 +150,7 @@ WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
 WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
 
-if test ! -f $WDB_DATAMODEL_PATH/wdbTableDefinitions.sql; then
+if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
     echo "Error: Could not locate database installation files. Unable to install wdb."
     exit 1
 fi
@@ -329,8 +329,11 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
 \i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbBaseMeasureTables.sql
-\i $WDB_DATAMODEL_PATH/wdbTableDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbBaseTables.sql
+\i $WDB_DATAMODEL_PATH/wdbDataProviderTables.sql
+\i $WDB_DATAMODEL_PATH/wdbPlaceDefinitionTables.sql
+\i $WDB_DATAMODEL_PATH/wdbParameterTables.sql
+\i $WDB_DATAMODEL_PATH/wdbValueTables.sql
 \i $WDB_DATAMODEL_PATH/wdbConstraintDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbMaterializedView.sql
 \i $WDB_DATAMODEL_PATH/wdbViewDefinitions.sql

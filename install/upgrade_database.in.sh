@@ -123,7 +123,7 @@ WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
 WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
 
-if test ! -f $WDB_DATAMODEL_PATH/wdbTableDefinitions.sql; then
+if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
     echo "Error: Could not locate database installation files. Unable to install wdb."
     exit 1
 fi

@@ -210,7 +210,7 @@ gribload.getvalueparameter(
 	gribPTS integer,
 	gribLevel integer
 )
-RETURNS gribload.valueparameter AS
+RETURNS SETOF gribload.valueparameter AS
 $BODY$
 DECLARE
 	ret gribload.valueparameter;
@@ -231,9 +231,11 @@ BEGIN
 	-- Check load
 	IF load = false THEN
 		ret.valueparameterid = -1;
-		RETURN ret;
+		RETURN NEXT ret;
 	END IF;
-	RETURN ret;
+	IF load = true THEN
+		RETURN NEXT ret;
+	END IF;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STRICT STABLE;
@@ -280,7 +282,7 @@ CREATE TYPE gribload.levelparameter AS (
 --
 CREATE OR REPLACE FUNCTION 
 gribload.getlevelparameter( levelParam integer )
-RETURNS gribload.levelparameter AS
+RETURNS SETOF gribload.levelparameter AS
 $BODY$
 DECLARE
 	ret gribload.levelparameter;
@@ -293,9 +295,11 @@ BEGIN
 	-- Check load
 	IF load = false THEN
 		ret.levelparameterid = -1;
-		RETURN ret;
+		RETURN NEXT ret;
 	END IF;
-	RETURN ret;
+	IF load = true THEN
+		RETURN NEXT ret;
+	END IF;
 END;
 $BODY$
 LANGUAGE 'plpgsql';

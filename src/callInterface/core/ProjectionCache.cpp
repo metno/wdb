@@ -136,10 +136,16 @@ void ProjectionCache::fillCache()
 	const int offset = idx_;
 //	lon_.resize(neededSpace);
 //	lat_.resize(neededSpace);
+	bool metric;
+	metric = isMetric( grid_.projDefinition_);
 	for ( int pos = 0; pos < neededSpace; ++ pos )
 	{
-		lon_[pos] = (grid_.startingLongitude_ + (xFromIndex(offset + pos, grid_) * grid_.xIncrement_)) * DEG_TO_RAD;
-		lat_[pos] = (grid_.startingLatitude_  + (yFromIndex(offset + pos, grid_) * grid_.yIncrement_)) * DEG_TO_RAD;
+		lon_[pos] = (grid_.startingLongitude_ + (xFromIndex(offset + pos, grid_) * grid_.xIncrement_));
+		lat_[pos] = (grid_.startingLatitude_  + (yFromIndex(offset + pos, grid_) * grid_.yIncrement_));
+		if ( not metric) {
+			lon_[pos] = lon_[pos] * DEG_TO_RAD;
+			lat_[pos] = lat_[pos] * DEG_TO_RAD;
+		}
 	}
 	WdbProjection projection(grid_.projDefinition_);
 	WdbProjection dest( DEFAULT_PROJECTION );

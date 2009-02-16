@@ -12,14 +12,17 @@ wdb_la_SOURCES =		src/database/wdbSetup.c \
 
 
 DATABASE_SOURCES =		src/database/wdbConstraintDefinitions.in.sql \
+						src/database/wdbSchemaDefinitions.in.sql \
+						src/database/wdbBaseTables.in.sql \
+						src/database/wdbDataProviderTables.in.sql \
+						src/database/wdbPlaceDefinitionTables.in.sql \
+						src/database/wdbParameterTables.in.sql \
+						src/database/wdbValueTables.in.sql \
 						src/database/wdbGribDefinitions.in.sql \
 						src/database/wdbFeltDefinitions.in.sql \
 						src/database/wdbXmlDefinitions.in.sql \
 						src/database/wdbIndexDefinitions.in.sql \
 						src/database/wdbMaterializedView.in.sql \
-						src/database/wdbSchemaDefinitions.in.sql \
-						src/database/wdbBaseMeasureTables.in.sql \
-						src/database/wdbTableDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql \
 						src/database/wdbTriggerDefinitions.in.sql \
 						src/database/wdbUserDefinitions.in.sql \

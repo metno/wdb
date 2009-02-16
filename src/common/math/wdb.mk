@@ -6,12 +6,15 @@
 # Library
 #-----------------------------------------------------------------------------
 
-noinst_LIBRARIES +=			libwdbMath.a
+lib_LIBRARIES +=			libwdbMath.a
 
 libwdbMath_a_SOURCES =		src/common/math/wdbMath.h \
 							src/common/math/wdbMath.cpp \
 							src/common/math/wdbMathC.h \
 							src/common/math/wdbMathC.cpp
+
+include_HEADERS += 			src/common/math/wdbMath.h \
+							src/common/math/wdbMathC.h
 							
 libwdbMath_a_CPPFLAGS = 	-fPIC
 
