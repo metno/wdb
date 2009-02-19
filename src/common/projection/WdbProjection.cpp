@@ -79,8 +79,12 @@ WdbProjection::transform(const WdbProjection & dest, size_t size, double * lon, 
 	if ( error )
 	{
 		ostringstream msg;
-		msg << "Error during reprojection: " << pj_strerrno(error) << "." << '\n' << "From:\t"
-			<< projText_ << '\n'<< "To:\t"<< dest.projText_;
+		msg << "Error during reprojection: " << pj_strerrno(error) << "." << '\n'
+			<< "From:\t" << projText_ << '\n'
+			<< "To:\t"<< dest.projText_ ;
+		if ( size > 0 ) {
+			msg << '\n' << "Coordinates: " << lon[0] << ' ' << lat[0];
+		}
 
 		throw WdbException( msg.str(), __func__ );
 	}
@@ -155,86 +159,6 @@ public:
 };
 
 } // namespace <Support Function>
-
-
-/*
-void
-rotateCoordinates( std::vector<double> & lon, std::vector<double> & lat,
-				   std::string original,
-				   std::string source,
-				   std::string rotation )
-{
-    ProjPjHandler originalPJ( original );
-    if ( ! * originalPJ )
-    {
-        string message = "Could not create original projection. originalPJ=";
-        message += original;
-        throw WdbException(message, __func__);
-    }
-
-    ProjPjHandler sourcePJ( source );
-    if ( ! * sourcePJ )
-    {
-        string message = "Could not create source projection . sourcePJ=";
-        message += source;
-        throw WdbException(message, __func__);
-    }
-
-    ProjPjHandler rotationPJ( rotation );
-    if (! * rotationPJ)
-    {
-        string message = "Could not create rotation projection. rotationPJ=";
-        message += rotation;
-        throw WdbException(message, __func__);
-    }
-
-    ProjPjHandler tgtPJ( "+proj=longlat +ellps=WGS84 +no_defs" );
-    if (! * tgtPJ)
-    {
-        string message = "Could not create target projection for DB. tgtPJ=";
-        message += "+proj=longlat +ellps=WGS84 +no_defs";
-        throw WdbException(message, __func__);
-    }
-
-    // dummyAltitude is written to by pj_transform, but never used
-    vector<double> dummyAltitude( lon.size() );
-
-    // First we transform from original (usually in degrees radian) to
-    // source, which must be in meters in order to do the oblique
-    // transform with PROJ
-    int ret = pj_transform(*originalPJ,
-                           *sourcePJ,
-                           lon.size(),
-                           0,
-                           & lon[0],
-                           & lat[0],
-                           & dummyAltitude[0] );
-    if (ret != 0)
-    {
-        std::ostringstream message;
-        message << "Attempt to transform from original projection to source projection failed. pj_transform error=";
-        message << pj_strerrno(ret);
-        throw WdbException(message.str(), __func__);
-    }
-
-    // With the coordinates transformed, we can now rotate to identify the
-    // real longlat coordinates in WGS84.
-    ret = pj_transform(* rotationPJ,
-                       * tgtPJ,
-                       lon.size(),
-                       0,
-                       & lon[0],
-                       & lat[0],
-                       & dummyAltitude[0] );
-    if (ret != 0)
-    {
-        std::ostringstream message;
-        message << "Attempt to transform from rotation projection to target projection failed. pj_transform error=";
-        message << pj_strerrno(ret);
-        throw WdbException(message.str(), __func__);
-    }
-}
-*/
 
 
 /**
