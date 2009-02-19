@@ -27,12 +27,10 @@ ParameterId|Parameter Name|Value Parameter Description
 723|probability of precipitation >1.0mm|Probability of precipitation exceeding 1.0 mm
 724|probability of precipitation >2.0mm|Probability of precipitation exceeding 2.0 mm
 725|probability of precipitation >5.0mm|Probability of precipitation exceeding 5.0 mm
-730|probability of air temperature +/-1|Probability of yr temperature +/-1 degree Kelvin
-731|probability of air temperature +/-2|Probability of yr temperature +/-2 degree Kelvin
-732|probability of air temperature +/-3|Probability of yr temperature +/-3 degree Kelvin
-733|probability of air temperature +/-4|Probability of yr temperature +/-4 degree Kelvin
+730|probability of air temperature +/-1.5|Probability of yr temperature +/-1.5 degree Kelvin
+731|probability of air temperature +/-2.5|Probability of yr temperature +/-2.5 degree Kelvin
 801|probability of yr weather symbol|Probability of the correctness of the yr weather symbol
-802|probability of wind|Probability of the correctness of yr wind parameters
+802|probability of wind strength|Probability of the correctness of yr wind parameters
 1104|probability of fog|NA
 1181|proportion of land, model|NA
 7100|fog cover|NA

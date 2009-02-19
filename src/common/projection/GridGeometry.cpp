@@ -167,7 +167,6 @@ GridGeometry::Point GridGeometry::unprojectedLonLat_(const Point & p) const
 {
 	Point ret(startingLongitude_ + (p.x * xIncrement_), startingLatitude_ + (p.y * yIncrement_));
 
-	// cout << "Unprojected: " << ret << endl;
 	if ( not isMetric( projDefinition_ ) ) {
 		ret.x *= DEG_TO_RAD;
 		ret.y *= DEG_TO_RAD;
