@@ -159,14 +159,12 @@ include test/install/cleaningProgram/wdb.mk
 include test/performance/callInterface/wdb.mk
 include test/stability/callInterface/wdb.mk
 include test/utility/configuration/wdb.mk
-include test/utility/gribWrite/wdb.mk
 include test/utility/testWrite/wdb.mk
 
 # Unit Tests
 include src/common/projection/test/wdb.mk
 include src/callInterface/core/test/wdb.mk
 include src/callInterface/types/test/wdb.mk
-include test/utility/gribWrite/test/wdb.mk
 
 include examples/wdb.mk
 include examples/C++/wdb.mk

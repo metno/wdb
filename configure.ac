@@ -38,8 +38,6 @@ src_subdirs="			src/callInterface/api \
 				    	src/admin \
 				    	src/admin/operations \
 				    	src/admin/ui/cmdLine \
-						test/utility/gribWrite \
-						test/utility/gribWrite/test \
 						test/utility/testWrite \
 						test/unit \
 						examples \ 
@@ -74,7 +72,6 @@ build_subdirs="			doc \
 						test/performance/callInterface \
 						test/stability/callInterface \
 						test/utility/configuration \
-						test/utility/gribWrite \
 						test/utility/testWrite \
 						test/unit \
 						examples \
@@ -235,8 +232,6 @@ AC_CONFIG_FILES([Makefile
 				 test/performance/callInterface/Makefile
 				 test/stability/callInterface/Makefile
 				 test/utility/configuration/Makefile
-				 test/utility/gribWrite/Makefile
-		 		 test/utility/gribWrite/test/Makefile
 				 test/utility/testWrite/Makefile
 		 		 test/unit/Makefile
 			     examples/Makefile
