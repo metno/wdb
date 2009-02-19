@@ -166,18 +166,18 @@ struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification 
 		return lonlat();
 
 	lonlat ret = coords;
-	if ( not isMetric( p->projDefinition_ ) ) {
-		ret.lon *= DEG_TO_RAD;
-		ret.lat *= DEG_TO_RAD;
-	}
+	ret.lon *= DEG_TO_RAD;
+	ret.lat *= DEG_TO_RAD;
     {
 		WdbProjection from(getProjDefinition( "longlat", "+ellps=WGS84" ));
 		WdbProjection to(  p->projDefinition_ );
 
 		from.transform(to, 1, &ret.lon, &ret.lat);
 	}
-	ret.lon *= RAD_TO_DEG;
-	ret.lat *= RAD_TO_DEG;
+	if ( not isMetric( p->projDefinition_ ) ) {
+		ret.lon *= RAD_TO_DEG;
+		ret.lat *= RAD_TO_DEG;
+	}
 	ret.lon = ( (ret.lon - p->startingLongitude_ ) / p->xIncrement_ );
 	ret.lat = ( (ret.lat - p->startingLatitude_ ) / p->yIncrement_ );
 
