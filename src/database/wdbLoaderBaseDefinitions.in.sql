@@ -81,7 +81,7 @@ $BODY$
 	SELECT PlaceId::bigint
 	FROM   loaderBase.placexref
 	WHERE
-		Equals(placegeometry, geomfromtext($1, $2)) AND
+		placegeometry = geomfromtext($1, $2) AND
 		iNumber = $3 AND jNumber = $4 AND
 		round(iIncrement::numeric, 3) = round($5::numeric, 3) AND
 		round(jIncrement::numeric, 3) = round($6::numeric, 3) AND
@@ -91,6 +91,10 @@ $BODY$
 	-- Note: There is no reason to work with more than 3 decimal points
 	-- of precision, as the values cannot exceed that limit due to FELT
 	-- file format limitations.
+    -- Note: Equals (which would be the more correct way to compare 
+    -- geometries unfortunately gives too few results (even when the 
+    -- geometries seem identical in every aspect, including their binary
+    -- strings; cf. NSeaSkag felt files ) 	
 $BODY$
 SECURITY DEFINER
 LANGUAGE 'sql';
