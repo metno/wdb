@@ -222,9 +222,9 @@ uninstall-local:
 DISTCHECK_DATABASE_NAME = wdb_distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-database-install --with-database-name=$(DISTCHECK_DATABASE_NAME)
 
-if SPECIAL_GRIB_API_PATH 
-DISTCHECK_CONFIGURE_FLAGS += "--with-gribapi=$(GRIB_PATH)"
-endif
+#if SPECIAL_GRIB_API_PATH 
+#DISTCHECK_CONFIGURE_FLAGS += "--with-gribapi=$(GRIB_PATH)"
+#endif
 
 override distuninstallcheck_listfiles =  find . -type f -! -name wdb.conf -print
 
@@ -438,52 +438,6 @@ performancecheck:  $(PERFORMANCETESTS)
 	else :; \
 	fi
 
-
-#-----------------------------------------------------------------------------
-# Cruise Control
-#-----------------------------------------------------------------------------
-
-# This target does a VPATH configuration and install of the database. It then
-# runs the unit and install tests of the system with the XML option switched
-# on, and converts the cppunit and TAP logs to junit format.
-cc-check: dist
-	-rm -rf ./logs
-	mkdir -p ./logs
-	case '$(DIST_ARCHIVES)' in \
-	*.tar.gz*) \
-	  GZIP=$(GZIP_ENV) gunzip -c $(distdir).tar.gz | $(am__untar) ;;\
-	*.tar.bz2*) \
-	  bunzip2 -c $(distdir).tar.bz2 | $(am__untar) ;;\
-	*.tar.Z*) \
-	  uncompress -c $(distdir).tar.Z | $(am__untar) ;;\
-	*.shar.gz*) \
-	  GZIP=$(GZIP_ENV) gunzip -c $(distdir).shar.gz | unshar ;;\
-	*.zip*) \
-	  unzip $(distdir).zip ;;\
-	esac
-	chmod -R a-w $(distdir); chmod a+w $(distdir)
-	mkdir $(distdir)/_build
-	mkdir $(distdir)/_inst
-	chmod a-w $(distdir)
-	cc_install_base=`$(am__cd) $(distdir)/_inst && pwd | sed -e 's,^[^:\\/]:[\\/],/,'` \
-	  && cc_logs=`pwd | sed -e 's,^[^:\\/]:[\\/],/,'`/logs \
-	  && dc_destdir="$${TMPDIR-/tmp}/am-dc-$$$$/" \
-	  && $(MAKE) $(AM_MAKEFLAGS) \
-	  && cd $(distdir)/_build \
-	  && ../configure --srcdir=.. --prefix="$$cc_install_base" \
-	  && mkdir -p "$$cc_install_base"/etc \
-	  && echo "database = wdb_cccheck" > "$$cc_install_base"/etc/wdb.conf \
-	  && $(MAKE) $(AM_MAKEFLAGS) all wdbUnitTest install \
-	  && ./wdbUnitTest -o X &> unittest.tempxml \
-	  && ./wciInstallTest.sh --xml --output=wcitest.tempxml \
-	  && ./cleanDbInstallTest.sh --xml > "$$cc_logs"/cleandbtest.xml \
-	  && ./gribLoadInstallTest.sh --xml > "$$cc_logs"/gribloadtest.xml \
-	  && ./metadataInstallTest.sh --xml > "$$cc_logs"/metadatatest.xml \
-	  && sed '1d' unittest.tempxml > "$$cc_logs"/unittest.tempxml \
-	  && sed '1d' wcitest.tempxml > "$$cc_logs"/wcitest.tempxml \
-	  && $(MAKE) $(AM_MAKEFLAGS) uninstall \
-	  && rm -rf $(DIST_ARCHIVES)
-	$(am__remove_distdir)
 
 
 #-----------------------------------------------------------------------------
