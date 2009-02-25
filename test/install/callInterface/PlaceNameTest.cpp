@@ -69,28 +69,28 @@ void PlaceNameTest::testL1_01B_NoPlaceName()
 
 void PlaceNameTest::testL1_02A_OnePlaceName()
 {
-    result r = t->exec( statementOid_( "hirlam 10" ) );
+    result r = t->exec( statementOid_( "hirlam 10 grid" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10" ), size_t( r.size() ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10 grid" ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL1_02B_OnePlaceName()
 {
     result r = t->exec( statementFloat_( "test point" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "test point" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point" ), size_t( r.size() ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "test point test grid, rotated" ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL1_03A_NullPlaceName()
 {
     result r = t->exec( statementOid_( "NULL" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10" ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10 grid" ) );
     CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 20" ) );
     CPPUNIT_ASSERT( count_val( r, "placename", "test grid, rotated" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10" ) +
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10 grid" ) +
                           count_val( r, "placename", "hirlam 20" ) +
                           count_val( r, "placename", "test grid, rotated" ),
                           size_t( r.size() ) );
@@ -112,7 +112,7 @@ void PlaceNameTest::testL1_03B_NullPlaceName()
 
 void PlaceNameTest::testL2_01A_PlaceNamesExist()
 {
-	result r = t->exec( statementOid_( "hirlam 10" ) );
+	result r = t->exec( statementOid_( "hirlam 10 grid" ) );
 	CPPUNIT_ASSERT( ! r.empty() );
 }
 
@@ -136,24 +136,24 @@ void PlaceNameTest::testL2_02B_PlaceNamesDoNotExist()
 
 void PlaceNameTest::testL3_01A_LowerCase()
 {
-    result r = t->exec( statementOid_( "hirlam 10" ) );
+    result r = t->exec( statementOid_( "hirlam 10 grid" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10" ), size_t( r.size() ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10 grid" ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL3_01B_LowerCase()
 {
     result r = t->exec( statementFloat_( "test point" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "test point" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point" ), size_t( r.size() ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "test point test grid, rotated" ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL3_02A_UpperCase()
 {
-    result r = t->exec( statementOid_( "HIRLAM 10" ) );
-    result v = t->exec( statementOid_( "hirlam 10" ) );
+    result r = t->exec( statementOid_( "HIRLAM 10 GRID" ) );
+    result v = t->exec( statementOid_( "hirlam 10 grid" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }
@@ -168,8 +168,8 @@ void PlaceNameTest::testL3_02B_UpperCase()
 
 void PlaceNameTest::testL3_03A_MixedCase()
 {
-    result r = t->exec( statementFloat_( "HirlaM 10" ) );
-    result v = t->exec( statementFloat_( "hirlam 10" ) );
+    result r = t->exec( statementFloat_( "HirlaM 10 gRId" ) );
+    result v = t->exec( statementFloat_( "hirlam 10 grid" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }

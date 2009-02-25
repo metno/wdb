@@ -68,7 +68,7 @@ public:
         queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['Hirlam 10'], "; // DataProvider
-    	queryStr << "'hirlam 10', "; // Place
+    	queryStr << "'hirlam 10 grid', "; // Place
     	queryStr << "('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wci.timeSpec, "; // Reference Time
     	queryStr << "('1980-01-01 13:00:00', '1980-01-01 13:00:00', 'exact')::wci.timeSpec, "; // Valid Time
     	queryStr << "ARRAY['instant temperature of air'], "; // Parameter
@@ -145,7 +145,7 @@ public:
         queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['Hirlam 10'], "; // DataProvider
-    	queryStr << "'hirlam 10', "; // Place
+    	queryStr << "'hirlam 10 grid', "; // Place
     	queryStr << "('1980-01-01 12:00:00', '1980-01-01 18:00:00', 'exact')::wci.timeSpec, "; // Reference Time
     	queryStr << "('1980-01-01 19:00:00', '1980-01-01 19:00:00', 'exact')::wci.timeSpec, "; // Valid Time
     	queryStr << "ARRAY['air temperature', 'air pressure', 'air pressure change',"

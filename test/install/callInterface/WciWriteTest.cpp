@@ -62,7 +62,7 @@ void wciWriteTest::testCanInsert1()
 
 	const string select = "SELECT * FROM wci.read("
 		"ARRAY['wcitestwriter'],"
-		"'Hirlam 10'::text,"
+		"'Hirlam 10 grid'::text,"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air pressure'],"
@@ -75,7 +75,7 @@ void wciWriteTest::testCanInsert1()
 
 	const string write = "SELECT wci.write("
 		"24944::oid, "
-		"'Hirlam 10',"
+		"'Hirlam 10 grid',"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 		"'air pressure',"
@@ -94,7 +94,7 @@ void wciWriteTest::testCanInsert2()
 
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
-						  "'Hirlam 10'::text,"
+						  "'Hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
 						  "ARRAY['air temperature'], "
@@ -139,7 +139,7 @@ void wciWriteTest::testMultipleInserts2()
 {
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
-						  "'Hirlam 10'::text,"
+						  "'Hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
 						  "ARRAY['air pressure change'], "

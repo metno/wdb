@@ -105,6 +105,7 @@ DECLARE
 	interpolation 	wci.interpolationType;
 
 	readQ	 		text;
+	returnPlaceName	text;
 BEGIN
 	-- Location
 	IF location IS NOT NULL THEN
@@ -188,10 +189,11 @@ BEGIN
 			--RAISE DEBUG 'WCI.READ.FloatResult: %, %, %, %', astext(gLocation), interpolation, entryO.placeid, entryO.valueid;
 			<<extract_points>>
 			FOR pointData IN SELECT * FROM __WCI_SCHEMA__.extractGridData( entryO.placeid, gLocation, interpolation, entryO.value ) LOOP
+				returnPlaceName := loc.location || ' ' || entryO.placename; 
 				returnObject := ( 
 						pointData.value, 
 						entryO.dataprovidername, 
-						loc.location,
+						returnPlaceName,
 						pointData.location,
 						entryO.referencetime,
 						entryO.validtimefrom,

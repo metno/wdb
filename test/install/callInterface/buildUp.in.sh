@@ -57,30 +57,30 @@ $TEST_WRITE --dataprovider 'test wci 2' --placename 'test grid, rotated' --refti
 
 # PlaceName
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-25 06:00:00+00'
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-25 06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-25 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20' --reftime '2004-12-25 06:00:00+00'
 
 # PlaceGeos
 # G1-G4, G7, G8, G17, G31 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air pressure'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air pressure'
 # G5 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air pressure change' -P 168,156=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air pressure change' -P 168,156=2
 # G6 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20' --reftime '2004-12-26 06:00:00+00' --valueparameter 'ozone dobson surface density' -P280,135=2 -P90,42=3 -P233,17=4 -P233,377=5 -P232,374=6
 # G9 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2
 # G11 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'max air temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2 -P161,164=3 -P161,165=3 -P162,163=3 -P162,164=3 -P162,165=3 -P162,166=3 -P163,162=3 -P163,163=3 -P163,164=3 -P163,165=3 -P163,166=3 -P163,167=3 -P164,162=3 -P164,163=3 -P164,164=3 -P164,165=3 -P164,166=3 -P164,167=3 -P165,163=3 -P165,164=3 -P165,165=3 -P165,166=3 -P166,164=3 -P166,165=3
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'max air temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2 -P161,164=3 -P161,165=3 -P162,163=3 -P162,164=3 -P162,165=3 -P162,166=3 -P163,162=3 -P163,163=3 -P163,164=3 -P163,165=3 -P163,166=3 -P163,167=3 -P164,162=3 -P164,163=3 -P164,164=3 -P164,165=3 -P164,166=3 -P164,167=3 -P165,163=3 -P165,164=3 -P165,165=3 -P165,166=3 -P166,164=3 -P166,165=3
 # G20 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'min air temperature'  -P150,0=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'min air temperature'  -P150,0=2
 # G21 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity'  -P150,0=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity'  -P150,0=2
 # G22 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity (u vector)' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity (u vector)' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
 # G23, G24 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity (v vector)' -P 175,0=2 -P 175,1=2 -P 176,0=3 -P 176,1=3
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity (v vector)' -P 175,0=2 -P 175,1=2 -P 176,0=3 -P 176,1=3
 # G30 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snow depth distance' --initCoord
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snow depth distance' --initCoord
 
 # ReferenceTime
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2007-01-11 06:00:00+00' --validtimefrom '2007-01-11 06:00:00+00' --validtimeto '2007-01-12 06:00:00+00'
@@ -115,8 +115,8 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --refti
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00'
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
