@@ -79,8 +79,8 @@ void PlaceNameTest::testL1_02B_OnePlaceName()
 {
     result r = t->exec( statementFloat_( "test point" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "test point test grid, rotated" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( 1 ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point hirlam 20" ), size_t( 1 ) );
 }
 
 void PlaceNameTest::testL1_03A_NullPlaceName()
@@ -146,8 +146,8 @@ void PlaceNameTest::testL3_01B_LowerCase()
 {
     result r = t->exec( statementFloat_( "test point" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "test point test grid, rotated" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( 1 ) );
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point hirlam 20" ), size_t( 1 ) );
 }
 
 void PlaceNameTest::testL3_02A_UpperCase()
