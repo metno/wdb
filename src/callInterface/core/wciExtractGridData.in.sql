@@ -216,12 +216,12 @@ LANGUAGE 'plpgsql' STRICT STABLE;
 -- which we have data for?
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.isRealInterpolation
 (
-	interpolation wci.interpolationtype
+	interpolation __WCI_SCHEMA__.interpolationtype
 )
 RETURNS boolean AS
 $BODY$
 BEGIN
-	IF interpolation = 'bilinear'::wci.interpolationtype THEN
+	IF interpolation = 'bilinear'::__WCI_SCHEMA__.interpolationtype THEN
 		return TRUE;
 	END IF;
 	return FALSE;
@@ -239,7 +239,7 @@ __WCI_SCHEMA__.extractGridData
 (
 	placeid			bigint,
 	location 		GEOMETRY,
-	interpolation 	wci.interpolationType, 
+	interpolation 	__WCI_SCHEMA__.interpolationType, 
 	valueOid		oid 
 )
 RETURNS SETOF __WCI_SCHEMA__.extractGridDataReturnType AS
@@ -258,7 +258,7 @@ BEGIN
 	isInterpolation := __WCI_SCHEMA__.isRealInterpolation(interpolation);
 	IF isInterpolation = TRUE THEN
 		-- If Interpolation is bilinear
-		IF interpolation = 'bilinear'::wci.interpolationType THEN
+		IF interpolation = 'bilinear'::__WCI_SCHEMA__.interpolationType THEN
 			SELECT * INTO ret FROM __WCI_SCHEMA__.bilinearInterpolation( placeid, location, valueoid );
 			--IF ret IS NOT NULL THEN -- (the following line works in postgresql 8.1)
 			IF ret.location IS NOT NULL THEN 
@@ -290,7 +290,7 @@ BEGIN
 			RETURN;
 		ELSIF geomType = 'POINT' THEN
 			SELECT * INTO pSpec FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
-			IF interpolation = 'exact'::wci.interpolationType THEN
+			IF interpolation = 'exact'::__WCI_SCHEMA__.interpolationType THEN
 				p := __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
 				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
 				IF p.placeid IS NOT NULL THEN
@@ -299,7 +299,7 @@ BEGIN
 					RETURN NEXT ret;
 				END IF;
 				RETURN;
-			ELSIF interpolation = 'nearest'::wci.interpolationType THEN
+			ELSIF interpolation = 'nearest'::__WCI_SCHEMA__.interpolationType THEN
 				p := __WCI_SCHEMA__.getNearestPlacePoint( location, placeid, pSpec.i, pSpec.j );
 				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
 				IF p.placeid IS NOT NULL THEN
@@ -308,7 +308,7 @@ BEGIN
 					RETURN NEXT ret;
 				END IF;
 				RETURN;
-			ELSIF interpolation = 'surround'::wci.interpolationType THEN 
+			ELSIF interpolation = 'surround'::__WCI_SCHEMA__.interpolationType THEN 
 				curs := __WCI_SCHEMA__.getSurroundingPlacePoint( location, placeid, pSpec.i, pSpec.j );
 				FOR ret IN 
 					SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
@@ -335,7 +335,7 @@ LANGUAGE 'plpgsql' STABLE;
 --(
 --	placeid			bigint,
 --	location 		GEOMETRY,
---	interpolation 	wci.interpolationType, 
+--	interpolation 	__WCI_SCHEMA__.interpolationType, 
 --	valueOid		oid 
 --)
 --RETURNS SETOF __WCI_SCHEMA__.extractGridDataReturnType AS

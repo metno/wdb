@@ -24,10 +24,10 @@ __WCI_SCHEMA__.readQuery
 	querySource integer,
 	dataprovider text[],
 	placeid text,
-	referencetime wci.timespec,
-	validtime wci.timeSpec,
+	referencetime __WCI_SCHEMA__.timespec,
+	validtime __WCI_SCHEMA__.timeSpec,
 	parameter text[],
-	level wci.levelSpec,
+	level __WCI_SCHEMA__.levelSpec,
 	dataversion integer[]
 )
 RETURNS text AS

@@ -18,6 +18,51 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+CREATE TYPE wci.browsedataprovider AS 
+(
+	dataprovidername	text,
+	referencetimefrom 	timestamp with time zone,
+	referencetimeto 	timestamp with time zone,
+	numberoftuples 		integer
+);
+
+CREATE TYPE wci.browseplace AS 
+(
+	placename			text,
+	referencetimefrom 	timestamp with time zone,
+	referencetimeto 	timestamp with time zone,
+	numberoftuples 		integer
+);
+
+CREATE TYPE wci.browsereferencetime AS 
+(
+	referencetime	 	timestamp with time zone,
+	numberoftuples 		integer
+);
+
+CREATE TYPE wci.browsevalidtime AS 
+(
+	validtimefrom 		timestamp with time zone,
+	validtimeto	 		timestamp with time zone,
+	numberoftuples 		integer
+);
+
+CREATE TYPE wci.browsevalueparameter AS 
+(
+	valueparametername	text,
+	valueunitname		text,
+	numberoftuples 		integer
+);
+
+CREATE TYPE wci.browselevelparameter AS 
+(
+	levelparametername	text,
+	levelunitname		text,
+	levelfrom		 	real,
+	levelto			 	real,
+	numberoftuples 		integer
+);
+
 -- browse dataprovider info
 -- returns wci.browsedataprovider
 --   DataProviderName

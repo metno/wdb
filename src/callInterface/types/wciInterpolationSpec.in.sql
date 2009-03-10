@@ -18,12 +18,12 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -- Input / Output
-CREATE FUNCTION wci.interpolationType_in( cstring )
-    RETURNS wci.interpolationType
+CREATE FUNCTION __WCI_SCHEMA__.interpolationType_in( cstring )
+    RETURNS __WCI_SCHEMA__.interpolationType
     AS '__WDB_LIBDIR__/__WCI_LIB__', 'interpolationType_in'
     LANGUAGE C IMMUTABLE STRICT;
 
-CREATE FUNCTION wci.interpolationType_out( wci.interpolationType )
+CREATE FUNCTION __WCI_SCHEMA__.interpolationType_out( __WCI_SCHEMA__.interpolationType )
     RETURNS cstring
     AS '__WDB_LIBDIR__/__WCI_LIB__', 'interpolationType_out'
     LANGUAGE C IMMUTABLE STRICT;
@@ -35,15 +35,15 @@ CREATE FUNCTION wci.interpolationType_out( wci.interpolationType )
 -- interpolation will be performed.
 -- "nearest" return the nearest point for which we have data.
 -- "surround" return the four nearest points.
-CREATE TYPE wci.interpolationType (
+CREATE TYPE __WCI_SCHEMA__.interpolationType (
    internallength = 4,
-   input = wci.interpolationType_in,
-   output = wci.interpolationType_out,
+   input = __WCI_SCHEMA__.interpolationType_in,
+   output = __WCI_SCHEMA__.interpolationType_out,
    -- receive = int4recv,
    -- send = int4send, --does not work
    alignment = int,
    PASSEDBYVALUE
 );
 
-CREATE CAST ( wci.interpolationType AS int ) WITHOUT FUNCTION AS IMPLICIT;
-CREATE CAST ( int AS wci.interpolationType ) WITHOUT FUNCTION;
+CREATE CAST ( __WCI_SCHEMA__.interpolationType AS int ) WITHOUT FUNCTION AS IMPLICIT;
+CREATE CAST ( int AS __WCI_SCHEMA__.interpolationType ) WITHOUT FUNCTION;

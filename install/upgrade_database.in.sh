@@ -21,7 +21,6 @@
 #
 # upgrade - upgrade the wdb system
 #
-
 UPGRADE_LIMIT_MAJOR=0
 UPGRADE_LIMIT_MINOR=7
 UPGRADE_LIMIT_MICRO=4
@@ -34,7 +33,7 @@ SCRIPT_VERSION=__WDB_VERSION__
 
 SCRIPT_USAGE="Usage: $0 [OPTION]
 
-The script upgrades the WDB system in the database specified by the 
+This script upgrades the WDB system in the database specified by the 
 wdbConfiguration program (unless overriden on the command line) to the 
 latest version (version __WDB_VERSION__).
 
@@ -124,7 +123,9 @@ WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
 
 if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
-    echo "Error: Could not locate database installation files. Unable to install wdb."
+    echo "ERROR: Could not locate database installation files."
+	echo "Checking: $WDB_DATAMODEL_PATH"
+	echo "Unable to install wdb."
     exit 1
 fi
 
@@ -133,9 +134,12 @@ WDB_NAME=`wdbConfiguration --database`
 export $WDB_NAME
 echo -n "checking connection to $WDB_NAME... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
-# grab first line (name) | trim whitesoace
+# grab first line (name) | trim whitespace
 DB_CHECK=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
 # Test whether database exists
+# Note: as the list above only grabs the first tablename matching 
+# the WDB_NAME pattern this may fail if there is a database with a similar 
+# name present in the DB
 if test "$DB_CHECK" = "$WDB_NAME"; then 
     echo "yes"
     DATABASE_EXISTS="yes"
@@ -158,7 +162,9 @@ major_version=`echo $current_version | sed 's/\..*$//'`
 minor_version=`echo $current_version | sed 's/[0-9]*\.//' | sed 's/\..*$//'`
 patch_version=`echo $current_version | sed 's/.*\.//'`
 
-# Todo: Check that current version is upgradeable.
+# Todo: Check that current version is upgradeable
+
+# Todo: Check differences between major and minor upgrade
 
 # Install Datamodel
 echo -n "installing upgraded datamodel... "
@@ -166,15 +172,27 @@ psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
-\i $WDB_DATAMODEL_PATH/wdbTableDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbBaseTables.sql
+\i $WDB_DATAMODEL_PATH/wdbDataProviderTables.sql
+\i $WDB_DATAMODEL_PATH/wdbPlaceDefinitionTables.sql
+\i $WDB_DATAMODEL_PATH/wdbParameterTables.sql
+\i $WDB_DATAMODEL_PATH/wdbValueTables.sql
 \i $WDB_DATAMODEL_PATH/wdbConstraintDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbMaterializedView.sql
 \i $WDB_DATAMODEL_PATH/wdbViewDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbXmlDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
 EOF
 if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
+    echo "failed"
+    echo "ERROR: The upgrade of the datamodel failed. See log for details." 
+    exit 1
 else
     echo "done"
 fi
@@ -193,8 +211,6 @@ if [ 0 != $? ]; then
 else
     echo "done"
 fi
-
-exit
 
 # Install Metadata
 echo -n "installing new materialized views... "
@@ -230,7 +246,7 @@ fi
 # Install wci
 echo -n "installing upgraded wci types... "
 cd __WDB_DATADIR__/sql/wci
-for FILE in `ls -1f types/*.sql | grep -v [.]in[.]sql | grep -v types/wci`; do
+for FILE in `ls -1f types/*.sql | grep -v [.]in[.]sql`; do
     psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
@@ -244,24 +260,8 @@ echo done
 
 echo -n "installing upgraded wci core... "
 cd __WDB_DATADIR__/sql/wci
-#psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-#SET CLIENT_MIN_MESSAGES TO "WARNING";
-#\set ON_ERROR_STOP
-#\i types/wciInterpolationSpec.sql
-#\i core/wciSession.sql
-#\i core/wciWriteInternals.sql
-#\i core/wciExtractGridData.sql
-#EOF
-
-#\i core/readWhereClause.sql
-#\i core/readOidQuery.sql
-#\i core/readFloatQuery.sql
-#\i core/wciInterpolation.sql
-
-
-for FILE in `ls -1f core/*.sql | grep -v [.]in[.]sql | grep -v wciSession.sql | grep -v wciInterpolation.sql` ; do
-	echo $FILE
-    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME  <<EOF
+for FILE in `ls -1f core/*.sql | grep -v [.]in[.]sql`; do
+    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i $FILE
@@ -272,14 +272,15 @@ EOF
 done
 echo done
 
+
 # Data Migration
 echo -n "migrating data... "
 cd __WDB_DATADIR__/sql
-#psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
-#SET CLIENT_MIN_MESSAGES TO "WARNING";
-#\set ON_ERROR_STOP
-#\i $FILE
-#EOF
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\i upgrade_database.sql
+EOF
 echo done
 
 #echo -n "Dropping views and functions... "

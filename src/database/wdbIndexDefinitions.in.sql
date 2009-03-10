@@ -19,13 +19,6 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-CREATE UNIQUE INDEX XAK1Wdb_GribGeneratingprocess ON __WDB_SCHEMA__.gribgeneratingprocess
-(
-	GeneratingCenterId,
-	GeneratingProcessId,
-	GeneratingProcessValidFrom
-);
-
 
 CREATE UNIQUE INDEX XAK1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
 (

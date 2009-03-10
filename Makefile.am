@@ -233,8 +233,9 @@ distcheck-hook:
 	echo "database = $(DISTCHECK_DATABASE_NAME)" > $(distdir)/_inst/etc/wdb.conf
 
 
-upgrade: install-exec install-man install-nodist_pkgpythonPYTHON \
-	install-pkgpythonPYTHON install-sqlDATA install-wciapiDATA \
+#install-exec install-nodist_pkgpythonPYTHON install-pkgpythonPYTHON  
+
+upgrade: all install-man install-sqlDATA install-wciapiDATA \
 	install-wcicoreDATA install-wcitypesDATA install-wdbdataDATA
 # turn off pg 
 # install-exec

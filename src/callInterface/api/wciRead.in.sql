@@ -19,6 +19,51 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+
+CREATE TYPE wci.returnFloat AS (
+	value float,
+	dataProviderName varchar( 255 ),
+	placeName varchar( 255 ),
+	placeGeometry GEOMETRY,
+	referencetime timestamp with time zone,
+	validFrom timestamp with time zone,
+	validTo timestamp with time zone,
+	valueParameterName varchar ( 255 ),
+	valueParameterUnit varchar( 80 ),
+	levelParameterName varchar( 255 ),
+	levelUnitName varchar( 80 ),
+	levelFrom real,
+	levelTo real,
+	dataVersion integer,
+	confidenceCode integer,
+	storetime timestamp with time zone,
+	valueid bigint,
+	valuetype varchar( 80 )
+);
+
+CREATE TYPE wci.returnOid AS (
+	value oid,
+	dataProviderName varchar( 255 ),
+	placeName varchar( 255 ),
+	placeGeometry GEOMETRY,
+	referencetime timestamp with time zone,
+	validFrom timestamp with time zone,
+	validTo timestamp with time zone,
+	valueParameterName varchar ( 255 ),
+	valueParameterUnit varchar( 80 ),
+	levelParameterName varchar( 255 ),
+	levelUnitName varchar( 80 ),
+	levelFrom real,
+	levelTo real,
+	dataVersion integer,
+	confidenceCode integer,
+	storetime timestamp with time zone,
+	valueid bigint,
+	valuetype varchar( 80 )
+);
+
+
+
 -- Output Large Objects
 CREATE OR REPLACE FUNCTION 
 wci.read( dataprovider 		text[],
@@ -38,7 +83,7 @@ DECLARE
 	returnObject 	wci.returnOid;
 BEGIN
 	readQ := 'SELECT * ' ||
-	-- Create Query to Run
+		-- Create Query to Run
 			  __WCI_SCHEMA__.readQuery( 0,
 										dataprovider,
 										__WCI_SCHEMA__.getPlaceQuery(location, 0),
@@ -102,7 +147,7 @@ DECLARE
 	-- Geometry
 	loc 			__WCI_SCHEMA__.location;
 	gLocation 		GEOMETRY;
-	interpolation 	wci.interpolationType;
+	interpolation 	__WCI_SCHEMA__.interpolationType;
 
 	readQ	 		text;
 	returnPlaceName	text;

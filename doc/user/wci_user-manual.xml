@@ -219,7 +219,10 @@ SELECT * FROM wci.browse( NULL::wci.browseplace );
 				calculations. These permit the user a great deal of flexibility in
 				searching. Currently, interpolations such as "exact", "nearest" (retrieve the
 			data value closest to the specified place), and "bilinear" (retrieve the closest data
-			values and perform a bilinear interpolation of those values).</para>
+			values and perform a bilinear interpolation of those values) are implemented.</para>
+			
+			<para>The form of place specification then becomes one of the two following forms:</para>
+			
 			
 			<para>Specifying NULL for the place definition of a query is logically
 				equivalent to asking for all of the data items in the database, irrespective

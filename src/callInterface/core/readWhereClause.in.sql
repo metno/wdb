@@ -48,7 +48,7 @@ LANGUAGE 'c' STRICT IMMUTABLE;
 CREATE OR REPLACE FUNCTION 
 __WCI_SCHEMA__.referenceTimeWhereClause
 (
-	referencetime wci.timeSpec
+	referencetime __WCI_SCHEMA__.timeSpec
 )
 RETURNS text AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wci_referenceTimeWhereClause'
@@ -57,7 +57,7 @@ LANGUAGE 'c' STRICT IMMUTABLE;
 CREATE OR REPLACE FUNCTION 
 __WCI_SCHEMA__.validTimeWhereClause
 (
-	validtime wci.timeSpec
+	validtime __WCI_SCHEMA__.timeSpec
 )
 RETURNS text AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wci_validTimeWhereClause'
@@ -75,7 +75,7 @@ LANGUAGE 'c' STRICT IMMUTABLE;
 CREATE OR REPLACE FUNCTION 
 __WCI_SCHEMA__.levelWhereClause
 (
-	level wci.levelSpec
+	level __WCI_SCHEMA__.levelSpec
 )
 RETURNS text AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wci_levelWhereClause'

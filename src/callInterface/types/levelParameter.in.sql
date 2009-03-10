@@ -117,7 +117,7 @@ BEGIN
 
 			SELECT * INTO explodedParameter FROM __WCI_SCHEMA__.getLevelParameter(parameter);
 
-			PERFORM wci.assertUnitIsPhenomenon(unit, explodedParameter.physicalPhenomena);
+			PERFORM __WCI_SCHEMA__.assertUnitIsPhenomenon(unit, explodedParameter.physicalPhenomena);
 
 			BEGIN
 				INSERT INTO __WDB_SCHEMA__.levelparameter 

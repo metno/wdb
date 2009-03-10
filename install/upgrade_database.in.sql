@@ -50,11 +50,11 @@ BEGIN
 	-- TODO: Check database version. If the database version of the old database
 	-- is too ancient, abort with an error message
 
-	-- Transfer the Raw Data Values
+	-- Transfer the OID Raw Data Values
 	-- Read all raw data using wci.read
 	FOR valRef IN
 		SELECT * FROM wci.read( NULL, NULL, NULL, NULL,
-								NULL, NULL, NULL, NULL::wci.returnOidValue )
+								NULL, NULL, NULL, NULL::wci.returnOid )
 	LOOP
 		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valRef.dataProviderName );
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valRef.placename_ );
@@ -86,10 +86,48 @@ BEGIN
 	-- abort (if so, we need to implement the possibility of a dry-run migration),
 	-- or we should be able to save the data ported.
 	
-	-- After reading all raw data, we will need to pick up all the "detailed" info
+	-- After reading all raw data, we will need to pick up any "detailed" info
 	-- for the data values (e.g., data import information, quality information, etc)
 	-- Also, there should be the possibility to run both pre- and post- operations
 	-- to the data migration.
+	
+
+
+	-- Transfer the FLOAT Raw Data Values
+	-- Read all raw data using wci.read
+	FOR valRef IN
+		SELECT * FROM wci.read( NULL, NULL, NULL, NULL,
+								NULL, NULL, NULL, NULL::wci.returnFloat )
+	LOOP
+		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valRef.dataProviderName );
+		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valRef.placename_ );
+		normalizedValueParameter_ := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
+		normalizedLevelParameter_ := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
+		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
+		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ ); 
+		
+		-- Write all raw data using __WCI_SCHEMA__.write
+		SELECT __WCI_SCHEMA__.write(
+					dataProviderId_,
+					placeId_,
+					valRef.referenceTime,
+					valRef.validTimeFrom,
+					valRef.validTimeTo,
+					valRef.validTimeIndeterminateCode,
+					valueParameterId_,
+					levelParameterId_,
+					valRef.levelFrom,
+					valRef.levelTo,
+					valRef.levelIndeterminateCode,
+					valRef.dataVersion,
+					valRef.confidenceCode,
+					valRef.value
+		)
+	END LOOP;
+	-- TODO: Error handling. If a value can not be inserted into the database
+	-- (e.g., because of missing metadata), the migrate operation should either
+	-- abort (if so, we need to implement the possibility of a dry-run migration),
+	-- or we should be able to save the data ported.
 
 END 
 $BODY$

@@ -128,7 +128,7 @@ END
 $body$
 language plpgsql;
 
-create trigger trigger_createPlaceDefinitionFromPlaceRegularGrid
+create trigger trigger___WDB_SCHEMA___createPlaceDefinitionFromPlaceRegularGrid
 before insert 
 on __WDB_SCHEMA__.placeregulargrid 
 for each row 
@@ -171,7 +171,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_deleteObsoleteOids
+CREATE TRIGGER trigger___WDB_SCHEMA___deleteObsoleteOids
     AFTER DELETE ON __WDB_SCHEMA__.oidvalue
     FOR EACH ROW
     EXECUTE PROCEDURE __WDB_SCHEMA__.deleteObsoleteOids();
@@ -180,7 +180,7 @@ CREATE TRIGGER trigger_deleteObsoleteOids
 --
 -- TOC entry 2509 (class 2620 OID 1391800)
 -- Dependencies: 1793 448
-CREATE TRIGGER trigger_populateplacepoints
+CREATE TRIGGER trigger___WDB_SCHEMA___populateplacepoints
     AFTER INSERT ON __WDB_SCHEMA__.placeregulargrid
     FOR EACH ROW
     EXECUTE PROCEDURE __WDB_SCHEMA__.triggerfun_populateplacepoints();
@@ -191,7 +191,7 @@ CREATE TRIGGER trigger_populateplacepoints
 
 
 
-CREATE OR REPLACE FUNCTION updatedataprovider_mv() RETURNS "trigger"
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatedataprovider_mv() RETURNS "trigger"
 	AS $$
 BEGIN
 	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv');
@@ -199,12 +199,12 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger_updatedataprovider_mv
+CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.dataprovidername
-	EXECUTE PROCEDURE updatedataprovider_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();
 
 
-CREATE OR REPLACE FUNCTION updateplacedefinition_mv() RETURNS "trigger"
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateplacedefinition_mv() RETURNS "trigger"
 	AS $$
 BEGIN
 	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv');
@@ -212,15 +212,15 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger_updateplacedefinition_mv1
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv1
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
-	EXECUTE PROCEDURE updateplacedefinition_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
-CREATE TRIGGER trigger_updateplacedefinition_mv2
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv2
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
-	EXECUTE PROCEDURE updateplacedefinition_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
-CREATE OR REPLACE FUNCTION updateplacespec_mv() RETURNS "trigger"
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateplacespec_mv() RETURNS "trigger"
 	AS $$
 BEGIN
 	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placespec');
@@ -228,24 +228,24 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger_updateplacespec_mv1
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv1
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
-	EXECUTE PROCEDURE updateplacespec_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
-CREATE TRIGGER trigger_updateplacespec_mv2
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv2
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
-	EXECUTE PROCEDURE updateplacespec_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
-CREATE TRIGGER trigger_updateplacespec_mv3
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv3
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placeregulargrid
-	EXECUTE PROCEDURE updateplacespec_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
-CREATE TRIGGER trigger_updateplacespec_mv4
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv4
 	AFTER INSERT OR UPDATE ON spatial_ref_sys
-	EXECUTE PROCEDURE updateplacespec_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
 
-CREATE OR REPLACE FUNCTION updatevalueparameter_mv() RETURNS "trigger"
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatevalueparameter_mv() RETURNS "trigger"
 	AS $$
 BEGIN
 	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.valueparameter_mv');
@@ -253,12 +253,12 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger_updatevalueparameter_mv
+CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.valuemeasureparameter
-	EXECUTE PROCEDURE updatevalueparameter_mv();
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
 
 
-CREATE OR REPLACE FUNCTION updatelevelparameter_mv() RETURNS "trigger"
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatelevelparameter_mv() RETURNS "trigger"
 	AS $$
 BEGIN
 	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.levelparameter_mv');
@@ -266,7 +266,6 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger_updatelevelparameter_mv
+CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv
 	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.levelmeasureparameter
-	EXECUTE PROCEDURE updatelevelparameter_mv();
-
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatelevelparameter_mv();

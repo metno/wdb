@@ -232,33 +232,6 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
--- Input, based on the return type from wci.read
--- OID
--- Automatically created dataversion
-CREATE OR REPLACE FUNCTION
-wci.write(
-	what wci.readReturnTypeOid
-)
-RETURNS void AS
-$BODY$
-BEGIN
-	PERFORM wci.write( 
-		what.value, 
-		what.referencetime,
-		what.parameter,
-		what.parameterUnit,  
-		what.levelFrom, 
-		what.levelTo, 
-		what.levelparametername,
-		what.levelUnitName,  
-		what.validFrom, 
-		what.validTo 
-	);
-END;
-$BODY$
-LANGUAGE 'plpgsql';
-
-
 -- Write OID Value
 -- All parameter specified
 CREATE OR REPLACE FUNCTION 

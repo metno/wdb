@@ -17,18 +17,12 @@
 --  (at your option) any later version.
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SET SESSION client_min_messages TO 'warning';
 
-CREATE OR REPLACE FUNCTION 
-__WCI_SCHEMA__.readFloatQuery
-(
-	dataprovider text[],
-	location text,
-	referencetime __WCI_SCHEMA__.timespec,
-	validtime __WCI_SCHEMA__.timeSpec,
-	parameter text[],
-	level __WCI_SCHEMA__.levelSpec,
-	dataversion integer[]
-)
-RETURNS text AS
-'__WDB_LIBDIR__/__WCI_LIB__', 'wci_readFloatQuery'
-LANGUAGE 'c' STABLE;
+-- wci is the schema that contains the external functions of the
+-- WDB Call Interface. 
+CREATE SCHEMA wci;
+REVOKE ALL ON SCHEMA wci FROM PUBLIC;
+GRANT ALL ON SCHEMA wci TO wdb_admin;
+GRANT USAGE ON SCHEMA wci TO wdb_write;
+GRANT USAGE ON SCHEMA wci TO wdb_read;

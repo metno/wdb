@@ -18,6 +18,48 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+CREATE TYPE wci.infodataprovider AS 
+(
+	dataprovidername		text,
+	dataprovidertype		character varying(80),
+	spatialdomaindelivery	character varying(80),
+	dataprovidercomment		character varying(254),
+	dataproviderstoretime 	timestamp with time zone
+);
+
+CREATE TYPE wci.infoplace AS 
+(
+	placename				text,
+	placegeometry			text,
+	placeindeterminatetype	character varying(80),
+	placegeometrytype		character varying(80),
+	placestoretime			timestamp with time zone
+);
+
+CREATE TYPE wci.inforegulargrid AS
+(
+	placename text,
+	iNumber int,
+	jNumber int,
+	iIncrement real,
+	jIncrement real,
+	startLatitude real,
+	startLongitude real,
+	projDefinition text
+);
+
+CREATE TYPE wci.infovalueparameter AS 
+(
+	valueparametername	text,
+	valueunitname		text
+);
+
+CREATE TYPE wci.infolevelparameter AS 
+(
+	levelparametername	text,
+	levelunitname		text
+);
+
 -- dataprovider info by name
 -- returns wci.infodataprovider
 CREATE OR REPLACE FUNCTION 

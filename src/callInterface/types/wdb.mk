@@ -40,8 +40,6 @@ WCITYPES_SOURCES =		src/callInterface/types/wciTimeSpec.in.sql \
 						src/callInterface/types/wciLevelSpec.in.sql \
 						src/callInterface/types/wciInterpolationSpec.in.sql \
 						src/callInterface/types/wciReadReturnType.in.sql \
-						src/callInterface/types/wciInfoType.in.sql \
-						src/callInterface/types/wciBrowseType.in.sql \
 						src/callInterface/types/valueParameter.in.sql \
 						src/callInterface/types/levelParameter.in.sql \
 						src/callInterface/types/location.in.sql \

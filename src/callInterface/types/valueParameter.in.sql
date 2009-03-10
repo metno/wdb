@@ -37,7 +37,7 @@ $BODY$
 LANGUAGE 'plpgsql' IMMUTABLE STRICT;
 
 
-CREATE OR REPLACE FUNCTION wci.assertUnitIsPhenomenon( unit text, physicalphenomenon_ text )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.assertUnitIsPhenomenon( unit text, physicalphenomenon_ text )
 RETURNS void AS
 $BODY$
 DECLARE

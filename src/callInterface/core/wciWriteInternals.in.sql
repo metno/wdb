@@ -171,7 +171,7 @@ __WCI_SCHEMA__.write(
 
 --
 -- __WCI_SCHEMA__.write
--- This is the main work function of the wci.write call (for flOAT)
+-- This is the main work function of the wci.write call (for FLOAT)
 -- 
 CREATE OR REPLACE FUNCTION
 __WCI_SCHEMA__.write(

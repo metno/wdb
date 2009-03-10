@@ -38,16 +38,23 @@ CREATE TABLE __WDB_SCHEMA__.gribgeneratingprocess
 REVOKE ALL ON __WDB_SCHEMA__.gribgeneratingprocess FROM public;
 GRANT ALL ON __WDB_SCHEMA__.gribgeneratingprocess TO wdb_admin;
 
-
 ALTER TABLE ONLY __WDB_SCHEMA__.gribgeneratingprocess
     ADD CONSTRAINT gribgeneratingprocess_pkey PRIMARY KEY (dataproviderid);
-
 
 ALTER TABLE __WDB_SCHEMA__.gribgeneratingprocess
 	ADD FOREIGN KEY (dataproviderid)
 					REFERENCES __WDB_SCHEMA__.dataprovider
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
+
+CREATE UNIQUE INDEX XAK1Wdb_GribGeneratingprocess ON __WDB_SCHEMA__.gribgeneratingprocess
+(
+	GeneratingCenterId,
+	GeneratingProcessId,
+	GeneratingProcessValidFrom
+);
+
+
 
 CREATE TABLE gribload.valueparameterxref (
     generatingcenterid integer NOT NULL,
