@@ -1,8 +1,15 @@
+wdb (0.8.0dev-2) hardy; urgency=low
+
+  * Fixed a bug in the installed crontab
+
+ -- Vegard Bønes <vegardb@met.no>  Mon, 09 Mar 2009 09:37:41 +0000
+
 wdb (0.8.0dev-1) unstable; urgency=low
 
   * upstream dev version
 
  -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Fri, 23 Jan 2009 12:52:26 +0100
+
 
 wdb (0.7.8-5) unstable; urgency=low
 
