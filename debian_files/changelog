@@ -1,3 +1,9 @@
+wdb (0.8.0dev-3) unstable; urgency=low
+
+  * Metadata update
+
+ -- Vegard Bønes <vegardb@prologdev1.oslo.dnmi.no>  Thu, 12 Mar 2009 12:38:18 +0100
+
 wdb (0.8.0dev-2) hardy; urgency=low
 
   * Fixed a bug in the installed crontab
