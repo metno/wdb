@@ -4,3 +4,4 @@ SRID|Name|x|x|Type
 50002|Hirlam 20 SRID|||+proj=ob_tran +o_proj=longlat +lon_0=0 +o_lat_p=25 +a=6367470.0 +no_defs
 50003|PROFET SRID|||+proj=ob_tran +o_proj=longlat +lon_0=-24 +o_lat_p=23.5 +a=6367470.0 +no_defs
 50004|MetNo Polar Stereographic|||+proj=stere +lat_0=90 +lon_0=58 +lat_ts=60 +a=6371000 +units=m +no_defs
+50005|Oslo Polar Stereographic|||+proj=stere +lat_0=90 +lon_0=24 +lat_ts=60 +a=6371000 +units=m +no_defs
