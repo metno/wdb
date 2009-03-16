@@ -7,6 +7,7 @@ ParameterId|Code|Code Reference
 30|Wave Spectra 3|WMO Code Table 2
 127|image data|WMO Code Table 2
 800|yr weather symbol|www.yr.no
+10293|ice presence|Boolean value
 10295|normalized stress|Hav og kyst
 10296|drag coefficient|Hav og kyst
 10297|friction velocity|Hav og kyst
