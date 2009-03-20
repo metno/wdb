@@ -71,7 +71,7 @@ void bilinearTimes(std::string & refTime, std::string & valTime)
 {
 	int time =  (4 * rand() / RAND_MAX) * 6;
 	std::stringstream str1;
-	str1 << "('1980-01-01 " << time << ":00:00+00','1980-01-01 " << time << ":00:00+00','exact')";
+	str1 << "'exact 1980-01-01 " << time << ":00:00+00'";
 	refTime = str1.str();
 	int vtime = time + (12 * rand() / RAND_MAX);
 	int vdate = 1;
@@ -80,7 +80,7 @@ void bilinearTimes(std::string & refTime, std::string & valTime)
 		vdate ++;
 	}
 	std::stringstream str2;
-	str2 << "('1980-01-" << vdate << " " << vtime << ":00:00+00','1980-01-" << vdate << " " << vtime << ":00:00+00','exact')";
+	str2 << "'exact 1980-01-" << vdate << " " << vtime << ":00:00+00'";
 	valTime = str2.str();
 };
 
@@ -88,7 +88,7 @@ void bilinearTimeSpan(std::string & refTime, std::string & valTime)
 {
 	int time =  (4 * rand() / RAND_MAX) * 6;
 	std::stringstream str1;
-	str1 << "('1980-01-01 " << time << ":00:00+00','1980-01-01 " << (time+6) << ":00:00+00','inside')";
+	str1 << "'inside 1980-01-01 " << time << ":00:00+00 TO 1980-01-01 " << (time+6) << ":00:00+00'";
 	refTime = str1.str();
 	int vtime1 = time + (6 * rand() / RAND_MAX);
 	int vdate1 = 1;
@@ -103,7 +103,7 @@ void bilinearTimeSpan(std::string & refTime, std::string & valTime)
 		vdate2 ++;
 	}
 	std::stringstream str2;
-	str2 << "('1980-01-" << vdate1 << " " << vtime1 << ":00:00+00','1980-01-" << vdate2 << " " << vtime2 << ":00:00+00','inside')";
+	str2 << "'inside 1980-01-" << vdate1 << " " << vtime1 << ":00:00+00 TO 1980-01-" << vdate2 << " " << vtime2 << ":00:00+00'";
 	valTime = str2.str();
 };
 
@@ -112,15 +112,15 @@ std::string bilinearParameter()
 	int param = ( 5 * rand() )/RAND_MAX;
 	switch (param) {
 	case 0:
-		return "ARRAY[ 'pressure of air' ]";
+		return "ARRAY[ 'air pressure' ]";
 	case 1:
-		return "ARRAY[ 'proportion of ozone' ]";
+		return "ARRAY[ 'ozone dobson surface density' ]";
 	case 2:
-		return "ARRAY[ 'temperature of air' ]";
+		return "ARRAY[ 'air temperature' ]";
 	case 3:
-		return "ARRAY[ 'max temperature of air' ]";
+		return "ARRAY[ 'max air temperature' ]";
 	case 4:
-		return "ARRAY[ 'min temperature of air' ]";
+		return "ARRAY[ 'min air temperature' ]";
 	}
 }
 
@@ -146,10 +146,10 @@ public:
 				 << "from wci.read ( "
 				 << bilinearDataProvider() << ", "
 				 << bilinearPoint() << ", "
-				 << refTime << "::wci.timeSpec, "
-				 << valTime << "::wci.timeSpec, "
+				 << refTime << ", "
+				 << valTime << ", "
 				 << bilinearParameter() << ", "
-				 << "(0,0,'distance above ground','exact')::wci.levelSpec, "
+				 << "NULL, "
 				 << "ARRAY[-1], "
 				 << "NULL::wci.returnFloat )";
     	const std::string query = queryStr.str();
@@ -223,10 +223,10 @@ public:
 				 << "from wci.read ( "
 				 << bilinearDataProvider() << ", "
 				 << bilinearPoint() << ", "
-				 << refTime << "::wci.timeSpec, "
-				 << valTime << "::wci.timeSpec, "
+				 << refTime << ", "
+				 << valTime << ", "
 				 << bilinearParameter() << ", "
-				 << "(0,0,'distance above ground','exact')::wci.levelSpec, "
+				 << "NULL, "
 				 << "ARRAY[-1], "
 				 << "NULL::wci.returnFloat )";
     	const std::string query = queryStr.str();

@@ -68,13 +68,13 @@ std::string complexPoint()
 
 void complexTimes(std::string & refTime, std::string & valTime)
 {
-	refTime = "('1980-02-01T00:00:00Z', '1980-02-01T00:00:00Z', 'exact')";
+	refTime = "'exact 1980-02-01T00:00:00Z'";
 	valTime = "NULL";
 };
 
 std::string complexParameter()
 {
-	return "ARRAY[ 'pressure of air', 'proportion of ozone', 'temperature of air', 'max temperature of air', 'min temperature of air' ]";
+	return "ARRAY[ 'air pressure', 'ozone dobson surface density', 'air temperature', 'max air temperature', 'min air temperature' ]";
 }
 
 
@@ -178,7 +178,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << "::wci.timeSpec, "
 				  << valTime << "::wci.timeSpec, "
-				  << "ARRAY['temperature of air', 'temperature of land'], "
+				  << "ARRAY['air temperature', 'land temperature'], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
@@ -218,7 +218,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << "::wci.timeSpec, "
 				  << valTime << "::wci.timeSpec, "
-				  << "ARRAY['pressure of air', 'proportion of ozone', 'max temperature of air', 'min temperature of air', 'accumulated surface density of precipitation, convective', 'fog probability' ], "
+				  << "ARRAY['air pressure', 'ozone dobson surface density', 'max air temperature', 'min air temperature', 'accumulated convective precipitation distance', 'fog probability' ], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
@@ -256,7 +256,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << "::wci.timeSpec, "
 				  << valTime << "::wci.timeSpec, "
-				  << "ARRAY['velocity of air (u vector)', 'velocity of air (v vector)' ], "
+				  << "ARRAY['wind velocity (u vector)', 'wind velocity (v vector)' ], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";

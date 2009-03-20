@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -47,7 +47,7 @@
 #include <wciRowStructures.h>
 
 namespace wdb {
-	
+
 namespace test {
 
 
@@ -58,7 +58,7 @@ class SimplePolygonTest : public pqxx::transactor<>
 public:
 	SimplePolygonTest(std::vector <FloatRow *> & rows) :
     pqxx::transactor<>("SimplePolygonTest"), rows_(rows) {}
-	
+
 	void operator()(argument_type &T)
   	{
 		std::stringstream queryStr;
@@ -66,10 +66,10 @@ public:
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['test wci'], "; // DataProvider
     	queryStr << "'POLYGON((2 52, 6 64, 17 67, 14 56, 2 52))', "; // Place
-    	queryStr << "('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wci.timeSpec, "; // Reference Time
-    	queryStr << "('1980-01-01 13:00:00', '1980-01-01 13:00:00', 'exact')::wci.timeSpec, "; // Valid Time
-    	queryStr << "ARRAY['instant temperature of air'], "; // Parameter
-    	queryStr << "(0,1000,'of isobaric surface','any')::wci.levelSpec, "; // LevelSpec
+    	queryStr << "'1980-01-01 12:00:00z', "; // Reference Time
+    	queryStr << "'1980-01-01 13:00:00z',  "; // Valid Time
+    	queryStr << "ARRAY['air temperature'], "; // Parameter
+    	queryStr << "NULL, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
     	queryStr << "NULL::wci.returnFloat	)"; // Return Type
     	const std::string query = queryStr.str();
@@ -99,9 +99,9 @@ public:
 			R.at(i).at(17).to(ret->valueType_);
 			rows_.push_back(ret);
 		}
-		std::cerr << "queryStr" << std::endl;				
+		std::cerr << "queryStr" << std::endl;
 	}
-	  
+
   	void on_abort(const char Reason[]) throw ()
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
@@ -127,7 +127,7 @@ class ComplexPolygonTest : public pqxx::transactor<>
 public:
 	ComplexPolygonTest(std::vector <FloatRow *> & rows) :
     pqxx::transactor<>("ComplexPolygonTest"), rows_(rows) {}
-	
+
 	void operator()(argument_type &T)
   	{
         std::stringstream queryStr;
@@ -135,10 +135,10 @@ public:
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['test wci'], "; // DataProvider
     	queryStr << "'POLYGON((49.265755 -22.12439, 43.716816 23.955116, 65.035385 57.317749, 76.134499 -43.483479, 49.265755 -22.12439))', "; // Place
-    	queryStr << "('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wci.timeSpec, "; // Reference Time
-    	queryStr << "('1980-01-01 13:00:00', '1980-01-01 13:00:00', 'exact')::wci.timeSpec, "; // Valid Time
-    	queryStr << "ARRAY['instant temperature of air'], "; // Parameter
-    	queryStr << "(0,1000,'of isobaric surface','any')::wci.levelSpec, "; // LevelSpec
+    	queryStr << "'1980-01-01 12:00:00z', "; // Reference Time
+    	queryStr << "'1980-01-01 13:00:00z', "; // Valid Time
+    	queryStr << "ARRAY['air temperature'], "; // Parameter
+    	queryStr << "NULL, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
     	queryStr << "NULL::wci.returnFloat	)"; // Return Type
     	const std::string query = queryStr.str();
@@ -167,9 +167,9 @@ public:
 			R.at(i).at(16).to(ret->valueId_);
 			R.at(i).at(17).to(ret->valueType_);
 			rows_.push_back(ret);
-		}				
+		}
 	}
-	  
+
   	void on_abort(const char Reason[]) throw ()
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );

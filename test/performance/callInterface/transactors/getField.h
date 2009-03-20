@@ -69,10 +69,10 @@ public:
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['Hirlam 10'], "; // DataProvider
     	queryStr << "'hirlam 10 grid', "; // Place
-    	queryStr << "('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wci.timeSpec, "; // Reference Time
-    	queryStr << "('1980-01-01 13:00:00', '1980-01-01 13:00:00', 'exact')::wci.timeSpec, "; // Valid Time
-    	queryStr << "ARRAY['instant temperature of air'], "; // Parameter
-    	queryStr << "(0,1000,'of isobaric surface','any')::wci.levelSpec, "; // LevelSpec
+    	queryStr << "'1980-01-01 12:00:00Z', "; // Reference Time
+    	queryStr << "'1980-01-01 13:00:00', "; // Valid Time
+    	queryStr << "ARRAY['air temperature'], "; // Parameter
+    	queryStr << "NULL, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
     	queryStr << "NULL::wci.returnoid	)"; // Return Type
     	const std::string query = queryStr.str();
@@ -146,11 +146,11 @@ public:
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['Hirlam 10'], "; // DataProvider
     	queryStr << "'hirlam 10 grid', "; // Place
-    	queryStr << "('1980-01-01 12:00:00', '1980-01-01 18:00:00', 'exact')::wci.timeSpec, "; // Reference Time
-    	queryStr << "('1980-01-01 19:00:00', '1980-01-01 19:00:00', 'exact')::wci.timeSpec, "; // Valid Time
+    	queryStr << "'1980-01-01 12:00:00z', "; // Reference Time
+    	queryStr << "'1980-01-01 19:00:00z', "; // Valid Time
     	queryStr << "ARRAY['air temperature', 'air pressure', 'air pressure change',"
-    			<<  "'air temperature (potential)' ], "; // Parameter
-    	queryStr << "(0,1000,'of isobaric surface','any')::wci.levelSpec, "; // LevelSpec
+    			<<  "'potential air temperature' ], "; // Parameter
+    	queryStr << "NULL, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
     	queryStr << "NULL::wci.returnoid	)"; // Return Type
     	const std::string query = queryStr.str();
