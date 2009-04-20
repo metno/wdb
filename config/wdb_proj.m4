@@ -30,6 +30,8 @@
 
 AC_DEFUN([WDB_PROJ_CHECK],
 [
+	AC_LANG_PUSH([C])
+
 	# Set up option
 	AC_ARG_WITH([proj],
 				AS_HELP_STRING([--with-proj=PATH], [Specify the directory in which proj is installed (by default, configure uses the environment variable LDFLAGS). If set, configure will add PATH/include to CPPFLAGS and PATH/lib to LDFLAGS]),
@@ -60,7 +62,7 @@ AC_DEFUN([WDB_PROJ_CHECK],
 
 	# Search for the Library
 	# automatically adds -lproj to the LIBS variable
-	AC_SEARCH_LIBS(pj_transform, 
+	AC_SEARCH_LIBS([pj_init], 
 				   [proj],, 
 				   [AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -73,4 +75,5 @@ AC_DEFUN([WDB_PROJ_CHECK],
 ])]
 				   )
 
+	AC_LANG_POP([C])
 ])
