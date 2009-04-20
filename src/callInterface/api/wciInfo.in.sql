@@ -27,14 +27,28 @@ CREATE TYPE wci.infodataprovider AS
 	dataproviderstoretime 	timestamp with time zone
 );
 
-CREATE TYPE wci.infoplace AS 
-(
-	placename				text,
-	placegeometry			text,
-	placeindeterminatetype	character varying(80),
-	placegeometrytype		character varying(80),
-	placestoretime			timestamp with time zone
-);
+--CREATE TYPE wci.infoplace AS 
+--(
+--	placename				text,
+--	placegeometry			text,
+--	placeindeterminatetype	character varying(80),
+--	placegeometrytype		character varying(80),
+--	placestoretime			timestamp with time zone
+--);
+CREATE VIEW wci.infoplace AS 
+ SELECT 
+	pn.placename,
+	pd.placegeometry, 
+	pi.placeindeterminatetype, 
+	pd.placegeometrytype, 
+	pd.placestoretime
+ FROM
+	wdb_0_8_0.placedefinition pd,
+	wdb_0_8_0.placename pn,
+	wdb_0_8_0.placeindeterminatetype pi
+ WHERE
+	pd.placeid = pn.placeid AND
+	pi.placeindeterminatecode = pd.placeindeterminatecode;
 
 CREATE TYPE wci.inforegulargrid AS
 (
@@ -101,42 +115,23 @@ LANGUAGE 'plpgsql' STABLE;
 --   max ReferenceTime
 --   count 
 CREATE OR REPLACE FUNCTION 
-wci.info( location 			text,
-		  returntype 		wci.infoplace
+wci.info( location 		text,
+	  returntype 		wci.infoplace
 )	
 RETURNS SETOF wci.infoplace AS
 $BODY$
 DECLARE
-	infoQuery 		text;
 	entry 			wci.infoplace;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT placename, astext(placegeometry), 
-						 placeindeterminatetype, placegeometrytype,
-						 placestoretime 
-				  FROM __WCI_SCHEMA__.placespec ps,
-					   __WCI_SCHEMA__.getSessionData() s 
-				  WHERE  
-						s.placenamespaceid = ps.placenamespaceid';-- AND 
---						pd.placeindeterminatecode = pi.placeindeterminatecode';
-
--- pd.placeid = pn.placeid AND
---						__WCI_SCHEMA__.placedefinition pd, 
---					   __WCI_SCHEMA__.placename pn, 
---					   __WCI_SCHEMA__.placeindeterminatetype pi, 
-
-
-	IF location IS NOT NULL THEN
-		infoQuery := infoQuery || ' AND placename LIKE ' || location;
+	IF location IS NULL THEN
+		FOR entry IN SELECT * FROM wci.infoplace LOOP
+			RETURN NEXT entry;
+		END LOOP;
+	ELSE
+		FOR entry IN SELECT * FROM wci.infoplace WHERE placename LIKE location LOOP
+			RETURN NEXT entry;
+		END LOOP;
 	END IF;
-	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
-
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;

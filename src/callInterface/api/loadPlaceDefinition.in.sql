@@ -18,7 +18,7 @@
 
 CREATE OR REPLACE FUNCTION
 wci.loadPlaceDefinition(
-	name text,
+	locationName text,
 	location geometry -- must be a point
 )
 RETURNS bigint AS
@@ -31,7 +31,7 @@ BEGIN
 	val := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 	
 	INSERT INTO __WDB_SCHEMA__.placedefinition VALUES (val, 0, 'Point', 'now', location);
-	INSERT INTO __WDB_SCHEMA__.placename VALUES (val, 0, name, 'today', '2100-01-01');
+	INSERT INTO __WDB_SCHEMA__.placename VALUES (val, 0, locationName, 'today', '2100-01-01');
 	
 	RETURN val;
 END;
