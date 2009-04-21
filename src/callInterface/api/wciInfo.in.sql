@@ -50,6 +50,11 @@ CREATE VIEW wci.infoplace AS
 	pd.placeid = pn.placeid AND
 	pi.placeindeterminatecode = pd.placeindeterminatecode;
 
+REVOKE ALL ON wci.infoplace FROM PUBLIC ;
+GRANT ALL ON wci.infoplace TO wdb_admin ;
+GRANT SELECT ON wci.infoplace TO wdb_write ;
+
+
 CREATE TYPE wci.inforegulargrid AS
 (
 	placename text,
