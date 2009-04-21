@@ -70,7 +70,7 @@ public:
 	 * @param 	read	should the user be given reading rights?
 	 * @param	write	should the user be given write rights?
 	 */
-	bool performCreateUser( const std::string username, bool admin, bool read, bool write );
+	bool performCreateUser( const std::string & username, bool admin, bool read, bool write );
 
 	/**
 	 * perform change user operation
@@ -79,13 +79,13 @@ public:
 	 * @param 	read	should the user be given reading rights?
 	 * @param	write	should the user be given write rights?
 	 */
-	bool performChangeUser( const std::string username, bool admin, bool read, bool write );
+	bool performChangeUser( const std::string & username, bool admin, bool read, bool write );
 
 	/**
 	 * perform drop user operation
 	 * @param 	user	username of the new user
 	 */
-	bool performDropUser( const std::string username );
+	bool performDropUser( const std::string & username );
 
 	/**
 	 * Retrieve stats on tables

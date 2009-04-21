@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -39,12 +39,14 @@
 #include "transactors/getData.h"
 #include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
+#include <boost/algorithm/string.hpp>
 #include <sstream>
 #include <cstdlib>
 
 using namespace std;
 using namespace boost::filesystem;
 using namespace admin;
+using boost::to_lower_copy;
 
 
 AdminOperations::AdminOperations(pqxx::connection & databaseConnection, const std::string & wciUser) :
@@ -58,11 +60,11 @@ AdminOperations::~AdminOperations()
 }
 
 bool
-AdminOperations::performCreateUser( const string username, bool admin, bool read, bool write )
+AdminOperations::performCreateUser( const string & username, bool admin, bool read, bool write )
 {
 	try {
-		connection_.perform( 
-			CreateUser( username, admin, read, write )
+		connection_.perform(
+			CreateUser( to_lower_copy(username), admin, read, write )
 	 	);
 	}
 	catch ( std::exception & )
@@ -74,11 +76,11 @@ AdminOperations::performCreateUser( const string username, bool admin, bool read
 
 
 bool
-AdminOperations::performChangeUser( const string username, bool admin, bool read, bool write )
+AdminOperations::performChangeUser( const string & username, bool admin, bool read, bool write )
 {
 	try {
-		connection_.perform( 
-			ChangeUser( username, admin, read, write )
+		connection_.perform(
+			ChangeUser( to_lower_copy(username), admin, read, write )
 	 	);
 	}
 	catch ( std::exception & )
@@ -89,11 +91,11 @@ AdminOperations::performChangeUser( const string username, bool admin, bool read
 }
 
 bool
-AdminOperations::performDropUser( const string username )
+AdminOperations::performDropUser( const string & username )
 {
 	try {
-		connection_.perform( 
-			DropUser( username )
+		connection_.perform(
+			DropUser( to_lower_copy(username) )
 	 	);
 	}
 	catch ( std::exception & )
@@ -107,7 +109,7 @@ void
 AdminOperations::listTables( pqxx::result & ret )
 {
 	try {
-		connection_.perform( 
+		connection_.perform(
 			ListTables( ret )
 	 	);
 	}
@@ -121,7 +123,7 @@ void
 AdminOperations::listIndexes( pqxx::result & ret )
 {
 	try {
-		connection_.perform( 
+		connection_.perform(
 			ListIndexes( ret )
 	 	);
 	}
@@ -135,7 +137,7 @@ void
 AdminOperations::listIo( pqxx::result & ret )
 {
 	try {
-		connection_.perform( 
+		connection_.perform(
 			ListIo( ret )
 	 	);
 	}
@@ -168,7 +170,7 @@ void AdminOperations::getAvailableFilesForLoading(vector<GribFilePtr> & out, con
 		errMsg << baseDir.native_directory_string() << " does not exist";
 		throw std::runtime_error(errMsg.str());
 	}
-	
+
 	if (is_directory(baseDir) )
 		for (directory_iterator it(baseDir); it != directory_iterator(); ++ it)
 			getAvailableFilesForLoading(out, * it);
@@ -188,24 +190,24 @@ namespace
 	template<typename Container>
 	class WorkQue
 	{
-		
+
 		boost::mutex mutex_;
 		const Container & files_;
 		int current_;
 		AdminOperations::ProgressMonitor progressMonitor_;
-		
+
 	public:
 		WorkQue(const Container & files, AdminOperations::ProgressMonitor progressMonitor)
 			: files_(files), current_(0), progressMonitor_(progressMonitor)
 		{}
-		
+
 		GribFilePtr next()
 		{
 			boost::mutex::scoped_lock lock(mutex_);
 
 			if ( files_.size() <= current_ )
 				return GribFilePtr((GribFile *) 0);
-			
+
 			GribFilePtr ret = files_[current_ ++];
 			progressMonitor_(current_, files_.size(), files_[current_]->file().native_file_string());
 			return ret;
@@ -216,12 +218,12 @@ namespace
 	class GribFileLoader
 	{
 		WorkQue<Container> & work_;
-		
+
 	public:
 		GribFileLoader( WorkQue<Container> & work )
 			: work_(work)
 		{}
-		
+
 		void operator () ()
 		{
 			for ( GribFilePtr fileToProcess = work_.next(); fileToProcess.get(); fileToProcess = work_.next() )
@@ -230,12 +232,12 @@ namespace
 				cmd << "gribLoad --loglevel=5 " << fileToProcess->file().native_file_string();
 				const string sCmd(cmd.str());
 
-				//int status = 
-					std::system(sCmd.c_str());				
+				//int status =
+					std::system(sCmd.c_str());
 			}
 		}
 	};
-	
+
 }
 
 
@@ -244,23 +246,23 @@ int AdminOperations::loadGribFile(AdminOperations::ProgressMonitor progressMonit
 {
 	typedef vector<GribFilePtr> GfpList;
 	typedef GribFileLoader<GfpList> GfLoader;
-	
+
 	GfpList filesToLoad;
 	getAvailableFilesForLoading(filesToLoad, what);
-	
+
 	int count = 0;
 
 	WorkQue<GfpList> work(filesToLoad, progressMonitor);
-	
-	
-	typedef boost::shared_ptr<boost::thread> ThreadPtr; 
+
+
+	typedef boost::shared_ptr<boost::thread> ThreadPtr;
 	vector<ThreadPtr> workers;
 	for ( int i = 0; i < 3; ++ i )
 		workers.push_back(ThreadPtr(new boost::thread(GfLoader(work))));
 	// Work is done here...
 	for ( vector<ThreadPtr>::const_iterator it = workers.begin(); it != workers.end(); ++ it )
 		(*it)->join();
-	
+
 	return filesToLoad.size();
 }
 
@@ -269,10 +271,10 @@ int AdminOperations::loadGribFile(AdminOperations::ProgressMonitor progressMonit
 //{
 //	vector<GribFilePtr> filesToLoad;
 //	getAvailableFilesForLoading(filesToLoad, what);
-//	
+//
 //	int count = 0;
 //	int fileCount = filesToLoad.size();
-//	
+//
 //	for ( vector<GribFilePtr>::const_iterator it = filesToLoad.begin(); it != filesToLoad.end(); ++ it )
 //	{
 //		if ( ! progressMonitor(++ count, fileCount, (*it)->file().native_file_string()) )
@@ -284,7 +286,7 @@ int AdminOperations::loadGribFile(AdminOperations::ProgressMonitor progressMonit
 //
 //		int status = std::system(sCmd.c_str());
 //	}
-//	
+//
 //	return fileCount;
 //}
 
