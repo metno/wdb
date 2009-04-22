@@ -224,13 +224,14 @@
 		<sect2>
 			<title>Time Specification</title>
 			
-			<para>A WCITIMESPEC is a complex data type that is used to specify a time in the WDB
-				Call Interface. It consists of a time interval as well as a Time
-				Indeterminate Code ('Exact', 'Any') that modifies the time
-				specification.</para>
+			<para>A WCITIMESPEC is a string that is used to specify a time in the WDB
+				Call Interface. It consists of a time interval as well as an optional Time
+				Indeterminate Code ('inside') that modifies the time specification.</para>
 			
-			<para>Example Time Specification: (2007-01-01T12:00:00,
-				2007-02-01T12:00:00, 'Exact')</para>
+			<para>Example Time Specification: '2007-01-01T12:00:00z TO 2007-01-01T18:00:00z'</para>
+			
+			<para>Another example: '2007-01-01T12:00:00z FOR 6 hours'. This is equivalent to the above example.</para>
+
 		</sect2>
 		
 		
@@ -245,13 +246,13 @@
 		<sect2>
 			<title>Level Specification</title>
 			
-			<para>A WCILEVELSPEC is a complex data type that is used to specify levels
+			<para>A WCILEVELSPEC is a string that is used to specify levels
 				(altitudes) in the WDB Call Interface. It consists of a level parameter, the
 				level interval (levelfrom and levelto), as well as the level indeterminate
 				code ('exact', 'above', 'below', 'any') that modifies the
 				level.</para>
 			
-			<para>Example Level Specification: (0.0, 10.0, 'distance above ground', 'Exact')</para>
+			<para>Example Level Specification: '0.0 TO 10.0, height above ground distance'</para>
 			
 		</sect2>
 		

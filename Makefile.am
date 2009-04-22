@@ -451,6 +451,10 @@ MOSTLYCLEANFILES += 		$(DX_CLEANFILES)
 EXTRA_DIST += 				$(DX_CONFIG)
 
 
+#-----------------------------------------------------------------------------
+# Debian stuff
+#-----------------------------------------------------------------------------
+
 PKG_DIR = $(PACKAGE)-$(VERSION)
 DEBIAN_DIR = $(PKG_DIR)/debian
 DEBIAN_PACKAGE = $(PACKAGE)_$(VERSION)
@@ -479,6 +483,3 @@ update-debian:
 clean-debian:
 	debclean
 	rm -rf $(PKG_DIR) $(DEBIAN_PACKAGE)*
-
-foo: 
-	@echo $(DEBIAN_PACKAGE_NAME)

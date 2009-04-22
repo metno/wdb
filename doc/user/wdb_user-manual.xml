@@ -374,32 +374,32 @@
 							
 							
 							<programlisting>
-						mywdb=# select * 
-								from wci.read ( ARRAY['hirlam'], -- Data Provider
-											   'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Location
-											   ('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wciTimeSpec,  -- Reference time
-											   ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'inside')::wciTimeSpec, -- Valid time
-											   ARRAY['instant temperature of air'], -- Value Parameter
-											   (2,2,'distance above ground','exact')::wciLevelSpec, -- Level
-											   ARRAY[-1], -- Data version
-											   NULL::returnFloat   -- Return type
-											 );
+mywdb=# select * 
+	from wci.read ( ARRAY['hirlam norway'], -- Data Provider
+		'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Location
+		'1980-01-01 12:00:00',  -- Reference time
+		'inside 1980-01-02 00:00:00 TO 1980-01-03 00:00:00', -- Valid time
+		ARRAY['air temperature'], -- Value Parameter
+		'2 height above ground distance', -- Level
+		ARRAY[-1], -- Data version
+		NULL::returnFloat   -- Return type
+	);
 					</programlisting>
 							
 							<para>Specifying a NULL for a parameter, corresponds to
 								asking for all data of that kind. For example:</para>						
 							
 							<programlisting>
-						mywdb=# select * 
-								from wci.read ( ARRAY['hirlam'], -- Data Provider
-											   'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Location
-											   ('1980-01-01 12:00:00', '1980-01-01 12:00:00', 'exact')::wciTimeSpec,  -- Reference time
-											   ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'inside')::wciTimeSpec, -- Valid time
-											   NULL, -- All parameters
-											   NULL::wciLevelSpec, -- Any level
-											   NULL, -- All data versions
-											   0::returnFloat -- Return type
-											 );
+mywdb=# select * 
+	from wci.read ( ARRAY['hirlam norway'], -- Data Provider
+		'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Location
+		'1980-01-01 12:00:00',  -- Reference time
+		'inside 1980-01-02 00:00:00 TO 1980-01-03 00:00:00', -- Valid time
+		NULL, -- All parameters
+		NULL, -- Any level
+		NULL, -- All data versions
+		0::returnFloat -- Return type
+	);
 					</programlisting>
 							
 							<para>This query would return all data for the location, reference

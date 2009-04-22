@@ -450,21 +450,21 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 			
 			<programlisting>
 SELECT * 
-FROM wci.read ( ARRAY['Hirlam'], -- Data provider name
-               'POLYGON((10 60,11 60,11 61,10 61,10 60))', -- Place
-               ('1980-01-01 12:00:00', '1980-01-01 18:00:00', 'inside')::wci.timeSpec,  -- Reference time
-               ('1980-01-02 00:00:00', '1980-01-03 00:00:00', 'any')::wci.timeSpec, --Valid time
-               ARRAY['temperature of air'], -- Value Parameter
-               (0,1000,'of isobaric surface','any')::wci.levelSpec, -- Level
-               ARRAY[-1],  -- Data version
-               NULL::wci.returnFloat -- Return type
-             )
+FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
+				'POLYGON((10 60,11 60,11 61,10 61,10 60))',  -- Location
+				'inside 1980-01-01 12:00:00Z TO 1980-01-01 18:00:00Z', -- Reference time 
+				NULL, -- Valid Time 
+				ARRAY['air temperature'],  -- Value Parameter
+				'2 height above ground distance',  -- Level
+				ARRAY[-1], -- Data version
+				NULL::wci.returnfloat -- Return type
+			  )
 		</programlisting>
 			
 			<para>The above query returns Hirlam data for a specific region (given by the place
 				geometry), whose referencetime is on or between 12:00 to 18:00 on January
 				1, 1980; the query will return data for any valid times, for any air temperature.
-				It will return data for any level, but only the latest version of such data.
+				It will return data at 2 metre above ground, but only the latest version of such data.
 				Values will be returned as point data.</para>
 			
 			<para>The data provider, place definition, value parameter and level parameter must all
@@ -474,24 +474,23 @@ FROM wci.read ( ARRAY['Hirlam'], -- Data provider name
 
 			<programlisting>
 SELECT * 
-FROM wci.read ( ARRAY['proff'], -- Data provider name
-               'nearest Oslo', -- Place
-               ('1980-01-02 12:00:00', '1980-01-02 12:00:00', 'exact')::wci.timespec,  -- Reference time
-               ('1980-01-02 12:00:00', '1980-01-12 12:00:00', 'inside')::wci.timespec, --Valid time
-               ARRAY['%precipitation%'], -- Value Parameter
-               NULL, -- Level
-               NULL,  -- Data version
-               NULL::wci.returnFloat -- Return type
-             )
+FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
+				'oslo',  -- Location
+				'1980-01-01 12:00:00Z', -- Reference time 
+				'inside 1980-01-02 12:00:00 TO 1980-01-12 12:00:00', -- Valid Time 
+				ARRAY['%precipitation%'],  -- Value Parameter
+				NULL,  -- Level
+				NULL, -- Data version
+				NULL::wci.returnfloat -- Return type
 		</programlisting>
 			
 			<para>The above call returns all precipitation parameters valid for the 10 days following the 
 				given referencetime measured at the nearest point to oslo. Oslo, in this case, is a place name
-			usually defined as a geographical point within the database. Prefixing the place name is the 
-			interpolation that we wish to use when retrieving points; we could also have used any of the
-			alternatives defined in the reference manual below. Note the use of SQL wildcard characters in the
-			value parameter; although these slow down queries (since wildcard searching is not as efficient
-			as a straight comparison), it is possible to use the wci.read call in this way. Note also that names 
+				usually defined as a geographical point within the database. Prefixing the place name is the 
+				interpolation that we wish to use when retrieving points; we could also have used any of the
+				alternatives defined in the reference manual below. Note the use of SQL wildcard characters in the
+				value parameter; although these slow down queries (since wildcard searching is not as efficient
+				as a straight comparison), it is possible to use the wci.read call in this way. Note also that names 
 				can be written in upper or lower case; the wci.read function call is not case-sensitive.</para>
 						
 		</sect1>
@@ -1196,10 +1195,10 @@ wci.read
 (
           dataProviders  ARRAY[text],
           place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
+          referenceTime  text,
+          validtime      text,
           parameters     ARRAY[text],
-          level          wci.levelspec,
+          level          text,
           dataVersions   ARRAY[integer],
           returnType     wci.returnoid
 )
@@ -1210,10 +1209,10 @@ wci.read
 (
           dataProviders  ARRAY[text],
           place          text,
-          referenceTime  wci.timespec,
-          validtime      wci.timepsec,
+          referenceTime  text,
+          validtime      text,
           parameters     ARRAY[text],
-          level          wci.levelspec,
+          level          text,
           dataVersions   ARRAY[integer],
           returnType     wci.returnfloat
 )
@@ -1310,11 +1309,11 @@ wci.read
 				
 			<programlisting>
 SELECT * 
-FROM wci.READ ( ARRAY['Hirlam 8'], -- Data provider name
-               'nearest POINT(10 60)', -- Geometry
-               ('1980-04-05 12:00:00', '1980-04-05 12:00:00', 'exact')::wci.timeSpec,  -- Reference time
-               ('1980-04-06 00:00:00', '1980-04-07 00:00:00', 'inside')::wci.timeSpec, --Valid time
-               ARRAY['pressure of air', 'temperature of air'], -- Parameter
+FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
+               'POINT(10 60)', -- Geometry
+               '1980-04-05 12:00:00',  -- Reference time
+               'inside 1980-04-06 00:00:00 TO 1980-04-07 00:00:00', --Valid time
+               ARRAY['air pressure', 'air temperature'], -- Parameter
                NULL, -- Level
                ARRAY[-1],  -- Data version
                NULL::wci.returnFloat -- Return type
