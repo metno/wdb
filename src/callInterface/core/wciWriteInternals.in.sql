@@ -69,6 +69,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	session __WCI_SCHEMA__.sessiondata;
+	maxDataVersion_ int := dataVersion_;
 BEGIN
 	-- Get session data (codespaces) 
 	SELECT * INTO session FROM __WCI_SCHEMA__.getSessionData(); 
@@ -82,8 +83,27 @@ BEGIN
 	-- Todo: Set Levels by levelIndeterminateCode
 	-- dataversion
 	-- Todo: what if dataversion is not max?
+	
+	SELECT max(dataversion) INTO maxDataVersion_ FROM __WDB_SCHEMA__.oidvalue 
+	WHERE
+		dataproviderid = dataproviderid_ AND
+		placeid = placeid_ AND
+		referencetime = referencetime_ AND
+		validtimefrom = validfrom_ AND
+		validtimeto = validto_ AND
+		validtimeindeterminatecode = validic_ AND
+		valueparameterid = valueparameter_ AND
+		levelparameterid = levelparameter_ AND
+		levelfrom = levelfrom_ AND
+		levelto = levelto_ AND
+		levelindeterminatecode = levelic_;
+	
+	IF maxDataVersion_ IS NULL OR maxDataVersion_ < dataversion_ THEN
+		maxDataVersion_ = dataversion_;
+	END IF;
+
 	UPDATE 	__WDB_SCHEMA__.oidvalue 
-	SET 	maxdataversion = dataversion_ 
+	SET 	maxdataversion = maxDataVersion_
 	WHERE
 		dataproviderid = dataproviderid_ AND
 		placeid = placeid_ AND
@@ -131,7 +151,7 @@ BEGIN
 		levelto_,
 		levelic_,
 		dataversion_,
-		dataversion_,
+		maxdataversion_,
 		confidencecode_,
 		value_,
 		'now'
@@ -194,6 +214,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	session __WCI_SCHEMA__.sessiondata;
+	maxDataVersion_ int;	
 BEGIN
 	-- Get session data (codespaces) 
 	SELECT * INTO session FROM __WCI_SCHEMA__.getSessionData(); 
@@ -207,8 +228,26 @@ BEGIN
 	-- Todo: Set Levels by levelIndeterminateCode
 	-- dataversion
 	-- Todo: what if dataversion is not max?
+	SELECT max(dataversion) INTO maxDataVersion_ FROM __WDB_SCHEMA__.floatvalue 
+	WHERE
+		dataproviderid = dataproviderid_ AND
+		placeid = placeid_ AND
+		referencetime = referencetime_ AND
+		validtimefrom = validfrom_ AND
+		validtimeto = validto_ AND
+		validtimeindeterminatecode = validic_ AND
+		valueparameterid = valueparameter_ AND
+		levelparameterid = levelparameter_ AND
+		levelfrom = levelfrom_ AND
+		levelto = levelto_ AND
+		levelindeterminatecode = levelic_;
+	
+	IF maxDataVersion_ IS NULL OR maxDataVersion_ < dataversion_ THEN
+		maxDataVersion_ = dataversion_;
+	END IF;
+
 	UPDATE 	__WDB_SCHEMA__.floatvalue 
-	SET 	maxdataversion = dataversion_ 
+	SET 	maxdataversion = maxDataVersion_
 	WHERE
 		dataproviderid = dataproviderid_ AND
 		placeid = placeid_ AND
