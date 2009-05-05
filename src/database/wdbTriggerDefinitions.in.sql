@@ -139,7 +139,7 @@ __WDB_SCHEMA__.createPlaceDefinitionFromPlaceRegularGrid();
 
 -- Deletion control:
 
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.deleteObsoleteOids() RETURNS trigger
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.deleteObsoleteGrids() RETURNS trigger
 	AS 
 $BODY$
 DECLARE
@@ -147,11 +147,11 @@ DECLARE
 	status integer;
 BEGIN
 
-	SELECT count(*) INTO noOfRows FROM __WDB_SCHEMA__.oidvalue WHERE value=OLD.value;
+	SELECT count(*) INTO noOfRows FROM __WDB_SCHEMA__.gridvalue WHERE value=OLD.value;
 
 	IF noOfRows = 0 THEN
 		BEGIN
-			status := lo_unlink(OLD.value);
+			PERFORM drop_file(OLD.value);
 		EXCEPTION
 			WHEN OTHERS THEN 
 				-- don't know proper name of exception. 
@@ -163,7 +163,7 @@ BEGIN
 			RAISE WARNING 'Error when attempting to delete large object <%>', OLD.value;
 		END IF;
 	ELSE
-		RAISE DEBUG 'Still % rows left which refers to oid <%>', noOfRows, OLD.value;
+		RAISE DEBUG 'Still % rows left which refers to Grid <%>', noOfRows, OLD.value;
 	END IF;
 
 	RETURN NULL;
@@ -171,14 +171,14 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger___WDB_SCHEMA___deleteObsoleteOids
-    AFTER DELETE ON __WDB_SCHEMA__.oidvalue
+CREATE TRIGGER trigger___WDB_SCHEMA___deleteObsoleteGrids
+    AFTER DELETE ON __WDB_SCHEMA__.gridvalue
     FOR EACH ROW
-    EXECUTE PROCEDURE __WDB_SCHEMA__.deleteObsoleteOids();
+    EXECUTE PROCEDURE __WDB_SCHEMA__.deleteObsoleteGrids();
 
 
 --
--- TOC entry 2509 (class 2620 OID 1391800)
+-- TOC entry 2509 (class 2620 Grid 1391800)
 -- Dependencies: 1793 448
 CREATE TRIGGER trigger___WDB_SCHEMA___populateplacepoints
     AFTER INSERT ON __WDB_SCHEMA__.placeregulargrid

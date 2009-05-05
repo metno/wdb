@@ -31,8 +31,8 @@ ALTER TABLE ONLY __WDB_SCHEMA__.floatvalue
     ADD CONSTRAINT floatvalue_pkey PRIMARY KEY (valueid, valuetype);
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.oidvalue
-    ADD CONSTRAINT oidvalue_pkey PRIMARY KEY (valueid, valuetype);
+ALTER TABLE ONLY __WDB_SCHEMA__.gridvalue
+    ADD CONSTRAINT gridvalue_pkey PRIMARY KEY (valueid, valuetype);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.valueadditionallevelinfo
@@ -165,49 +165,49 @@ ALTER TABLE __WDB_SCHEMA__.floatvalue
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (dataproviderid)
 					REFERENCES __WDB_SCHEMA__.dataprovider
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (placeid)
 					REFERENCES __WDB_SCHEMA__.placedefinition
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (validtimeindeterminatecode)
 					REFERENCES __WDB_SCHEMA__.timeindeterminatetype
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (valueparameterid)
 					REFERENCES __WDB_SCHEMA__.valueparameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (levelparameterid)
 					REFERENCES __WDB_SCHEMA__.levelparameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (levelindeterminatecode)
 					REFERENCES __WDB_SCHEMA__.levelindeterminatetype
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.oidvalue
+ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (confidencecode)
 					REFERENCES __WDB_SCHEMA__.qualityconfidencecode
 					ON DELETE RESTRICT

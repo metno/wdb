@@ -33,6 +33,7 @@
 #include <fmgr.h>
 #include <libpq/libpq-fs.h>
 #include <executor/spi.h>
+#include "pg_fileblob/fileblobimpl_psql.h"
 #include <stdio.h>
 
 #define READ_DATA float
@@ -143,103 +144,12 @@ int get_index(int i, int j, int iNumber)
 	/*return ret;*/
 }
 
-int doLoOpen(Oid field_id, FunctionCallInfo fci)
+
+readField(READ_DATA * out, int count, FileId field_id, int * indexes)
 {
-	fci->isnull = false;
-	fci->nargs = 2;
-	fci->arg[0] = ObjectIdGetDatum(field_id);
-	fci->arg[1] = Int32GetDatum(INV_READ);
-	fci->argnull[0] = false;
-	fci->argnull[1] = false;
-
-	int fd = lo_open(fci);
-
-	char buf[256];
-	sprintf(buf, "lo_open call complete, got fd <%d>", fd);
-	elog(DEBUG2, buf);
-
-	if ( fd < 0 )
-		ereport(ERROR, (errcode(ERRCODE_INVALID_ROLE_SPECIFICATION), errmsg("Error when attempting to open large object")));
-
-	return fd;
-}
-
-int doLoLseek(int fd, int offset, FunctionCallInfo fci)
-{
-	fci->isnull = false;
-	fci->nargs = 3;
-	fci->arg[0] = Int32GetDatum(fd);
-	fci->arg[1] = Int32GetDatum(offset);
-	fci->arg[2] = Int32GetDatum(SEEK_SET);
-	fci->argnull[0] = false;
-	fci->argnull[1] = false;
-	fci->argnull[2] = false;
-
-	char buf[256];
-	sprintf(buf, "lo_lseek: setting new position to %d on fd <%d>", offset, fd);
-	elog(DEBUG2, buf);
-
-	int newPos = lo_lseek(fci);
-
-	if ( newPos < 0 )
-		ereport(ERROR, (errcode(ERRCODE_INVALID_ROLE_SPECIFICATION), errmsg("Error when attempting to seek in large object")));
-
-	return newPos;
-}
-
-READ_DATA doLoRead(int fd, int read_size, FunctionCallInfo fci)
-{
-	union {
-		READ_DATA val;
-		char raw[READ_SIZE];
-	} ret;
-
-	int result = lo_read(fd, ret.raw, READ_SIZE);
-
-	char buf[256];
-	if ( result < 0 )
-	{
-		sprintf(buf, "lo_read: Error when attempting to read large object (%d)", result);
-		ereport(ERROR, (errcode(ERRCODE_INVALID_ROLE_SPECIFICATION), errmsg(buf)));
-	}
-	sprintf(buf, "lo_read: read value on fd <%d>: %d", fd, ret.val);
-	elog(DEBUG2, buf);
-
-	return ret.val;
-}
-
-void doLoClose(int fd, FunctionCallInfo fci)
-{
-	fci->isnull = false;
-	fci->nargs = 1;
-	fci->arg[0] = Int32GetDatum(fd);
-	fci->argnull[0] = false;
-
-	lo_close(fci);
-	elog(DEBUG2, "lo_close call complete");
-}
-
-readField(READ_DATA * out, int count, Oid field_id, int * indexes, FunctionCallInfo fcinfo)
-{
-	FunctionCallInfoData fciCpy;
-	fciCpy.flinfo = fcinfo->flinfo;
-	fciCpy.context = fcinfo->context;
-	fciCpy.resultinfo = fcinfo->resultinfo;
-	fciCpy.isnull = true;
-	fciCpy.nargs = 0;
-
-	int fd = doLoOpen(field_id, & fciCpy);
-
 	int i;
-	int pos = 0;
 	for ( i = 0; i < count; ++ i )
-	{
-		if ( indexes[i] != (pos / READ_SIZE) )
-			pos = doLoLseek(fd, indexes[i] * READ_SIZE, & fciCpy);
-		out[i] = doLoRead(fd, READ_SIZE, & fciCpy);
-		pos += READ_SIZE;
-	}
-	doLoClose(fd, & fciCpy);
+		out[i] = readFloatFromFile_(field_id, indexes[i]);
 }
 
 
@@ -263,7 +173,7 @@ READ_DATA bilinearInterpolate(const READ_DATA * data, double x, double y)
 }
 
 
-void readSurround(READ_DATA out[4], double i, double j, int iNum, Oid field, FunctionCallInfo fcinfo)
+void readSurround(READ_DATA out[4], double i, double j, int iNum, FileId field)
 {
 	/*int result = SPI_connect();
 	if ( SPI_OK_CONNECT != result )
@@ -277,16 +187,17 @@ void readSurround(READ_DATA out[4], double i, double j, int iNum, Oid field, Fun
 	indexes[2] = get_index(floor(i), ceil(j), iNum);
 	indexes[3] = get_index(ceil(i), ceil(j), iNum);
 
-	readField(out, 4, field, indexes, fcinfo);
+
+	readField(out, 4, field, indexes);
 
 	/*SPI_finish();*/
 }
 
-READ_DATA getBilinearInterpolatedValue(float i, float j, int iNum, Oid field, FunctionCallInfo fcinfo)
+READ_DATA getBilinearInterpolatedValue(float i, float j, int iNum, FileId field)
 {
 	READ_DATA surround[4];
-	readSurround(surround, i, j, iNum, field, fcinfo);
 
+	readSurround(surround, i, j, iNum, field);
 	READ_DATA ret = bilinearInterpolate(surround, i, j);
 
 	return ret;
@@ -298,9 +209,9 @@ Datum getBilinearInterpolationData(PG_FUNCTION_ARGS)
 	double i = PG_GETARG_FLOAT8(0);
 	double j = PG_GETARG_FLOAT8(1);
 	int iNum = PG_GETARG_INT32(2);
-	Oid field = PG_GETARG_OID(3);
+	FileId field = PG_GETARG_INT64(3);
 
-	float ret = getBilinearInterpolatedValue(i, j, iNum, field, fcinfo); // fcinfo is from PG_FUUCTION_ARGS
+	float ret = getBilinearInterpolatedValue(i, j, iNum, field);
 
 	PG_RETURN_FLOAT4(ret);
 }
@@ -311,11 +222,11 @@ Datum getSinglePointData(PG_FUNCTION_ARGS)
 	int i = PG_GETARG_INT32(0);
 	int j = PG_GETARG_INT32(1);
 	int iNum = PG_GETARG_INT32(2);
-	Oid field = PG_GETARG_OID(3);
+	FileId field = PG_GETARG_INT64(3);
 
 	int index = get_index(i, j, iNum);
 	float ret;
-	readField( &ret, 1, field, &index, fcinfo);
+	readField( &ret, 1, field, &index);
 
 	PG_RETURN_FLOAT4(ret);
 }

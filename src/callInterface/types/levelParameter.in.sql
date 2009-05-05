@@ -35,7 +35,7 @@ AS '__WDB_LIBDIR__/__WCI_LIB__', 'normalizeWciLevelParameter'
 LANGUAGE C IMMUTABLE STRICT;
 
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLevelParameterName( data __WCI_SCHEMA__.oidvalue )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLevelParameterName( data __WCI_SCHEMA__.gridvalue )
 RETURNS text AS
 $BODY$
 DECLARE
@@ -155,7 +155,7 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.lp_matches( val __WCI_SCHEMA__.oidvalue, param text[] )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.lp_matches( val __WCI_SCHEMA__.gridvalue, param text[] )
 RETURNS boolean AS
 $BODY$
 DECLARE

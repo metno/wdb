@@ -137,6 +137,7 @@ include test/unit/wdb.mk
 
 include src/callInterface/wdb.mk
 include src/callInterface/core/wdb.mk
+include src/callInterface/core/pg_fileblob/wdb.mk
 include src/callInterface/types/wdb.mk
 include src/callInterface/api/wdb.mk
 include src/callInterface/util/wdb.mk
@@ -458,7 +459,7 @@ EXTRA_DIST += 				$(DX_CONFIG)
 PKG_DIR = $(PACKAGE)-$(VERSION)
 DEBIAN_DIR = $(PKG_DIR)/debian
 DEBIAN_PACKAGE = $(PACKAGE)_$(VERSION)
-DEBIAN_VERSION = 1
+DEBIAN_VERSION = 3
 ARCH = `dpkg-architecture -qDEB_HOST_ARCH_CPU`
 DEBIAN_PACKAGE_NAME = $(DEBIAN_PACKAGE)-$(DEBIAN_VERSION)_$(ARCH).deb
 

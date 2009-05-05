@@ -106,7 +106,7 @@ public:
 				  << " AND placenamespaceid = 0";
 		pqxx::result R = T.exec( gridQuery.str() );
 		if (R.size() == 0)
-			throw WdbException("Unable to find place" + conf_.dataDefinitions().placeName, __func__);
+			throw WdbException("Unable to find place " + conf_.dataDefinitions().placeName, __func__);
 		int i, j;
 		R.at(0).at(5).to( i );
 		R.at(0).at(6).to( j );
@@ -161,16 +161,14 @@ public:
 
 
 		// Load Values Blob
-		pqxx::largeobject valueObj(T);
-		pqxx::lostream blob(T, valueObj);
-		blob.write(reinterpret_cast<const char *>( &values[0] ), (i * j) * sizeof(float));
-		if ( ! blob )
-			throw WdbException("Unable to write blob to database", __func__);
+		const unsigned char * rawData = reinterpret_cast<const unsigned char *>(& values[0]);
+		std::string escapedData = T.esc_raw(rawData, values.size() * sizeof(float));
+
 		// Write to database
 		std::ostringstream writeQuery;
 		writeQuery << "SELECT wci.write( "
 				  << "ROW( "
-				  << valueObj.id() << ", "
+				  << "E'" << escapedData << "'::bytea, "
 				  << "'" << conf_.dataDefinitions().dataProvider << "', "
 				  << "'" << conf_.dataDefinitions().placeName << "', "
 				  << "NULL, "
@@ -183,7 +181,7 @@ public:
 				  << "NULL, "
 				  << conf_.dataDefinitions().levelFrom << ","
 				  << conf_.dataDefinitions().levelTo << ","
-				  << "NULL, NULL, CURRENT_TIMESTAMP, NULL, 'float')::wci.returnOid"
+				  << "NULL, NULL, CURRENT_TIMESTAMP, NULL, 'float')::wci.returnGrid"
 				  << " )";
 		log.infoStream() << "Writing: " << writeQuery.str();
 		T.exec( writeQuery.str() );

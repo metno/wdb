@@ -63,9 +63,9 @@ GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvalue TO wdb_clean;
 
 
 --
--- Name: OIDValue 
+-- Name: GRIDValue 
 --
-CREATE TABLE __WDB_SCHEMA__.oidvalue (
+CREATE TABLE __WDB_SCHEMA__.gridvalue (
     valueid 					bigserial NOT NULL,
     valuetype 					character varying(80) NOT NULL,   
 	dataproviderid 				bigint NOT NULL,
@@ -82,15 +82,15 @@ CREATE TABLE __WDB_SCHEMA__.oidvalue (
     dataversion 				integer NOT NULL,
 	maxdataversion 				integer NOT NULL,
     confidencecode 				integer NOT NULL,
-    value 						oid NOT NULL,
+    value 						bigint NOT NULL,
     valuestoretime 				timestamp with time zone NOT NULL
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.oidvalue FROM public;
-GRANT ALL ON __WDB_SCHEMA__.oidvalue TO wdb_admin;
-GRANT SELECT, DELETE ON __WDB_SCHEMA__.oidvalue TO wdb_clean;
-REVOKE ALL ON __WDB_SCHEMA__.oidvalue_valueid_seq FROM public;
-GRANT ALL ON __WDB_SCHEMA__.oidvalue_valueid_seq TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.gridvalue FROM public;
+GRANT ALL ON __WDB_SCHEMA__.gridvalue TO wdb_admin;
+GRANT SELECT, DELETE ON __WDB_SCHEMA__.gridvalue TO wdb_clean;
+REVOKE ALL ON __WDB_SCHEMA__.gridvalue_valueid_seq FROM public;
+GRANT ALL ON __WDB_SCHEMA__.gridvalue_valueid_seq TO wdb_admin;
 
 
 CREATE TABLE __WDB_SCHEMA__.valueadditionallevelinfo (

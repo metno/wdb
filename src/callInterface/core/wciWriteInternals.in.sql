@@ -22,6 +22,8 @@
 -- Verify that the size of a blob is equal to the corresponding 
 -- placeregulargrid entry.
 --
+-- TODO: This is not adapted to wci.write with bytea instead of oid
+--
 CREATE OR REPLACE FUNCTION 
 verifyBlobSize(
 	value_ oid,
@@ -63,13 +65,12 @@ __WCI_SCHEMA__.write(
 	levelic_ 		integer,
 	dataversion_ 	integer,
 	confidencecode_ integer,
-	value_ 			oid
+	dataId 			bigint
 )
 RETURNS void AS
 $BODY$
 DECLARE
 	session __WCI_SCHEMA__.sessiondata;
-	maxDataVersion_ int := dataVersion_;
 BEGIN
 	-- Get session data (codespaces) 
 	SELECT * INTO session FROM __WCI_SCHEMA__.getSessionData(); 
@@ -83,27 +84,8 @@ BEGIN
 	-- Todo: Set Levels by levelIndeterminateCode
 	-- dataversion
 	-- Todo: what if dataversion is not max?
-	
-	SELECT max(dataversion) INTO maxDataVersion_ FROM __WDB_SCHEMA__.oidvalue 
-	WHERE
-		dataproviderid = dataproviderid_ AND
-		placeid = placeid_ AND
-		referencetime = referencetime_ AND
-		validtimefrom = validfrom_ AND
-		validtimeto = validto_ AND
-		validtimeindeterminatecode = validic_ AND
-		valueparameterid = valueparameter_ AND
-		levelparameterid = levelparameter_ AND
-		levelfrom = levelfrom_ AND
-		levelto = levelto_ AND
-		levelindeterminatecode = levelic_;
-	
-	IF maxDataVersion_ IS NULL OR maxDataVersion_ < dataversion_ THEN
-		maxDataVersion_ = dataversion_;
-	END IF;
-
-	UPDATE 	__WDB_SCHEMA__.oidvalue 
-	SET 	maxdataversion = maxDataVersion_
+	UPDATE 	__WDB_SCHEMA__.gridvalue 
+	SET 	maxdataversion = dataversion_ 
 	WHERE
 		dataproviderid = dataproviderid_ AND
 		placeid = placeid_ AND
@@ -118,7 +100,7 @@ BEGIN
 		levelindeterminatecode = levelic_;
 
 	-- Insert value row
-	INSERT INTO __WDB_SCHEMA__.oidvalue (
+	INSERT INTO __WDB_SCHEMA__.gridvalue (
 		valuetype, 
 		dataproviderid,
 		placeid,
@@ -151,9 +133,9 @@ BEGIN
 		levelto_,
 		levelic_,
 		dataversion_,
-		maxdataversion_,
+		dataversion_,
 		confidencecode_,
-		value_,
+		dataId,
 		'now'
 	);
 
@@ -164,12 +146,12 @@ LANGUAGE 'plpgsql';
 
 
 --
--- This rule permits INSERT statements on __WCI_SCHEMA__.oidvalue
+-- This rule permits INSERT statements on __WCI_SCHEMA__.gridvalue
 -- The insert is then redirected to the appropriate write function
 --
 CREATE OR REPLACE RULE 
-wci_internal_oidvalue_insert
-AS ON INSERT TO __WCI_SCHEMA__.oidvalue
+wci_internal_gridvalue_insert
+AS ON INSERT TO __WCI_SCHEMA__.gridvalue
 DO INSTEAD 
 SELECT
 __WCI_SCHEMA__.write(
@@ -214,7 +196,6 @@ RETURNS void AS
 $BODY$
 DECLARE
 	session __WCI_SCHEMA__.sessiondata;
-	maxDataVersion_ int;	
 BEGIN
 	-- Get session data (codespaces) 
 	SELECT * INTO session FROM __WCI_SCHEMA__.getSessionData(); 
@@ -228,26 +209,8 @@ BEGIN
 	-- Todo: Set Levels by levelIndeterminateCode
 	-- dataversion
 	-- Todo: what if dataversion is not max?
-	SELECT max(dataversion) INTO maxDataVersion_ FROM __WDB_SCHEMA__.floatvalue 
-	WHERE
-		dataproviderid = dataproviderid_ AND
-		placeid = placeid_ AND
-		referencetime = referencetime_ AND
-		validtimefrom = validfrom_ AND
-		validtimeto = validto_ AND
-		validtimeindeterminatecode = validic_ AND
-		valueparameterid = valueparameter_ AND
-		levelparameterid = levelparameter_ AND
-		levelfrom = levelfrom_ AND
-		levelto = levelto_ AND
-		levelindeterminatecode = levelic_;
-	
-	IF maxDataVersion_ IS NULL OR maxDataVersion_ < dataversion_ THEN
-		maxDataVersion_ = dataversion_;
-	END IF;
-
 	UPDATE 	__WDB_SCHEMA__.floatvalue 
-	SET 	maxdataversion = maxDataVersion_
+	SET 	maxdataversion = dataversion_ 
 	WHERE
 		dataproviderid = dataproviderid_ AND
 		placeid = placeid_ AND

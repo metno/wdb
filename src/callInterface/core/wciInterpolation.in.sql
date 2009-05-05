@@ -25,11 +25,12 @@ __WCI_SCHEMA__.getBilinearInterpolationData
 	i float8,
 	j float8,
 	iNumber integer,
-	field oid
+	field bigint
 )
 RETURNS float4 AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'getBilinearInterpolationData'
-LANGUAGE C IMMUTABLE;
+LANGUAGE C IMMUTABLE
+SECURITY DEFINER;
 
 
 CREATE OR REPLACE FUNCTION
@@ -37,7 +38,7 @@ __WCI_SCHEMA__.bilinearInterpolation
 (
 	placeid		bigint,
 	location	GEOMETRY, 
-	valueoid	oid
+	valueoid	bigint
 )
 RETURNS __WCI_SCHEMA__.extractGridDataReturnType AS
 $BODY$
@@ -68,11 +69,17 @@ __WCI_SCHEMA__.getSinglePointData
 	i integer,
 	j integer,
 	iNumber integer,
-	field oid
+	field bigint
 )
 RETURNS float4 AS
-'__WDB_LIBDIR__/__WCI_LIB__', 'getSinglePointData'
-LANGUAGE C IMMUTABLE;
+$BODY$
+DECLARE
+	idx int := i + (j * iNumber);
+BEGIN
+	RETURN read_float_from_file(field, idx);
+END;
+$BODY$
+LANGUAGE plpgsql STABLE;
 
 
 CREATE OR REPLACE FUNCTION
@@ -80,7 +87,7 @@ __WCI_SCHEMA__.nearestInterpolation
 (
 	placeid		bigint,
 	location	GEOMETRY, 
-	valueoid	oid
+	valueoid	bigint
 )
 RETURNS __WCI_SCHEMA__.extractGridDataReturnType AS
 $BODY$

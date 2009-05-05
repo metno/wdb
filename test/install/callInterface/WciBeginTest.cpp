@@ -118,7 +118,7 @@ void wciBeginTest::testB2_02_ManualNamespaceSelection()
 void wciBeginTest::testB3_01_NamespaceWithData()
 {
 	t->exec( statement_( "wcitest" ) );
-	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returnOid )" );
+	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
 	CPPUNIT_ASSERT( not r.empty() );
 }
 
@@ -126,24 +126,24 @@ void wciBeginTest::testB3_02_NamespaceWithoutData()
 {
 	// We assume that noone uses namespace 99999
 	t->exec( statement_( "wcitest", 99999, 99999, 99999 ) );
-	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returnOid )" );
+	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
 	CPPUNIT_ASSERT( r.empty() );
 }
 
 void wciBeginTest::testB3_03_NamespacePartialMatch()
 {
 	t->exec( statement_( "wcitest",999,0,0 ) );
-	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returnOid )" );
+	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
 	CPPUNIT_ASSERT( r.empty() );
 	t->exec( "SELECT wci.end()" );
 
 	t->exec( statement_( "wcitest",0,999,0 ) );
-	r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returnOid )" );
+	r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
 	CPPUNIT_ASSERT( r.empty() );
 	t->exec( "SELECT wci.end()" );
 
 	t->exec( statement_( "wcitest",0,0,999 ) );
-	r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returnOid )" );
+	r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
 	CPPUNIT_ASSERT( r.empty() );
 	t->exec( "SELECT wci.end()" );
 }

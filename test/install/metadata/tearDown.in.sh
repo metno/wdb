@@ -24,7 +24,7 @@ mkdir -p __WDB_LOGDIR__
 $PSQL -q <<EOF
 \o __WDB_LOGDIR__/wdb_test_metadata.tmp
 DELETE FROM 
-	__WDB_SCHEMA__.oidvalue 
+	__WDB_SCHEMA__.gridvalue 
 WHERE dataproviderid=88001 AND 
 	  (referenceTime='2006-12-05T12:00:00+00' OR 
 	   referenceTime='1919-01-01T01:01:00 UTC');

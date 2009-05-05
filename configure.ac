@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.8.0, [wdb@met.no])
+AC_INIT(wdb, 0.9.0, [wdb@met.no])
 # Config
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([config/config.h.in])
@@ -23,6 +23,7 @@ AC_CONFIG_HEADER([config/config.h])
 # - All directories that need to be linked into AM_FLAGS
 src_subdirs="			src/callInterface/api \
 			     		src/callInterface/core \
+			     		src/callInterface/core/pg_fileblob \
 				     	src/callInterface/core/test \
 				     	src/callInterface/types \
 				     	src/callInterface/types/test \
@@ -215,6 +216,7 @@ AC_CONFIG_FILES([Makefile
 				 src/common/projection/test/Makefile
 				 src/callInterface/api/Makefile
 				 src/callInterface/core/Makefile
+				 src/callInterface/core/pg_fileblob/Makefile
 				 src/callInterface/core/test/Makefile
 				 src/callInterface/types/Makefile
 				 src/callInterface/types/test/Makefile

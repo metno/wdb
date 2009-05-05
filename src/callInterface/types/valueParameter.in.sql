@@ -24,7 +24,7 @@ AS '__WDB_LIBDIR__/__WCI_LIB__', 'normalizeWciParameter'
 LANGUAGE C IMMUTABLE STRICT;
 
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getParameterName( data __WCI_SCHEMA__.oidvalue )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getParameterName( data __WCI_SCHEMA__.gridvalue )
 RETURNS text AS
 $BODY$
 DECLARE

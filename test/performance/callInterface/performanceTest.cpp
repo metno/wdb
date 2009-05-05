@@ -60,16 +60,16 @@ void help( const boost::program_options::options_description & options, std::ost
 	out << '\n'
 		<< "Usage: performanceTest [OPTIONS] TESTSAMPLE#\n\n"
 		<< "Test Samples:\n"
-        << "1  - random point retrieval (single point)"
-        << "2  - random point retrieval (multiple point)"
-        << "3  - random point retrieval (all parameters)"
-        << "4  - random point retrieval (large query)"
-        << "8  - prepared random point retrieval (single point)"
-        << "31 - random bilinear point retrieval (single point)"
-        << "32 - random bilinear point retrieval (multiple point)"
-        << "33 - random bilinear point retrieval (all parameters)"
-        << "41 - complex point tests 1"
-        << "42 - complex point tests 2"
+        << "1  - random point retrieval (single point)\n"
+        << "2  - random point retrieval (multiple point)\n"
+        << "3  - random point retrieval (all parameters)\n"
+        << "4  - random point retrieval (large query)\n"
+        << "8  - prepared random point retrieval (single point)\n"
+        << "31 - random bilinear point retrieval (single point)\n"
+        << "32 - random bilinear point retrieval (multiple point)\n"
+        << "33 - random bilinear point retrieval (all parameters)\n"
+        << "41 - complex point tests 1\n"
+        << "42 - complex point tests 2\n"
 		<< "\n\n"
 		<< "Options:\n"
 		<< options << std::endl;
@@ -165,12 +165,12 @@ int main(int argc, char *argv[])
     		C.prepare("ReadRandom1",
     				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
     				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
-    				  "(0, 0, 'distance above ground', 'exact')::wci.levelspec, "
+    				  "'0 distance above ground', "
     				  "ARRAY[-1], NULL::wci.returnFloat	)" )
     				  ("varchar", treat_string )
 					  ("varchar", treat_string )
-    				  ("wci.timespec", treat_string )
-    				  ("wci.timespec", treat_string )
+    				  ("varchar", treat_string )
+    				  ("varchar", treat_string )
 			          ("varchar", treat_string );
 			for (int i=0; i<1000; i++) {
 				try {

@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -47,27 +47,27 @@ extern "C"
 	{
 		stringstream query;
 		// Base Query
-		query << "FROM " << WCI_SCHEMA << ".oidvalue v";
+		query << "FROM " << WCI_SCHEMA << ".gridvalue v";
 		bool hasWhere = false;
 		stringstream where;
 		char * arg;
-		
+
 		// Data provider
-		if (!PG_ARGISNULL(0)) { 
+		if (!PG_ARGISNULL(0)) {
 			where << wci_dataProviderWhereClause_( PG_GETARG_DATUM( 0 ) );
 			hasWhere = true;
 		}
-		
+
 		// Place id
 		if (!PG_ARGISNULL(1)) {
 			if (hasWhere)
 				where << " AND ";
 			where << wci_locationWhereClause_( PG_GETARG_DATUM( 1 ) );
 			hasWhere = true;
-		}	
-		
+		}
+
 		// Reference Time
-		if (!PG_ARGISNULL(2)) { 
+		if (!PG_ARGISNULL(2)) {
 			arg = wci_referenceTimeWhereClause_( PG_GETARG_HEAPTUPLEHEADER(2) );
 			if (arg != NULL) {
 				if (hasWhere)
@@ -76,7 +76,7 @@ extern "C"
 				hasWhere = true;
 			}
 		}
-		
+
 		// Valid time
 		if (!PG_ARGISNULL(3)) {
 			arg = wci_validTimeWhereClause_( PG_GETARG_HEAPTUPLEHEADER(3) );
@@ -94,8 +94,8 @@ extern "C"
 				where << " AND ";
 			where << wci_parameterWhereClause_( PG_GETARG_DATUM( 4 ) );
 			hasWhere = true;
-		}	
-		
+		}
+
 		// Level
 		if (!PG_ARGISNULL(5)) {
 			arg = wci_levelWhereClause_( PG_GETARG_HEAPTUPLEHEADER(5) );
@@ -104,22 +104,22 @@ extern "C"
 					where << " AND ";
 				where << arg;
 				hasWhere = true;
-			}	
+			}
 		}
-		
+
 		// Data version
 		if (!PG_ARGISNULL(6)) {
 			if (hasWhere)
 				where << " AND ";
 			where << wci_dataVersionWhereClause_( PG_GETARG_DATUM( 6 ) );
-			hasWhere = true;	
+			hasWhere = true;
 		}
-		
+
 		if (hasWhere)
 			query << " WHERE " << where.str();
 		else
 			query << " WHERE TRUE ";
-		
+
 		// Return
 		string str = query.str();
 	    int32 size = VARHDRSZ + str.size();
@@ -134,6 +134,6 @@ extern "C"
 		memcpy( VARDATA( ret ), str.c_str(), size - VARHDRSZ );
 		PG_RETURN_TEXT_P( ret );
 	}
-		
+
 }
 

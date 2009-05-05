@@ -249,7 +249,7 @@ std::string ValidTimeTest::statementOid_( const std::string & timeSpec ) const
 	else
 		ss << timeSpec << ", ";
 	ss << "'{\"" << defaultParameter << "\"}', "
-	   << "NULL, NULL, NULL::wci.returnOid )";
+	   << "NULL, NULL, NULL::wci.returngrid )";
 
 	return ss.str();
 }

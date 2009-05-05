@@ -48,7 +48,7 @@ source $TEST_PATH/tearDown.sh
 
 # Generate Test Data
 ${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime=${TESTTIME}
-if ! $PSQL -Atc "SELECT count(*) FROM test.oidvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
@@ -69,7 +69,7 @@ EOF
 
 # Check Result
 # - Expected Result: Data should be deleted
-if ! $PSQL -Atc "SELECT count(*) FROM test.oidvalue WHERE dataprovidername='test cleandb'" | grep -qE "0"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "0"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)

@@ -24,5 +24,5 @@ mkdir -p __WDB_LOGDIR__
 $PSQL -q <<EOF
 \o __WDB_LOGDIR__/wdb_test_gribLoad.log
 set role wdb_clean;
-DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
+DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
 EOF

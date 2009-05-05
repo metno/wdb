@@ -30,7 +30,7 @@ GRANT USAGE ON SCHEMA test TO wdb_test;
 --
 -- Test View
 --
-CREATE VIEW test.oidvalue AS
+CREATE VIEW test.gridvalue AS
 SELECT	
 	val.value,
 	dp.dataproviderid,
@@ -58,7 +58,7 @@ SELECT
 	val.valueid,
 	val.valuetype
 FROM 	
-	__WDB_SCHEMA__.oidvalue val,
+	__WDB_SCHEMA__.gridvalue val,
 	__WDB_SCHEMA__.placedefinition place,
 	__WCI_SCHEMA__.dataprovider_mv dp,
 	__WCI_SCHEMA__.valueparameter_mv vp,
@@ -69,9 +69,9 @@ WHERE
 	AND val.valueparameterid = vp.valueparameterid
 	AND val.levelparameterid = vl.levelparameterid;
 
-REVOKE ALL ON test.oidvalue FROM public;
-GRANT ALL ON test.oidvalue TO wdb_admin;
-GRANT SELECT ON test.oidvalue TO wdb_test;
+REVOKE ALL ON test.gridvalue FROM public;
+GRANT ALL ON test.gridvalue TO wdb_admin;
+GRANT SELECT ON test.gridvalue TO wdb_test;
 
 
 -- 
@@ -139,7 +139,7 @@ CREATE OR REPLACE FUNCTION
 test.removePlaceDef( )
 RETURNS void AS
 $BODY$
-	DELETE FROM __WDB_SCHEMA__.oidvalue WHERE placeid=500;
+	DELETE FROM __WDB_SCHEMA__.gridvalue WHERE placeid=500;
 	DELETE FROM __WDB_SCHEMA__.placeregulargrid WHERE placeid=500;
 	DELETE FROM __WDB_SCHEMA__.placedefinition WHERE placeid=500;
 $BODY$
@@ -169,8 +169,8 @@ $BODY$
 DECLARE
 	pid 	integer;
 BEGIN
-	SELECT placeid INTO pid FROM test.oidvalue WHERE dataproviderid = 30 LIMIT 1;
-	DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid = 30;
+	SELECT placeid INTO pid FROM test.gridvalue WHERE dataproviderid = 30 LIMIT 1;
+	DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid = 30;
 	DELETE FROM __WDB_SCHEMA__.placedefinition WHERE placeid = pid;
 END;
 $BODY$

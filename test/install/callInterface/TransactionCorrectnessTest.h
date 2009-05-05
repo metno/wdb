@@ -26,46 +26,27 @@
     MA  02110-1301, USA
 */
 
+#ifndef TRANSACTIONCORRECTNESSTEST_H_
+#define TRANSACTIONCORRECTNESSTEST_H_
 
+#include "AbstractWciTestFixture.h"
 
-#ifndef LOCATION_H_
-#define LOCATION_H_
-
-#include <string>
-#include <stdexcept>
-
-class Location
+class TransactionCorrectnessTest: public AbstractWciTestFixture
 {
+	CPPUNIT_TEST_SUITE( TransactionCorrectnessTest );
+	CPPUNIT_TEST( testDeleteMakesFileUnreadable );
+	CPPUNIT_TEST( testAbortedDelete );
+	CPPUNIT_TEST_SUITE_END();
 public:
-	Location(const std::string & location);
-	~Location();
+	TransactionCorrectnessTest();
+	virtual ~TransactionCorrectnessTest();
 
-	const std::string & interpolation() const { return interpolation_; }
-	const std::string & location() const { return location_; }
-	bool isGeometry() const { return isGeometry_; }
+	virtual void setUp();
+	virtual void tearDown();
 
-	/**
-	 * Get an "x=y" part of an sql query selecting the correct tuple from
-	 * wci(internal).gridvalue
-	 *
-	 * @param returnType	The query constructed is partially dependent on
-	 * the return type that is required by the wci_read query.
-	 * 0 = OID, and 1 = Float.
-	 */
-	std::string query( int returnType ) const;
+	void testDeleteMakesFileUnreadable();
 
-	/**
-	 * The error when a specification is syntactically incorrect
-	 */
-	struct InvalidSpecification : std::logic_error
-	{
-		InvalidSpecification(const char * reason) : std::logic_error(reason) {}
-	};
-
-private:
-	std::string interpolation_;
-	std::string location_;
-	bool isGeometry_;
+	void testAbortedDelete();
 };
 
-#endif /*LOCATION_H_*/
+#endif /* TRANSACTIONCORRECTNESSTEST_H_ */

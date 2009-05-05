@@ -36,11 +36,16 @@ BEGIN
 			-- Maximum allowed age for a given dataprovider
 			oldest_allowed TIMESTAMP := TIMESTAMP 'today' - ttl;
 		BEGIN
-			RAISE LOG 'OidValue: Deleting all data for data provider % from before %', provider.dataproviderid, oldest_allowed::date;
-			DELETE FROM __WDB_SCHEMA__.oidvalue 
+			RAISE LOG 'GridValue: Deleting all data for data provider % from before %', provider.dataproviderid, oldest_allowed::date;
+			DELETE FROM __WDB_SCHEMA__.gridvalue 
 			WHERE dataproviderid = provider.dataproviderid AND referencetime < oldest_allowed;
 		END;
 	END LOOP;
+
+	RAISE DEBUG 'Removed old table entries Starting delete of unused field files.';
+	PERFORM vacuum_file_blob();
+	PERFORM remove_unreferenced_files();
+	
 	RAISE DEBUG 'Done';
 END;
 $$ 

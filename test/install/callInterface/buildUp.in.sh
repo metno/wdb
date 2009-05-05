@@ -142,7 +142,9 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --refti
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
-$TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00'
+# TransactionCorrectnessTest 
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '1975-04-21 06:00:00+00' --validtimefrom='1975-04-21 06:00:00+00' --validtimeto='1975-04-21 06:00:00+00' --levelparameter 'height above ground distance' --levelfrom 0 --levelto 0
 
 # Load Test Data
 #$LOAD_GRIB_FILE --loadPlaceDefinition $GRIB_FILE

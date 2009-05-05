@@ -208,7 +208,7 @@ std::string ReferenceTimeTest::statementOid_( const std::string & timeSpec ) con
 		st << "NULL, ";
 	st << "NULL, "
 	   << "'{\"" << defaultParameter << "\"}', "
-	   << "NULL, NULL, NULL::wci.returnOid )";
+	   << "NULL, NULL, NULL::wci.returngrid )";
 
 	return st.str();
 }

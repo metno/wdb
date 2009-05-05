@@ -18,11 +18,11 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- Write OID Value
+-- Write GRID Value
 -- Limited Specification
 CREATE OR REPLACE FUNCTION 
 wci.write(
-	value_ 			oid,
+	data 			bytea,
 	placename_ 		text,
 	referencetime_ 	timestamp with time zone,
 	validFrom_ 		timestamp with time zone,
@@ -44,13 +44,13 @@ DECLARE
 	levelParameterId_ integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ ); 
 BEGIN
 	
-	--PERFORM verifyBlobSize(value_, placeid_);
+	--PERFORM verifyBlobSize(data, placeid_);
 
 	-- Determine dataversion
 	SELECT 
 		max(dataversion) INTO currentVersion_ 
 	FROM 
-		__WCI_SCHEMA__.oidvalue v
+		__WCI_SCHEMA__.gridvalue v
 	WHERE
 		myDataProviderId_ = dataproviderid AND
 		v.referencetime = referencetime_ AND
@@ -68,7 +68,7 @@ BEGIN
 		currentVersion_ := currentVersion_ + 1;
 	END IF;
 
-	INSERT INTO __WCI_SCHEMA__.oidvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
 		value,
 		dataproviderid,
@@ -98,7 +98,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		value_,
+		write_file(data),
 		mydataproviderid_,
 		NULL,
 		placeid_,
@@ -129,30 +129,30 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
--- Write OID Value
+-- Write GRID Value
 CREATE OR REPLACE FUNCTION 
 wci.write(
-	what wci.returnOid
+	what wci.returnGrid
 )
 RETURNS void AS
 $BODY$
 DECLARE
-	dataProviderId_ 		bigint := __WCI_SCHEMA__.idfromdataprovider( what.dataProviderName );
-	placeid_ 				bigint := __WCI_SCHEMA__.getplaceid( what.placeName );
+	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( what.dataProviderName );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( what.placeName );
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( what.valueParameterName );
-	valueParameterId_ 	   	integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
+	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( what.levelParameterName );
-	levelParameterId_      	integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
-	currentVersion_ 		integer := what.dataVersion;
+	levelParameterId_      	  integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
+	currentVersion_ 		  integer := what.dataVersion;
 BEGIN
-	--PERFORM verifyBlobSize(value_, placeid_);
+	--PERFORM verifyBlobSize(data, placeid_);
 
 	-- Determine dataversion
 	IF currentVersion_ IS NULL THEN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
-			__WCI_SCHEMA__.oidvalue v
+			__WCI_SCHEMA__.gridvalue v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
 			v.referencetime = what.referencetime AND
@@ -171,7 +171,7 @@ BEGIN
 		END IF;
 	END IF;
 		
-	INSERT INTO __WCI_SCHEMA__.oidvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
 		value,
 		dataproviderid,
@@ -201,7 +201,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		what.value,
+		write_file(what.value),
 		dataproviderid_,
 		NULL,
 		placeid_,
@@ -232,11 +232,12 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
--- Write OID Value
+
+-- Write GRID Value
 -- All parameter specified
 CREATE OR REPLACE FUNCTION 
 wci.write(
-	value_ oid,
+	data bytea,
 	dataproviderid_ bigint,
 	placeid_ bigint,
 	referencetime_ timestamp with time zone,
@@ -254,9 +255,9 @@ wci.write(
 RETURNS void AS
 $BODY$
 BEGIN
-	--PERFORM verifyBlobSize(value_, placeid_);
+	--PERFORM verifyBlobSize(data, placeid_);
 
-	INSERT INTO __WCI_SCHEMA__.oidvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
 		value,
 		dataproviderid,
@@ -286,7 +287,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		value_,
+		write_file(data),
 		dataproviderid_,
 		NULL,
 		placeid_,

@@ -168,7 +168,7 @@ void PlaceNameTest::testL3_02B_UpperCase()
 
 void PlaceNameTest::testL3_03A_MixedCase()
 {
-    result r = t->exec( statementFloat_( "HirlaM 10 gRId" ) );
+    result r = t->exec( statementFloat_( "HirlaM 10 gRiD" ) );
     result v = t->exec( statementFloat_( "hirlam 10 grid" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
@@ -193,7 +193,7 @@ std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 		st << "'" << placeDef << "'";
 	st << ", '2004-12-25 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
-	st << "NULL, NULL, NULL::wci.returnoid )";
+	st << "NULL, NULL, NULL::wci.returngrid )";
 
 	return st.str();
 }

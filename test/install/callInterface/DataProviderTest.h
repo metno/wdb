@@ -144,7 +144,7 @@ public:
 
 private:
 	/// Statement to test wci.read with OIDs
-	std::string statementOid_( const std::string & provider ) const;
+	std::string statementGrid_( const std::string & provider ) const;
 	/// Statement to test wci.read with Float Returns
 	std::string statementFloat_( const std::string & provider ) const;
 };

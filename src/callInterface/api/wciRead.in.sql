@@ -41,8 +41,9 @@ CREATE TYPE wci.returnFloat AS (
 	valuetype varchar( 80 )
 );
 
-CREATE TYPE wci.returnOid AS (
-	value oid,
+
+CREATE TYPE wci.returnGrid AS (
+	value bytea,
 	dataProviderName varchar( 255 ),
 	placeName varchar( 255 ),
 	placeGeometry GEOMETRY,
@@ -73,14 +74,14 @@ wci.read( dataprovider 		text[],
 		  parameter 		text[],
 		  level 			text,
 		  dataversion 		integer[],
-		  returntype 		wci.returnOid
+		  returntype 		wci.returnGrid
 )	
-RETURNS SETOF wci.returnOid AS
+RETURNS SETOF wci.returngrid AS
 $BODY$
 DECLARE
 	readQ	 		text;
-	entry 			__WCI_SCHEMA__.oidValue;
-	returnObject 	wci.returnOid;
+	entry 			__WCI_SCHEMA__.gridValue;
+	returnObject 	wci.returngrid;
 BEGIN
 	readQ := 'SELECT * ' ||
 		-- Create Query to Run
@@ -99,7 +100,7 @@ BEGIN
 		EXECUTE readQ
 	LOOP
 			returnObject := (
-					entry.value,
+					read_file(entry.value),
 					entry.dataprovidername,
 					entry.placename,
 					entry.placegeometry,
@@ -141,7 +142,7 @@ $BODY$
 DECLARE
 	-- Values
 	entryF 			__WCI_SCHEMA__.floatValue;
-	entryO 			__WCI_SCHEMA__.oidValue;
+	entryO 			__WCI_SCHEMA__.gridValue;
 	pointData 		__WCI_SCHEMA__.extractGridDataReturnType;
 	returnObject 	wci.returnFloat;
 	-- Geometry

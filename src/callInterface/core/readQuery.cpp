@@ -49,7 +49,7 @@ extern "C"
 		int querySource = PG_GETARG_INT32( 0 );
 		switch ( querySource ) {
 		case 0: // Grid Source
-			query << "FROM " << WCI_SCHEMA << ".oidvalue v";
+			query << "FROM " << WCI_SCHEMA << ".gridvalue v";
 			break;
 		case 1: // Floating Point
 			query << "FROM " << WCI_SCHEMA << ".floatvalue v";

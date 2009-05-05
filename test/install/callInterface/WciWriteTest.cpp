@@ -62,20 +62,20 @@ void wciWriteTest::testCanInsert1()
 
 	const string select = "SELECT * FROM wci.read("
 		"ARRAY['wcitestwriter'],"
-		"'Hirlam 10 grid'::text,"
+		"'hirlam 10 grid'::text,"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air pressure'],"
 		"'0 TO 100 height above ground distance',"
 		"NULL,"
-		"NULL::wci.returnoid)";
+		"NULL::wci.returngrid)";
 
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
 
 	const string write = "SELECT wci.write("
-		"24944::oid, "
-		"'Hirlam 10 grid',"
+		"E'aaaa'::bytea, "
+		"'hirlam 10 grid',"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 		"'air pressure',"
@@ -94,19 +94,19 @@ void wciWriteTest::testCanInsert2()
 
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
-						  "'Hirlam 10 grid'::text,"
+						  "'hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
 						  "ARRAY['air temperature'], "
 						  "'0 TO 100 height above ground distance', "
 						  "NULL,"
-						  "NULL::wci.returnoid)";
+						  "NULL::wci.returngrid)";
 
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
 
 	const string write = "SELECT wci.write("
-						 "24944::oid, "
+						 "E'aaaa'::bytea, "
 					     "13, "
 						 "1000, "
 						 "'2006-04-21 07:00:00+00', "
@@ -139,13 +139,13 @@ void wciWriteTest::testMultipleInserts2()
 {
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
-						  "'Hirlam 10 grid'::text,"
+						  "'hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
 						  "ARRAY['air pressure change'], "
 						  "'0 TO 100 height above ground distance', "
 						  "NULL, "
-						  "NULL::wci.returnoid)";
+						  "NULL::wci.returngrid)";
 
 	result r = t->exec(select);
 	const result::size_type before = r.size();
@@ -155,7 +155,7 @@ void wciWriteTest::testMultipleInserts2()
 		ostr.str("");
 		ostr.clear();
 		ostr << "SELECT wci.write("
-			 << "24944::oid, "
+			 << "E'aaaa'::bytea, "
 			 << "13, "
 			 << "1000, "
 			 << "'2006-04-21 07:00:00+00', "
@@ -213,23 +213,23 @@ void wciWriteTest::testAutoIncrementVersion()
 
 void wciWriteTest::testNullDataProviderThrows()
 {
-	t->exec("SELECT wci.write( NULL, 24944, 'today', 0, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
+	t->exec("SELECT wci.write( NULL, E'aaaa'::bytea, 'today', 0, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
 }
 
 void wciWriteTest::testNullDataVersionThrows()
 {
-	t->exec("SELECT wci.write( 53, 24944, 'today', NULL, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
+	t->exec("SELECT wci.write( 'wcitestwriter', E'aaaa'::bytea, 'today', NULL, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
 }
 
 
 void wciWriteTest::testNullParameterThrows()
 {
-	t->exec("SELECT wci.write( 24944, 'today', 500, NULL, 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
+	t->exec("SELECT wci.write( 'wcitestwriter', E'aaaa'::bytea, 'today', 500, NULL, 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
 }
 
 void wciWriteTest::testIncompatibleUnitAndParamterThrows()
 {
-	const std::string statement = "SELECT wci.write(24944,'today',500,"
+	const std::string statement = "SELECT wci.write(E'aaaa'::bytea,'today',500,"
 		"'metre', 'air pressure',"
 		"0,0,'metre','height above mean sea level distance',"
 		"'today','today')";
@@ -239,7 +239,7 @@ void wciWriteTest::testIncompatibleUnitAndParamterThrows()
 
 void wciWriteTest::testIncompatibleLevelUnitAndParameterThrows()
 {
-	const std::string statement = "SELECT wci.write(24944,'today',500,"
+	const std::string statement = "SELECT wci.write(E'aaaa'::bytea,'today',500,"
 		"'hectopascal per second', 'air pressure change',"
 		"0,0,'ohm','height above mean sea level distance',"
 		"'today','today')";
@@ -374,7 +374,7 @@ string wciWriteTest::statement_(const string & referenceTime) const
 {
 	ostringstream ret;
 	ret << "SELECT wci.write( "
-		<< 24944<< "::oid, "
+		<< "E'aaaa'::bytea, "
 		<< "'test grid, rotated', "
 		<< "'"<< referenceTime << "', "
 		<< "'today', 'today', "
@@ -388,7 +388,7 @@ std::string wciWriteTest::statementWithParameter_(const std::string parameter) c
 {
 	ostringstream ret;
 	ret << "SELECT wci.write( "
-		<< 24944<< "::oid, "
+		<< "E'aaaa'::bytea, "
 		<< "'test grid, rotated', "
 		<< "'2004-12-24 07:00:00+00', "
 		<< "'today', 'today', "
@@ -415,7 +415,7 @@ string wciWriteTest::controlStatement_(const std::string & resultSet,
 	   << "'{\"air temperature\"}', "
 	   << "'0 height above mean sea level distance', "
 	   << "NULL, "
-	   << "NULL::wci.returnoid )";
+	   << "NULL::wci.returngrid )";
 	return st.str();
 }
 
@@ -431,7 +431,7 @@ std::string wciWriteTest::controlStatementWithParameter_(const std::string param
        << "ARRAY['" << parameter << "'], "
 	   << "'0 height above mean sea level distance', "
 	   << "NULL, "
-	   << "NULL::wci.returnoid )";
+	   << "NULL::wci.returngrid )";
 
 	return st.str();
 }

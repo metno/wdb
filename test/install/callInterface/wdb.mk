@@ -55,6 +55,8 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/WciInfoTest.cpp \
 							test/install/callInterface/wciOutputTest.h \
 							test/install/callInterface/wciOutputTest.cpp \
+							test/install/callInterface/TransactionCorrectnessTest.h \
+							test/install/callInterface/TransactionCorrectnessTest.cpp \
 							test/install/callInterface/main.cpp
 
 wciInstallTester_CPPFLAGS =	$(CPPUNIT_CFLAGS) -I$(srcdir)/test/utility/configuration -I$(srcdir)/test/install/callInterface

@@ -350,7 +350,7 @@ CREATE INDEX XIE0wci_levelparameter_mv ON __WCI_SCHEMA__.levelparameter_mv
 
 
 
-CREATE VIEW __WCI_SCHEMA__.oidvalue AS
+CREATE VIEW __WCI_SCHEMA__.gridvalue AS
 SELECT	
 	val.value,
 	dp.dataproviderid,
@@ -382,7 +382,7 @@ SELECT
 	val.valueid,
 	val.valuetype
 FROM 	
-	__WDB_SCHEMA__.oidvalue val,
+	__WDB_SCHEMA__.gridvalue val,
 	__WCI_SCHEMA__.placedefinition_mv pl,
 	__WCI_SCHEMA__.dataprovider_mv dp,
 	__WCI_SCHEMA__.valueparameter_mv vp,
@@ -398,14 +398,14 @@ WHERE
 	AND vp.parameternamespaceid = s.parameternamespaceid
 	AND vl.parameternamespaceid = s.parameternamespaceid;
 
-REVOKE ALL ON __WCI_SCHEMA__.oidvalue FROM public;
-GRANT ALL ON __WCI_SCHEMA__.oidvalue TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.oidvalue TO wdb_read;
-GRANT SELECT, INSERT ON __WCI_SCHEMA__.oidvalue TO wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.gridvalue FROM public;
+GRANT ALL ON __WCI_SCHEMA__.gridvalue TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.gridvalue TO wdb_read;
+GRANT SELECT, INSERT ON __WCI_SCHEMA__.gridvalue TO wdb_write;
 
 
 
-CREATE VIEW __WCI_SCHEMA__.floatgridvalue AS SELECT * FROM __WCI_SCHEMA__.oidvalue;
+CREATE VIEW __WCI_SCHEMA__.floatgridvalue AS SELECT * FROM __WCI_SCHEMA__.gridvalue;
 
 REVOKE ALL ON __WCI_SCHEMA__.floatGridValue FROM public;
 GRANT ALL ON __WCI_SCHEMA__.floatGridValue TO wdb_admin;

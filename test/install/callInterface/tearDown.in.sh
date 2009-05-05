@@ -23,6 +23,6 @@ mkdir -p __WDB_LOGDIR__
 # Remove Test Data
 psql `./wdbConfiguration --psqlArgs` -q <<EOF
 \o __WDB_LOGDIR__/wdb_test_wci.log
-DELETE FROM __WDB_SCHEMA__.oidvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
+DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
 DELETE FROM __WDB_SCHEMA__.floatvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
 EOF

@@ -20,7 +20,7 @@
 
 
 
-CREATE UNIQUE INDEX XAK1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE UNIQUE INDEX XAK1Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
        DataProviderId,
        ReferenceTime,
@@ -36,7 +36,7 @@ CREATE UNIQUE INDEX XAK1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        DataVersion
 );
 
-CREATE INDEX cascadingDeleteOids_OidValue ON __WDB_SCHEMA__.oidvalue
+CREATE INDEX cascadingDeleteOids_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
 	value
 );
@@ -154,7 +154,7 @@ CREATE UNIQUE INDEX XAK1Wdb_LevelStandardParameter ON __WDB_SCHEMA__.levelmeasur
 	levelparameterusage
 );
 
-CREATE INDEX XIE0Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE INDEX XIE0Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
 	   DataProviderId,
        PlaceId,
@@ -174,7 +174,7 @@ CREATE INDEX XIE0Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        Value
 );
 
-CREATE INDEX XIE1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE INDEX XIE1Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
        ValueParameterId,
 	   DataProviderId,
@@ -182,7 +182,7 @@ CREATE INDEX XIE1Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        LevelParameterId
 );
 
-CREATE INDEX XIE2Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE INDEX XIE2Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
        ReferenceTime,
        ValueParameterId,
@@ -191,7 +191,7 @@ CREATE INDEX XIE2Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        LevelParameterId
 );
 
-CREATE INDEX XIE3Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE INDEX XIE3Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
        ValidTimeFrom,
        ValidTimeTo,
@@ -201,7 +201,7 @@ CREATE INDEX XIE3Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        LevelParameterId
 );
 
-CREATE INDEX XIE4Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE INDEX XIE4Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
        LevelFrom,
        LevelTo,
@@ -211,7 +211,7 @@ CREATE INDEX XIE4Wdb_OidValue ON __WDB_SCHEMA__.OidValue
        LevelParameterId
 );
 
-CREATE INDEX XIE5Wdb_OidValue ON __WDB_SCHEMA__.OidValue
+CREATE INDEX XIE5Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
        (DataVersion - MaxDataVersion - 1),
        ValueParameterId,

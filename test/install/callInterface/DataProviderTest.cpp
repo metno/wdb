@@ -75,7 +75,7 @@ void DataProviderTest::tearDown()
 
 void DataProviderTest::testD1_01A_NoDataProvider()
 {
-	CPPUNIT_ASSERT_THROW(  t->exec( statementOid_( "'{}'" ) ), pqxx::data_exception );
+	CPPUNIT_ASSERT_THROW(  t->exec( statementGrid_( "'{}'" ) ), pqxx::data_exception );
 }
 
 void DataProviderTest::testD1_01B_NoDataProvider()
@@ -85,7 +85,7 @@ void DataProviderTest::testD1_01B_NoDataProvider()
 
 void DataProviderTest::testD1_02A_OneDataProvider()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci 0']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci 0']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( r1, "dataprovidername", "test wci 0" ), size_t( r1.size() ) );
@@ -109,7 +109,7 @@ void DataProviderTest::testD1_02C_OneDataProvider()
 
 void DataProviderTest::testD1_03A_MultipleDataProviders()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2', 'test wci 4', 'test xml']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2', 'test wci 4', 'test xml']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -148,7 +148,7 @@ void DataProviderTest::testD1_04A_MoreThan255DataProviders()
         ss << "'test wci " << i << "',";
     ss << " 'test wci 999']";
 
-    result r1 = t->exec( statementOid_( ss.str() ) );
+    result r1 = t->exec( statementGrid_( ss.str() ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -180,7 +180,7 @@ void DataProviderTest::testD1_04B_MoreThan255DataProviders()
 
 void DataProviderTest::testD1_05A_NullDataProvider()
 {
-    result r1 = t->exec( statementOid_( "NULL" ) );
+    result r1 = t->exec( statementGrid_( "NULL" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -207,7 +207,7 @@ void DataProviderTest::testD1_05B_NullDataProvider()
 
 void DataProviderTest::testD2_01A_LowerCase()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci 0']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci 0']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( r1, "dataprovidername", "test wci 0" ), size_t( r1.size() ) );
@@ -223,7 +223,7 @@ void DataProviderTest::testD2_01B_LowerCase()
 
 void DataProviderTest::testD2_02A_UpperCase()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['TEST WCI 0']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['TEST WCI 0']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( r1, "dataprovidername", "test wci 0" ), size_t( r1.size() ) );
@@ -239,7 +239,7 @@ void DataProviderTest::testD2_02B_UpperCase()
 
 void DataProviderTest::testD2_03A_MixedCase()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['teST wcI 0']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['teST wcI 0']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( r1, "dataprovidername", "test wci 0" ), size_t( r1.size() ) );
@@ -260,7 +260,7 @@ void DataProviderTest::testD3_01_AllRequestedProvidersExist()   //ok
 
 void DataProviderTest::testD3_02A_NoRequestedProvidersExist()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci -', 'test wci 12345', 'test wci XYZ']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci -', 'test wci 12345', 'test wci XYZ']" ) );
     CPPUNIT_ASSERT( r1.empty() );
 }
 
@@ -272,7 +272,7 @@ void DataProviderTest::testD3_02B_NoRequestedProvidersExist()
 
 void DataProviderTest::testD3_03A_SomeRequestedProvidersExist()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 12345', 'test wci XYZ']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 12345', 'test wci XYZ']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -298,7 +298,7 @@ void DataProviderTest::testD4_01_NoDuplicates()   //ok
 
 void DataProviderTest::testD4_02A_OneDuplicate()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2', 'test wci 1']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2', 'test wci 1']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -306,7 +306,7 @@ void DataProviderTest::testD4_02A_OneDuplicate()
 
     CPPUNIT_ASSERT_EQUAL( count_val( r1, "dataprovidername", "test wci 0" ) + count_val( r1, "dataprovidername", "test wci 1" ) + count_val( r1, "dataprovidername", "test wci 2" ), size_t( r1.size() ) );
 
-    result reference = t->exec( statementOid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2']" ) );
+    result reference = t->exec( statementGrid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2']" ) );
 
     CPPUNIT_ASSERT_EQUAL( count_val( reference, "dataprovidername", "test wci 0" ), count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( reference, "dataprovidername", "test wci 1" ), count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -332,7 +332,7 @@ void DataProviderTest::testD4_02B_OneDuplicate()
 
 void DataProviderTest::testD4_03A_SeveralDuplicates()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 1', 'test wci 2', 'test wci 2', 'test wci 1']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 1', 'test wci 2', 'test wci 2', 'test wci 1']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -340,7 +340,7 @@ void DataProviderTest::testD4_03A_SeveralDuplicates()
 
     CPPUNIT_ASSERT_EQUAL( count_val( r1, "dataprovidername", "test wci 0" ) + count_val( r1, "dataprovidername", "test wci 1" ) + count_val( r1, "dataprovidername", "test wci 2" ), size_t( r1.size() ) );
 
-    result reference = t->exec( statementOid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2']" ) );
+    result reference = t->exec( statementGrid_( "ARRAY['test wci 0', 'test wci 1', 'test wci 2']" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( reference, "dataprovidername", "test wci 0" ), count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( reference, "dataprovidername", "test wci 1" ), count_val( r1, "dataprovidername", "test wci 1" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( reference, "dataprovidername", "test wci 2" ), count_val( r1, "dataprovidername", "test wci 2" ) );
@@ -364,7 +364,7 @@ void DataProviderTest::testD4_03B_SeveralDuplicates()
 
 void DataProviderTest::testD5_01A_GroupData()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test group']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test group']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -388,7 +388,7 @@ void DataProviderTest::testD5_01B_GroupData()
 
 void DataProviderTest::testD5_02A_GroupNoData()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test group empty']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test group empty']" ) );
 
     CPPUNIT_ASSERT( r1.empty() );
 }
@@ -402,7 +402,7 @@ void DataProviderTest::testD5_02B_GroupNoData()
 
 void DataProviderTest::testD5_03A_SeveralGroups()
 {
-    result r1 = t->exec( statementOid_( "ARRAY['test group', 'test group empty']" ) );
+    result r1 = t->exec( statementGrid_( "ARRAY['test group', 'test group empty']" ) );
 
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( r1, "dataprovidername", "test wci 1" ) );
@@ -427,7 +427,7 @@ void DataProviderTest::testD5_03B_SeveralGroups()
 // Support Functions
 //---------------------------------------------------------------------------
 
-std::string DataProviderTest::statementOid_( const std::string & provider ) const
+std::string DataProviderTest::statementGrid_( const std::string & provider ) const
 {
     ostringstream st;
     st << "SELECT dataprovidername FROM wci.read( ";
@@ -437,7 +437,7 @@ std::string DataProviderTest::statementOid_( const std::string & provider ) cons
 		st << provider;
     st << ", NULL, '2004-12-24 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
-    st << "NULL, NULL, NULL::wci.returnoid )";
+    st << "NULL, NULL, NULL::wci.returngrid )";
 
     return st.str();
 }

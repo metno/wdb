@@ -210,7 +210,7 @@ void PlaceGeometryTest::testG2_05A_NullGeometry()
     // Since we have had an error here related to return value, we test this
     // as well: return value is oid instead of floats.
     result oidReturn =
-        t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, '{\"" + specFromParamNumber_.find( 1 )->second + "\"}', NULL, NULL, NULL::wci.returnOid )" );
+        t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, '{\"" + specFromParamNumber_.find( 1 )->second + "\"}', NULL, NULL, NULL::wci.returngrid )" );
     CPPUNIT_ASSERT( not oidReturn.empty() );
 }
 

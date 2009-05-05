@@ -240,7 +240,7 @@ __WCI_SCHEMA__.extractGridData
 	placeid			bigint,
 	location 		GEOMETRY,
 	interpolation 	__WCI_SCHEMA__.interpolationType, 
-	valueOid		oid 
+	dataid		bigint 
 )
 RETURNS SETOF __WCI_SCHEMA__.extractGridDataReturnType AS
 $BODY$
@@ -259,7 +259,7 @@ BEGIN
 	IF isInterpolation = TRUE THEN
 		-- If Interpolation is bilinear
 		IF interpolation = 'bilinear'::__WCI_SCHEMA__.interpolationType THEN
-			SELECT * INTO ret FROM __WCI_SCHEMA__.bilinearInterpolation( placeid, location, valueoid );
+			SELECT * INTO ret FROM __WCI_SCHEMA__.bilinearInterpolation( placeid, location, dataid );
 			--IF ret IS NOT NULL THEN -- (the following line works in postgresql 8.1)
 			IF ret.location IS NOT NULL THEN 
 				RETURN NEXT ret;
@@ -273,7 +273,7 @@ BEGIN
 			SELECT iNumber INTO pSpec.iNum FROM __WCI_SCHEMA__.placespec WHERE __WCI_SCHEMA__.placespec.placeid = placeid;
 			curs := __WCI_SCHEMA__.getAllPlacePoints( placeid );
 			FOR ret IN 
-				SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
+				SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( dataid, pSpec.iNum, curs ) 
 			LOOP
 				RETURN NEXT ret;
 			END LOOP;
@@ -283,7 +283,7 @@ BEGIN
 			SELECT iNumber INTO pSpec.iNum FROM __WCI_SCHEMA__.placespec WHERE __WCI_SCHEMA__.placespec.placeid = placeid;
 			curs := __WCI_SCHEMA__.getPolygonPlacePoints( location, placeid );
 			FOR ret IN 
-				SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
+				SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( dataid, pSpec.iNum, curs ) 
 			LOOP
 				RETURN NEXT ret;
 			END LOOP;
@@ -294,7 +294,7 @@ BEGIN
 				p := __WCI_SCHEMA__.getExactPlacePoint( location, placeid );
 				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
 				IF p.placeid IS NOT NULL THEN
-					val := __WCI_SCHEMA__.getSinglePointData( p.i, p.j, pSpec.iNum, valueOid );
+					val := __WCI_SCHEMA__.getSinglePointData( p.i, p.j, pSpec.iNum, dataid );
 					ret := (p.location, val, p.i, p.j);
 					RETURN NEXT ret;
 				END IF;
@@ -303,7 +303,7 @@ BEGIN
 				p := __WCI_SCHEMA__.getNearestPlacePoint( location, placeid, pSpec.i, pSpec.j );
 				-- PostgeSQL 8.1 does not handle NULL check on tuples, so have to check the attribute
 				IF p.placeid IS NOT NULL THEN
-					val := __WCI_SCHEMA__.getSinglePointData( p.i, p.j, pSpec.iNum, valueOid );
+					val := __WCI_SCHEMA__.getSinglePointData( p.i, p.j, pSpec.iNum, dataid );
 					ret := (p.location, val, p.i, p.j);
 					RETURN NEXT ret;
 				END IF;
@@ -311,7 +311,7 @@ BEGIN
 			ELSIF interpolation = 'surround'::__WCI_SCHEMA__.interpolationType THEN 
 				curs := __WCI_SCHEMA__.getSurroundingPlacePoint( location, placeid, pSpec.i, pSpec.j );
 				FOR ret IN 
-					SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( valueOid, pSpec.iNum, curs ) 
+					SELECT * FROM __WCI_SCHEMA__.readSetOfFieldPoints( dataid, pSpec.iNum, curs ) 
 				LOOP
 					RETURN NEXT ret;
 				END LOOP;
@@ -336,7 +336,7 @@ LANGUAGE 'plpgsql' STABLE;
 --	placeid			bigint,
 --	location 		GEOMETRY,
 --	interpolation 	__WCI_SCHEMA__.interpolationType, 
---	valueOid		oid 
+--	dataid		bigint 
 --)
 --RETURNS SETOF __WCI_SCHEMA__.extractGridDataReturnType AS
 --'__WDB_LIBDIR__/__WCI_LIB__', 'extractGridData'
@@ -347,37 +347,25 @@ LANGUAGE 'plpgsql' STABLE;
 CREATE OR REPLACE FUNCTION
 __WCI_SCHEMA__.readSetOfFieldPoints
 (
-	whatFile oid,
+	whatFile bigint,
 	iNumber integer, -- number of rows in i-direction
 	placepoints refcursor
 )
 RETURNS SETOF __WCI_SCHEMA__.extractGridDataReturnType AS 
 $BODY$
 DECLARE
-	fd integer;
 	idx integer;
-	pos integer := 0;
-	readSize CONSTANT int4 := 4;
 	p __WCI_SCHEMA__.placepoint;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-		fd := lo_open( whatFile, 262144 ); -- 262144 = "INV_READ"
-		IF -1 = fd THEN
-			RAISE EXCEPTION 'Cannot read grid: %', whatFile;
-		END IF;
 		LOOP
 			FETCH placepoints INTO p;
 			EXIT WHEN NOT FOUND;
-			--RAISE DEBUG 'Point %,% ', p.i, p.j;
-			idx := ((iNumber * p.j) + p.i) * readSize;
-			IF pos != idx THEN
-				pos := lo_lseek( fd, idx, 0 ); -- 0 = "SEEK_SET"
-			END IF;
-			ret := ( p.location, __WCI_SCHEMA__.binary_toReal( loread( fd, readSize ) ), p.i, p.j );
-			pos := pos + readSize;
+			idx := ((iNumber * p.j) + p.i);
+			RAISE DEBUG 'Point %,% (idx %)', p.i, p.j, idx;
+			ret := ( p.location, read_float_from_file(whatFile, idx), p.i, p.j );
 			RETURN NEXT ret;
 		END LOOP;
-		PERFORM lo_close( fd );	
 		RETURN;
 END;
 $BODY$
