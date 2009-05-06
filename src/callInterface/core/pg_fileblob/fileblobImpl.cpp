@@ -108,7 +108,7 @@ int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount)
 
 			if ( ! std::binary_search(referencedFiles, & referencedFiles[refFileCount], fileId) )
 			{
-				const std::string fileName = it->native_file_string();
+				const std::string fileName = it->string();
 				elog(DEBUG1, "Removing unreferenced file %s (FileId %d)", fileName.c_str(), (int) fileId);
 				fs::remove(* it);
 				++ unreferencedFiles;
