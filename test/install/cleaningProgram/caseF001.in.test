@@ -24,7 +24,8 @@ export TEST_DESCRIPTION="Deleting old data"
 export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+echo $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Parse command line
 case $1 in
@@ -44,7 +45,7 @@ startTime=`date +%s%N`
 TESTTIME=$(date +%FT%R:%S --date "3 days ago")
 
 # Clean out database
-source $TEST_PATH/tearDown.sh
+$TEST_PATH/tearDown.sh
 
 # Generate Test Data
 ${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime=${TESTTIME}
@@ -57,7 +58,7 @@ then
 	else
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not inserted)"
 	fi
-    source $TEST_PATH/tearDown.sh
+    $TEST_PATH/tearDown.sh
     exit 1
 fi
 
@@ -78,12 +79,12 @@ then
 	else
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not deleted from WDB)"
 	fi
-    source $TEST_PATH/tearDown.sh
+    $TEST_PATH/tearDown.sh
     exit 1
 fi
 
 # Clean Up and Exit
-source $TEST_PATH/tearDown.sh
+$TEST_PATH/tearDown.sh
 endTime=`date +%s%N`
 totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 if test "$XML_OPT" = "-x"; then
