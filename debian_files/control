@@ -2,8 +2,9 @@ Source: wdb
 Section: devel
 Priority: extra
 Maintainer: Vegard Bones <vegard.bones@met.no>
-Build-Depends: debhelper (>= 5), autotools-dev, debconf,
-  dbconfig-common, libpqxx-dev (>= 2.6.8-1), 
+Build-Depends: debhelper (>= 5), debconf, dbconfig-common, devscripts, 
+  autotools-dev,  autoconf (>=2.61), automake (>= 1.10), libtool (>= 1.5)
+  xmlto, libcppunit-dev, libpqxx-dev (>= 2.6.8-1), 
   proj (>=4.6.0), libboost-filesystem-dev (>=1.33.1), libboost-program-options-dev
   (>=1.33.1), libboost-regex-dev (>=1.33.1), libboost-date-time-dev
   (>=1.33.1), liblog4cpp4-dev|liblog4cpp5-dev, libreadline5-dev, postgresql-8.3-postgis,

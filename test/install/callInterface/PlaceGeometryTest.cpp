@@ -38,7 +38,6 @@
 #include <cmath>
 #include <string>
 #include <sstream>
-#include <grib_api.h>
 #include <proj_api.h>
 #include <wdbException.h>
 #include <wdbMath.h>

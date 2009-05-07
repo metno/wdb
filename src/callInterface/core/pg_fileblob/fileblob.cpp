@@ -134,8 +134,8 @@ Datum read_file(PG_FUNCTION_ARGS)
 	HANDLE_EXCEPTIONS(readFile(id, data));
 
 	bytea * ret = (bytea *) palloc(VARHDRSZ + data.size());
-	//SET_VARSIZE(ret, VARHDRSZ + data.size());
-	VARATT_SIZEP(ret) = VARHDRSZ + data.size();
+	SET_VARSIZE(ret, VARHDRSZ + data.size());
+	//VARATT_SIZEP(ret) = VARHDRSZ + data.size();
 	std::copy(data.begin(), data.end(), VARDATA(ret));
 
 	data.clear();
