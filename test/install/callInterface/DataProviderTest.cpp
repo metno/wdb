@@ -437,7 +437,7 @@ std::string DataProviderTest::statementGrid_( const std::string & provider ) con
 		st << provider;
     st << ", NULL, '2004-12-24 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
-    st << "NULL, NULL, NULL::wci.returngrid )";
+    st << "NULL, NULL, NULL::wci.returngid )";
 
     return st.str();
 }

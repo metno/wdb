@@ -386,7 +386,7 @@ string LevelTest::statementOid_( const std::string & levelSpec ) const
 	st << "SELECT * FROM wci.read( ARRAY['test group'], NULL, '2004-12-28 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
 	st << "'" << levelSpec << "'";
-	st << ", NULL, NULL::wci.returngrid )";
+	st << ", NULL, NULL::wci.returngid )";
 
 	return st.str();
 }
@@ -397,7 +397,7 @@ string LevelTest::statementFloat_( const std::string & levelSpec ) const
 	st << "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-28 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
 	st << "'" << levelSpec << "'";
-	st << ", NULL, NULL::wci.returngrid )";
+	st << ", NULL, NULL::wci.returngid )";
 
 	return st.str();
 }

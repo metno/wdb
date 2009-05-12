@@ -37,10 +37,12 @@ using namespace pqxx;
 
 TransactionCorrectnessTest::TransactionCorrectnessTest()
 {
+	// NOOP
 }
 
 TransactionCorrectnessTest::~TransactionCorrectnessTest()
 {
+	// NOOP
 }
 
 void TransactionCorrectnessTest::setUp()
@@ -74,15 +76,13 @@ void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 		"ARRAY['air pressure'],"
 		"'0 TO 100 height above ground distance',"
 		"NULL,"
-		"NULL::wci.returngrid)";
+		"NULL::wci.returngid)";
 	result r = t->exec(read);
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
-	int valueId = r[0]["valueid"].as<int>();
-	string value = r[0]["value"].as<string>();
-	CPPUNIT_ASSERT_EQUAL(string("aaaa"), value);
+	long int value = r[0]["value"].as<int>();
 
 	ostringstream remove;
-	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << valueId;
+	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << value;
 	t->exec(remove.str());
 
 	r = t->exec(read);
@@ -92,30 +92,35 @@ void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 void TransactionCorrectnessTest::testAbortedDelete()
 {
 	const string read = "SELECT valueid, value FROM wci.read("
-			"ARRAY['test wci 0'],"
-			"'test grid, rotated',"
-			"'1975-04-21 06:00:00+00',"
-			"'1975-04-21 06:00:00+00',"
+			"ARRAY['test wci 0'], "
+			"'test grid, rotated', "
+			"'1975-04-21 06:00:00+00', "
+			"'1975-04-21 06:00:00+00', "
 			"ARRAY['air pressure'], "
 			"'0 height above ground distance', "
 			"NULL, "
-			"NULL::wci.returngrid)";
+			"NULL::wci.returngid)";
 	result r = t->exec(read);
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
-	int valueId = r[0]["valueid"].as<int>();
-	string value = r[0]["value"].as<string>();
-	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), value);
+	long int value = r[0]["value"].as<int>();
+	stringstream fetchS;
+	fetchS << "SELECT * FROM wci.fetch( " << value << ", NULL::wci.grid )";
+	const string fetch = fetchS.str();
+	result f = t->exec(fetch);
+	string data = f[0]["grid"].as<string>();
+	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), data);
 
 	ostringstream remove;
-	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << valueId;
-	std::cout << remove.str() << endl;
+	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << value;
+	//std::cout << remove.str() << endl;
 	t->exec(remove.str());
 
 	startNewTransaction(); // rollback the old one
 
 	r = t->exec(read);
+	f = t->exec(fetch);
+	data = f[0]["grid"].as<string>();
+
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
-	valueId = r[0]["valueid"].as<int>();
-	value = r[0]["value"].as<string>();
-	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), value);
+	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), data);
 }

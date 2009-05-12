@@ -427,7 +427,7 @@ string DataVersionTest::statementOid_( const string & dataVersion, int paramid )
        << "'2004-12-29 06:00:00', NULL, "
        << "ARRAY['" << specFromParamNumber_.find( paramid )->second << "'], "
        << "NULL, "
-       << dataVersion << ", NULL::wci.returngrid )";
+       << dataVersion << ", NULL::wci.returngid )";
 
     return st.str();
 }

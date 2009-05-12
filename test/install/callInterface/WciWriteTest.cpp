@@ -58,8 +58,6 @@ void wciWriteTest::tearDown()
 
 void wciWriteTest::testCanInsert1()
 {
-	// We use different values for everything in order to check if it works as well
-
 	const string select = "SELECT * FROM wci.read("
 		"ARRAY['wcitestwriter'],"
 		"'hirlam 10 grid'::text,"
@@ -68,7 +66,7 @@ void wciWriteTest::testCanInsert1()
 		"ARRAY['air pressure'],"
 		"'0 TO 100 height above ground distance',"
 		"NULL,"
-		"NULL::wci.returngrid)";
+		"NULL::wci.returngid)";
 
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
@@ -90,17 +88,47 @@ void wciWriteTest::testCanInsert1()
 
 void wciWriteTest::testCanInsert2()
 {
-	// We use different values for everything in order to check if it works as well
+	const string select = "SELECT * FROM wci.read("
+		"ARRAY['test wci 0'],"
+		"'hirlam 10 grid'::text,"
+		"'2006-04-21 07:00:00+00',"
+		"'2006-04-01 06:00:00+00',"
+		"ARRAY['air temperature'],"
+		"'0 TO 100 height above ground distance',"
+		"NULL,"
+		"NULL::wci.returngid)";
 
+	result r = t->exec(select);
+	size_t rowsBefore = r.size();
+
+	const string write = "SELECT wci.write("
+		"E'aaaa'::bytea, "
+		"'test wci 0'::text,"
+		"'hirlam 10 grid',"
+		"'2006-04-21 07:00:00+00',"
+		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
+		"'air temperature',"
+		"'height above ground distance',0,100,"
+		"0,0)";
+	t->exec(write);
+
+	r = t->exec(select);
+	size_t rowsAfter = r.size();
+
+	CPPUNIT_ASSERT_EQUAL(rowsBefore + 1, rowsAfter);
+}
+
+void wciWriteTest::testCanInsert3()
+{
 	const string select = "SELECT * FROM wci.read("
 						  "ARRAY['test wci 3'],"
 						  "'hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['air temperature'], "
+						  "ARRAY['virtual air temperature'], "
 						  "'0 TO 100 height above ground distance', "
 						  "NULL,"
-						  "NULL::wci.returngrid)";
+						  "NULL::wci.returngid)";
 
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
@@ -111,8 +139,42 @@ void wciWriteTest::testCanInsert2()
 						 "1000, "
 						 "'2006-04-21 07:00:00+00', "
 						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
-		 				 "11, "
+		 				 "12, "
 						 "3, 0, 100, 0, 0, 0 )";
+	t->exec(write);
+
+	r = t->exec(select);
+	size_t rowsAfter = r.size();
+
+	CPPUNIT_ASSERT_EQUAL(rowsBefore + 1, rowsAfter);
+}
+
+void wciWriteTest::testCanInsert4()
+{
+	const string select = "SELECT * FROM wci.read("
+						  "ARRAY['test wci 1'],"
+						  "'hirlam 10 grid'::text,"
+						  "'2006-04-21 07:00:00+00',"
+						  "'2006-04-01 06:00:00+00',"
+						  "ARRAY['potential air temperature'], "
+						  "'0 TO 100 height above ground distance', "
+						  "NULL,"
+						  "NULL::wci.returngid)";
+
+	result r = t->exec(select);
+	size_t rowsBefore = r.size();
+
+	const string write = "SELECT wci.write( ROW("
+						 "E'aaaa'::bytea, "
+						 "'test wci 1',"
+						 "'hirlam 10 grid',"
+						 "'',"
+						 "'2006-04-21 07:00:00+00',"
+						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
+						 "'potential air temperature', 'K',"
+						 "'height above ground distance','m', 0,100,"
+						 "0,0,"
+						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
 	t->exec(write);
 
 	r = t->exec(select);
@@ -145,7 +207,7 @@ void wciWriteTest::testMultipleInserts2()
 						  "ARRAY['air pressure change'], "
 						  "'0 TO 100 height above ground distance', "
 						  "NULL, "
-						  "NULL::wci.returngrid)";
+						  "NULL::wci.returngid)";
 
 	result r = t->exec(select);
 	const result::size_type before = r.size();
@@ -211,40 +273,91 @@ void wciWriteTest::testAutoIncrementVersion()
 }
 
 
-void wciWriteTest::testNullDataProviderThrows()
+void wciWriteTest::testNullDataProviderThrows1()
 {
-	t->exec("SELECT wci.write( NULL, E'aaaa'::bytea, 'today', 0, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
+	const string write = "SELECT wci.write("
+						"E'aaaa'::bytea, "
+						"NULL,"
+						"'hirlam 10 grid',"
+						"'2006-04-21 07:00:00+00',"
+						"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
+						"'dew point temperature',"
+						"'height above ground distance',0,100,"
+						"0,0)";
+	t->exec(write);
 }
+
+void wciWriteTest::testNullDataProviderThrows2()
+{
+	const string write = "SELECT wci.write("
+						 "E'aaaa'::bytea, "
+						 "NULL, "
+						 "1000, "
+						 "'2006-04-21 07:00:00+00', "
+						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
+						 "17, "
+						 "3, 0, 100, 0, 0, 0 )";
+	t->exec(write);
+}
+
 
 void wciWriteTest::testNullDataVersionThrows()
 {
-	t->exec("SELECT wci.write( 'wcitestwriter', E'aaaa'::bytea, 'today', NULL, 500, 'watt', 'max air temperature', 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
+	const string write = "SELECT wci.write("
+						 "E'aaaa'::bytea, "
+						 "14, "
+						 "1000, "
+						 "'2006-04-21 07:00:00+00', "
+						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
+						 "17, "
+						 "3, 0, 100, 0, NULL, 0 )";
+	t->exec(write);
 }
 
 
 void wciWriteTest::testNullParameterThrows()
 {
-	t->exec("SELECT wci.write( 'wcitestwriter', E'aaaa'::bytea, 'today', 500, NULL, 0, 0, 'metre', 'height above mean sea level distance', 'today', 'today')");
+	const string write = "SELECT wci.write("
+						 "E'aaaa'::bytea, "
+						 "14, "
+						 "1000, "
+						 "'2006-04-21 07:00:00+00', "
+						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
+						 "NULL, "
+						 "3, 0, 100, 0, NULL, 0 )";
+	t->exec(write);
 }
 
 void wciWriteTest::testIncompatibleUnitAndParamterThrows()
 {
-	const std::string statement = "SELECT wci.write(E'aaaa'::bytea,'today',500,"
-		"'metre', 'air pressure',"
-		"0,0,'metre','height above mean sea level distance',"
-		"'today','today')";
-
-	t->exec(statement);
+	const string write = "SELECT wci.write( ROW("
+						 "E'aaaa'::bytea, "
+						 "'test wci 1',"
+						 "'hirlam 10 grid',"
+						 "'',"
+						 "'2006-04-21 07:00:00+00',"
+						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
+						 "'air pressure', 'm',"
+						 "'height above ground distance','m', 0,100,"
+						 "0,0,"
+						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
+	t->exec(write);
 }
 
 void wciWriteTest::testIncompatibleLevelUnitAndParameterThrows()
 {
-	const std::string statement = "SELECT wci.write(E'aaaa'::bytea,'today',500,"
-		"'hectopascal per second', 'air pressure change',"
-		"0,0,'ohm','height above mean sea level distance',"
-		"'today','today')";
-
-	t->exec(statement);
+	const string write = "SELECT wci.write( ROW("
+						 "E'aaaa'::bytea,"
+						 "'test wci 1',"
+						 "'hirlam 10 grid',"
+						 "'',"
+						 "'2006-04-21 07:00:00+00',"
+						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
+						 "'air pressure change', 'hP/s',"
+						 "'height above ground distance','K', 0, 100,"
+						 "0,0,"
+						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
+	t->exec(write);
 }
 
 void wciWriteTest::testSetsCorrectDataprovider()
@@ -297,12 +410,12 @@ void wciWriteTest::testAutoRegistrationOfNewParameters()
 	const std::string newParameter = "instant power of air (potential)";
 
 	const std::string query = statementWithParameter_(newParameter);
-//	cout << query << endl;
+	//	cout << query << endl;
 
 	t->exec(query);
 
 	const std::string controlQuery = controlStatementWithParameter_(newParameter);
-//	cout << controlQuery << endl;
+	//	cout << controlQuery << endl;
 	pqxx::result r = t->exec(controlQuery);
 	CPPUNIT_ASSERT_EQUAL(pqxx::result::size_type(1), r.size());
 	*/
@@ -312,7 +425,6 @@ void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongStatisticsTypeThr
 {
 	const std::string newParameter = "FOO air temperature";
 	const std::string query = statementWithParameter_(newParameter);
-//	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
 }
 
@@ -320,7 +432,6 @@ void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongPhysicalPhenomeno
 {
 	const std::string newParameter = "air FOO";
 	const std::string query = statementWithParameter_(newParameter);
-//	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
 }
 
@@ -328,7 +439,6 @@ void wciWriteTest::testAutoRegistrationOfNewParametersWithWrongParameterUsageThr
 {
 	const std::string newParameter = "FOO temperature";
 	const std::string query = statementWithParameter_(newParameter);
-//	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
 }
 
@@ -336,7 +446,6 @@ void wciWriteTest::testInconsistencyBetweenPhysicalPhenomenaAndUnitThrows()
 {
 	const std::string newParameter = "air velocity";
 	const std::string query = statementWithParameter_(newParameter);
-//	cout << '\n' << __func__ << ":\t"  << query << endl;
 	t->exec(query);
 }
 
@@ -349,12 +458,12 @@ void wciWriteTest::testSeveralNewParameters()
 	{
 		const std::string newParameter = "instant power of air (potential)";
 		const std::string query = statementWithParameter_(newParameter);
-//		std::cout << query << std::endl;
+	//		std::cout << query << std::endl;
 		t->exec(query);
 	}{
 		const std::string newParameter = "max power of air (potential)";
 		const std::string query = statementWithParameter_(newParameter);
-//		std::cout << query << std::endl;
+	//		std::cout << query << std::endl;
 		try
 		{
 			t->exec(query);
@@ -364,7 +473,7 @@ void wciWriteTest::testSeveralNewParameters()
 			CPPUNIT_FAIL("Cannot insert second new parameter.");
 		}
 	}
-//	std::cout << controlStatementWithParameter_("* power of air (potential)", "parameter") << std::endl;
+	//	std::cout << controlStatementWithParameter_("* power of air (potential)", "parameter") << std::endl;
 	pqxx::result r = t->exec(controlStatementWithParameter_("* power of air (potential)", "parameter"));
 	CPPUNIT_ASSERT_EQUAL(pqxx::result::size_type(2), r.size());
 	*/
@@ -415,7 +524,7 @@ string wciWriteTest::controlStatement_(const std::string & resultSet,
 	   << "'{\"air temperature\"}', "
 	   << "'0 height above mean sea level distance', "
 	   << "NULL, "
-	   << "NULL::wci.returngrid )";
+	   << "NULL::wci.returngid )";
 	return st.str();
 }
 
@@ -431,7 +540,7 @@ std::string wciWriteTest::controlStatementWithParameter_(const std::string param
        << "ARRAY['" << parameter << "'], "
 	   << "'0 height above mean sea level distance', "
 	   << "NULL, "
-	   << "NULL::wci.returngrid )";
+	   << "NULL::wci.returngid )";
 
 	return st.str();
 }

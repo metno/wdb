@@ -41,9 +41,8 @@ CREATE TYPE wci.returnFloat AS (
 	valuetype varchar( 80 )
 );
 
-
-CREATE TYPE wci.returnGrid AS (
-	value bytea,
+CREATE TYPE wci.returnGid AS (
+	value bigint,
 	dataProviderName varchar( 255 ),
 	placeName varchar( 255 ),
 	placeGeometry GEOMETRY,
@@ -64,7 +63,6 @@ CREATE TYPE wci.returnGrid AS (
 );
 
 
-
 -- Output Large Objects
 CREATE OR REPLACE FUNCTION 
 wci.read( dataprovider 		text[],
@@ -74,14 +72,14 @@ wci.read( dataprovider 		text[],
 		  parameter 		text[],
 		  level 			text,
 		  dataversion 		integer[],
-		  returntype 		wci.returnGrid
+		  returntype 		wci.returnGid
 )	
-RETURNS SETOF wci.returngrid AS
+RETURNS SETOF wci.returngid AS
 $BODY$
 DECLARE
 	readQ	 		text;
 	entry 			__WCI_SCHEMA__.gridValue;
-	returnObject 	wci.returngrid;
+	returnObject 	wci.returngid;
 BEGIN
 	readQ := 'SELECT * ' ||
 		-- Create Query to Run
@@ -100,7 +98,7 @@ BEGIN
 		EXECUTE readQ
 	LOOP
 			returnObject := (
-					read_file(entry.value),
+					entry.value,
 					entry.dataprovidername,
 					entry.placename,
 					entry.placegeometry,

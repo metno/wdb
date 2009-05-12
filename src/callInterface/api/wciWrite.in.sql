@@ -129,24 +129,37 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
+
 -- Write GRID Value
+-- All parameter specified
 CREATE OR REPLACE FUNCTION 
 wci.write(
-	what wci.returnGrid
+	data bytea,
+	dataproviderName_ text,
+	placeName_ text,
+	referencetime_ timestamp with time zone,
+	validfrom_ timestamp with time zone,
+	validto_ timestamp with time zone,
+	valueParameterName_ text,
+	levelParameterName_ text,
+	levelfrom_ real,
+	levelto_ real,
+	dataVersion_ integer,
+	setConfidenceCode_ integer
 )
 RETURNS void AS
 $BODY$
 DECLARE
-	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( what.dataProviderName );
-	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( what.placeName );
-	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( what.valueParameterName );
+	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( dataProviderName_ );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_ );
+	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueParameterName_ );
 	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
-	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( what.levelParameterName );
+	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelParameterName_ );
 	levelParameterId_      	  integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
-	currentVersion_ 		  integer := what.dataVersion;
+	currentVersion_ 		  integer := dataVersion_;
+	confidenceCode_			  integer := setConfidenceCode_;
 BEGIN
 	--PERFORM verifyBlobSize(data, placeid_);
-
 	-- Determine dataversion
 	IF currentVersion_ IS NULL THEN
 		SELECT 
@@ -155,14 +168,14 @@ BEGIN
 			__WCI_SCHEMA__.gridvalue v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
-			v.referencetime = what.referencetime AND
+			v.referencetime = referencetime_ AND
 			v.placeid = placeid_ AND
 			v.valueparameterid = valueParameterId_ AND
 			v.levelparameterid = levelParameterId_ AND
-			v.levelFrom = what.levelFrom AND
-			v.levelTo = what.levelTo AND
-			v.validtimeFrom = what.validFrom AND
-			v.validtimeTo = what.validTo;
+			v.levelFrom = levelFrom_ AND
+			v.levelTo = levelTo_ AND
+			v.validtimeFrom = validFrom_ AND
+			v.validtimeTo = validTo_;
 		RAISE DEBUG 'WCI.WRITE.CurrentVersion: %', currentVersion_;  
 		IF currentVersion_ IS NULL THEN
 			currentVersion_ := 0;
@@ -170,7 +183,10 @@ BEGIN
 			currentVersion_ := currentVersion_ + 1;
 		END IF;
 	END IF;
-		
+	IF confidenceCode_ IS NULL THEN
+		confidenceCode_ := 0;
+	END IF;
+
 	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
 		value,
@@ -201,28 +217,26 @@ BEGIN
 	) 
 	VALUES
 	(
-		write_file(what.value),
+		write_file(data),
 		dataproviderid_,
 		NULL,
 		placeid_,
 		NULL,
 		NULL,
-		what.referencetime,
-		what.validfrom,
-		what.validto,
-		0, -- Exact
-		valueparameterid_,
-		NULL, 
+		referencetime_,
+		validfrom_,
+		validto_,
+		0,   -- Exact
+		valueparameterId_,
+		NULL, NULL,
+		levelparameterId_,
+		NULL, NULL, 
+		levelfrom_,
+		levelto_,
+		0, --Exact
+		currentVersion_,
 		NULL,
-		levelparameterid_,
-		NULL, 
-		NULL, 
-		what.levelfrom,
-		what.levelto,
-		0, -- Exact
-		currentversion_,
-		NULL,
-		0, -- Default
+		confidenceCode_,
 		NULL,
 		NULL,
 		NULL
@@ -314,6 +328,112 @@ BEGIN
 END 
 $BODY$
 LANGUAGE 'plpgsql';
+
+
+
+-- Write GRID Value
+CREATE OR REPLACE FUNCTION 
+wci.write(
+	what wci.returnGid
+)
+RETURNS void AS
+$BODY$
+DECLARE
+	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( what.dataProviderName );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( what.placeName );
+	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( what.valueParameterName );
+	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
+	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( what.levelParameterName );
+	levelParameterId_      	  integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
+	currentVersion_ 		  integer := what.dataVersion;
+BEGIN
+	--PERFORM verifyBlobSize(data, placeid_);
+
+	-- Determine dataversion
+	IF currentVersion_ IS NULL THEN
+		SELECT 
+			max(dataversion) INTO currentVersion_ 
+		FROM 
+			__WCI_SCHEMA__.gridvalue v
+		WHERE
+			v.dataproviderid = dataProviderId_ AND
+			v.referencetime = what.referencetime AND
+			v.placeid = placeid_ AND
+			v.valueparameterid = valueParameterId_ AND
+			v.levelparameterid = levelParameterId_ AND
+			v.levelFrom = what.levelFrom AND
+			v.levelTo = what.levelTo AND
+			v.validtimeFrom = what.validFrom AND
+			v.validtimeTo = what.validTo;
+		RAISE DEBUG 'WCI.WRITE.CurrentVersion: %', currentVersion_;  
+		IF currentVersion_ IS NULL THEN
+			currentVersion_ := 0;
+		ELSE
+			currentVersion_ := currentVersion_ + 1;
+		END IF;
+	END IF;
+		
+	INSERT INTO __WCI_SCHEMA__.gridvalue 
+	(
+		value,
+		dataproviderid,
+		dataprovidername,
+		placeid, 
+		placegeometry,
+		placeindeterminatecode,
+		referencetime, 
+		validtimefrom, 
+		validtimeto,
+		validtimeindeterminatecode,
+		valueparameterid,
+		valueparametername, 
+		valueunitname,
+		levelparameterid,
+		levelparametername,
+		levelunitname,
+		levelFrom, 
+		levelTo,
+		levelindeterminatecode,
+		dataversion,
+		maxdataversion,
+		confidencecode, 
+		valuestoretime,
+		valueid,
+		valuetype
+	) 
+	VALUES
+	(
+		what.value,
+		dataproviderid_,
+		NULL,
+		placeid_,
+		NULL,
+		NULL,
+		what.referencetime,
+		what.validfrom,
+		what.validto,
+		0, -- Exact
+		valueparameterid_,
+		NULL, 
+		NULL,
+		levelparameterid_,
+		NULL, 
+		NULL, 
+		what.levelfrom,
+		what.levelto,
+		0, -- Exact
+		currentversion_,
+		NULL,
+		0, -- Default
+		NULL,
+		NULL,
+		NULL
+	);
+END 
+$BODY$
+LANGUAGE 'plpgsql';
+
+
 
 
 

@@ -193,7 +193,7 @@ std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 		st << "'" << placeDef << "'";
 	st << ", '2004-12-25 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
-	st << "NULL, NULL, NULL::wci.returngrid )";
+	st << "NULL, NULL, NULL::wci.returngid )";
 
 	return st.str();
 }

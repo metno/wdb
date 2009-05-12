@@ -5,6 +5,7 @@
 
 WCIAPI_SOURCES = 		src/callInterface/api/wciWrite.in.sql \
 						src/callInterface/api/wciRead.in.sql \
+						src/callInterface/api/wciFetch.in.sql \
 						src/callInterface/api/wciInfo.in.sql \
 						src/callInterface/api/wciBrowse.in.sql \
 						src/callInterface/api/wciBegin.in.sql \

@@ -146,7 +146,7 @@ void ValueParameterTest::testP2_04B_MoreThan255Parameters()
 void
 ValueParameterTest::testP2_05A_NullParameter()
 {
-	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
+	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 
 	CPPUNIT_ASSERT( not r.empty() );
 }
@@ -154,7 +154,7 @@ ValueParameterTest::testP2_05A_NullParameter()
 void
 ValueParameterTest::testP2_05B_NullParameter()
 {
-	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngrid )" );
+	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 
 	CPPUNIT_ASSERT( not r.empty() );
 }
@@ -365,7 +365,7 @@ string ValueParameterTest::statementOid_( const std::string & paramSpec ) const
 {
 	ostringstream st;
 	st << "SELECT * FROM wci.read( ARRAY['test group'], NULL, '2004-12-27 06:00:00+00', NULL, ";
-	st << "ARRAY[" << paramSpec << "], NULL, NULL, NULL::wci.returngrid )";
+	st << "ARRAY[" << paramSpec << "], NULL, NULL, NULL::wci.returngid )";
 
 	return st.str();
 }

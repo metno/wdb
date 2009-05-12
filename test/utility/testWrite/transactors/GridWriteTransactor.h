@@ -167,22 +167,17 @@ public:
 		// Write to database
 		std::ostringstream writeQuery;
 		writeQuery << "SELECT wci.write( "
-				  << "ROW( "
 				  << "E'" << escapedData << "'::bytea, "
 				  << "'" << conf_.dataDefinitions().dataProvider << "', "
 				  << "'" << conf_.dataDefinitions().placeName << "', "
-				  << "NULL, "
 				  << "'" << conf_.dataDefinitions().referenceTime << "', "
 				  << "'" << conf_.dataDefinitions().validTimeFrom << "', "
 				  << "'" << conf_.dataDefinitions().validTimeTo << "', "
 				  << "'" << conf_.dataDefinitions().valueParameter << "', "
-				  << "NULL, "
 				  << "'" << conf_.dataDefinitions().levelParameter << "', "
-				  << "NULL, "
 				  << conf_.dataDefinitions().levelFrom << ","
 				  << conf_.dataDefinitions().levelTo << ","
-				  << "NULL, NULL, CURRENT_TIMESTAMP, NULL, 'float')::wci.returnGrid"
-				  << " )";
+				  << "NULL, NULL )";
 		log.infoStream() << "Writing: " << writeQuery.str();
 		T.exec( writeQuery.str() );
 
