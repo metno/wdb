@@ -545,7 +545,7 @@ FROM wci.fetch ( 7411403,          -- Grid ID (bigint)
 			
 		</sect1>
 		
-		<sect1 id="sec:reLEASE_wci">
+		<sect1 id="sec:release_wci">
 			<title>Release WCI</title>
 			
 			<para>Once the user has finished retrieving data using WCI, it is a good idea to
@@ -1209,13 +1209,128 @@ wci.info
 			
 		</sect1>
 		
+		<sect1 id="sec:wci.fetch">
+			<title>wci.fetch</title>
+			
+			<para>wci.fetch is the function used to retrieve binary data values from the database.
+				The function takes a binary object ID returned by a wci.read call and returns
+				a row containing the binary data (as bytea data) as well as additional relevant
+				information required for the manipulation of the binary data.</para>
+					
+			<sect2 id="sec:wci.fetch:prerequisites">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must be connected to the database</para>
+					</listitem>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+					<listitem>
+						<para>The user must have called wci.begin</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.fetch:syntax">
+				<title>Syntax</title>
+				
+				<programlisting>
+wci.fetch
+(
+          objectid       bigint,
+          returnType     wci.grid
+)
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.fetch:parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.fetch parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>objectid</entry>
+								<entry>The object ID of the binary object to be returned,
+									as given by a wci.read call</entry>
+							</row>
+							<row>
+								<entry>returnType</entry>
+								<entry>What type of data the user wants
+									returned</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.fetch:expected_result">
+				<title>Expected Result</title>
+				
+				<para>Currently, the function always returns a:</para>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.grid</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.fetch:examples">
+				<title>Examples</title>
+				
+				<para>The following query returns the grid referenced as 11702:</para>
+				
+			<programlisting>
+SELECT * 
+FROM wci.fetch ( 11702, 
+				 NULL::wci.grid -- Return type
+               )
+		</programlisting>
+			
+			<para>The result is a single row containing the binary data of the grid itself (as a bytea),
+				in addition to the number of points along the x and y axis of the grid, the distance 
+				between grid increments, the starting positions of the x and y points in the original
+				projection, and the PROJ.4 string defining the original projection of the grid.</para>
+			
+			</sect2>
+
+			<sect2 id="sec:wci.fetch:see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.read</para>
+					</listitem>
+					<listitem>
+						<para>wci.write</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>		
+		
 		<sect1 id="sec:wci.read">
 			<title>wci.read</title>
 			
 			<para>wci.read is the function that fetches MHO data from the database, and as
 				such is the core of the WDB Call Interface. The function takes the user's
 				search parameters as input and returns data as either individual point, or
-				as a reference (OID) to a complete data grid (where applicable).</para>
+				as a reference to a complete data grid (a Grid ID - shortened as GId).</para>
 			
 			<para>The function is overloaded, and exists in two almost identical versions,
 				depending on the return type required.</para>
@@ -1241,20 +1356,6 @@ wci.info
 				<title>Syntax</title>
 				
 				<programlisting>
-wci.read 
-(
-          dataProviders  ARRAY[text],
-          place          text,
-          referenceTime  text,
-          validtime      text,
-          parameters     ARRAY[text],
-          level          text,
-          dataVersions   ARRAY[integer],
-          returnType     wci.returnoid
-)
-			</programlisting>
-				
-				<programlisting>
 wci.read
 (
           dataProviders  ARRAY[text],
@@ -1265,6 +1366,20 @@ wci.read
           level          text,
           dataVersions   ARRAY[integer],
           returnType     wci.returnfloat
+)
+			</programlisting>
+				
+				<programlisting>
+wci.read 
+(
+          dataProviders  ARRAY[text],
+          place          text,
+          referenceTime  text,
+          validtime      text,
+          parameters     ARRAY[text],
+          level          text,
+          dataVersions   ARRAY[integer],
+          returnType     wci.returngid
 )
 			</programlisting>
 				
@@ -1346,7 +1461,7 @@ wci.read
 						<para>wci.returnfloat</para>
 					</listitem>
 					<listitem>
-						<para>wci.returnoid</para>
+						<para>wci.returngid</para>
 					</listitem>
 				</itemizedlist>
 			</sect2>
@@ -1385,13 +1500,16 @@ FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
 				
 				<itemizedlist>
 					<listitem>
-						<para>wci.write</para>
-					</listitem>
-					<listitem>
 						<para>wci.begin</para>
 					</listitem>
 					<listitem>
 						<para>wci.end</para>
+					</listitem>
+					<listitem>
+						<para>wci.fetch</para>
+					</listitem>
+					<listitem>
+						<para>wci.write</para>
 					</listitem>
 				</itemizedlist>
 			</sect2>
