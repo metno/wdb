@@ -34,7 +34,8 @@
 class WciFetchTest: public AbstractWciTestFixture
 {
 	CPPUNIT_TEST_SUITE( WciFetchTest );
-	CPPUNIT_TEST( testFetchValidData );
+	CPPUNIT_TEST( testFetchBinaryData );
+	CPPUNIT_TEST( testFetchFloatGrid );
 	CPPUNIT_TEST_SUITE_END();
 public:
 	WciFetchTest();
@@ -43,7 +44,8 @@ public:
 	virtual void setUp();
 	virtual void tearDown();
 
-	void testFetchValidData();
+	void testFetchBinaryData();
+	void testFetchFloatGrid();
 };
 
 #endif /* WCIFETCHTEST_H_ */

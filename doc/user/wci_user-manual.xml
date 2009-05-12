@@ -448,6 +448,13 @@ SELECT wci.begin('myuser'::name, 0::integer, 0::integer, 0::integer);
 				and data is searched for by setting the appropriate dimensions in that
 				call.</para>
 			
+		<sect2 id="sec:reading_wci_point">
+			<title>Reading Point Data from WCI</title>
+
+			<para>The wci.read function is overloaded to permit the user to read either point data or binary data (entire grids)
+				from the database. The last parameter in the wci.read function allows the user to specify the return type of 
+				the query. To return point data values, the user specifies wci.returnFloat.</para>
+			
 			<programlisting>
 SELECT * 
 FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
@@ -482,6 +489,7 @@ FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
 				NULL,  -- Level
 				NULL, -- Data version
 				NULL::wci.returnfloat -- Return type
+			  )
 		</programlisting>
 			
 			<para>The above call returns all precipitation parameters valid for the 10 days following the 
@@ -493,6 +501,48 @@ FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
 				as a straight comparison), it is possible to use the wci.read call in this way. Note also that names 
 				can be written in upper or lower case; the wci.read function call is not case-sensitive.</para>
 						
+			</sect2>
+
+			<sect2 id="sec:reading_wci_grid">
+			<title>Reading Grid Data from WCI</title>
+
+			<para>Reading grid data from the database is a two-step process. First the user retrieves the Grid ID with 
+				wci.read function (with wci.returnGId), and then the grid itself can be retrieved using the wci.fetch function call.</para>
+			
+			<programlisting>
+SELECT * 
+FROM wci.read ( ARRAY['hirlam norway'],    -- Data provider name
+				'hirlam 10km grid',          -- Location description
+				'1980-01-01 12:00:00Z',    -- Reference time 
+				NULL,                      -- Valid Time (returns all forecasts) 
+				ARRAY['air temperature'],  -- Value Parameter
+				'2 height above ground distance',  -- Level
+				ARRAY[-1],                 -- Data version
+				NULL::wci.returngid        -- Return type
+			  )
+		</programlisting>
+			
+			<para>The above query returns the list of grids available for Hirlam data, defined
+				on the hirlam 10km grid (i.e., if there were data on 20km or 4km grids, these would
+				not be returned), whose referencetime is 12:00 on January 1, 1980. The query will return
+				all grid references to air temperature forecasts for the above configuration.</para>
+			
+			<para>Grid IDs are essentially 8-bit integers, that are then passed to the wci.fetch
+				command, as given below:</para>
+
+			<programlisting>
+SELECT * 
+FROM wci.fetch ( 7411403,          -- Grid ID (bigint)
+				 NULL::wci.grid    -- Return Type
+				)
+		</programlisting>
+			
+			<para>The above call returns a single row, containing a binary string containing the actual grid data.
+				It also includes additional information detailing the configuration of the grid. For details about
+			the wci.fetch call, see the function reference.</para>
+						
+			</sect2>
+			
 		</sect1>
 		
 		<sect1 id="sec:reLEASE_wci">

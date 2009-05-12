@@ -57,7 +57,7 @@ void WciFetchTest::tearDown()
 	resetUser();
 }
 
-void WciFetchTest::testFetchValidData()
+void WciFetchTest::testFetchBinaryData()
 {
 	const string bin_data("x \0 x01 \x02 \xff y", 11);
 	CPPUNIT_ASSERT(bin_data.size() == 11);
@@ -104,3 +104,58 @@ void WciFetchTest::testFetchValidData()
 
 }
 
+void WciFetchTest::testFetchFloatGrid()
+{
+	std::vector<float> data;
+	data.push_back(75.5);
+	data.push_back(1.5);
+	data.push_back(372.0);
+	data.push_back(99.9999);
+	const unsigned char * rawData = reinterpret_cast<const unsigned char *>(& data[0]);
+	const string bin_data = t->esc_raw(rawData, data.size() * sizeof(float));
+	stringstream wrQ;
+	wrQ << "SELECT wci.write( E'" << bin_data
+		<< "'::bytea, 'test grid, rotated', "
+		<< "'2006-04-23 08:00:00+00', "
+		<< "'2006-04-01 06:00:00+00', "
+		<< "'2006-04-01 06:00:00+00', "
+		<< "'air pressure', "
+		<< "'height above ground distance', "
+		<< "0, "
+		<< "100)";
+	const string write = wrQ.str();
+	t->exec(write);
+
+	// Read
+	const string read = "SELECT value FROM wci.read("
+		"ARRAY['wcitestwriter'],"
+		"'test grid, rotated'::text,"
+		"'2006-04-23 08:00:00+00',"
+		"'2006-04-01 06:00:00+00',"
+		"ARRAY['air pressure'],"
+		"'0 TO 100 height above ground distance',"
+		"NULL,"
+		"NULL::wci.returngid)";
+	result r = t->exec(read);
+
+	// Only one return
+	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
+
+	// Fetch Data
+	long int value = r[0]["value"].as<int>();
+	stringstream fetchS;
+	fetchS << "SELECT * FROM wci.fetch( " << value << ", NULL::wci.grid )";
+	const string fetch = fetchS.str();
+	result f = t->exec(fetch);
+
+	// Verify that no mangling has occured
+	const pqxx::binarystring res_str = binarystring(f[0]["grid"]);
+	int nX = f[0]["numberX"].as<int>();
+	int nY = f[0]["numberY"].as<int>();
+	const float * res_data = reinterpret_cast<const float *>( res_str.c_ptr( ) );
+	for (int i = 0; i < nX; i++) {
+		for (int j = 0; j < nY; j++ ) {
+			CPPUNIT_ASSERT_EQUAL(data[ i + (j * nX) ], res_data[ i + (j * nX) ] );
+		}
+	}
+}
