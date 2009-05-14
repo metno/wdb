@@ -53,7 +53,7 @@ ERROR_TESTS=0
 # Timing
 startTime=`date +%s%N`
 
-list=`ls __WDB_BUILDDIR__/test/install/cleaningProgram/*.test`;
+list=`ls -1 __WDB_BUILDDIR__/test/install/cleaningProgram/*.test | grep -v [.]in[.]test`;
 
 # Count Tests
 for tst in $list; do
