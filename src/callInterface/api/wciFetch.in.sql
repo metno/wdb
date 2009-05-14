@@ -53,7 +53,7 @@ BEGIN
 
 	-- Pack result and return
 	returnObject_ := (
-					read_file( gridid ),
+					__WDB_SCHEMA__.read_file( gridid ),
 					placeinfo_.inumber,
 					placeinfo_.jnumber,
 					placeinfo_.iincrement,

@@ -43,8 +43,8 @@ BEGIN
 	END LOOP;
 
 	RAISE DEBUG 'Removed old table entries Starting delete of unused field files.';
-	PERFORM vacuum_file_blob();
-	PERFORM remove_unreferenced_files();
+	PERFORM __WDB_SCHEMA__.vacuum_file_blob();
+	PERFORM __WDB_SCHEMA__.remove_unreferenced_files();
 	
 	RAISE DEBUG 'Done';
 END;

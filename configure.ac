@@ -21,9 +21,9 @@ AC_CONFIG_HEADER([config/config.h])
 
 # Source Directories
 # - All directories that need to be linked into AM_FLAGS
-src_subdirs="			src/callInterface/api \
+src_subdirs="			src/blob \
+						src/callInterface/api \
 			     		src/callInterface/core \
-			     		src/callInterface/core/pg_fileblob \
 				     	src/callInterface/core/test \
 				     	src/callInterface/types \
 				     	src/callInterface/types/test \
@@ -50,7 +50,7 @@ build_subdirs="			doc \
 						etc/metadata \
 						etc/wdb \
 						install \
-						monitor \
+						src/blob \
 						src/callInterface/api \
 						src/callInterface/core \
 						src/callInterface/core/test \
@@ -208,6 +208,7 @@ AC_CONFIG_FILES([Makefile
 				 etc/metadata/Makefile
 				 etc/wdb/Makefile
 				 install/Makefile
+				 src/blob/Makefile
 				 src/common/configuration/Makefile
 				 src/common/exception/Makefile
 				 src/common/logHandler/Makefile
@@ -216,7 +217,6 @@ AC_CONFIG_FILES([Makefile
 				 src/common/projection/test/Makefile
 				 src/callInterface/api/Makefile
 				 src/callInterface/core/Makefile
-				 src/callInterface/core/pg_fileblob/Makefile
 				 src/callInterface/core/test/Makefile
 				 src/callInterface/types/Makefile
 				 src/callInterface/types/test/Makefile

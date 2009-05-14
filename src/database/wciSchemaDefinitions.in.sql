@@ -26,3 +26,12 @@ REVOKE ALL ON SCHEMA wci FROM PUBLIC;
 GRANT ALL ON SCHEMA wci TO wdb_admin;
 GRANT USAGE ON SCHEMA wci TO wdb_write;
 GRANT USAGE ON SCHEMA wci TO wdb_read;
+
+
+-- wci_internal is a schema that contains the internal functions,
+-- views, and tables utilized by the WCI. 
+CREATE SCHEMA __WCI_SCHEMA__;
+REVOKE ALL ON SCHEMA __WCI_SCHEMA__ FROM PUBLIC;
+GRANT ALL ON SCHEMA __WCI_SCHEMA__ TO wdb_admin;
+GRANT USAGE ON SCHEMA __WCI_SCHEMA__ TO wdb_write;
+GRANT USAGE ON SCHEMA __WCI_SCHEMA__ TO wdb_read;

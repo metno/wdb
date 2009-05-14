@@ -363,7 +363,7 @@ BEGIN
 			EXIT WHEN NOT FOUND;
 			idx := ((iNumber * p.j) + p.i);
 			RAISE DEBUG 'Point %,% (idx %)', p.i, p.j, idx;
-			ret := ( p.location, read_float_from_file(whatFile, idx), p.i, p.j );
+			ret := ( p.location, __WDB_SCHEMA__.read_float_from_file(whatFile, idx), p.i, p.j );
 			RETURN NEXT ret;
 		END LOOP;
 		RETURN;

@@ -33,7 +33,7 @@
 #include <fmgr.h>
 #include <libpq/libpq-fs.h>
 #include <executor/spi.h>
-#include "pg_fileblob/fileblobimpl_psql.h"
+#include <fileblobimpl_psql.h>
 #include <stdio.h>
 
 #define READ_DATA float

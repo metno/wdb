@@ -34,6 +34,7 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 						| sed s:__POSTGIS_DIR__:@postgis_SQL@:g \
 						| sed s:__WDB_DBNAME__:$(DATABASE_NAME):g \
 						| sed s:__WDB_SCHEMA__:wdb_$(DATABASE_SCHEMA):g \
+						| sed s:__WDB_LIB__:wdb-$(VERSION).so:g \
 						| sed s:__WCI_SCHEMA__:wci_$(DATABASE_SCHEMA):g \
 						| sed s:__WCI_LIB__:wci-$(VERSION).so:g \
 			 			> $@
@@ -137,7 +138,6 @@ include test/unit/wdb.mk
 
 include src/callInterface/wdb.mk
 include src/callInterface/core/wdb.mk
-include src/callInterface/core/pg_fileblob/wdb.mk
 include src/callInterface/types/wdb.mk
 include src/callInterface/api/wdb.mk
 include src/callInterface/util/wdb.mk
@@ -150,6 +150,7 @@ include src/common/math/wdb.mk
 include src/common/projection/wdb.mk
 
 include src/database/wdb.mk
+include src/blob/wdb.mk
 
 include src/admin/wdb.mk
 include src/admin/operations/wdb.mk

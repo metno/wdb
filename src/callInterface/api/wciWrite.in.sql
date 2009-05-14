@@ -98,7 +98,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		write_file(data),
+		__WCI_SCHEMA__.write_file(data),
 		mydataproviderid_,
 		NULL,
 		placeid_,
@@ -217,7 +217,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		write_file(data),
+		__WCI_SCHEMA__.write_file(data),
 		dataproviderid_,
 		NULL,
 		placeid_,
@@ -301,7 +301,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		write_file(data),
+		__WCI_SCHEMA__.write_file(data),
 		dataproviderid_,
 		NULL,
 		placeid_,

@@ -25,7 +25,9 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  MA  02110-1301, USA
  */
-
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 #include <postgres.h>
 #include <fmgr.h>
 #include <executor/spi.h>
@@ -64,8 +66,10 @@ char * database_name()
 
 long long * all_referenced_files(int * countOut)
 {
+	char query[128];
+	snprintf(query, 128, "SELECT file_id FROM "WDB_SCHEMA".file_blob");
 	SPI_connect();
-	int result = SPI_execute("SELECT file_id FROM file_blob", true, 0);
+	int result = SPI_execute(query, true, 0);
 	if ( SPI_OK_SELECT != result )
 		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("Error when reading from file_blob")));
 

@@ -330,9 +330,9 @@ psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
-\i __WDB_DATADIR__/sql/wci/core/pg_fileblob/fileblob.sql
 \i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
+\i $WDB_DATAMODEL_PATH/fileblob.sql
 \i $WDB_DATAMODEL_PATH/wdbBaseTables.sql
 \i $WDB_DATAMODEL_PATH/wdbDataProviderTables.sql
 \i $WDB_DATAMODEL_PATH/wdbPlaceDefinitionTables.sql
