@@ -136,7 +136,7 @@ export $WDB_NAME
 
 # Delete the field data, so it won't remain in the postgresql database folder
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "DELETE FROM __WDB_SCHEMA__.gridvalue"
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "SELECT vacuum_file_blob()"
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "SELECT __WDB_SCHEMA__.vacuum_file_blob()"
 
 # Drop the wdb database
 echo -n "dropping database... "
