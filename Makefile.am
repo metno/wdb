@@ -460,9 +460,11 @@ EXTRA_DIST += 				$(DX_CONFIG)
 PKG_DIR = $(PACKAGE)-$(VERSION)
 DEBIAN_DIR = $(PKG_DIR)/debian
 DEBIAN_PACKAGE = $(PACKAGE)_$(VERSION)
-DEBIAN_VERSION = 1
 ARCH = `dpkg-architecture -qDEB_HOST_ARCH_CPU`
-DEBIAN_PACKAGE_NAME = $(DEBIAN_PACKAGE)-$(DEBIAN_VERSION)_$(ARCH).deb
+DEBIAN_PACKAGE_NAME = `head -n1 $(top_srcdir)/debian_files/changelog | sed "s/ (/_/" | sed "s/).*//"`_$(ARCH).deb
+
+debian-name:
+	@echo $(DEBIAN_PACKAGE_NAME)
 
 debian:	dist clean-debian 
 	tar xvzf $(PKG_DIR).tar.gz
