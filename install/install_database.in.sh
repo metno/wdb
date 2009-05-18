@@ -347,6 +347,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbXmlDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
 EOF
 if [ 0 != $? ]; then

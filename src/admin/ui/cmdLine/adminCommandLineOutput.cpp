@@ -169,6 +169,22 @@ void AdminCommandLineOutput::listAvailableFilesForLoading(const vector<path> & b
 		out_ << "(" << available.size() << " files)" << endl;
 }
 
+void AdminCommandLineOutput::vacuum( )
+{
+	if (printAdditionalInfo())
+		out_ << "Cleaning WDB system..." << endl;
+	int rows = performClean();
+	if (printAdditionalInfo()) {
+		out_ << rows << " data objects were cleaned from the database." << endl;
+		out_ << "Starting database vacuum..." << endl;
+	}
+	if ( performVacuum() ) {
+		if (printAdditionalInfo())
+			out_ << "Vacuum completed." << endl;
+	}
+}
+
+
 
 namespace
 {

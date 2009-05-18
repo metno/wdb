@@ -87,7 +87,7 @@ void randomTimesP(std::string & refTime, std::string & valTime)
 {
 	int time =  (4 * rand() / RAND_MAX) * 6;
 	std::stringstream str1;
-	str1 << "'exact 1980-01-01 " << time << ":00:00+00'";
+	str1 << "exact 1980-01-01 " << time << ":00:00+00";
 	refTime = str1.str();
 	int vtime = time + (12 * rand() / RAND_MAX);
 	int vdate = 1;
@@ -96,7 +96,7 @@ void randomTimesP(std::string & refTime, std::string & valTime)
 		vdate ++;
 	}
 	std::stringstream str2;
-	str2 << "'exact 1980-01-" << vdate << " " << vtime << ":00:00+00'";
+	str2 << "exact 1980-01-" << vdate << " " << vtime << ":00:00+00";
 	valTime = str2.str();
 };
 
@@ -295,9 +295,9 @@ public:
 
 
 /**
- * Random Point Test over a time span
- * Test of random point retrieval with different locations and time periods, but
- * ignoring other factors to retrieve multiple points
+ * Random Point Test over a set of parameters
+ * Test of random point retrieval with different locations, time point but ignoring vlid
+ * time and parameters to retrieve multiple points
  */
 class RandomPointTest3 : public pqxx::transactor<>
 {

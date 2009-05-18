@@ -37,6 +37,7 @@
 #include "transactors/listIndexes.h"
 #include "transactors/listIo.h"
 #include "transactors/getData.h"
+#include "transactors/performClean.h"
 #include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
 #include <boost/algorithm/string.hpp>
@@ -161,6 +162,37 @@ void AdminOperations::getKeys(std::vector<WdbDataKey> & out, const wdbTypes::Tim
 	connection_.perform(t);
 }
 
+int
+AdminOperations::performClean( )
+{
+	int ret = 0;
+	try {
+		connection_.perform(
+			PerformClean( ret, wciUser_ )
+	 	);
+	}
+	catch ( std::exception & e )
+	{
+		cerr << "Unexpected exception throw in WDB clean: " << e.what() << endl;
+	}
+	return ret;
+}
+
+bool
+AdminOperations::performVacuum( )
+{
+	pqxx::nontransaction t( connection_, "Vacuum Job");
+	try {
+		t.exec( "VACUUM ANALYZE" );
+		t.commit();
+	}
+	catch ( std::exception & e )
+	{
+		cerr << "Unexpected exception throw in WDB vacuum: " << e.what() << endl;
+		return false;
+	}
+	return true;
+}
 
 void AdminOperations::getAvailableFilesForLoading(vector<GribFilePtr> & out, const path & baseDir) const
 {

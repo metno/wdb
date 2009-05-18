@@ -124,6 +124,17 @@ public:
 	void getKeys(std::vector<WdbDataKey> & out, const wdbTypes::TimeStamp & time);
 
 	/**
+	 * Perform database cleanup; removing unnecesary rows and freeing up
+	 * resources on disk and memory.
+	 */
+	int performClean( );
+
+	/**
+	 * Perform database vacuum
+	 */
+	bool performVacuum( );
+
+	/**
 	 * Get all files under the given paths matching the isGribFile predicate.
 	 * If the given path is a directory, this directory will be recursively
 	 * searched for GRIB files, including subdirectories.

@@ -37,9 +37,7 @@
  * @{
  */
 
-#include <pqxx/transactor>
-#include <pqxx/result>
-#include <pqxx/largeobject>
+#include <pqxx/pqxx>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -67,19 +65,17 @@ public:
         std::stringstream queryStr;
         queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
-    	queryStr << "ARRAY['Hirlam 10'], "; // DataProvider
+    	queryStr << "ARRAY['test wci 0'], "; // DataProvider
     	queryStr << "'hirlam 10 grid', "; // Place
     	queryStr << "'1980-01-01 12:00:00Z', "; // Reference Time
     	queryStr << "'1980-01-01 13:00:00', "; // Valid Time
     	queryStr << "ARRAY['air temperature'], "; // Parameter
     	queryStr << "NULL, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
-    	queryStr << "NULL::wci.returnoid	)"; // Return Type
+    	queryStr << "NULL::wci.returngid	)"; // Return Type
     	const std::string query = queryStr.str();
     	pqxx::result R;
 		R = T.exec(query);
-		pqxx::largeobjectaccess * fieldObject;
-		int read;
 		for (int i=0; i<R.size(); i++) {
 			GridRow * ret = new GridRow();
 			R.at(i).at(0).to(ret->value_);
@@ -91,20 +87,30 @@ public:
 			R.at(i).at(6).to(ret->validTo_);
 			R.at(i).at(7).to(ret->parameter_);
 			R.at(i).at(8).to(ret->parameterUnit_);
-			R.at(i).at(9).to(ret->levelFrom_);
-			R.at(i).at(10).to(ret->levelTo_);
-			R.at(i).at(11).to(ret->levelParameter_);
-			R.at(i).at(12).to(ret->levelUnit_);
+			R.at(i).at(9).to(ret->levelParameter_);
+			R.at(i).at(10).to(ret->levelUnit_);
+			R.at(i).at(11).to(ret->levelFrom_);
+			R.at(i).at(12).to(ret->levelTo_);
 			R.at(i).at(13).to(ret->dataVersion_);
 			R.at(i).at(14).to(ret->quality_);
 			R.at(i).at(15).to(ret->storeTime_);
 			R.at(i).at(16).to(ret->valueId_);
 			R.at(i).at(17).to(ret->valueType_);
+			// Read Field
+	        std::stringstream fetchStr;
+	        fetchStr << "select * ";
+	        fetchStr << "from wci.fetch (";
+	    	fetchStr <<  ret->value_ <<", "; // DataProvider
+	    	fetchStr << "NULL::wci.grid	)"; // Return Type
+	    	const std::string fetch = fetchStr.str();
+	    	pqxx::result G;
+			G = T.exec(fetch);
+			pqxx::binarystring grid = pqxx::binarystring(G[0]["grid"]);
+	    	log.infoStream() <<  "Read " << grid.size() << " bytes";
+	    	// Memcpy
+	    	memcpy( &ret->grid_[0], grid.c_ptr(), grid.size());
+			//ret->const float * res_data = reinterpret_cast<const float *>( res_str.c_ptr( ) );
 			rows_.push_back(ret);
-			fieldObject = new pqxx::largeobjectaccess( T, ret->value_, PGSTD::ios::in );
-			read = fieldObject->read(buffer_, bufferSize_);
-	    	log.infoStream() <<  "Read " << read << " bytes";
-			delete fieldObject;
 		}
 	}
 

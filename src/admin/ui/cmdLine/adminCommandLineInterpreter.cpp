@@ -362,7 +362,7 @@ struct ChangeUserCommand : AdminCommandLineInterpreter::Command
 
 	virtual string help() const
 	{
-		return "Change WDB user attributes (usage: createuser username [admin] [write] [noread])";
+		return "Change WDB user attributes (usage: changeuser username [admin] [write] [noread])";
 	}
 };
 
@@ -410,6 +410,28 @@ struct StatsCommand : AdminCommandLineInterpreter::Command
 	virtual string help() const
 	{
 		return "Display database stats (usage: stats <table|index|io>)";
+	}
+};
+
+/**
+ * Vacuum Database
+ */
+struct VacuumCommand : AdminCommandLineInterpreter::Command
+{
+	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	{
+		if (input.size() != 1)
+		{
+			performer.info("No arguments required for this command");
+			return;
+		}
+
+		performer.vacuum( );
+	}
+
+	virtual string help() const
+	{
+		return "Vacuum the database (usage: vacuum)";
 	}
 };
 
@@ -478,4 +500,5 @@ AdminCommandLineInterpreter::AdminCommandLineInterpreter(AdminCommandLineOutput 
 	//commands_["dropuser"] = P( new DropUserCommand );
 	//commands_["gribload"] = P( new GribLoadCommand );
 	commands_["stats"] = P( new StatsCommand );
+	commands_["vacuum"] = P( new VacuumCommand );
 }

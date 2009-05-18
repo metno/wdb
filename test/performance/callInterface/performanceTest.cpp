@@ -61,7 +61,7 @@ void help( const boost::program_options::options_description & options, std::ost
 		<< "Usage: performanceTest [OPTIONS] TESTSAMPLE#\n\n"
 		<< "Test Samples:\n"
         << "1  - random point retrieval (single point)\n"
-        << "2  - random point retrieval (multiple point)\n"
+        << "2  - random point retrieval (multiple points)\n"
         << "3  - random point retrieval (all parameters)\n"
         << "4  - random point retrieval (large query)\n"
         << "8  - prepared random point retrieval (single point)\n"
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
     		C.prepare("ReadRandom1",
     				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
     				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
-    				  "'0 distance above ground', "
+    				  "'exact 0 height above ground distance', "
     				  "ARRAY[-1], NULL::wci.returnFloat	)" )
     				  ("varchar", treat_string )
 					  ("varchar", treat_string )
@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
    			break;
    		case 21: // Random Field retrieval
     		isGrid = true;
-   			for (int i=0; i<500; i++) {
+   			for (int i=0; i<200; i++) {
 	   			C.perform( SingleFieldTest( resultG, resultBuffer, fieldSize ) );
    			}
    			break;

@@ -3,7 +3,7 @@ CREATE TABLE __WDB_SCHEMA__.file_blob (
 	active boolean NOT NULL
 );
 REVOKE ALL ON __WDB_SCHEMA__.file_blob FROM PUBLIC;
-GRANT SELECT ON __WDB_SCHEMA__.file_blob TO PUBLIC;
+GRANT SELECT, UPDATE ON __WDB_SCHEMA__.file_blob TO PUBLIC;
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.write_file(data bytea)
 RETURNS bigint AS
@@ -19,7 +19,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE
 SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.drop_file(id bigint)
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.drop_file( id bigint )
 RETURNS void AS
 $BODY$
 	UPDATE __WDB_SCHEMA__.file_blob SET active=false WHERE file_id=$1;
@@ -67,6 +67,22 @@ BEGIN
 		RAISE EXCEPTION 'No such file: %', id;
 	END IF;
 	RETURN __WDB_SCHEMA__.read_float_from_file_impl(id, pos);
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.exists_file(id bigint)
+RETURNS bool AS
+$BODY$
+DECLARE
+	data bytea;
+BEGIN
+	SELECT __WDB_SCHEMA__.read_file_impl(id) INTO data;
+	RETURN true;
+EXCEPTION
+	WHEN raise_exception THEN
+		RETURN FALSE;
 END;
 $BODY$
 SECURITY DEFINER

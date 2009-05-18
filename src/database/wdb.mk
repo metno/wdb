@@ -23,6 +23,7 @@ DATABASE_SOURCES =		src/database/wdbConstraintDefinitions.in.sql \
 						src/database/wdbXmlDefinitions.in.sql \
 						src/database/wdbIndexDefinitions.in.sql \
 						src/database/wdbMaterializedView.in.sql \
+						src/database/wdbAdminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql \
 						src/database/wdbTriggerDefinitions.in.sql \
 						src/database/wdbUserDefinitions.in.sql \

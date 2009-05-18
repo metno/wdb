@@ -300,7 +300,7 @@ public:
 				 << "from wci.read ( "
 				 << bilinearDataProvider() << ", "
 				 << bilinearPoint() << ", "
-				 << refTime << "::wci.timeSpec, "
+				 << refTime << ", "
 				 << "NULL, "
 				 << "NULL, "
 				 << "NULL, "
