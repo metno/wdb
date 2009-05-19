@@ -1,0 +1,107 @@
+#!/bin/sh
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+## wdb - weather and water data storage
+##
+## Copyright (C) 2007 met.no
+##
+##  Contact information:
+##  Norwegian Meteorological Institute
+##  Box 43 Blindern
+##  0313 OSLO
+##  NORWAY
+##  E-mail: wdb@met.no
+##
+##  This is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Setup environment
+export TESTCASE="F006"
+export TEST_DESCRIPTION="Verify that files are removed"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
+
+# Test Environment
+source $TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+    --xml)
+		XML_OPT="-x";;
+    -x)
+		XML_OPT="-x";;
+esac
+
+# Timing
+startTime=`date +%s%N`
+# Calculate Test time
+TESTTIME=$(date +%FT%R:%S --date "3 days ago")
+# Log
+LOGFILE=$LOG_PATH/$TESTCASE_FILE-cleandb.log
+
+# Clean out database
+$TEST_PATH/tearDown.sh
+
+# Generate Test Data
+# Should generate two rows in database:
+${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} --valueparameter 'min air temperature'
+
+$PSQL -q -o $LOGFILE << EOF 
+\set ON_ERROR_STOP
+-- Test Function
+CREATE OR REPLACE FUNCTION check_for_files()
+RETURNS text AS '
+DECLARE
+	val1 bigint;
+	res bool;
+	ret text;
+BEGIN
+	-- Get FileID
+	SELECT value INTO val1 FROM test.gridvalue WHERE dataprovidername=''test cleandb'' LIMIT 1;
+	-- Clean Files
+	PERFORM cleanupdb();
+	-- Check for File
+	SELECT __WDB_SCHEMA__.exists_file( val1 ) INTO res;
+	-- Verify
+	IF res = true THEN
+		ret:=''ERROR: File was found when it should have been deleted'';
+		RETURN ret;
+	END IF;
+	RETURN ''File deleted correctly'';
+END; 
+'
+LANGUAGE plpgsql VOLATILE;
+-- Run Function
+SELECT check_for_files();
+-- Clean Up
+DROP FUNCTION check_for_files();
+EOF
+
+if cat $LOGFILE | grep -qE "ERROR"
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data file was not deleted\">\n\t</failure>\n</testcase>"
+	else
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data file was not deleted)"
+	fi
+    $TEST_PATH/tearDown.sh
+    exit 1
+fi
+
+# Clean Up and Exit
+$TEST_PATH/tearDown.sh
+endTime=`date +%s%N`
+totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+if test "$XML_OPT" = "-x"; then
+	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
+else
+	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+fi
