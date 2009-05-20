@@ -22,8 +22,8 @@
 # upgrade - upgrade the wdb system
 #
 UPGRADE_LIMIT_MAJOR=0
-UPGRADE_LIMIT_MINOR=7
-UPGRADE_LIMIT_MICRO=4
+UPGRADE_LIMIT_MINOR=9
+UPGRADE_LIMIT_MICRO=0
 
 DEFAULT_DATABASE=`wdbConfiguration --database`@`wdbConfiguration --host`
 DEFAULT_USER=`wdbConfiguration --user`
@@ -183,15 +183,27 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
+\i $WDB_DATAMODEL_PATH/fileblob.sql
 --\i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
 --\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
 --\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
 --\i $WDB_DATAMODEL_PATH/wdbXmlDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
 --\i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
 EOF
 if [ 0 != $? ]; then
     echo "failed"
-    echo "ERROR: The upgrade of the datamodel failed. See log for details." 
+    echo "ERROR: The upgrade of the datamodel failed. See log for details."
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
     exit 1
 else
     echo "done"
@@ -207,12 +219,23 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_METADATA_PATH/wdbMetadataLoad.sql 
 EOF
 if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
+    echo "failed"
+    echo "ERROR: installing new metadata failed"
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
+    exit 1
 else
     echo "done"
 fi
 
-# Install Metadata
+# Install Materialized Views
 echo -n "installing new materialized views... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -224,7 +247,18 @@ SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.levelparameter_mv');
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv'); 
 EOF
 if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
+    echo "failed"
+    echo "ERROR: installing new materialized views failed"
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
+	exit 1
 else
     echo "done"
 fi
@@ -238,7 +272,18 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbIndexDefinitions.sql
 EOF
 if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
+    echo "failed"
+    echo "ERROR: installing new indexes failed"
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
+	exit 1
 else
     echo "done"
 fi
@@ -252,11 +297,22 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i $FILE
 EOF
-    if [ 0 != $? ]; then
-	echo "ERROR when installing $FILE"; exit 1
+	if [ 0 != $? ]; then
+	    echo "failed"
+		echo "ERROR when installing $FILE"
+		echo -n "rolling back upgraded datamodel... "
+		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    	echo "done"
+		exit 1
     fi
 done
-echo done
+echo "done"
 
 echo -n "installing upgraded wci core... "
 cd __WDB_DATADIR__/sql/wci
@@ -266,12 +322,22 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i $FILE
 EOF
-    if [ 0 != $? ]; then
-	echo "ERROR when installing $FILE"; exit 1
+	if [ 0 != $? ]; then
+	    echo "failed"
+		echo "ERROR when installing $FILE"
+		echo -n "rolling back upgraded datamodel... "
+		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    	echo "done"
+		exit 1
     fi
 done
-echo done
-
+echo "done"
 
 # Data Migration
 echo -n "migrating data... "
@@ -281,7 +347,21 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i upgrade_database.sql
 EOF
-echo done
+if [ 0 != $? ]; then
+    echo "failed"
+    echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
+	exit 1
+fi
+echo "done"
 
 #echo -n "Dropping views and functions... "
 #psql $PSQLARGS -c "DELETE FROM __WDB_SCHEMA__.materializedView"

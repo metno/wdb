@@ -26,7 +26,7 @@ GRANT ALL ON SCHEMA feltload TO wdb_admin;
 GRANT USAGE ON SCHEMA feltload TO wdb_felt;
 
 
-CREATE TABLE __WDB_SCHEMA__.feltgeneratingprocess
+CREATE TABLE feltload.generatingprocess
 (
     dataproviderid  			bigint NOT NULL,
     producerid 					integer NOT NULL,
@@ -35,19 +35,18 @@ CREATE TABLE __WDB_SCHEMA__.feltgeneratingprocess
     feltprocessvalidto		 	timestamp with time zone NOT NULL	
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.feltgeneratingprocess FROM public;
-GRANT ALL ON __WDB_SCHEMA__.feltgeneratingprocess TO wdb_admin;
+REVOKE ALL ON feltload.generatingprocess FROM public;
+GRANT ALL ON feltload.generatingprocess TO wdb_admin;
 
 
-ALTER TABLE ONLY __WDB_SCHEMA__.feltgeneratingprocess
+ALTER TABLE ONLY feltload.generatingprocess
     ADD CONSTRAINT feltgeneratingprocess_pkey PRIMARY KEY (producerid, gridareanumber, feltprocessvalidfrom);
 
-ALTER TABLE __WDB_SCHEMA__.feltgeneratingprocess
+ALTER TABLE feltload.generatingprocess
 	ADD FOREIGN KEY (dataproviderid)
 					REFERENCES __WDB_SCHEMA__.dataprovider
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
-
 
 CREATE TABLE feltload.valueparameterxref (
     feltparameter		integer NOT NULL,
@@ -143,7 +142,7 @@ SELECT
     feltprocessvalidfrom,
     feltprocessvalidto	
 FROM
-	__WDB_SCHEMA__.feltgeneratingprocess;
+	feltload.generatingprocess;
 
 REVOKE ALL ON feltload.feltgeneratingprocess FROM public;
 GRANT ALL ON feltload.feltgeneratingprocess TO wdb_admin;

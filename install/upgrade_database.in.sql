@@ -28,36 +28,26 @@ __WCI_SCHEMA__.migratedata( )
 RETURNS void AS
 $BODY$
 DECLARE
-	value_ 					  oid;
-	dataProviderName_ 		  text;
 	dataProviderId_ 		  bigint;
-	placename_ 				  text;
 	placeId_ 				  bigint;
-	referencetime_ 			  timestamp with time zone;
-	validFrom_ 				  timestamp with time zone;
-	validTo_ 				  timestamp with time zone;
-	valueparameter_ 		  text;
-	levelparameter_ 		  text;
-	levelFrom_ 				  real;
-	levelTo_ 				  real;
-	currentVersion_ 		  integer;
 	normalizedValueParameter_ text;
 	normalizedLevelParameter_ text;
 	valueParameterId_ 		  integer;
 	levelParameterId_ 		  integer;
-	valRef					  wci.returnoidvalue;
+	valGid					  wci.returngid;
+	valFlt					  wci.returnfloat;
 BEGIN
 	-- TODO: Check database version. If the database version of the old database
 	-- is too ancient, abort with an error message
 
-	-- Transfer the OID Raw Data Values
+	-- Transfer the GID Data Values
 	-- Read all raw data using wci.read
-	FOR valRef IN
+	FOR valGid IN
 		SELECT * FROM wci.read( NULL, NULL, NULL, NULL,
-								NULL, NULL, NULL, NULL::wci.returnOid )
+								NULL, NULL, NULL, NULL::wci.returnGid )
 	LOOP
-		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valRef.dataProviderName );
-		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valRef.placename_ );
+		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valGid.dataProviderName );
+		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valGid.placename );
 		normalizedValueParameter_ := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
 		normalizedLevelParameter_ := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
@@ -67,18 +57,18 @@ BEGIN
 		SELECT __WCI_SCHEMA__.write(
 					dataProviderId_,
 					placeId_,
-					valRef.referenceTime,
-					valRef.validTimeFrom,
-					valRef.validTimeTo,
-					valRef.validTimeIndeterminateCode,
+					valGid.referenceTime,
+					valGid.validTimeFrom,
+					valGid.validTimeTo,
+					valGid.validTimeIndeterminateCode,
 					valueParameterId_,
 					levelParameterId_,
-					valRef.levelFrom,
-					valRef.levelTo,
-					valRef.levelIndeterminateCode,
-					valRef.dataVersion,
-					valRef.confidenceCode,
-					valRef.value
+					valGid.levelFrom,
+					valGid.levelTo,
+					valGid.levelIndeterminateCode,
+					valGid.dataVersion,
+					valGid.confidenceCode,
+					valGid.value
 		)
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
@@ -90,8 +80,6 @@ BEGIN
 	-- for the data values (e.g., data import information, quality information, etc)
 	-- Also, there should be the possibility to run both pre- and post- operations
 	-- to the data migration.
-	
-
 
 	-- Transfer the FLOAT Raw Data Values
 	-- Read all raw data using wci.read
@@ -99,8 +87,8 @@ BEGIN
 		SELECT * FROM wci.read( NULL, NULL, NULL, NULL,
 								NULL, NULL, NULL, NULL::wci.returnFloat )
 	LOOP
-		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valRef.dataProviderName );
-		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valRef.placename_ );
+		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valFlt.dataProviderName );
+		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valFlt.placename_ );
 		normalizedValueParameter_ := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
 		normalizedLevelParameter_ := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
@@ -110,24 +98,29 @@ BEGIN
 		SELECT __WCI_SCHEMA__.write(
 					dataProviderId_,
 					placeId_,
-					valRef.referenceTime,
-					valRef.validTimeFrom,
-					valRef.validTimeTo,
-					valRef.validTimeIndeterminateCode,
+					valFlt.referenceTime,
+					valFlt.validTimeFrom,
+					valFlt.validTimeTo,
+					valFlt.validTimeIndeterminateCode,
 					valueParameterId_,
 					levelParameterId_,
-					valRef.levelFrom,
-					valRef.levelTo,
-					valRef.levelIndeterminateCode,
-					valRef.dataVersion,
-					valRef.confidenceCode,
-					valRef.value
+					valFlt.levelFrom,
+					valFlt.levelTo,
+					valFlt.levelIndeterminateCode,
+					valFlt.dataVersion,
+					valFlt.confidenceCode,
+					valFlt.value
 		)
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
 	-- abort (if so, we need to implement the possibility of a dry-run migration),
 	-- or we should be able to save the data ported.
+
+	-- After reading all raw data, we will need to pick up any "detailed" info
+	-- for the data values (e.g., data import information, quality information, etc)
+	-- Also, there should be the possibility to run both pre- and post- operations
+	-- to the data migration.
 
 END 
 $BODY$

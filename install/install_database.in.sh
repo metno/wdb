@@ -331,8 +331,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
 \i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
-\i $WDB_DATAMODEL_PATH/fileblob.sql
 \i $WDB_DATAMODEL_PATH/wdbBaseTables.sql
 \i $WDB_DATAMODEL_PATH/wdbDataProviderTables.sql
 \i $WDB_DATAMODEL_PATH/wdbPlaceDefinitionTables.sql
@@ -343,12 +341,14 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
+\i $WDB_DATAMODEL_PATH/fileblob.sql
 \i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbXmlDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
 EOF
 if [ 0 != $? ]; then
     echo "ERROR"; exit 1

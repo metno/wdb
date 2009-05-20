@@ -64,8 +64,8 @@ void ValidTimeTest::testR1_01A_ValidInterval()
 	result r = t->exec( statementOid_("inside 2007-02-12 06:00:00+00 FOR 3 days") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(2), r.size() );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-13 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-13 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR1_01B_ValidInterval()
@@ -74,8 +74,8 @@ void ValidTimeTest::testR1_01B_ValidInterval()
 	result r = t->exec( statementFloat_("inside 2007-02-12 06:00:00+00 FOR 3 days") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(10), r.size() );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-13 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-13 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR1_02A_ValidTimePoint()
@@ -83,7 +83,7 @@ void ValidTimeTest::testR1_02A_ValidTimePoint()
 	result r = t->exec( statementOid_("2007-02-12 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR1_02B_ValidTimePoint()
@@ -91,7 +91,7 @@ void ValidTimeTest::testR1_02B_ValidTimePoint()
 	result r = t->exec( statementFloat_("2007-02-12 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(5), r.size() );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeDefault()
@@ -160,18 +160,18 @@ void ValidTimeTest::testR1_06A_Null()
 {
 	result r = t->exec( statementOid_( "NULL" ) );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-11 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-13 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-11 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-13 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR1_06B_Null()
 {
 	result r = t->exec( statementFloat_( "NULL" ) );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-11 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-13 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-11 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-13 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR2_01A_Now()
@@ -194,8 +194,8 @@ void ValidTimeTest::testR2_02A_Past()
 	result r = t->exec( statementOid_("inside 2007-02-12 06:00:00+00 TO 2007-02-15 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(2), r.size() );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validfrom", "2007-02-13 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", "2007-02-13 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR2_02B_Past()
@@ -204,8 +204,8 @@ void ValidTimeTest::testR2_02B_Past()
 	result r = t->exec( statementFloat_("inside 2007-02-12 06:00:00+00 TO 2007-02-15 06:00:00+00") );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(10), r.size() );
 
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-12 06:00:00+00" ) );
-	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validfrom", "2007-02-13 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-12 06:00:00+00" ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(5), count_val( r, "validtimefrom", "2007-02-13 06:00:00+00" ) );
 }
 
 void ValidTimeTest::testR2_03A_Future()

@@ -363,8 +363,8 @@ BEGIN
 			v.levelparameterid = levelParameterId_ AND
 			v.levelFrom = what.levelFrom AND
 			v.levelTo = what.levelTo AND
-			v.validtimeFrom = what.validFrom AND
-			v.validtimeTo = what.validTo;
+			v.validtimeFrom = what.validtimeFrom AND
+			v.validtimeTo = what.validtimeTo;
 		RAISE DEBUG 'WCI.WRITE.CurrentVersion: %', currentVersion_;  
 		IF currentVersion_ IS NULL THEN
 			currentVersion_ := 0;
@@ -410,8 +410,8 @@ BEGIN
 		NULL,
 		NULL,
 		what.referencetime,
-		what.validfrom,
-		what.validto,
+		what.validtimefrom,
+		what.validtimeto,
 		0, -- Exact
 		valueparameterid_,
 		NULL, 
@@ -585,8 +585,8 @@ BEGIN
 			v.levelparameterid = levelParameterId_ AND
 			v.levelFrom = what.levelFrom AND
 			v.levelTo = what.levelTo AND
-			v.validtimeFrom = what.validFrom AND
-			v.validtimeTo = what.validTo;
+			v.validtimeFrom = what.validtimeFrom AND
+			v.validtimeTo = what.validtimeTo;
 		RAISE DEBUG 'WCI.WRITE.CurrentVersion: %', currentVersion_;  
 		IF currentVersion_ IS NULL THEN
 			currentVersion_ := 0;
@@ -632,8 +632,8 @@ BEGIN
 		NULL,
 		NULL,
 		what.referencetime,
-		what.validfrom,
-		what.validto,
+		what.validtimefrom,
+		what.validtimeto,
 		0, -- Exact
 		valueparameterid_,
 		NULL, 

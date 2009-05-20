@@ -26,7 +26,7 @@ GRANT ALL ON SCHEMA gribload TO wdb_admin;
 GRANT USAGE ON SCHEMA gribload TO wdb_grib;
 
 
-CREATE TABLE __WDB_SCHEMA__.gribgeneratingprocess
+CREATE TABLE gribload.generatingprocess
 (
     dataproviderid  				bigint NOT NULL,
     generatingcenterid 				integer NOT NULL,
@@ -35,19 +35,19 @@ CREATE TABLE __WDB_SCHEMA__.gribgeneratingprocess
     generatingprocessvalidto 		timestamp with time zone NOT NULL	
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.gribgeneratingprocess FROM public;
-GRANT ALL ON __WDB_SCHEMA__.gribgeneratingprocess TO wdb_admin;
+REVOKE ALL ON gribload.generatingprocess FROM public;
+GRANT ALL ON gribload.generatingprocess TO wdb_admin;
 
-ALTER TABLE ONLY __WDB_SCHEMA__.gribgeneratingprocess
+ALTER TABLE ONLY gribload.generatingprocess
     ADD CONSTRAINT gribgeneratingprocess_pkey PRIMARY KEY (dataproviderid);
 
-ALTER TABLE __WDB_SCHEMA__.gribgeneratingprocess
+ALTER TABLE gribload.generatingprocess
 	ADD FOREIGN KEY (dataproviderid)
 					REFERENCES __WDB_SCHEMA__.dataprovider
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
-CREATE UNIQUE INDEX XAK1Wdb_GribGeneratingprocess ON __WDB_SCHEMA__.gribgeneratingprocess
+CREATE UNIQUE INDEX XAK1Wdb_GribGeneratingprocess ON gribload.generatingprocess
 (
 	GeneratingCenterId,
 	GeneratingProcessId,
@@ -133,7 +133,7 @@ SELECT
     generatingprocessvalidfrom,
     generatingprocessvalidto	
 FROM
-	__WDB_SCHEMA__.gribgeneratingprocess;
+	gribload.generatingprocess;
 
 REVOKE ALL ON gribload.gribgeneratingprocess FROM public;
 GRANT ALL ON gribload.gribgeneratingprocess TO wdb_admin;

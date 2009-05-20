@@ -3,7 +3,8 @@ CREATE TABLE __WDB_SCHEMA__.file_blob (
 	active boolean NOT NULL
 );
 REVOKE ALL ON __WDB_SCHEMA__.file_blob FROM PUBLIC;
-GRANT SELECT, UPDATE, DELETE ON __WDB_SCHEMA__.file_blob TO PUBLIC;
+GRANT ALL ON __WDB_SCHEMA__.file_blob TO wdb_admin;
+GRANT SELECT, UPDATE, DELETE ON __WDB_SCHEMA__.file_blob TO wdb_clean;
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.write_file(data bytea)
 RETURNS bigint AS

@@ -238,7 +238,8 @@ distcheck-hook:
 #install-exec install-nodist_pkgpythonPYTHON install-pkgpythonPYTHON  
 
 upgrade: all install-man install-sqlDATA install-wciapiDATA \
-	install-wcicoreDATA install-wcitypesDATA install-wdbdataDATA
+	install-wcicoreDATA install-wcitypesDATA install-wdbdataDATA \
+	install-exec
 # turn off pg 
 # install-exec
 #	@$(NORMAL_INSTALL)

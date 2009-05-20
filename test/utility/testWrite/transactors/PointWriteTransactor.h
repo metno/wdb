@@ -107,13 +107,14 @@ public:
 				  << "'" << conf_.dataDefinitions().referenceTime << "', "
 				  << "'" << conf_.dataDefinitions().validTimeFrom << "', "
 				  << "'" << conf_.dataDefinitions().validTimeTo << "', "
+				  << "0,"
 				  << "'" << conf_.dataDefinitions().valueParameter << "', "
 				  << "NULL, "
 				  << "'" << conf_.dataDefinitions().levelParameter << "', "
 				  << "NULL, "
 				  << conf_.dataDefinitions().levelFrom << ","
 				  << conf_.dataDefinitions().levelTo << ","
-				  << "NULL, NULL, CURRENT_TIMESTAMP, NULL, 'float')::wci.returnFloat"
+				  << "0, NULL, NULL, CURRENT_TIMESTAMP, NULL, 'float')::wci.returnFloat"
 				  << " )";
 		log.infoStream() << "Writing: " << writeQuery.str();
 		T.exec( writeQuery.str() );

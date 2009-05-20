@@ -47,8 +47,6 @@ COPY __WDB_SCHEMA__.dataprovider FROM '__WDB_DATADIR__/sql/wdb_dataprovider.csv'
 COPY __WDB_SCHEMA__.dataprovidercomment FROM '__WDB_DATADIR__/sql/wdb_dataprovidercomment.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.dataprovidername FROM '__WDB_DATADIR__/sql/wdb_dataprovidername.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.wciuserdataprovider FROM '__WDB_DATADIR__/sql/wdb_wciuserdataprovider.csv' CSV HEADER DELIMITER '|';
-COPY __WDB_SCHEMA__.gribgeneratingprocess FROM '__WDB_DATADIR__/sql/wdb_gribgeneratingprocess.csv' CSV HEADER DELIMITER '|';
-COPY __WDB_SCHEMA__.feltgeneratingprocess FROM '__WDB_DATADIR__/sql/wdb_feltgeneratingprocess.csv' CSV HEADER DELIMITER '|';
 
 -- PlaceId
 COPY __WDB_SCHEMA__.placedefinition FROM '__WDB_DATADIR__/sql/wdb_placedefinition.csv' CSV HEADER DELIMITER '|';
@@ -82,11 +80,13 @@ COPY __WDB_SCHEMA__.levelcodeparameter FROM '__WDB_DATADIR__/sql/wdb_levelcodepa
 COPY __WDB_SCHEMA__.qualityconfidencecode FROM '__WDB_DATADIR__/sql/wdb_qualityconfidencecode.csv' CSV HEADER DELIMITER '|';
 
 -- GRIB Metadata
+COPY gribload.generatingprocess FROM '__WDB_DATADIR__/sql/wdb_gribgeneratingprocess.csv' CSV HEADER DELIMITER '|';
 COPY gribload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_gribparameterxref.csv' CSV HEADER DELIMITER '|'; 
 COPY gribload.parametertolevelxref FROM '__WDB_DATADIR__/sql/wdb_gribparametertolevelxref.csv' CSV HEADER DELIMITER '|'; 
 COPY gribload.levelparameterxref FROM '__WDB_DATADIR__/sql/wdb_griblevelparameterxref.csv' CSV HEADER DELIMITER '|';
 
 -- FELT Metadata
+COPY feltload.generatingprocess FROM '__WDB_DATADIR__/sql/wdb_feltgeneratingprocess.csv' CSV HEADER DELIMITER '|';
 COPY feltload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_feltparameterxref.csv' CSV HEADER DELIMITER '|'; 
 COPY feltload.parametertolevelxref FROM '__WDB_DATADIR__/sql/wdb_feltparametertolevelxref.csv' CSV HEADER DELIMITER '|'; 
 COPY feltload.levelparameterxref FROM '__WDB_DATADIR__/sql/wdb_feltlevelparameterxref.csv' CSV HEADER DELIMITER '|';
