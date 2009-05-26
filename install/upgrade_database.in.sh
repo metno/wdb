@@ -50,6 +50,14 @@ Options:
                    upgrade as user <USER>
 -p PORT, --port=PORT
                    upgrade on port <PORT>
+--pre=SQLFILE
+				   specify an SQL file to be run prior to data migration.
+				   The upgrade will abort if the file returns an error.
+				   Path to SQL file must be an absolute path
+--post=SQLFILE				
+				   specify an SQL file to be run after the data migration.
+				   The upgrade will abort if the file returns an error
+				   Path to SQL file must be an absolute path
 --help             display this help and exit
 --version          output version information and exit
 "
@@ -58,39 +66,47 @@ Options:
 while test -n "$1"; do
     case "$1" in
 	--database=*)
-	WDB_INSTALL_DATABASE=`echo $1 | sed 's/--database=//'`
+		WDB_INSTALL_DATABASE=`echo $1 | sed 's/--database=//'`
         shift
         continue;;
 	-d)
-	shift
-	WDB_INSTALL_DATABASE=$1
-	shift
-	continue;;
+		shift
+		WDB_INSTALL_DATABASE=$1
+		shift
+		continue;;
 	--user=*)
-	WDB_INSTALL_USER=`echo $1 | sed 's/--user=//'`
+		WDB_INSTALL_USER=`echo $1 | sed 's/--user=//'`
         shift
         continue;;
 	-u)
-	shift
-	WDB_INSTALL_USER=$1
-	shift
-	continue;;
+		shift
+		WDB_INSTALL_USER=$1
+		shift
+		continue;;
 	--port=*)
-	WDB_INSTALL_PORT=`echo $1 | sed 's/--port=//'`
+		WDB_INSTALL_PORT=`echo $1 | sed 's/--port=//'`
         shift
         continue;;
 	-p)
-	shift
-	WDB_INSTALL_PORT=$1
-	shift
-	continue;;
+		shift
+		WDB_INSTALL_PORT=$1
+		shift
+		continue;;
+	--pre=*)
+		WDB_UPGRADE_PRE=`echo $1 | sed 's/--pre=//'`
+        shift
+        continue;;
+	--post=*)
+		WDB_UPGRADE_POST=`echo $1 | sed 's/--post=//'`
+        shift
+        continue;;
 	--help) 
-	echo "$SCRIPT_USAGE"; exit 0;;
+		echo "$SCRIPT_USAGE"; exit 0;;
 	--version) 
-	echo "$0 $SCRIPT_VERSION"; exit 0;;
+		echo "$0 $SCRIPT_VERSION"; exit 0;;
 	*)
-	shift
-	continue;;
+		shift
+		continue;;
     esac
 done
 
@@ -213,9 +229,8 @@ fi
 echo -n "installing upgraded metadata... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP
+\set ON_ERROR_STOP off
 \o $LOGDIR/wdb_install_metadata.log
-\set ON_ERROR_STOP off	
 \i $WDB_METADATA_PATH/wdbMetadataLoad.sql 
 EOF
 if [ 0 != $? ]; then
@@ -342,6 +357,33 @@ echo "done"
 # Data Migration
 echo -n "migrating data... "
 cd __WDB_DATADIR__/sql
+
+# Pre-operation
+if test -n "$WDB_UPGRADE_PRE"; then
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\i $WDB_UPGRADE_PRE
+EOF
+	if [ 0 != $? ]; then
+	    echo "failed"
+	    echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
+	    echo "ERROR: pre-operation of data migration failed"
+	    echo "ERROR: see wdb_migrate_data.log for details"
+		echo -n "rolling back upgraded datamodel... "
+		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+	    echo "done"
+		exit 1
+	fi
+fi
+
+# Actual Migration
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
@@ -350,18 +392,47 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
+    echo "ERROR: see wdb_migrate_data.log for details"
 	echo -n "rolling back upgraded datamodel... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 --\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
+\o $LOGDIR/wdb_migrate_data.log
 DROP SCHEMA __WCI_SCHEMA__ CASCADE;
 DROP SCHEMA __WDB_SCHEMA__ CASCADE;
 EOF
     echo "done"
 	exit 1
 fi
+
+# Post-operation
+if test -n "$WDB_UPGRADE_POST"; then
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\i $WDB_UPGRADE_POST
+EOF
+	if [ 0 != $? ]; then
+	    echo "failed"
+	    echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
+	    echo "ERROR: post-operation of data migration failed"
+	    echo "ERROR: see wdb_migrate_data.log for details"
+		echo -n "rolling back upgraded datamodel... "
+		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+	    echo "done"
+		exit 1
+	fi
+fi
+
+# Upgrade Completed
 echo "done"
+
 
 #echo -n "Dropping views and functions... "
 #psql $PSQLARGS -c "DELETE FROM __WDB_SCHEMA__.materializedView"

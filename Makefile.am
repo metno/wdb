@@ -258,13 +258,13 @@ upgrade: all install-man install-sqlDATA install-wciapiDATA \
 
 
 update-makefiles:
-				@for dir in @build_subdirs@ ; do \
-					echo "cp $(top_srcdir)/config/Makefile.am.subdir \
-						$(top_srcdir)/$$dir/Makefile.am" ; \
-					cp "$(top_srcdir)/config/Makefile.am.subdir" \
-						"$(top_srcdir)/$$dir/Makefile.am" || \
-						exit 1 ; \
-				done
+	@for dir in @build_subdirs@ ; do \
+		echo "cp $(top_srcdir)/config/Makefile.am.subdir \
+			$(top_srcdir)/$$dir/Makefile.am" ; \
+		cp "$(top_srcdir)/config/Makefile.am.subdir" \
+			"$(top_srcdir)/$$dir/Makefile.am" || \
+			exit 1 ; \
+	done
 
 
 #-----------------------------------------------------------------------------

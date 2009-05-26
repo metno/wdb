@@ -30,8 +30,6 @@ $BODY$
 DECLARE
 	dataProviderId_ 		  bigint;
 	placeId_ 				  bigint;
-	normalizedValueParameter_ text;
-	normalizedLevelParameter_ text;
 	valueParameterId_ 		  integer;
 	levelParameterId_ 		  integer;
 	valGid					  wci.returngid;
@@ -48,10 +46,8 @@ BEGIN
 	LOOP
 		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valGid.dataProviderName );
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valGid.placename );
-		normalizedValueParameter_ := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
-		normalizedLevelParameter_ := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
-		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
-		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ ); 
+		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valGid.valueParameterName );
+		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valGid.levelParameterName ); 
 		
 		-- Write all raw data using __WCI_SCHEMA__.write
 		SELECT __WCI_SCHEMA__.write(
@@ -69,7 +65,7 @@ BEGIN
 					valGid.dataVersion,
 					valGid.confidenceCode,
 					valGid.value
-		)
+		);
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
@@ -89,10 +85,8 @@ BEGIN
 	LOOP
 		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valFlt.dataProviderName );
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valFlt.placename_ );
-		normalizedValueParameter_ := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
-		normalizedLevelParameter_ := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
-		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
-		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ ); 
+		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valFlt.valueParameterName );
+		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valFlt.levelParameterName ); 
 		
 		-- Write all raw data using __WCI_SCHEMA__.write
 		SELECT __WCI_SCHEMA__.write(
@@ -110,7 +104,7 @@ BEGIN
 					valFlt.dataVersion,
 					valFlt.confidenceCode,
 					valFlt.value
-		)
+		);
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
