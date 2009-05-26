@@ -1,8 +1,14 @@
+wdb (0.9.1-1) hardy; urgency=low
+
+  * New upstream release 
+
+ -- Vegard B�nes <vegardb@met.no>  Tue, 26 May 2009 12:16:41 +0000
+
 wdb (0.9.0-1) hardy; urgency=low
 
   * New upstream release 
 
- -- Vegard Bønes <vegardb@pc2860.pc.met.no>  Wed, 06 May 2009 13:35:08 +0200
+ -- Vegard Bønes <vegardb@met.no>  Wed, 06 May 2009 13:35:08 +0200
 
 wdb (0.8.0-1) hardy; urgency=low
 
