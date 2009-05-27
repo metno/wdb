@@ -79,21 +79,8 @@ COPY __WDB_SCHEMA__.levelcodeparameter FROM '__WDB_DATADIR__/sql/wdb_levelcodepa
 -- Confidence Code
 COPY __WDB_SCHEMA__.qualityconfidencecode FROM '__WDB_DATADIR__/sql/wdb_qualityconfidencecode.csv' CSV HEADER DELIMITER '|';
 
--- GRIB Metadata
-COPY gribload.generatingprocess FROM '__WDB_DATADIR__/sql/wdb_gribgeneratingprocess.csv' CSV HEADER DELIMITER '|';
-COPY gribload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_gribparameterxref.csv' CSV HEADER DELIMITER '|'; 
-COPY gribload.parametertolevelxref FROM '__WDB_DATADIR__/sql/wdb_gribparametertolevelxref.csv' CSV HEADER DELIMITER '|'; 
-COPY gribload.levelparameterxref FROM '__WDB_DATADIR__/sql/wdb_griblevelparameterxref.csv' CSV HEADER DELIMITER '|';
-
--- FELT Metadata
-COPY feltload.generatingprocess FROM '__WDB_DATADIR__/sql/wdb_feltgeneratingprocess.csv' CSV HEADER DELIMITER '|';
-COPY feltload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_feltparameterxref.csv' CSV HEADER DELIMITER '|'; 
-COPY feltload.parametertolevelxref FROM '__WDB_DATADIR__/sql/wdb_feltparametertolevelxref.csv' CSV HEADER DELIMITER '|'; 
-COPY feltload.levelparameterxref FROM '__WDB_DATADIR__/sql/wdb_feltlevelparameterxref.csv' CSV HEADER DELIMITER '|';
-COPY feltload.feltparametertovaliddurationxref FROM '__WDB_DATADIR__/sql/wdb_feltparametertovaliddurationxref.csv' CSV HEADER DELIMITER '|';
-
 -- XML Metadata
-COPY xmlload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_xmlparameterxref.csv' CSV HEADER DELIMITER '|'; 
+--COPY xmlload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_xmlparameterxref.csv' CSV HEADER DELIMITER '|'; 
 
 --COPY __WDB_SCHEMA__.kvalobsparameterxref FROM '__WDB_DATADIR__/sql/wdb_kvalobsparameterxref.csv' CSV HEADER DELIMITER '|';
 --COPY __WDB_SCHEMA__.kvalobsvalidtimexref FROM '__WDB_DATADIR__/sql/wdb_kvalobsvalidtimexref.csv' CSV HEADER DELIMITER '|';

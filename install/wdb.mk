@@ -7,7 +7,8 @@ INSTALL_SOURCES =		install/install_database.in.sh \
 						install/uninstall_database.in.sh \
 						install/upgrade_database.in.sh
 						
-INSTALL_SQL 	= 		install/upgrade_database.in.sql						
+INSTALL_SQL 	= 		install/upgrade_database.in.sql \
+						install/upgrade_test.in.sql						
 
 pkglib_SCRIPTS += 		$(INSTALL_SOURCES:.in.sh=)
 

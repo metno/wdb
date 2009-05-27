@@ -363,7 +363,9 @@ psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_metadata.log
-\i $WDB_METADATA_PATH/wdbMetadataLoad.sql 
+\i $WDB_METADATA_PATH/wdbMetadata.sql 
+\i $WDB_METADATA_PATH/feltLoadMetadata.sql
+\i $WDB_METADATA_PATH/gribLoadMetadata.sql
 EOF
 if [ 0 != $? ]; then
     echo "ERROR"; exit 1

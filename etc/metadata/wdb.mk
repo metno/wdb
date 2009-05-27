@@ -59,7 +59,9 @@ KVALOBSLOAD_METADATA =	etc/metadata/wdb_kvalobsparameterxref.in.csv \
 						etc/metadata/wdb_kvalobsvalidtimexref.in.csv
  
 
-METADATA_SOURCES =		etc/metadata/wdbMetadataLoad.in.sql
+METADATA_SOURCES =		etc/metadata/wdbMetadata.in.sql \
+						etc/metadata/feltLoadMetadata.in.sql \
+						etc/metadata/gribLoadMetadata.in.sql
 
 sql_DATA +=		 		$(METADATA_SOURCES:.in.sql=.sql) \
 						$(CORE_METADATA:.in.csv=.csv) \

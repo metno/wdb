@@ -58,6 +58,10 @@ Options:
 				   specify an SQL file to be run after the data migration.
 				   The upgrade will abort if the file returns an error
 				   Path to SQL file must be an absolute path
+--dry-run		   runs an SQL file prior to the migration of the data,
+				   that verifies whether the data values can be migrated
+				   without errors. If this tests succeeds, the data transfer
+				   should be ok
 --help             display this help and exit
 --version          output version information and exit
 "
@@ -100,6 +104,10 @@ while test -n "$1"; do
 		WDB_UPGRADE_POST=`echo $1 | sed 's/--post=//'`
         shift
         continue;;
+    --dry-run)
+    	WDB_UPGRADE_TEST="yes"
+    	shift
+    	continue;;
 	--help) 
 		echo "$SCRIPT_USAGE"; exit 0;;
 	--version) 
@@ -183,7 +191,7 @@ patch_version=`echo $current_version | sed 's/.*\.//'`
 # Todo: Check differences between major and minor upgrade
 
 # Install Datamodel
-echo -n "installing upgraded datamodel... "
+echo -n "installing upgraded datamodel (1/2)... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
@@ -200,13 +208,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql
---\i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wdbXmlDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
---\i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
 EOF
 if [ 0 != $? ]; then
     echo "failed"
@@ -226,16 +227,16 @@ else
 fi
 
 # Install Metadata
-echo -n "installing upgraded metadata... "
+echo -n "installing upgraded metadata (1/2)... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP off
 \o $LOGDIR/wdb_install_metadata.log
-\i $WDB_METADATA_PATH/wdbMetadataLoad.sql 
+\i $WDB_METADATA_PATH/wdbMetadata.sql 
 EOF
 if [ 0 != $? ]; then
     echo "failed"
-    echo "ERROR: installing new metadata failed"
+    echo "ERROR: installing new metadata failed."
 	echo -n "rolling back upgraded datamodel... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -263,7 +264,7 @@ SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv');
 EOF
 if [ 0 != $? ]; then
     echo "failed"
-    echo "ERROR: installing new materialized views failed"
+    echo "ERROR: installing new materialized views failed."
 	echo -n "rolling back upgraded datamodel... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -288,7 +289,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 EOF
 if [ 0 != $? ]; then
     echo "failed"
-    echo "ERROR: installing new indexes failed"
+    echo "ERROR: installing new indexes failed."
 	echo -n "rolling back upgraded datamodel... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -314,7 +315,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 EOF
 	if [ 0 != $? ]; then
 	    echo "failed"
-		echo "ERROR when installing $FILE"
+		echo "ERROR: installing $FILE failed. See log for details."
 		echo -n "rolling back upgraded datamodel... "
 		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -339,7 +340,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 EOF
 	if [ 0 != $? ]; then
 	    echo "failed"
-		echo "ERROR when installing $FILE"
+		echo "ERROR: installing $FILE failed. See log for details."
 		echo -n "rolling back upgraded datamodel... "
 		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -354,6 +355,72 @@ EOF
 done
 echo "done"
 
+# Install cleanup script
+echo -n "installing cleaner... "
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_cleanDb.log
+\i $WDB_CLEANUP_PATH/cleanDb.sql
+EOF
+if [ 0 != $? ]; then
+    echo "failed"
+    echo "ERROR: The installation of the cleanup script failed. See log for details."
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+   	echo "done"
+	exit 1
+else
+    echo "done"
+fi
+
+# Data Migration - Dry Run
+if test -n "$WDB_UPGRADE_TEST"; then
+	echo -n "dry run of data migration... "
+	cd __WDB_DATADIR__/sql
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+\i upgrade_test.sql
+EOF
+	if [ 0 != $? ]; then
+	    echo "failed"
+	    echo "ERROR: Dry run of data migration threw errors. This implies that"
+	    echo "ERROR: it would not be possible to migrate all of the data in"
+	    echo "ERROR: the database correctly."
+	    echo "ERROR: See wdb_migrate_data.log for details."
+		echo -n "rolling back upgraded datamodel... "
+		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+	    echo "done"
+		exit 1
+	fi
+	echo "done"
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
+	echo "---- wdb database upgrade test successful ----"
+	exit 0
+fi
+
 # Data Migration
 echo -n "migrating data... "
 cd __WDB_DATADIR__/sql
@@ -363,13 +430,14 @@ if test -n "$WDB_UPGRADE_PRE"; then
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
 \i $WDB_UPGRADE_PRE
 EOF
 	if [ 0 != $? ]; then
 	    echo "failed"
-	    echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
-	    echo "ERROR: pre-operation of data migration failed"
-	    echo "ERROR: see wdb_migrate_data.log for details"
+	    echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
+	    echo "ERROR: Pre-operation of data migration failed."
+	    echo "ERROR: See wdb_migrate_data.log for details."
 		echo -n "rolling back upgraded datamodel... "
 		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -391,8 +459,8 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 EOF
 if [ 0 != $? ]; then
     echo "failed"
-    echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
-    echo "ERROR: see wdb_migrate_data.log for details"
+    echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
+    echo "ERROR: See wdb_migrate_data.log for details."
 	echo -n "rolling back upgraded datamodel... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -409,14 +477,15 @@ fi
 if test -n "$WDB_UPGRADE_POST"; then
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
+\o $LOGDIR/wdb_migrate_data.log
 \set ON_ERROR_STOP
 \i $WDB_UPGRADE_POST
 EOF
 	if [ 0 != $? ]; then
 	    echo "failed"
-	    echo "ERROR: migrating data WDB version __WDB_VERSION__ failed"
-	    echo "ERROR: post-operation of data migration failed"
-	    echo "ERROR: see wdb_migrate_data.log for details"
+	    echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
+	    echo "ERROR: Post-operation of data migration failed."
+	    echo "ERROR: See wdb_migrate_data.log for details."
 		echo -n "rolling back upgraded datamodel... "
 		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -429,52 +498,58 @@ EOF
 		exit 1
 	fi
 fi
-
 # Upgrade Completed
 echo "done"
 
-
-#echo -n "Dropping views and functions... "
+# Dropping Stuff
+echo -n "dropping views and functions... "
 #psql $PSQLARGS -c "DELETE FROM __WDB_SCHEMA__.materializedView"
-#for SCHEMA in test gribload feltload kvalobs wci wci_internal ; do
-#for SCHEMA in test wci wci_internal ; do
-#	psql $PSQLARGS -c "DROP SCHEMA $SCHEMA CASCADE"
-#done
-#echo "done" 
+for SCHEMA in test admin loaderbase gribload feltload wci; do
+	psql $PSQLARGS -c "DROP SCHEMA $SCHEMA CASCADE" -o $LOGDIR/wdb_install_datamodel.log
+	
+done
+echo "done" 
 
-# Install Later
-#--\i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
-#--\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
-#--\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
-# \i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
+# Install additional schemas
+echo -n "installing upgraded datamodel (2/2)... "
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+\i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
+\i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
+EOF
+if [ 0 != $? ]; then
+    echo "failed"
+    echo "ERROR: The completion of the datamodel upgrade failed. See log for details."
+	echo "ERROR: No roll back possible. Restore database from backup."
+    exit 1
+else
+    echo "done"
+fi
 
-# Install cleanup script
-#echo -n "installing cleaner... "
-#psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-#SET CLIENT_MIN_MESSAGES TO "WARNING";
-#\set ON_ERROR_STOP
-#\o $LOGDIR/wdb_install_cleanDb.log
-#\i $WDB_CLEANUP_PATH/cleanDb.sql
-#EOF
-#if [ 0 != $? ]; then
-#    echo "ERROR"; exit 1
-#else
-#    echo "done"
-#fi
 
-# Install wci
-#echo -n "installing upgraded wci core... "
-#cd __WDB_DATADIR__/sql/wci
-#for FILE in `ls -1f types/*.sql core/*.sql api/*.sql | grep -v [.]in[.]sql`; do
-#    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-#SET CLIENT_MIN_MESSAGES TO "WARNING";
-#\set ON_ERROR_STOP
-#\i $FILE
-#EOF
-#    if [ 0 != $? ]; then
-#	echo "ERROR when installing $FILE"; exit 1
-#    fi
-#done
-#echo done
+# Install Metadata
+echo -n "installing upgraded metadata (2/2)... "
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP off
+\o $LOGDIR/wdb_install_metadata.log
+\i $WDB_METADATA_PATH/feltLoadMetadata.sql 
+\i $WDB_METADATA_PATH/gribLoadMetadata.sql
+EOF
+if [ 0 != $? ]; then
+    echo "failed"
+    echo "ERROR: Installing new metadata failed. See log for details."
+	echo "ERROR: No roll back possible. Restore database from backup."
+    exit 1
+else
+    echo "done"
+fi
 
-#psql $PSQLARGS -c "UPDATE __WDB_SCHEMA__.softwareversion SET softwareversioncode='__WDB_VERSION__' WHERE partyid=10000"
+echo "---- wdb database upgrade completed ----"
+exit 0

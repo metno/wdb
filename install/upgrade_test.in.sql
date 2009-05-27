@@ -24,7 +24,7 @@
 -- stable, and being able to retrieve ALL required data through the WCI 
 -- interface. It only utilizes the 0 namespace.
 CREATE OR REPLACE FUNCTION 
-__WCI_SCHEMA__.migratedata( )
+__WCI_SCHEMA__.migratetest( )
 RETURNS void AS
 $BODY$
 DECLARE
@@ -48,24 +48,6 @@ BEGIN
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valGid.placename );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valGid.valueParameterName );
 		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valGid.levelParameterName ); 
-		
-		-- Write all raw data using __WCI_SCHEMA__.write
-		PERFORM __WCI_SCHEMA__.write(
-					dataProviderId_,
-					placeId_,
-					valGid.referenceTime,
-					valGid.validTimeFrom,
-					valGid.validTimeTo,
-					valGid.validTimeIndeterminateCode,
-					valueParameterId_,
-					levelParameterId_,
-					valGid.levelFrom,
-					valGid.levelTo,
-					valGid.levelIndeterminateCode,
-					valGid.dataVersion,
-					valGid.confidenceCode,
-					valGid.value
-		);
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
@@ -87,24 +69,6 @@ BEGIN
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valFlt.placename );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valFlt.valueParameterName );
 		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valFlt.levelParameterName ); 
-		
-		-- Write all raw data using __WCI_SCHEMA__.write
-		PERFORM __WCI_SCHEMA__.write(
-					dataProviderId_,
-					placeId_,
-					valFlt.referenceTime,
-					valFlt.validTimeFrom,
-					valFlt.validTimeTo,
-					valFlt.validTimeIndeterminateCode,
-					valueParameterId_,
-					levelParameterId_,
-					valFlt.levelFrom,
-					valFlt.levelTo,
-					valFlt.levelIndeterminateCode,
-					valFlt.dataVersion,
-					valFlt.confidenceCode,
-					valFlt.value
-		);
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
@@ -121,6 +85,6 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 SELECT wci.begin ( 'wdb', 0, 0, 0 );
-SELECT __WCI_SCHEMA__.migratedata( );
+SELECT __WCI_SCHEMA__.migratetest( );
 
-DROP FUNCTION __WCI_SCHEMA__.migratedata( );
+DROP FUNCTION __WCI_SCHEMA__.migratetest( );
