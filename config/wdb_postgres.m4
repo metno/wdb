@@ -121,7 +121,8 @@ AC_SUBST(pgsql_LIBS)
 
 	# Header files
     #AC_LANG_PUSH(C++)
-	AC_CHECK_HEADER([postgres.h],,
+	AC_CHECK_HEADER([postgres.h],
+					[AC_DEFINE([HAVE_POSTGRES_POSTGRES_H],,[postgres.h is present])],
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
     Could not locate postgres.h 
@@ -143,8 +144,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	AC_CHECK_HEADER([funcapi.h],,
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -155,8 +160,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	AC_CHECK_HEADER([access/htup.h],,
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -167,8 +176,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	AC_CHECK_HEADER([utils/array.h],,
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -179,8 +192,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	AC_CHECK_HEADER([utils/timestamp.h],,
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -191,8 +208,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	AC_CHECK_HEADER([executor/executor.h],,
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -203,8 +224,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	AC_CHECK_HEADER([executor/spi.h],,
 					[AC_MSG_ERROR([
 -------------------------------------------------------------------------
@@ -215,8 +240,12 @@ AC_SUBST(pgsql_LIBS)
     
     CPPFLAGS=$CPPFLAGS
 -------------------------------------------------------------------------
-])
-	])
+])	],
+	[
+#ifdef HAVE_POSTGRES_POSTGRES_H
+#include <postgres.h>
+#endif
+	])	
 	#AC_LANG_POP(C++)
 
 ])
