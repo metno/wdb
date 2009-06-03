@@ -24,11 +24,6 @@ CREATE TYPE __WCI_SCHEMA__.levelParameterTuple AS
     levelDomain VARCHAR(80)
 );
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLevelParameter( spec TEXT )
-RETURNS __WCI_SCHEMA__.levelParameterTuple
-AS '__WDB_LIBDIR__/__WCI_LIB__', 'getWciLevelParameter'
-LANGUAGE C IMMUTABLE STRICT;
-
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.normalizeLevelParameter( param TEXT )
 RETURNS text
 AS '__WDB_LIBDIR__/__WCI_LIB__', 'normalizeWciLevelParameter'

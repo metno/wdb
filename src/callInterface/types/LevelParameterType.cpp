@@ -9,7 +9,7 @@
  0313 OSLO
  NORWAY
  E-mail: wdb@met.no
- 
+
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
  You should have received a copy of the GNU General Public License
  along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  MA  02110-1301, USA
  */
 
@@ -33,49 +33,43 @@
 #include <stdexcept>
 #include <sstream>
 
-using namespace std; 
+using namespace std;
 using namespace boost;
 
-namespace
-{
-	const string getVerboseWildcardInUsageArea(const vector<string> usageAreaMark)
-	{
-		ostringstream ret;
-		vector<string>::const_iterator it = usageAreaMark.begin();
-		ret << "(" << * it;
-		while ( ++ it != usageAreaMark.end() )
-			ret << '|' << * it;
-		ret << ") \\*";
-		return ret.str();
-	}
-}
-
 LevelParameterType::LevelParameterType( const std::string & specification )
+		: specification_( specification )
+		, isPattern_(false)
 {
+    // check for validity
+	if ( specification_.length() == 0 ) {
+        throw logic_error( "Invalid specification: " + specification_ );
+    }
+
     // specification -> lowercase
-    string spec( specification );
     typedef int ( *f_lower ) ( int );
     f_lower lower = tolower;
-    transform( spec.begin(), spec.end(), spec.begin(), lower );
+    transform( specification_.begin(), specification_.end(), specification_.begin(), lower );
 
-    // make all whitespace into a single space char
-    static const regex whitespace( "(\\s+)" );
-    spec = regex_replace( spec, whitespace, " " );
+	// make all whitespace into a single space char
+	static const regex whitespace( "(\\s+)" );
+	specification_ = regex_replace( specification_, whitespace, " " );
 
-    // match
-    static const regex wantedSpec( getSpecPattern(), regex::perl | regex::icase );
-    smatch match;
-    if ( ! regex_match( spec, match, wantedSpec ) )
-        throw logic_error( "Invalid specification: " + spec );
-
-    // assign results:
-    physicalPhenomena_ = match[ 1 ].str();
-    usageArea_ = match[ 2 ].str();
-
-    static const regex verboseWildcardInUsageArea( getVerboseWildcardInUsageArea(usageAreaMark_) );
-    
-    if ( regex_match(usageArea_, verboseWildcardInUsageArea) )
-    	usageArea_ = "*";
+    // check for SQL wildcards
+    size_t pos = 0;
+    while ( ( pos != string::npos ) && ( ! isPattern_ ) ) {
+    	pos = specification_.find_first_of( "%_", pos);
+    	if (pos != string::npos) {
+    		if (pos == 0) {
+    			isPattern_ = true;
+    		}
+    		else {
+    			if ( specification_[pos - 1] != '\\' ) {
+    				isPattern_ = true;
+    			}
+    		}
+    		pos ++; // to avoid running into the same wildcard
+    	}
+    }
 }
 
 LevelParameterType::~LevelParameterType()
@@ -85,43 +79,16 @@ LevelParameterType::~LevelParameterType()
 
 bool LevelParameterType::operator == ( const LevelParameterType & other ) const
 {
-	return  physicalPhenomena() == other.physicalPhenomena()
-    	and usageArea() == other.usageArea(); 
+	return  specification_ == other.specification_;
 }
 
+
+bool LevelParameterType::isPattern() const
+{
+    return isPattern_;
+}
 
 const string LevelParameterType::str() const
 {
-    ostringstream ss;
-    ss << physicalPhenomena() << ' ' << usageArea();
-    return ss.str();
-}
-
-const string LevelParameterType::wildcard_ = "\\*";
-const vector<string> LevelParameterType::usageAreaMark_ = assign::list_of("of")("above")("below");
-
-string LevelParameterType::getPhysicalPhenomenaPattern() const
-{
-    return "\\w[\\s\\w]*?|" + wildcard_;
-}
-
-string LevelParameterType::getUsageAreaPattern() const
-{
-	ostringstream pattern;
-	pattern << wildcard_ << "|(";
-	vector<string>::const_iterator it =  usageAreaMark_.begin();
-	pattern << * it;
-	while (  ++ it != usageAreaMark_.end() )
-		pattern << '|' << * it;
-	pattern << ")\\s+[" << wildcard_ << "\\s\\w,()-]+";
-	
-	return pattern.str();
-}
-string LevelParameterType::getSpecPattern() const
-{
-    ostringstream r;
-
-    r << "^(" << getPhysicalPhenomenaPattern() << ')' << "\\s+";
-    r << '(' << getUsageAreaPattern() << ")$";
-    return r.str();
+    return specification_;
 }

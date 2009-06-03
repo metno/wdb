@@ -170,8 +170,8 @@
 				source.</para>
 
 			<para>DataProviderNames exist within a data provider namespace. A namespace can be defined by
-			the WDB administrator, in order to permit the user or an application to retrieve data in
-			an accustomed language or code set. The default namespace of WDB is the DataProviderNameSpaceId
+				the WDB administrator, in order to permit the user or an application to retrieve data in
+				an accustomed language or code set. The default namespace of WDB is the DataProviderNameSpaceId
 				0, and is always based on English language names and international standard codes. The 
 				data provider namespace being used in a querying session can be defined by the user when
 				starting up the session.

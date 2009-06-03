@@ -9,7 +9,7 @@
  0313 OSLO
  NORWAY
  E-mail: wdb@met.no
- 
+
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
  You should have received a copy of the GNU General Public License
  along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  MA  02110-1301, USA
  */
 
@@ -37,35 +37,20 @@ class LevelParameterType
 {
 public:
 	LevelParameterType( const std::string & level );
-	
+
 	~LevelParameterType();
 
-    const std::string & physicalPhenomena() const
-    {
-        return physicalPhenomena_;
-    }
-	
-	const std::string & usageArea() const
-    {
-        return usageArea_;
-    }
-	
-	std::string getRegex() const { return getSpecPattern(); }
-	
     bool operator == ( const LevelParameterType & other ) const;
 
-    const std::string str() const;
-	
-private:
-    std::string physicalPhenomena_;
-    std::string usageArea_;
-    
-    static const std::string wildcard_;
-    static const std::vector<std::string> usageAreaMark_;
+    bool isPattern() const;
 
-    std::string getSpecPattern() const;
-    std::string getPhysicalPhenomenaPattern() const;
-    std::string getUsageAreaPattern() const;
+    const std::string str() const;
+
+private:
+	/// The value parameter specification
+	std::string specification_;
+	/// Does the value parameter specification contain an SQL pattern?
+	bool isPattern_;
 
 };
 

@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -41,40 +41,6 @@ extern "C"
 #include <postgres.h>
 #include <fmgr.h>
 
-
-    PG_FUNCTION_INFO_V1( getWciLevelParameter );
-    Datum getWciLevelParameter( PG_FUNCTION_ARGS )
-    {
-    	if ( PG_ARGISNULL(0) )
-            ereport( ERROR,
-                     ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( "Unexpected NULL in WCI Level Parameter" ) ) );
-    		
-    	
-    	const text * param = PG_GETARG_TEXT_P( 0 );
-    	
-        boost::scoped_array<char> p( new char[ VARSIZE( param ) + 1 ] );
-        std::copy( VARDATA( param ), ( char* ) param + VARSIZE( param ), p.get() );
-        p[ VARSIZE( param ) - VARHDRSZ ] = '\0';
-
-
-        try
-        {
-            const LevelParameterType pt( p.get() );
-            Datum d = packWciLevelParameter( pt.physicalPhenomena().c_str(),
-				pt.usageArea().c_str(),
-				fcinfo );
-
-            return d;
-        }
-        catch ( std::logic_error & e )
-        {
-            ereport( ERROR,
-                     ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( e.what() ) ) );
-        }
-    }
-    
     PG_FUNCTION_INFO_V1( normalizeWciLevelParameter );
     Datum normalizeWciLevelParameter( PG_FUNCTION_ARGS )
     {
@@ -97,7 +63,7 @@ extern "C"
             ret->vl_len = size;
             copy( normalized.begin(), normalized.end(), ret->vl_dat );
 #endif
-            
+
             PG_RETURN_TEXT_P( ret );
         }
         catch ( std::logic_error & e )
