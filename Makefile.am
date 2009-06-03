@@ -186,7 +186,8 @@ clean-local:
 
 # The dbclean target is used by Buildbot to clean-up after a failed distcheck.
 dbclean:
-	@builddir@/install/uninstall_database -d wdb_distcheck
+	dropdb wdb_distcheck
+#	@builddir@/install/uninstall_database -d wdb_distcheck
 
 
 #-----------------------------------------------------------------------------
