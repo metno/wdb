@@ -76,6 +76,8 @@ void WciFetchTest::testFetchBinaryData()
 	const string write = wrQ.str();
 	t->exec(write);
 
+	t->exec("SELECT wci.begin('" + defaultUser_ + "')");
+
 	// Read
 	const string read = "SELECT value FROM wci.read("
 		"ARRAY['wcitestwriter'],"
@@ -125,6 +127,8 @@ void WciFetchTest::testFetchFloatGrid()
 		<< "100)";
 	const string write = wrQ.str();
 	t->exec(write);
+
+	t->exec("SELECT wci.begin('" + defaultUser_ + "')");
 
 	// Read
 	const string read = "SELECT value FROM wci.read("

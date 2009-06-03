@@ -76,7 +76,7 @@ $BODY$
 DECLARE
 	idx int := i + (j * iNumber);
 BEGIN
-	RETURN __WDB_SCHEMA__.read_float_from_file(field, idx);
+	RETURN __WCI_SCHEMA__.read_float_from_file(field, idx);
 END;
 $BODY$
 LANGUAGE plpgsql STABLE;

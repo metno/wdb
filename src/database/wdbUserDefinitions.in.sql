@@ -77,7 +77,7 @@ CREATE ROLE cleantest INHERIT LOGIN IN ROLE wdb_clean, wdb_test;
 CREATE ROLE gribtest INHERIT LOGIN IN ROLE wdb_read, wdb_write, wdb_clean, wdb_test;
 
 --- A test user for wci
-CREATE ROLE wcitest INHERIT LOGIN IN ROLE wdb_read, wdb_clean, wdb_test;
+CREATE ROLE wcitest INHERIT LOGIN IN ROLE wdb_read, wdb_test;
 
 --- A test writer for wci
 CREATE ROLE wcitestwriter INHERIT LOGIN IN ROLE wdb_read, wdb_write, wdb_clean, wdb_test;

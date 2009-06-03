@@ -67,7 +67,7 @@ BEGIN
 	-- Clean Files
 	PERFORM cleanupdb();
 	-- Check for File
-	SELECT __WDB_SCHEMA__.exists_file( val1 ) INTO res;
+	SELECT __WCI_SCHEMA__.exists_file( val1 ) INTO res;
 	-- Verify
 	IF res = true THEN
 		ret:=''ERROR: File was found when it should have been deleted'';

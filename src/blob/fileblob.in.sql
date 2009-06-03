@@ -41,7 +41,7 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.read_file(id bigint)
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.read_file(id bigint)
 RETURNS bytea AS
 $BODY$
 DECLARE
@@ -57,7 +57,7 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.read_float_from_file(id bigint, pos int)
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.read_float_from_file(id bigint, pos int)
 RETURNS real AS
 $BODY$
 DECLARE
@@ -73,7 +73,7 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.exists_file(id bigint)
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.exists_file(id bigint)
 RETURNS bool AS
 $BODY$
 DECLARE
