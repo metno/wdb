@@ -14,7 +14,8 @@ Build-Depends: debhelper (>= 5), debconf, dbconfig-common, devscripts,
   libboost-date-time-dev (>=1.33.1),
   libboost-thread-dev (>=1.33.1),
   libreadline5-dev (>=5.2),
-  postgresql-8.3-postgis, postgresql-server-dev-8.3
+  postgresql-8.3-postgis, postgresql-server-dev-8.3,
+  g++, make
 Standards-Version: 3.7.2
 
 Package: wdb
