@@ -250,7 +250,7 @@ fi
 # Create database if it does not exist
 if test "$DATABASE_EXISTS" = "no"; then
     echo -n "creating database $WDB_NAME... "
-    createdb -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -q
+    createdb -ELATIN1 -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -q
     echo "done"
 # Clean out  database if it exists
 else
@@ -268,7 +268,7 @@ else
 	    dropdb -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -q
 	    echo "done"
 	    echo -n "creating database $WDB_NAME... "
-	    createdb -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -O wdb_admin -q
+	    createdb -ELATIN1 -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -O wdb_admin -q
 	    echo "done"
 	fi
     else
