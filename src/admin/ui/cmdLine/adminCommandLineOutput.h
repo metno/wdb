@@ -80,8 +80,8 @@ public:
 	void changeUser( const std::string user, bool admin, bool read, bool write );
 
 	/**
-	 * Create a user with:
-	 * @param 	user	username of the new user
+	 * Delete a user with the given username
+	 * @param 	user	username of user to be deleted
 	 */
 	void dropUser( const std::string user );
 

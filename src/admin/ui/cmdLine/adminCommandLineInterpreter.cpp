@@ -34,6 +34,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <iostream>
+#include <signal.h>
 
 using namespace std;
 
@@ -69,13 +70,22 @@ AdminCommandLineInterpreter::~AdminCommandLineInterpreter()
 	// NOOP
 }
 
+void ignoreSignal(int)
+{}
+
 void AdminCommandLineInterpreter::run()
 {
 	output_.info( "wdb administration" );
 	output_.info( "====================================" );
 	output_.info( "Type <help> to get help" );
 
-	while ( 1 )
+	signal(SIGINT, ignoreSignal);
+
+	read_history(historyFile_.c_str());
+	stifle_history(100);
+
+	bool runLoop = true;
+	while ( runLoop )
 	{
 		try
 		{
@@ -93,7 +103,7 @@ void AdminCommandLineInterpreter::run()
 		// Thrown if user pressed CTRL+D (EOF), or by a Command (eg. quit).
 		catch ( EndOfFileInput )
 		{
-			break;
+			runLoop = false;
 		}
 		// generic error handling - just print a message and continue:
 		catch ( exception & e )
@@ -116,9 +126,29 @@ void AdminCommandLineInterpreter::run( const vector<string> & command )
 
 }
 
+/**
+ * similar to a scoped_array, but for data allocated by malloc, rather than new.
+ */
+template<class C>
+class scoped_c_array : boost::noncopyable
+{
+	C * c_;
+public:
+	explicit scoped_c_array(C * c) : c_(c) {}
+	~scoped_c_array() { free((void *) c_); }
+
+	C * get() { return c_; }
+	const C * get() const { return c_; }
+};
+
+//char ** autocompleteCommand(const char * commandLine, int start, int stop)
+//{
+//	// TODO: Fill in code for tab autocompletion
+//}
+
 void AdminCommandLineInterpreter::readLine(vector<string> & out, const string & prompt) const
 {
-	boost::scoped_array<const char> input( readline(prompt.c_str()) );
+	scoped_c_array<const char> input( readline(prompt.c_str()) );
 
 	if ( input.get() == NULL ) // CTRL+D (EOF) pressed
 	{
@@ -126,14 +156,21 @@ void AdminCommandLineInterpreter::readLine(vector<string> & out, const string & 
 		throw EndOfFileInput();
 	}
 
-	string cmd(input.get());
+	static string lastCommand;
 
+	string cmd(input.get());
 	boost::trim(cmd);
 
-	if (!cmd.empty())
-		add_history(input.get());
-
-	boost::split(out, cmd, boost::is_any_of(" \t"));
+	if ( not cmd.empty() )
+	{
+		if ( lastCommand != cmd )
+		{
+			add_history(input.get());
+			write_history(historyFile_.c_str());
+		}
+		lastCommand = cmd;
+		boost::split(out, cmd, boost::is_space());
+	}
 }
 
 namespace
@@ -150,127 +187,6 @@ struct QuitCommand : AdminCommandLineInterpreter::Command
 	virtual string help() const
 	{
 		return "Quit program";
-	}
-};
-
-/**
- * Load data into the wdb database
- */
-struct LoadCommand : AdminCommandLineInterpreter::Command
-{
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
-	{
-		if (input.size() == 1)
-			clog << "You must give an explicit path in order to load GRIB files." << endl;
-		vector<string>::const_iterator it = input.begin();
-		while ( ++ it != input.end() )
-			performer.loadGribFile(* it);
-	}
-
-	virtual string help() const
-	{
-		return "Load the given files or directories into wdb";
-	}
-};
-
-/**
- * Display all loadable files in a given directory, including subdirectories.
- */
-struct ShowLoadableCommand : AdminCommandLineInterpreter::Command
-{
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
-	{
-		if ( input.size() == 1)
-			performer.listAvailableFilesForLoading(".");
-		else
-		{
-			vector<string>::const_iterator begin = input.begin();
-			const vector<boost::filesystem::path> paths(++ begin, input.end());
-			performer.listAvailableFilesForLoading(paths);
-		}
-	}
-
-	virtual string help() const
-	{
-		return "List loadable files below the given directory";
-	}
-};
-
-/**
- * List reference times, and filed counts from wdb
- */
-struct ListCommand : AdminCommandLineInterpreter::Command
-{
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
-	{
-		if ( input.size() != 1)
-			performer.info( "No arguments are allowed for this command" );
-		else
-			performer.listReferenceTimes();
-	}
-
-	virtual string help() const
-	{
-		return "List number of fields in database, keyed on reference time.";
-	}
-};
-
-/**
- * Show all keys for a given reference time
- */
-struct ListKeysCommand : AdminCommandLineInterpreter::Command
-{
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
-	{
-		if (input.size() < 2)
-		{
-			performer.info("Argument: referencetime");
-			return;
-		}
-
-
-		ostringstream time;
-		time << input[1];
-		for ( int i = 2; i < input.size(); ++ i )
-			time << ' ' << input[i];
-
-		try
-		{
-			wdbTypes::TimeStamp referenceTime;
-			if ( input.size() == 2 )
-				referenceTime = boost::posix_time::time_from_string(time.str() + " 00:00:00");
-			if ( referenceTime == boost::posix_time::not_a_date_time )
-				referenceTime = boost::posix_time::time_from_string(time.str());
-			performer.listKeys(referenceTime);
-		}
-		catch ( boost::bad_lexical_cast & )
-		{
-			performer.info("Invalid time: " + time.str());
-		}
-	}
-
-	virtual string help() const
-	{
-		return "Get a list of all key for the given referencetime";
-	}
-};
-
-struct ChangeValidatorCommand : AdminCommandLineInterpreter::Command
-{
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
-	{
-		const size_t inputSize = input.size();
-		if ( inputSize == 1 )
-			performer.printValidator();
-		else if ( inputSize == 2 )
-			performer.setValidator(input[1]);
-		else
-			performer.info("No more than two arguments allowed.");
-	}
-
-	virtual string help() const
-	{
-		return "Set a new validator. Choose between opdata and hindcast. If you give no arguments, the current validator will be displayed.";
 	}
 };
 
@@ -293,7 +209,7 @@ struct CreateUserCommand : AdminCommandLineInterpreter::Command
 		bool write = false;
 		string option;
 
-		for ( int i = 2; i < input.size(); ++ i ) {
+		for ( unsigned i = 2; i < input.size(); ++ i ) {
 			option = input[i];
 			std::transform(option.begin(), option.end(), option.begin(), (int(*)(int)) tolower);
 			if ( option == "admin" ) {
@@ -339,7 +255,7 @@ struct ChangeUserCommand : AdminCommandLineInterpreter::Command
 		bool write = false;
 		string option;
 
-		for ( int i = 2; i < input.size(); ++ i ) {
+		for ( unsigned i = 2; i < input.size(); ++ i ) {
 			option = input[i];
 			std::transform(option.begin(), option.end(), option.begin(), (int(*)(int)) tolower);
 			if ( option == "admin" ) {
@@ -443,6 +359,15 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 	const AdminCommandLineInterpreter::AvailableCommands & commands_;
 	HelpCommand(const AdminCommandLineInterpreter::AvailableCommands & commands) : commands_(commands) {}
 
+	static std::ostream & printHelp(std::ostream & s, const std::string & name, const AdminCommandLineInterpreter::Command & c )
+	{
+		s << name;
+		if ( name.size() < 8 )
+			s << '\t';
+		s <<"\t  "<< c.help();
+		return s;
+	}
+
 	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		static std::string help;
@@ -450,18 +375,18 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 		{
 			ostringstream h;
 			h << "Available functions\n";
-			for ( AdminCommandLineInterpreter::AvailableCommands::const_iterator it = commands_.begin();
-					it != commands_.end(); ++ it )
+			typedef AdminCommandLineInterpreter::AvailableCommands::const_iterator CmdListIt;
+			for ( CmdListIt it = commands_.begin(); it != commands_.end(); ++ it )
 			{
 				const std::string & cmd = it->first;
-				if ( cmd.size() > 1)
-				{
-					h << cmd;
-					if ( cmd.size() < 8 )
-						h << '\t';
-					h <<"\t  "<< it->second->help() << endl;
-				}
+				if ( cmd.size() > 1 and cmd != "help" and cmd != "quit")
+					printHelp(h, cmd, * it->second) << '\n';
 			}
+
+			CmdListIt quit = commands_.find("quit");
+			if ( quit != commands_.end() )
+				printHelp(h, quit->first, * quit->second) << '\n';
+
 			help = h.str();
 		}
 		performer.info(help);
@@ -478,7 +403,8 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 
 
 AdminCommandLineInterpreter::AdminCommandLineInterpreter(AdminCommandLineOutput & output)
-	: output_(output)
+	: output_(output),
+	historyFile_(string(getenv("HOME")) + "/.wdb_history") // will crash if HOME is not defined
 {
 	// Initialize available commands:
 	typedef boost::shared_ptr<AdminCommandLineInterpreter::Command> P;
@@ -488,17 +414,9 @@ AdminCommandLineInterpreter::AdminCommandLineInterpreter(AdminCommandLineOutput 
 	P quit( new QuitCommand );
 	commands_["quit"] = quit;
 	commands_["q"] = quit;
-//	commands_["list"] = P( new ListCommand );
-//	commands_["keys"] = P( new ListKeysCommand );
-//	commands_["load"] = P( new LoadCommand );
-//	commands_["show_loadable"] = P( new ShowLoadableCommand );
-//	commands_["validator"] = P( new ChangeValidatorCommand );
 	commands_["createuser"] = P( new CreateUserCommand );
 	commands_["changeuser"] = P( new ChangeUserCommand );
 	commands_["dropuser"] = P( new DropUserCommand );
-	//commands_["ta"] = P( new DropUserCommand );
-	//commands_["dropuser"] = P( new DropUserCommand );
-	//commands_["gribload"] = P( new GribLoadCommand );
 	commands_["stats"] = P( new StatsCommand );
 	commands_["vacuum"] = P( new VacuumCommand );
 }

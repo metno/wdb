@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -38,7 +38,7 @@
 #include <functional>
 
 /**
- * @addtogroup administration 
+ * @addtogroup administration
  * @addtogroup admin_ui
  * @addtogroup cmdLine
  * @{
@@ -46,7 +46,7 @@
 
 
 /**
- * Provides an interactive command line, interpreting entered commands. The 
+ * Provides an interactive command line, interpreting entered commands. The
  * parsed commands are then forwarded to an instance of AdminCommandLineInterface.
  */
 class AdminCommandLineInterpreter
@@ -57,7 +57,7 @@ public:
 	 */
 	AdminCommandLineInterpreter(AdminCommandLineOutput & output);
 	virtual ~AdminCommandLineInterpreter();
-	
+
 	/**
 	 * Start the input/dispatch loop.
 	 */
@@ -66,31 +66,33 @@ public:
 	 * Run the input/dispatch loop with commands
 	 */
 	void run( const std::vector<std::string> & command );
-	
-	
+
+
 	// internal stuff which needs to be public
-	class Command;	
+	class Command;
 	typedef std::map<std::string, boost::shared_ptr<Command> > AvailableCommands;
-	
+
 private:
 	/**
-	 * Read a line from stdin and tokenize it. Provides basic editing, and a 
+	 * Read a line from stdin and tokenize it. Provides basic editing, and a
 	 * history function.
-	 *  
+	 *
 	 * @param[out] out the command, each word a single element in the vector.
 	 * @param prompt the prompt to the command line,
 	 */
 	void readLine(std::vector<std::string> & out, const std::string & prompt) const;
-			
+
 	/**
 	 * The outputing class
 	 */
 	AdminCommandLineOutput & output_;
-	
+
 	/**
 	 * Available commands
 	 */
 	AvailableCommands commands_;
+
+	const std::string historyFile_;
 };
 
 /**
