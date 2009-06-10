@@ -10,10 +10,12 @@ lib_LIBRARIES = libwdbConfiguration.a
 
 libwdbConfiguration_a_SOURCES = 	src/common/configuration/wdbConfiguration.cpp \
 									src/common/configuration/WdbDataConfiguration.cpp \
+									src/common/configuration/WdbConfigFile.cpp \
 									src/common/configuration/GridPoint.cpp
 									
 include_HEADERS = 					src/common/configuration/wdbConfiguration.h \
 									src/common/configuration/WdbDataConfiguration.h \
+									src/common/configuration/WdbConfigFile.h \
 									src/common/configuration/GridPoint.h
 
 libwdbConfiguration_a_CPPFLAGS =	-DSYSCONFDIR=\"$(sysconfdir)\" -fPIC
@@ -29,9 +31,9 @@ libwdbConfiguration_a_CPPFLAGS =	-DSYSCONFDIR=\"$(sysconfdir)\" -fPIC
 # Executable
 #-----------------------------------------------------------------------------
 
-bin_PROGRAMS +=			wdbConfiguration
+bin_PROGRAMS +=				wdbConfiguration
 
-pkglib_PROGRAMS += 		wdbConfiguration # this allows database to be uninstalled during make uninstall
+pkglib_PROGRAMS += 			wdbConfiguration # this allows database to be uninstalled during make uninstall
 
 wdbConfiguration_SOURCES = 	src/common/configuration/wdbConfigurationMain.cpp
 

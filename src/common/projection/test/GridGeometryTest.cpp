@@ -38,6 +38,9 @@ void GridGeometryTest::setUp()
 	targetProj = pj_init_plus( "+proj=longlat +ellps=WGS84 +no_defs" );
 	if ( !targetProj )
 		throw wdb::WdbException( "Invalid PROJ definition for target", __func__ );
+	utmProj = pj_init_plus( "+proj=utm +lon_0=15e +datum=WGS84 +units=m +no_defs" );
+	if ( !utmProj )
+		throw wdb::WdbException( "Invalid PROJ definition for utm", __func__ );
 }
 
 void GridGeometryTest::tearDown()
@@ -46,6 +49,7 @@ void GridGeometryTest::tearDown()
 	pj_free(hirlam10Proj);
 	pj_free(hirlam20Proj);
 	pj_free(targetProj);
+	pj_free(utmProj);
 }
 
 void GridGeometryTest::testGetGeometryHirlam10()
@@ -160,4 +164,9 @@ void GridGeometryTest::testChangeOrientation()
 
 	for ( int i = 0; i < 12; ++ i )
 		CPPUNIT_ASSERT_EQUAL(expectedPoints[i], pointsAfterReorientation[i]);
+}
+
+void GridGeometryTest::testGetGeometryUtm()
+{
+
 }

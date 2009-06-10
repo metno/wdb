@@ -161,7 +161,7 @@ DECLARE
 BEGIN
 	--PERFORM verifyBlobSize(data, placeid_);
 	-- Determine dataversion
-	IF currentVersion_ IS NULL THEN
+	IF (currentVersion_ IS NULL OR currentVersion_ < 0) THEN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
@@ -280,7 +280,7 @@ BEGIN
 	-- Verify GridId
 	-- TODO: Not implemented yet.	
 	-- Determine dataversion
-	IF currentVersion_ IS NULL THEN
+	IF (currentVersion_ IS NULL OR currentVersion_ < 0) THEN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
@@ -469,7 +469,7 @@ BEGIN
 	--PERFORM verifyBlobSize(data, placeid_);
 
 	-- Determine dataversion
-	IF currentVersion_ IS NULL THEN
+	IF (currentVersion_ IS NULL OR currentVersion_ < 0) THEN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
@@ -691,7 +691,7 @@ BEGIN
 	--PERFORM verifyBlobSize(value_, placeid_);
 
 	-- Determine dataversion
-	IF currentVersion_ IS NULL THEN
+	IF (currentVersion_ IS NULL OR currentVersion_ < 0) THEN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 

@@ -15,6 +15,7 @@ class GridGeometryTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testGetLowerLeftCorner );
 	CPPUNIT_TEST( testGetLowerRightCorner );
 	CPPUNIT_TEST( testChangeOrientation );
+	CPPUNIT_TEST( testGetGeometryUtm );
 	CPPUNIT_TEST_SUITE_END();
 public:
 	GridGeometryTest();
@@ -33,11 +34,14 @@ public:
 
 	void testChangeOrientation();
 
+	void testGetGeometryUtm();
+
 private:
 	GridGeometry * grid;
 	projPJ hirlam10Proj;
 	projPJ hirlam20Proj;
 	projPJ targetProj;
+	projPJ utmProj;
 };
 
 #endif /*GRIDGEOMETRYTEST_H_*/

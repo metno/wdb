@@ -35,6 +35,13 @@
 #include <iterator>
 #include <cstring>
 
+/**
+ * TODO: Note in documentation that Projections added to WDB that use
+ * meters MUST have +units=m to be handled correctly. This should perhaps
+ * be fixed in the code, though, as this is not a standard
+ */
+
+
 using namespace std;
 
 GridGeometry::GridGeometry(const string & projDef, Orientation o,
