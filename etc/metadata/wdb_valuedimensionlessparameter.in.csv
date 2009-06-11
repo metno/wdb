@@ -32,7 +32,8 @@ ParameterId|Parameter Name|Value Parameter Description
 801|probability of yr weather symbol|Probability of the correctness of the yr weather symbol
 802|probability of wind strength|Probability of the correctness of yr wind parameters
 1104|probability of fog|NA
-1181|proportion of land, model|NA
+1106|vessel icing index|PROFF
+1181|proportion of land (model)|NA
 7100|fog cover|NA
 10349|wtsurf|Hav and kyst
 10352|alfaF|Hav and kyst
