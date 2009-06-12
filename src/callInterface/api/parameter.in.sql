@@ -17,6 +17,31 @@
 --  (at your option) any later version.
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Add Parameters
+--
+CREATE OR REPLACE FUNCTION
+wci.addValueParameter
+(
+	parameterType_					text,
+	parameterUsageOrName_ 			text,
+	parameterUnitOrReference_		text,
+	parameterFunctionOrDescription_	text
+	parameterQuantity_				text,
+)
+RETURNS void AS
+$BODY$
+	IF ( parameterType_ == 'Measure Parameter'::text) THEN
+	ELSE
+	IF ( parameterType_ == 'Function Parameter'::text) THEN
+	ELSE;
+	IF ( parameterType_ == 'Code Parameter'::text) THEN
+	ELSE;
+	IF ( parameterType_ == 'Dimensionless Parameter'::text) THEN
+	END IF;
+$BODY$
+LANGUAGE 'sql';
+
 -- Get parameterids from the given parameter characteristics.
 --
 -- If any of the provided function arguments are NULL, all parameterids 

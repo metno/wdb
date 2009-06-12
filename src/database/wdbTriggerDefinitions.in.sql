@@ -244,7 +244,31 @@ CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv4
 	AFTER INSERT OR UPDATE ON spatial_ref_sys
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateregulargrid_mv() RETURNS "trigger"
+	AS $$
+BEGIN
+	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.regulargrid');
+	RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
 
+CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv1
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
+
+CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv2
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
+
+CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv3
+	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placeregulargrid
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
+
+CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv4
+	AFTER INSERT OR UPDATE ON spatial_ref_sys
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
+
+	
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatevalueparameter_mv() RETURNS "trigger"
 	AS $$
 BEGIN

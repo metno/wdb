@@ -56,25 +56,6 @@
 namespace wdb
 {
 
-class ignore_value : public std::exception
-{
-public:
-	explicit ignore_value( const std::string message ) {
-		message_ = message;
-	};
-	virtual ~ignore_value() throw() {
-		// NOOP
-	};
-	virtual const char * what() const throw()	{
-		return message_.c_str();
-	};
-private:
-	std::string message_;
-};
-
-
-
-
 /**
  * WdbConfigFile is an implementation of a very simply config file system
  */

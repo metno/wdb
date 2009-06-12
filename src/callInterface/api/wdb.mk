@@ -11,6 +11,7 @@ WCIAPI_SOURCES = 		src/callInterface/api/wciWrite.in.sql \
 						src/callInterface/api/wciBegin.in.sql \
 						src/callInterface/api/wciEnd.in.sql \
 						src/callInterface/api/dataprovider.in.sql \
+						src/callInterface/api/placeDefinition.in.sql \
 						src/callInterface/api/placegeo.in.sql \
 						src/callInterface/api/regulargrid.in.sql \
 						src/callInterface/api/listmetadata.in.sql \

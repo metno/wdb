@@ -591,3 +591,42 @@ CREATE INDEX XIE0wci_placespec_mv ON __WCI_SCHEMA__.placespec
 (
 	placeid
 );
+
+
+
+CREATE VIEW __WCI_SCHEMA__.regulargrid_v AS SELECT 
+	pd.placeid,
+	pn.placename,
+	pn.placenamespaceid,
+	pd.placegeometry, 
+	pit.placeindeterminatetype,
+	pg.inumber, 
+	pg.jnumber, 
+	pg.iincrement, 
+	pg.jincrement, 
+	pg.startlongitude, 
+	pg.startlatitude, 
+	pg.originalsrid,
+	srs.proj4text AS projdefinition 
+FROM 
+	__WDB_SCHEMA__.placedefinition pd,
+	__WDB_SCHEMA__.placename pn,
+	spatial_ref_sys srs, 
+	__WDB_SCHEMA__.placeregulargrid pg,
+	__WDB_SCHEMA__.placeindeterminatetype pit
+WHERE 
+	((srs.srid = pg.originalsrid)
+	AND (pd.placeid = pg.placeid))
+	AND (pd.placeid = pn.placeid)
+	AND (pit.placeindeterminatecode = pd.placeindeterminatecode);
+
+REVOKE ALL ON TABLE __WCI_SCHEMA__.regulargrid_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.regulargrid_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.regulargrid_v TO wdb_read, wdb_write;
+
+SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.regulargrid', '__WCI_SCHEMA__.regulargrid_v');
+SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.regulargrid');
+
+REVOKE ALL ON TABLE __WCI_SCHEMA__.regulargrid FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.regulargrid TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.regulargrid TO wdb_read, wdb_write;

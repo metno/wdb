@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -31,9 +31,9 @@
 #define WDBEXCEPTION_H_
 
 /**
- * @addtogroup common 
+ * @addtogroup common
  * @{
- * @addtogroup exception 
+ * @addtogroup exception
  * @{
  */
 /** @file
@@ -52,11 +52,77 @@ namespace wdb {
 // FORWARD REFERENCES
 //
 
-/** 
+class wdb_exception : public std::exception
+{
+public:
+	explicit wdb_exception( const std::string message ) {
+		message_ = message;
+	};
+	virtual ~wdb_exception() throw() {
+		// NOOP
+	};
+	virtual const char * what() const throw()	{
+		return message_.c_str();
+	};
+private:
+	std::string message_;
+};
+
+class empty_result : public wdb_exception
+{
+public:
+	explicit empty_result( const std::string message )
+		: wdb_exception( message ) {
+		// NOOP
+	};
+	virtual ~empty_result() throw() {
+		// NOOP
+	};
+};
+
+class ignore_value : public wdb_exception
+{
+public:
+	explicit ignore_value( const std::string message )
+		: wdb_exception( message ) {
+		// NOOP
+	};
+	virtual ~ignore_value() throw() {
+		// NOOP
+	};
+};
+
+class wci_error : public wdb_exception
+{
+public:
+	explicit wci_error( const std::string message )
+		: wdb_exception( message ) {
+		// NOOP
+	};
+	virtual ~wci_error() throw() {
+		// NOOP
+	};
+};
+
+class missing_metadata : public wdb_exception
+{
+public:
+	explicit missing_metadata( const std::string message )
+		: wdb_exception( message ) {
+		// NOOP
+	};
+	virtual ~missing_metadata() throw() {
+		// NOOP
+	};
+};
+
+
+
+/**
  * Basic class for exceptions thrown by applications in the WDB
  * framework. It provides a constructor that takes an error message and
  * the method name as arguments.
- * 
+ *
  * The class is implemented on top of std::exception. It is meant to be
  * used either directly as is, or inherited by specific exception objects
  * in the various WDB applications.
@@ -64,12 +130,12 @@ namespace wdb {
 class WdbException : public std::exception {
 public:
 	// LIFECYCLE
-    
+
 	/** Default constructor.
 	 */
     WdbException();
-    
-	/** 
+
+	/**
 	 * Construct a WdbException with a explanatory message.
 	 * @param	message		explanatory message
 	 * @param	method		name of the method where the error occured
@@ -80,7 +146,7 @@ public:
 	 *  Provided just to guarantee that no exceptions are thrown.
 	 */
     virtual ~WdbException() throw();
-    
+
 	// ACCESS
 
 	/**  Get the method that caused the exception message
@@ -92,7 +158,7 @@ public:
 	 *   @return exception message
 	 */
     virtual const char * what() const throw();
-  
+
 private:
 
     /// Exception Message
@@ -106,7 +172,7 @@ private:
 
 /**
  * @}
- * 
+ *
  * @}
  */
 

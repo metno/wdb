@@ -44,7 +44,8 @@
 #include "WdbConfigFile.h"
 // PROJECT INCLUDES
 #include <wdbLogHandler.h>
-//
+#include <wdbException.h>
+
 // SYSTEM INCLUDES
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/regex.hpp>
@@ -55,7 +56,6 @@
 using namespace std;
 using namespace wdb;
 using namespace boost;
-
 
 
 //---------------------------------------------------------------------------
@@ -106,8 +106,12 @@ void WdbConfigFile::open( std::string fileName )
 std::string WdbConfigFile::get( std::string key )
 {
 	std::string ret = configTable_[ key ];
-	if ( ret.length() == 0)
-		throw wdb::ignore_value( string("Key value " + key + "is ignored" ) );
+	if ( ret.length() == 0 ) {
+		ret = configTable_[ string("! " + key) ];
+		if (ret.length() != 0 ) {
+			throw wdb::ignore_value( std::string("Key value " + key + "is ignored." ) );
+		}
+	}
 	return ret;
 }
 
@@ -120,10 +124,11 @@ void WdbConfigFile::parse( std::string specification )
 	}
 	if (specification.length() == 0) return;
 
+	// Needs to be case-sensitive due to units. :/
 	// specification -> lowercase
-	typedef int ( *f_lower ) ( int );
-	f_lower lower = tolower;
-	transform( specification.begin(), specification.end(), specification.begin(), lower );
+	//typedef int ( *f_lower ) ( int );
+	//f_lower lower = tolower;
+	//transform( specification.begin(), specification.end(), specification.begin(), lower );
 
 	// check for 'don't load'
 	bool loadValue = true;
