@@ -32,7 +32,6 @@
 #include <adminCommandLineOutput.h>
 #include <adminCommandLineInterpreter.h>
 #include <adminConfiguration.h>
-#include <pqxx/pqxx>
 #include <iostream>
 
 using namespace std;
@@ -85,10 +84,8 @@ int main(int argc, char ** argv)
 	// Connect to database:
 	try
 	{
-		pqxx::connection wdbConnection(conf.database().pqDatabaseConnection());
-
 		// Perform actions:
-		AdminCommandLineOutput actions(wdbConnection, conf.database().user);
+		AdminCommandLineOutput actions(conf.database(), conf.database().user);
 		AdminCommandLineInterpreter interpreter( actions );
 		if ( conf.input().commands.empty() )
 			interpreter.run( );

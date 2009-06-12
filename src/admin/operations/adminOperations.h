@@ -33,6 +33,7 @@
 #include "transactors/getReferenceTimes.h"
 #include "wdbDataKey.h"
 #include "gribFile.h"
+#include <wdbConfiguration.h>
 #include <pqxx/pqxx>
 #include <boost/filesystem/path.hpp>
 #include <boost/function.hpp>
@@ -59,7 +60,7 @@ public:
 	 * @param databaseConnection connection to wdb database
 	 * @param wciUser username to use for wci.begin() call.
 	 */
-	AdminOperations(pqxx::connection & databaseConnection, const std::string & wciUser);
+	AdminOperations(const wdb::WdbConfiguration::DatabaseOptions & opt, const std::string & wciUser);
 
 	virtual ~AdminOperations();
 
@@ -135,68 +136,32 @@ public:
 	bool performVacuum( );
 
 	/**
-	 * Get all files under the given paths matching the isGribFile predicate.
-	 * If the given path is a directory, this directory will be recursively
-	 * searched for GRIB files, including subdirectories.
+	 * Install a new wdb database
 	 *
-	 * @param[out] out The resulting set of loadable files
-	 * @param baseDir Directory or file to search for loadable GRIB files.
+	 * @param databaseName Name of the new wdb instance.
+	 *
+	 * @throws std::logic_error if the database did not exist before
 	 */
-	void getAvailableFilesForLoading(std::vector<GribFilePtr> & out, const boost::filesystem::path & baseDir) const;
+	void createDatabase(const std::string & databaseName);
 
 	/**
-	 * A progress monitor, for use by the loadGribFile function.
+	 * Uninstall a wdb database
 	 *
-	 * A function of this type will have the following signature:
+	 * @param databaseName Name of the database to be uninstalled.
 	 *
-	 * bool monitor(int count, int maxCount, const std::string & currentlyLoading);
-	 *
-	 * The parameters count and maxCount represent progress status, where
-	 * count will increment up to maxCount, whereupon the task is done.
-	 * currentlyLoading is the file name of the file currently being loaded.
-	 *
-	 * The function may return false for loading to stop, or is loading should
-	 * continue, true.
+	 * @throws std::logic_error if the database did not exist before
 	 */
-	typedef boost::function<bool (int, int, const std::string &)> ProgressMonitor;
+	void dropDatabase(const std::string & databaseName);
 
-	/**
-	 * Load all files into wdb. Files are chosen for loading as found by
-	 * getAvailableFilesForLoading(what).
-	 *
-	 * @param progressMonitor a callback function for controlling loading, and
-	 *                        for getting info about progress.
-	 * @param what file(s) to load.
-	 *
-	 * @see ProgressMonitor
-	 *
-	 * @return Count of files that has been read
-	 */
-	int loadGribFile(ProgressMonitor progressMonitor, const boost::filesystem::path & what);
-
-	/**
-	 * Set the factory for creating GRIB file representations. The returned
-	 * object includes verification of the file.
-	 *
-	 * AdminOperations takes over responsibility for this class, deleting it
-	 * when it is no longer needed.
-	 *
-	 * @see class GribFile
-	 */
-	void gribFileFactory(GribFileFactory * factory);
-
-	/**
-	 * Get the grib file factory currently in use.
-	 */
-	GribFileFactory * gribFileFactory() const
-	{
-		return gribFileFactory_;
-	}
 
 protected:
-	pqxx::connection & connection_;
+	pqxx::connection & connection();
+
 	const std::string wciUser_;
-	GribFileFactory * gribFileFactory_;
+
+private:
+	wdb::WdbConfiguration::DatabaseOptions databaseOption_;
+	pqxx::connection * connection_;
 };
 
 /// @}

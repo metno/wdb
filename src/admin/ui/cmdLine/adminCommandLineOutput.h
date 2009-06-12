@@ -54,7 +54,7 @@ public:
 	 * @param printAdditionalInfo Should output containt additional
 	 * 							  information, such as list headers and such?
 	 */
-	AdminCommandLineOutput(pqxx::connection & databaseConnection, const std::string & wciUser, bool printAdditionalInfo = true);
+	AdminCommandLineOutput(const wdb::WdbConfiguration::DatabaseOptions & opt, const std::string & wciUser, bool printAdditionalInfo = true);
 
 	/**
 	 * Default destructor
@@ -104,36 +104,23 @@ public:
 	void listKeys(const wdbTypes::TimeStamp & referenceTime);
 
 	/**
-	 * Print a list of available files for loading into database.
-	 *
-	 * @param baseDir a file or directory to search for loadable files.
-	 */
-	void listAvailableFilesForLoading(const boost::filesystem::path & baseDir) const;
-
-	/**
-	 * Print a list of available files for loading into database.
-	 *
-	 * @param baseDirs a set of file or directory to search for loadable files.
-	 */
-	void listAvailableFilesForLoading(const std::vector<boost::filesystem::path> & baseDirs) const;
-
-	/**
 	 * Clean DB and vacuum the database
 	 */
 	void vacuum( );
 
 	/**
-	 * Load a GRIB file into the wdb database. If the provided argument
-	 * is a directory instead of a file, all GRIB files within and below the
-	 * given directory are loaded.
+	 * Install a new wdb database
 	 *
-	 * Displays a simple monitor.
-	 *
-	 * @bug The operation is not cancellable.
-	 *
-	 * @param fileOrDirectory What to load into wdb
+	 * @param databaseName Name of the new wdb instance.
 	 */
-	void loadGribFile(const boost::filesystem::path & fileOrDirectory);
+	void createDatabase(const std::string & databaseName);
+
+	/**
+	 * Uninstall a wdb database
+	 *
+	 * @param databaseName Name of the database to be uninstalled.
+	 */
+	void dropDatabase(const std::string & databaseName);
 
 	/**
 	 * Toggle whether to print information beyond the result itself from a
@@ -145,17 +132,6 @@ public:
 	 * Will we print information beyond the result itself from a query.
 	 */
 	bool printAdditionalInfo() const { return printAdditionalInfo_; }
-
-	/**
-	 * Display which validator we are currently using
-	 */
-	void printValidator() const;
-
-	/**
-	 * Set what validator to use. Currently, allowed names are "opdata" and
-	 * "hindcast".
-	 */
-	void setValidator(const std::string & name);
 
 	/**
 	 * Print the given information to the output channel

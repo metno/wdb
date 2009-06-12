@@ -399,6 +399,45 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 
 };
 
+struct CreateDatabaseCommand : AdminCommandLineInterpreter::Command
+{
+	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	{
+		if (input.size() != 2)
+		{
+			performer.info("Usage: createdb NAME");
+			return;
+		}
+
+		performer.createDatabase(input[1]);
+	}
+
+	virtual string help() const
+	{
+		return "Create a new wdb database instance. (Usage: createdb NAME)";
+	}
+};
+
+struct DropDatabaseCommand : AdminCommandLineInterpreter::Command
+{
+	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	{
+		if (input.size() != 2)
+		{
+			performer.info("Usage: dropdb NAME");
+			return;
+		}
+
+		performer.dropDatabase(input[1]);
+	}
+
+	virtual string help() const
+	{
+		return "Drop a wdb database instance. (Usage: dropdb NAME)";
+	}
+};
+
+
 }
 
 
@@ -419,4 +458,6 @@ AdminCommandLineInterpreter::AdminCommandLineInterpreter(AdminCommandLineOutput 
 	commands_["dropuser"] = P( new DropUserCommand );
 	commands_["stats"] = P( new StatsCommand );
 	commands_["vacuum"] = P( new VacuumCommand );
+	commands_["createdb"] = P( new CreateDatabaseCommand );
+	commands_["dropdb"] = P( new DropDatabaseCommand );
 }

@@ -138,6 +138,7 @@ public:
 		 * the options given for the program.
 		 */
         std::string pqDatabaseConnection() const;
+        std::string psqlDatabaseConnection() const;
     };
 
     /**

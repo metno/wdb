@@ -257,6 +257,17 @@ string WdbConfiguration::DatabaseOptions::pqDatabaseConnection() const
 	return ret.str();
 }
 
+string WdbConfiguration::DatabaseOptions::psqlDatabaseConnection() const
+{
+	ostringstream ret;
+	ret << "-d" << database;
+	if ( ! host.empty() )
+		ret << " -h" << host;
+	ret << " -p" << port;
+	ret << " -U" << user;
+	return ret.str();
+}
+
 
 // Internal
 //---------------------------------------------------------------------------

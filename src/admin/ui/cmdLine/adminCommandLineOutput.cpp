@@ -36,8 +36,8 @@
 using namespace std;
 using namespace boost::filesystem;
 
-AdminCommandLineOutput::AdminCommandLineOutput(pqxx::connection & databaseConnection, const std::string & wciUser, bool printAdditionalInfo) :
-	AdminOperations(databaseConnection, wciUser), printAdditionalInfo_(printAdditionalInfo), out_(cout)
+AdminCommandLineOutput::AdminCommandLineOutput(const wdb::WdbConfiguration::DatabaseOptions & opt, const std::string & wciUser, bool printAdditionalInfo) :
+	AdminOperations(opt, wciUser), printAdditionalInfo_(printAdditionalInfo), out_(cout)
 {
 	// NOOP
 }
@@ -101,7 +101,7 @@ AdminCommandLineOutput::listStats( const string option )
 	if ( printAdditionalInfo() )
 	{
 		out_ << setw(30) << R.column_name(0) << '\t';
-		for (int i=1; i<R.columns(); i++) {
+		for (unsigned i=1; i<R.columns(); i++) {
 			out_ << setw(10) << R.column_name(i) << '\t';
 		}
 		out_ << endl;
@@ -112,7 +112,7 @@ AdminCommandLineOutput::listStats( const string option )
 	}
 	for (pqxx::result::const_iterator it = R.begin(); it != R.end(); ++it ) {
 		out_ << setw(30) << it.at(0).c_str() << '\t';
-		for (int i=1; i<R.columns(); i++) {
+		for (unsigned i=1; i<R.columns(); i++) {
 			out_ << setw(10) << it.at(i).c_str() << '\t';
 		}
 		out_ << endl;
@@ -144,31 +144,6 @@ void AdminCommandLineOutput::listKeys(const wdbTypes::TimeStamp & referenceTime)
 }
 
 
-void AdminCommandLineOutput::listAvailableFilesForLoading(const path & baseDir) const
-{
-	vector<path> p(1, baseDir);
-	listAvailableFilesForLoading(p);
-}
-
-void AdminCommandLineOutput::listAvailableFilesForLoading(const vector<path> & baseDirs) const
-{
-	if ( printAdditionalInfo() )
-		out_ << "Files available for loading, with reference time and valid time:\n";
-
-	vector<GribFilePtr> available;
-	for ( vector<path>::const_iterator it = baseDirs.begin(); it != baseDirs.end(); ++ it )
-		getAvailableFilesForLoading(available, * it);
-
-	if ( printAdditionalInfo() && available.empty() )
-		out_ << "<None>" << endl;
-
-	for (vector<GribFilePtr>::const_iterator it = available.begin(); it != available.end(); ++it )
-		out_ << (*it)->file().native_directory_string() << '\t' << (*it)->referenceTime() << '\t' << (*it)->validTime() << endl;
-
-	if ( printAdditionalInfo() )
-		out_ << "(" << available.size() << " files)" << endl;
-}
-
 void AdminCommandLineOutput::vacuum( )
 {
 	if (printAdditionalInfo())
@@ -184,58 +159,30 @@ void AdminCommandLineOutput::vacuum( )
 	}
 }
 
-
-
-namespace
+void AdminCommandLineOutput::createDatabase(const std::string & databaseName)
 {
-bool progressMonitor(int currentCount, int maxCount, const std::string & file)
-{
-	if ( maxCount != 1 )
-	{
-		clog << '\r' << setw(3) << currentCount << '/' << maxCount << '\t' << file << flush;
-		if ( currentCount == maxCount )
-			clog << endl;
-	}
-	return true;
-}
-}
-
-void AdminCommandLineOutput::loadGribFile(const boost::filesystem::path & fileOrDirectory)
-{
-	if (printAdditionalInfo())
-		out_ << "Loading..." << endl;
-
-	int count = AdminOperations::loadGribFile(progressMonitor, fileOrDirectory);
-
-	if (printAdditionalInfo())
-		out_ << "Wrote " << count << " files to wdb" << endl;
-}
-
-void AdminCommandLineOutput::printValidator() const
-{
-	if (printAdditionalInfo())
-		out_ << "Validator: ";
-
-	GribFileFactory * f = gribFileFactory();
-	if ( ! f )
+	try
 	{
 		if ( printAdditionalInfo() )
-			out_ << "<None>" << endl;
+			out_ << "Attempting to create database <" << databaseName << ">..." << endl;
+		AdminOperations::createDatabase(databaseName);
+		out_ << "Successfully created wdb database <" <<  databaseName << ">" << endl;
 	}
-	else
-		out_ << f->validatorName() << endl;
+	catch( std::exception & e )
+	{
+		out_ << e.what() << endl;
+	}
 }
 
-void AdminCommandLineOutput::setValidator(const std::string & name)
+void AdminCommandLineOutput::dropDatabase(const std::string & databaseName)
 {
-	GribFileFactory * f = gribFileFactory();
-	if ( f && f->validatorName() == name )
-		return;
-
-	if ( name == "opdata" )
-		gribFileFactory( new OpdataGribFileFactory );
-	else if ( name == "hindcast" )
-		gribFileFactory( new HindcastGribFileFactory );
-	else
-		out_ << "Unknown validator: " << name << endl;
+	try
+	{
+		AdminOperations::dropDatabase(databaseName);
+		out_ << "Successfully dropped wdb database <" <<  databaseName << ">" << endl;
+	}
+	catch( std::exception & e )
+	{
+		out_ << e.what() << endl;
+	}
 }

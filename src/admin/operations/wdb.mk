@@ -1,4 +1,4 @@
-libwdbAdmin_a_TRANSACTIONS = \
+libwdbAdmin_la_TRANSACTIONS = \
 							src/admin/operations/transactors/createUser.h \
 							src/admin/operations/transactors/changeUser.h \
 							src/admin/operations/transactors/dropUser.h \
@@ -11,7 +11,7 @@ libwdbAdmin_a_TRANSACTIONS = \
 							src/admin/operations/transactors/queryUtility.h \
 							src/admin/operations/transactors/performClean.h
 
-libwdbAdmin_a_SOURCES += 	$(libwdbAdmin_a_TRANSACTIONS) \
+libwdbAdmin_la_SOURCES += 	$(libwdbAdmin_a_TRANSACTIONS) \
 							src/admin/operations/wdbTypes.h \
 							src/admin/operations/adminOperations.h \
 							src/admin/operations/adminOperations.cpp \

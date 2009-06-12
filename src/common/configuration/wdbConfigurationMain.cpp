@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
@@ -30,10 +30,10 @@
 /**
  * @defgroup configuration WDB configuration
  * @ingroup common
- * 
- * These are tools for accessing WDB runtime configuration, such as 
+ *
+ * These are tools for accessing WDB runtime configuration, such as
  * which server and loglevel to use.
- * 
+ *
  * @{
  */
 
@@ -58,17 +58,17 @@ namespace {
 /**
  * Print the name and version information of the application
  * @param	out			Stream to which the version information is written
- */ 
+ */
 void version( ostream & out )
 {
 	out << "wdbConfiguration (" << PACKAGE << ") " << VERSION << endl;
 }
 
 /**
- * Print the help information of the program 
- * @param	options		A reference to the options available in the application 
+ * Print the help information of the program
+ * @param	options		A reference to the options available in the application
  * @param	out			Stream to which the version information is written
- */ 
+ */
 void help( const options_description & options, ostream & out )
 {
 	version( out );
@@ -86,22 +86,12 @@ bool tooManyOptions( const variables_map & options )
 
 void pqxxArgs(std::ostream & out, const WdbConfiguration::DatabaseOptions & db)
 {
-	out << "dbname=" << db.database;
-	if ( ! db.host.empty() )
-		out << " host=" << db.host;
-	out << " port=" << db.port;
-	out << " user=" << db.user;
-	out << endl;
+	out << db.pqDatabaseConnection() << endl;
 }
 
 void psqlArgs(std::ostream & out, const WdbConfiguration::DatabaseOptions & db)
 {
-	out << "-d" << db.database;
-	if ( ! db.host.empty() )
-		out << " -h" << db.host;
-	out << " -p" << db.port;
-	out << " -U" << db.user;
-	out << endl;
+	out << db.psqlDatabaseConnection() << endl;
 }
 
 
@@ -111,9 +101,9 @@ void psqlArgs(std::ostream & out, const WdbConfiguration::DatabaseOptions & db)
 int main( int argc, char ** argv )
 {
 	std::string configFile;
-	
+
     options_description allowedOptions( "Options" );
-    
+
 	options_description general("General");
     general.add_options()
     ( "help", "Produce this help message" )
@@ -138,7 +128,7 @@ int main( int argc, char ** argv )
 
 	try
 	{
-		parsed_options options = parse_command_line( argc, argv, allowedOptions ); 
+		parsed_options options = parse_command_line( argc, argv, allowedOptions );
 		store( options, givenOptions );
 		notify( givenOptions );
 
@@ -147,7 +137,7 @@ int main( int argc, char ** argv )
 			clog << "Only one option is allowed" << endl;
 			return 1;
 		}
-		
+
 	    if ( givenOptions.count( "version" ) )
 	    {
 	        version( cout );
@@ -159,16 +149,16 @@ int main( int argc, char ** argv )
 	        return 0;
 	    }
 
-	    
+
 	    int cArgc = configFile.empty() ? 1 : 2;
 	    std::string configOption = "--conf=" + configFile;
 		char * cArgv[2] = { argv[0], strdup( configOption.c_str() ) }; // ignore memory leak
-		
+
 		WdbConfiguration conf;
 		conf.parse( cArgc, cArgv );
 
 		const WdbConfiguration::DatabaseOptions & db = conf.database();
-	    
+
 	    if ( givenOptions.count( "database" ) )
 	    	cout << db.database << endl;
     	else if ( givenOptions.count( "host" ) )
@@ -199,6 +189,6 @@ int main( int argc, char ** argv )
 
 /**
  * @}
- * 
+ *
  * @}
  */

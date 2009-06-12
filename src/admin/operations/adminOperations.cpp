@@ -27,6 +27,7 @@
 */
 
 
+#include <config.h>
 #include "adminOperations.h"
 #include "wdbDataKey.h"
 #include "opdataGribFile.h"
@@ -50,21 +51,21 @@ using namespace admin;
 using boost::to_lower_copy;
 
 
-AdminOperations::AdminOperations(pqxx::connection & databaseConnection, const std::string & wciUser) :
-	connection_(databaseConnection), wciUser_(wciUser), gribFileFactory_(new OpdataGribFileFactory)
+AdminOperations::AdminOperations(const wdb::WdbConfiguration::DatabaseOptions & opt, const std::string & wciUser) :
+	wciUser_(wciUser), databaseOption_(opt), connection_(0)
 {
 }
 
 AdminOperations::~AdminOperations()
 {
-	delete gribFileFactory_;
+	delete connection_;
 }
 
 bool
 AdminOperations::performCreateUser( const string & username, bool admin, bool read, bool write )
 {
 	try {
-		connection_.perform(
+		connection().perform(
 			CreateUser( to_lower_copy(username), admin, read, write )
 	 	);
 	}
@@ -80,7 +81,7 @@ bool
 AdminOperations::performChangeUser( const string & username, bool admin, bool read, bool write )
 {
 	try {
-		connection_.perform(
+		connection().perform(
 			ChangeUser( to_lower_copy(username), admin, read, write )
 	 	);
 	}
@@ -95,7 +96,7 @@ bool
 AdminOperations::performDropUser( const string & username )
 {
 	try {
-		connection_.perform(
+		connection().perform(
 			DropUser( to_lower_copy(username) )
 	 	);
 	}
@@ -110,7 +111,7 @@ void
 AdminOperations::listTables( pqxx::result & ret )
 {
 	try {
-		connection_.perform(
+		connection().perform(
 			ListTables( ret )
 	 	);
 	}
@@ -124,7 +125,7 @@ void
 AdminOperations::listIndexes( pqxx::result & ret )
 {
 	try {
-		connection_.perform(
+		connection().perform(
 			ListIndexes( ret )
 	 	);
 	}
@@ -138,7 +139,7 @@ void
 AdminOperations::listIo( pqxx::result & ret )
 {
 	try {
-		connection_.perform(
+		connection().perform(
 			ListIo( ret )
 	 	);
 	}
@@ -152,14 +153,14 @@ void AdminOperations::getReferenceTimes(AdminOperations::ReferenceTimeCount & ou
 {
 	typedef GetReferenceTimes<pqxx::transaction<pqxx::read_committed> >	getRefTimes;
 	getRefTimes t(out, wciUser_ );
-	connection_.perform(t);
+	connection().perform(t);
 }
 
 void AdminOperations::getKeys(std::vector<WdbDataKey> & out, const wdbTypes::TimeStamp & time)
 {
 	typedef GetData<WdbDataKey, pqxx::transaction<pqxx::read_committed> > GetData;
 	GetData t(out, time, wciUser_ );
-	connection_.perform(t);
+	connection().perform(t);
 }
 
 int
@@ -167,7 +168,7 @@ AdminOperations::performClean( )
 {
 	int ret = 0;
 	try {
-		connection_.perform(
+		connection().perform(
 			PerformClean( ret, wciUser_ )
 	 	);
 	}
@@ -181,7 +182,7 @@ AdminOperations::performClean( )
 bool
 AdminOperations::performVacuum( )
 {
-	pqxx::nontransaction t( connection_, "Vacuum Job");
+	pqxx::nontransaction t( connection(), "Vacuum Job");
 	try {
 		t.exec( "VACUUM ANALYZE" );
 		t.commit();
@@ -194,136 +195,30 @@ AdminOperations::performVacuum( )
 	return true;
 }
 
-void AdminOperations::getAvailableFilesForLoading(vector<GribFilePtr> & out, const path & baseDir) const
+void AdminOperations::createDatabase(const std::string & databaseName)
 {
-	if ( ! exists(baseDir) )
-	{
-		ostringstream errMsg;
-		errMsg << baseDir.native_directory_string() << " does not exist";
-		throw std::runtime_error(errMsg.str());
-	}
-
-	if (is_directory(baseDir) )
-		for (directory_iterator it(baseDir); it != directory_iterator(); ++ it)
-			getAvailableFilesForLoading(out, * it);
-	else try
-	{
-		GribFilePtr p = gribFileFactory_->get(baseDir);
-		out.push_back(p);
-	}
-	catch ( std::exception & )
-	{
-		// ignore - file was not a GRIB file.
-	}
+	std::ostringstream cmd;
+	cmd << WDB_PKGLIBDIR"/install_database -d " << databaseName;
+	std::string createCmd = cmd.str();
+	int result = std::system(createCmd.c_str());
+	if ( result != 0)
+		throw std::runtime_error("Error when creating database");
 }
 
-namespace
+void AdminOperations::dropDatabase(const std::string & databaseName)
 {
-	template<typename Container>
-	class WorkQue
-	{
-
-		boost::mutex mutex_;
-		const Container & files_;
-		int current_;
-		AdminOperations::ProgressMonitor progressMonitor_;
-
-	public:
-		WorkQue(const Container & files, AdminOperations::ProgressMonitor progressMonitor)
-			: files_(files), current_(0), progressMonitor_(progressMonitor)
-		{}
-
-		GribFilePtr next()
-		{
-			boost::mutex::scoped_lock lock(mutex_);
-
-			if ( files_.size() <= current_ )
-				return GribFilePtr((GribFile *) 0);
-
-			GribFilePtr ret = files_[current_ ++];
-			progressMonitor_(current_, files_.size(), files_[current_]->file().native_file_string());
-			return ret;
-		}
-	};
-
-	template<typename Container>
-	class GribFileLoader
-	{
-		WorkQue<Container> & work_;
-
-	public:
-		GribFileLoader( WorkQue<Container> & work )
-			: work_(work)
-		{}
-
-		void operator () ()
-		{
-			for ( GribFilePtr fileToProcess = work_.next(); fileToProcess.get(); fileToProcess = work_.next() )
-			{
-				ostringstream cmd;
-				cmd << "gribLoad --loglevel=5 " << fileToProcess->file().native_file_string();
-				const string sCmd(cmd.str());
-
-				//int status =
-					std::system(sCmd.c_str());
-			}
-		}
-	};
-
+	std::ostringstream cmd;
+	cmd << WDB_PKGLIBDIR"/uninstall_database -d " << databaseName;
+	std::string dropCmd = cmd.str();
+	int result = std::system(dropCmd.c_str());
+	if ( result != 0)
+		throw std::runtime_error("Error when dropping database");
 }
 
 
-
-int AdminOperations::loadGribFile(AdminOperations::ProgressMonitor progressMonitor, const boost::filesystem::path & what)
+pqxx::connection & AdminOperations::connection()
 {
-	typedef vector<GribFilePtr> GfpList;
-	typedef GribFileLoader<GfpList> GfLoader;
-
-	GfpList filesToLoad;
-	getAvailableFilesForLoading(filesToLoad, what);
-
-	int count = 0;
-
-	WorkQue<GfpList> work(filesToLoad, progressMonitor);
-
-
-	typedef boost::shared_ptr<boost::thread> ThreadPtr;
-	vector<ThreadPtr> workers;
-	for ( int i = 0; i < 3; ++ i )
-		workers.push_back(ThreadPtr(new boost::thread(GfLoader(work))));
-	// Work is done here...
-	for ( vector<ThreadPtr>::const_iterator it = workers.begin(); it != workers.end(); ++ it )
-		(*it)->join();
-
-	return filesToLoad.size();
-}
-
-
-//int AdminOperations::loadGribFile(AdminOperations::ProgressMonitor progressMonitor, const boost::filesystem::path & what)
-//{
-//	vector<GribFilePtr> filesToLoad;
-//	getAvailableFilesForLoading(filesToLoad, what);
-//
-//	int count = 0;
-//	int fileCount = filesToLoad.size();
-//
-//	for ( vector<GribFilePtr>::const_iterator it = filesToLoad.begin(); it != filesToLoad.end(); ++ it )
-//	{
-//		if ( ! progressMonitor(++ count, fileCount, (*it)->file().native_file_string()) )
-//			return -- count;
-//
-//		ostringstream cmd;
-//		cmd << "gribLoad --loglevel=5 " << (*it)->file().native_file_string();
-//		const string sCmd(cmd.str());
-//
-//		int status = std::system(sCmd.c_str());
-//	}
-//
-//	return fileCount;
-//}
-
-void AdminOperations::gribFileFactory(GribFileFactory * factory)
-{
-	delete gribFileFactory_;
-	gribFileFactory_ = factory;
+	if ( ! connection_ )
+		connection_ = new pqxx::connection(databaseOption_.pqDatabaseConnection());
+	return * connection_;
 }
