@@ -1,6 +1,6 @@
 if HAS_CPPUNIT
 
-lib_LTLIBRARIES += libwciInstallTestBase.la
+noinst_LTLIBRARIES += libwciInstallTestBase.la
 
 libwciInstallTestBase_la_SOURCES = \
 	test/install/callInterface/AbstractWciTestFixture.cpp \

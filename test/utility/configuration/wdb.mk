@@ -5,7 +5,7 @@
 # Library
 #-----------------------------------------------------------------------------
 
-lib_LTLIBRARIES += 					libtestConfiguration.la
+noinst_LTLIBRARIES += 				libtestConfiguration.la
 libtestConfiguration_la_SOURCES = 	test/utility/configuration/testConfiguration.cpp
 pkginclude_HEADERS += 				test/utility/configuration/testConfiguration.h
 libtestConfiguration_la_CPPFLAGS =	-DSYSCONFDIR=\"$(sysconfdir)\" -fPIC
