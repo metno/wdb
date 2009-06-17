@@ -200,7 +200,7 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.dataprovidername
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidername
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();
 
 
@@ -213,11 +213,11 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv1
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placedefinition
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv2
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateplacespec_mv() RETURNS "trigger"
@@ -229,19 +229,19 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv1
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placedefinition
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv2
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv3
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placeregulargrid
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placeregulargrid
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv4
-	AFTER INSERT OR UPDATE ON spatial_ref_sys
+	AFTER INSERT OR UPDATE OR DELETE ON spatial_ref_sys
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateregulargrid_mv() RETURNS "trigger"
@@ -253,19 +253,19 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv1
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placedefinition
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placedefinition
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv2
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placename
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv3
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.placeregulargrid
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placeregulargrid
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv4
-	AFTER INSERT OR UPDATE ON spatial_ref_sys
+	AFTER INSERT OR UPDATE OR DELETE ON spatial_ref_sys
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
 
 	
@@ -278,7 +278,7 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.valuemeasureparameter
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valuemeasureparameter
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
 
 
@@ -291,5 +291,5 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv
-	AFTER INSERT OR UPDATE ON __WDB_SCHEMA__.levelmeasureparameter
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.levelmeasureparameter
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatelevelparameter_mv();
