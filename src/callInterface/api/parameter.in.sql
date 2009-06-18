@@ -30,14 +30,46 @@ wci.addValueParameter
 	parameterQuantity_				text,
 )
 RETURNS void AS
+DECLARE	
+	parameterid_ int;
 $BODY$
+	-- Insert Base
+	INSERT INTO __WDB_SCHEMA__.valueparameter
+	VALUES ( parameterType_ );
+	-- Get inserted valueid
+	TODO
+	-- Insert Value
 	IF ( parameterType_ == 'Measure Parameter'::text) THEN
+		-- Base Table
+		INSERT INTO __WDB_SCHEMA__.valuemeasureparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_,
+				 parameterQuantity_ );
 	ELSE
 	IF ( parameterType_ == 'Function Parameter'::text) THEN
+		-- Function Table
+		INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
+		VALUES ( parameterid_,
+				 parameterFunctionOrReference_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_,
+				 parameterQuantity_ );
 	ELSE;
 	IF ( parameterType_ == 'Code Parameter'::text) THEN
+		-- Code Table
+		INSERT INTO __WDB_SCHEMA__.valuecodeparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_ );
 	ELSE;
 	IF ( parameterType_ == 'Dimensionless Parameter'::text) THEN
+		-- Dimensionless Table
+		INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterFunctionOrDescription_ );
+	
 	END IF;
 $BODY$
 LANGUAGE 'sql';

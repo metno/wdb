@@ -143,6 +143,11 @@ void AdminCommandLineOutput::listKeys(const wdbTypes::TimeStamp & referenceTime)
 		out_ << * it << endl;
 }
 
+void AdminCommandLineOutput::testClean( )
+{
+	int rows = performTestClean();
+	out_ << "Database cleaned. " << rows << " rows removed." << endl;
+}
 
 void AdminCommandLineOutput::vacuum( )
 {

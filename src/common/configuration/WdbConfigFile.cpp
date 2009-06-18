@@ -57,6 +57,8 @@ using namespace std;
 using namespace wdb;
 using namespace boost;
 
+typedef std::tr1::unordered_map<std::string, std::string> umap;
+
 
 //---------------------------------------------------------------------------
 // Public Methods
@@ -93,7 +95,7 @@ void WdbConfigFile::open( std::string fileName )
 {
     ifstream file( fileName.c_str() );
     if (!file)
-    	throw std::invalid_argument( string("Could not open file" + fileName) );
+    	throw std::invalid_argument( string("Could not open file " + fileName) );
     while( !file.eof() )
     {
     	std::string input;
@@ -105,14 +107,18 @@ void WdbConfigFile::open( std::string fileName )
 
 std::string WdbConfigFile::get( std::string key )
 {
-	std::string ret = configTable_[ key ];
-	if ( ret.length() == 0 ) {
-		ret = configTable_[ string("! " + key) ];
-		if (ret.length() != 0 ) {
-			throw wdb::ignore_value( std::string("Key value " + key + "is ignored." ) );
+	if ( configTable_.end() != configTable_.find( key ) ) {
+		return configTable_.find( key )->second;
+	}
+	else {
+		std::string notkey = "! " + key;
+		if ( configTable_.end() != configTable_.find( notkey ) ) {
+			throw wdb::ignore_value( std::string("Key value " + key + " is ignored." ) );
+		}
+		else {
+			throw std::out_of_range( std::string("Key value " + key + " is not defined in configuration file." ) );
 		}
 	}
-	return ret;
 }
 
 void WdbConfigFile::parse( std::string specification )
@@ -135,9 +141,11 @@ void WdbConfigFile::parse( std::string specification )
 	if ( specification[0] == '!' )
 		loadValue = false;
 
-	// make all whitespace into a single space char and trim
+	// make all whitespace into a single space char, convert whitespace+comma to comma, and trim
 	static const regex whitespace( "(\\s+)" );
 	specification = regex_replace( specification, whitespace, " " );
+	static const regex commas( "(\\s+,)" );
+	specification = regex_replace( specification, commas, "," );
 	trim( specification );
 
 	// Extract Key
@@ -145,6 +153,8 @@ void WdbConfigFile::parse( std::string specification )
 	std::string value;
 	if (loadValue)
 		value = extractValue( specification );
+	else
+		value = "NULL";
 
 	// Insert Key, Value pair
 	configTable_[ key ] = value;

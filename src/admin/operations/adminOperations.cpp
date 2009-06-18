@@ -39,6 +39,7 @@
 #include "transactors/listIo.h"
 #include "transactors/getData.h"
 #include "transactors/performClean.h"
+#include "transactors/performTestClean.h"
 #include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
 #include <boost/algorithm/string.hpp>
@@ -161,6 +162,22 @@ void AdminOperations::getKeys(std::vector<WdbDataKey> & out, const wdbTypes::Tim
 	typedef GetData<WdbDataKey, pqxx::transaction<pqxx::read_committed> > GetData;
 	GetData t(out, time, wciUser_ );
 	connection().perform(t);
+}
+
+int
+AdminOperations::performTestClean( )
+{
+	int ret = 0;
+	try {
+		connection().perform(
+			PerformTestClean( ret, wciUser_ )
+	 	);
+	}
+	catch ( std::exception & e )
+	{
+		cerr << "Unexpected exception throw in WDB testclean: " << e.what() << endl;
+	}
+	return ret;
 }
 
 int

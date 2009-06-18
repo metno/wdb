@@ -9,7 +9,8 @@ libwdbAdmin_a_TRANSACTIONS = \
 							src/admin/operations/transactors/getDataForReferenceTime.h \
 							src/admin/operations/transactors/getReferenceTimes.h \
 							src/admin/operations/transactors/queryUtility.h \
-							src/admin/operations/transactors/performClean.h
+							src/admin/operations/transactors/performClean.h \
+							src/admin/operations/transactors/performTestClean.h
 
 libwdbAdmin_a_SOURCES += 	$(libwdbAdmin_a_TRANSACTIONS) \
 							src/admin/operations/wdbTypes.h \

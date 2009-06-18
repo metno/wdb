@@ -32,7 +32,7 @@ DECLARE
 	ret text;
 BEGIN
 	SELECT placename INTO ret
-	FROM __WCI_SCHEMA__.regulargrid
+	FROM __WCI_SCHEMA__.regulargrid, __WCI_SCHEMA__.getSessionData()
 	WHERE inumber = numX_
 	AND   jnumber = numY_
 	AND   round(iIncrement::numeric, 3) = round(incX_::numeric, 3)
@@ -45,6 +45,8 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
+
+
 
 CREATE OR REPLACE FUNCTION
 wci.addPlaceDefinition(
@@ -64,10 +66,20 @@ DECLARE
 	placeId_ bigint;
 	srid_ int;
 BEGIN
+	-- Get Namespace
+	SELECT placenamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();	
 	-- Get SRID
-	
+	SELECT srid INTO srid_
+	FROM spatial_ref_sys
+	WHERE proj4text = projection_;
+	-- If SRID not found...
+	IF srid_ IS NULL THEN
+		RAISE EXCEPTION 'Could not identify the PROJ.4 projection in the database. Check that the projection is valid and, if needed, insert it into the database using wci.addSrid( ... )';		
+	END IF;
 	-- Get PlaceId
-	
+	SELECT max(placeid) + 1 INTO placeid_
+	FROM __WCI_SCHEMA__.placedefinition;	
 	-- Insert Data
 	INSERT INTO __WDB_SCHEMA__.placeregulargrid
 	VALUES ( placeId_,
@@ -82,10 +94,96 @@ BEGIN
 	INSERT INTO __WDB_SCHEMA__.placename
 	VALUES ( placeId_,
 			 nameSpace_,
-			 placeName_,
-			 -infinity,
-			 +infinity );			 
+			 lower(placeName_),
+			 '-infinity'::timestamp,
+			 'infinity'::timestamp );			 
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
+
+
+
+--
+-- Add new placeId
+--
+CREATE OR REPLACE FUNCTION 
+gribload.setplaceid(
+	placegeo_ text,
+	placesrid_ integer,
+	inumber_ integer,
+	jnumber_ integer,
+	iincrement_ real,
+	jincrement_ real,
+	startLon_ real,
+	startLat_ real,
+	origsrid_ integer
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	ret bigint;
+BEGIN
+--	INSERT INTO __WDB_SCHEMA__.placedefinition ( placeindeterminatecode, placegeometrytype, placestoretime, placegeometry)
+--	VALUES ( 0, 'Grid', CURRENT_TIMESTAMP, geomfromtext(placegeo_, 4030) );
+
+	SELECT nextval ( '__WDB_SCHEMA__.placedefinition_placeid_seq' ) INTO ret;
+	
+	INSERT INTO __WDB_SCHEMA__.placeregulargrid ( placeid, inumber, jnumber, iincrement, jincrement, startlongitude, startlatitude, originalsrid)
+	VALUES ( ret, inumber_, jnumber_, iincrement_, jincrement_, startLon_, startLat_, origsrid_ );
+
+	INSERT INTO __WDB_SCHEMA__.placename ( placeid, placenamespaceid, placename, placenamevalidfrom, placenamevalidto )
+	VALUES ( ret, 0, 'Automatic insertion by gribLoad '::text || CURRENT_TIMESTAMP::text, CURRENT_DATE, '12-31-2999' );
+
+	RETURN ret;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE 'plpgsql' STRICT VOLATILE;
+
+
+--
+-- Add SRID
+--
+CREATE OR REPLACE FUNCTION
+wci.addSrid(
+	name_ text,
+	projection_ text
+)
+RETURNS void AS
+$BODY$
+DECLARE
+	srid_ int;
+BEGIN
+	-- WCI User Check
+	SELECT __WCI_SCHEMA__.getSessionData();
+	-- Get SRID
+	SELECT max(srid) + 1 INTO srid_
+	FROM spatial_ref_sys;	
+	-- Insert Data
+	INSERT INTO spatial_ref_sys
+	VALUES ( srid_,
+			 name_,
+			 NULL,
+			 NULL,
+			 projection_ );			 
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+--
+-- Get SRID
+--
+CREATE OR REPLACE FUNCTION 
+wci.getSrid(
+	srid_	text
+)
+RETURNS integer AS
+$BODY$
+	SELECT 	srid 
+	FROM 	public.spatial_ref_sys
+	WHERE 	proj4text = $1
+$BODY$
+SECURITY DEFINER
+LANGUAGE 'sql';

@@ -330,6 +330,28 @@ struct StatsCommand : AdminCommandLineInterpreter::Command
 };
 
 /**
+ * Clean database of Test Data
+ */
+struct TestCleanCommand : AdminCommandLineInterpreter::Command
+{
+	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	{
+		if (input.size() != 1)
+		{
+			performer.info("No arguments required for this command");
+			return;
+		}
+
+		performer.testClean( );
+	}
+
+	virtual string help() const
+	{
+		return "Clean the database of all test data (usage: testClean)";
+	}
+};
+
+/**
  * Vacuum Database
  */
 struct VacuumCommand : AdminCommandLineInterpreter::Command
@@ -457,6 +479,7 @@ AdminCommandLineInterpreter::AdminCommandLineInterpreter(AdminCommandLineOutput 
 	commands_["changeuser"] = P( new ChangeUserCommand );
 	commands_["dropuser"] = P( new DropUserCommand );
 	commands_["stats"] = P( new StatsCommand );
+	commands_["testclean"] = P( new TestCleanCommand );
 	commands_["vacuum"] = P( new VacuumCommand );
 	commands_["createdb"] = P( new CreateDatabaseCommand );
 	commands_["dropdb"] = P( new DropDatabaseCommand );

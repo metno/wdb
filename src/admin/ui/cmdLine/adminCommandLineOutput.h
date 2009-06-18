@@ -104,6 +104,11 @@ public:
 	void listKeys(const wdbTypes::TimeStamp & referenceTime);
 
 	/**
+	 * Clean DB of all test data
+	 */
+	void testClean( );
+
+	/**
 	 * Clean DB and vacuum the database
 	 */
 	void vacuum( );

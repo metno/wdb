@@ -125,6 +125,11 @@ public:
 	void getKeys(std::vector<WdbDataKey> & out, const wdbTypes::TimeStamp & time);
 
 	/**
+	 * Deletes all rows used for testing
+	 */
+	int performTestClean( );
+
+	/**
 	 * Perform database cleanup; removing unnecesary rows and freeing up
 	 * resources on disk and memory.
 	 */
