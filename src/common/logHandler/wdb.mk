@@ -6,14 +6,12 @@
 # Library
 #-----------------------------------------------------------------------------
 
-#noinst_LIBRARIES +=			libwdbLogHandler.a
-lib_LIBRARIES += libwdbLogHandler.a
+lib_LIBRARIES += 			libwdbLog.a
 
-libwdbLogHandler_a_SOURCES = src/common/logHandler/wdbLogHandler.cpp
-include_HEADERS += src/common/logHandler/wdbLogHandler.h
+libwdbLog_a_SOURCES = 		src/common/logHandler/wdbLogHandler.cpp
+include_HEADERS += 			src/common/logHandler/wdbLogHandler.h
 
-libwdbLogHandler_a_CPPFLAGS =\
-							-DSYSCONFDIR=\"$(sysconfdir)\" -fPIC
+libwdbLog_a_CPPFLAGS = 		$(AM_CPPFLAGS) -fPIC
 
 EXTRA_DIST +=				src/common/logHandler/wdb.mk \
 							src/common/logHandler/Makefile.am \
@@ -25,6 +23,6 @@ DISTCLEANFILES +=			src/common/logHandler/Makefile
 # Local Makefile Targets
 #-----------------------------------------------------------------------------
 
-src/common/logHandler/all: libwdbLogHandler.a
+src/common/logHandler/all: libwdbLog.a
 
 src/common/logHandler/clean: clean

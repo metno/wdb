@@ -167,7 +167,7 @@ void GridGeometry::setOrientation(GridGeometry::Orientation o)
 		yIncrement_ = -yIncrement_;
 	}
 	else
-		throw wdb::WdbException("Unable to handle requested grid orientation", __func__);
+		throw std::runtime_error( "Unable to handle requested grid orientation" );
 }
 
 GridGeometry::Point GridGeometry::unprojectedLonLat_(const Point & p) const
@@ -217,7 +217,7 @@ size_t GridGeometry::getIndex(GridGeometry::Corner c) const
 		return indexFromXy( xNumber_-1, 0, *this );
 	}
 
-	throw wdb::WdbException("Bad point corner request", __func__);
+	throw std::runtime_error( "Bad point corner request" );
 }
 
 

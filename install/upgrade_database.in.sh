@@ -498,13 +498,13 @@ EOF
 		exit 1
 	fi
 fi
-# Upgrade Completed
+# Migrate Completed
 echo "done"
 
 # Dropping Stuff
 echo -n "dropping views and functions... "
 #psql $PSQLARGS -c "DELETE FROM __WDB_SCHEMA__.materializedView"
-for SCHEMA in test admin loaderbase gribload feltload wci; do
+for SCHEMA in test admin wci; do
 	psql $PSQLARGS -c "DROP SCHEMA $SCHEMA CASCADE" -o $LOGDIR/wdb_install_datamodel.log
 	
 done
@@ -516,9 +516,6 @@ psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
-\i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
@@ -526,25 +523,6 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: The completion of the datamodel upgrade failed. See log for details."
-	echo "ERROR: No roll back possible. Restore database from backup."
-    exit 1
-else
-    echo "done"
-fi
-
-
-# Install Metadata
-echo -n "installing upgraded metadata (2/2)... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
-SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP off
-\o $LOGDIR/wdb_install_metadata.log
-\i $WDB_METADATA_PATH/feltLoadMetadata.sql 
-\i $WDB_METADATA_PATH/gribLoadMetadata.sql
-EOF
-if [ 0 != $? ]; then
-    echo "failed"
-    echo "ERROR: Installing new metadata failed. See log for details."
 	echo "ERROR: No roll back possible. Restore database from backup."
     exit 1
 else

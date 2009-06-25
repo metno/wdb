@@ -106,7 +106,7 @@ public:
 				  << " AND placenamespaceid = 0";
 		pqxx::result R = T.exec( gridQuery.str() );
 		if (R.size() == 0)
-			throw WdbException("Unable to find place " + conf_.dataDefinitions().placeName, __func__);
+			throw std::runtime_error("Unable to find place " + conf_.dataDefinitions().placeName);
 		int i, j;
 		R.at(0).at(5).to( i );
 		R.at(0).at(6).to( j );

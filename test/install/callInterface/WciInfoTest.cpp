@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,10 +22,9 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
-
 
 
 /**
@@ -65,7 +64,7 @@ void WciInfoTest::tearDown()
 }
 
 
-// Todo: Reestablish Info Tests 
+// Todo: Reestablish Info Tests
 
 void WciInfoTest::testInfoDataProvider()
 {
@@ -80,8 +79,8 @@ void WciInfoTest::testInfoDataProvider()
 										  "NULL,"
 										  "NULL,"
 										  "0::oid )";
-	// Todo: Read of data from the floatvalue table is not handled. 
-	
+	// Todo: Read of data from the floatvalue table is not handled.
+
 	const string info0 = "SELECT * FROM Wci.info( "
 												"NULL,"
 												"NULL,"
@@ -99,7 +98,7 @@ void WciInfoTest::testInfoDataProvider()
 	// Todo: Verify that result is identical (see testInfo parameter below)
 	*/
 }
-	
+
 void WciInfoTest::testInfoPlace()
 {
 	/*
@@ -113,11 +112,11 @@ void WciInfoTest::testInfoPlace()
 										  "NULL,"
 										  "NULL,"
 										  "0::oid )";
-	// Todo: Read of data from the floatvalue table is not handled. 
+	// Todo: Read of data from the floatvalue table is not handled.
 	result rS = t->exec(select0);
 	const int readMin = rS.front()[0].as<int>();
 	const int readMax = rS.front()[1].as<int>();
-	
+
 	const string info0 = "SELECT * FROM Wci.info( "
 												"NULL,"
 												"NULL,"
@@ -135,7 +134,7 @@ void WciInfoTest::testInfoPlace()
 	CPPUNIT_ASSERT_EQUAL( readMin, infoMin );
 	CPPUNIT_ASSERT_EQUAL( readMax, infoMax );
 	*/
-	
+
 }
 
 void WciInfoTest::testInfoValueParameter()
@@ -152,9 +151,9 @@ void WciInfoTest::testInfoValueParameter()
 										  "NULL,"
 										  "0::oid )"
 							"ORDER BY parameter";
-	// Todo: Read of data from the floatvalue table is not handled. 
+	// Todo: Read of data from the floatvalue table is not handled.
 	result rS = t->exec(select0);
-	
+
 	const string info0 = "SELECT * FROM Wci.info( "
 												"NULL,"
 												"NULL,"
@@ -167,12 +166,12 @@ void WciInfoTest::testInfoValueParameter()
 												"NULL::Wci.parameterinfo)"
 						 "ORDER BY parameter";
 	result rI = t->exec(info0);
-	
+
 	CPPUNIT_ASSERT_EQUAL( rS.size(), rI.size() );
 
 	std::string parRead, parInfo;
 	for ( int i=0; i<rS.size(); i++ ) {
-		
+
 		rS.at(i).at(0).to( parRead );
 		rI.at(i).at(0).to( parInfo );
 
@@ -181,7 +180,7 @@ void WciInfoTest::testInfoValueParameter()
 	*/
 }
 
-#include <LevelParameterType.h> 
+#include <LevelParameterType.h>
 void WciInfoTest::testInfoLevelParameter()
 {
 	/*
@@ -197,9 +196,9 @@ void WciInfoTest::testInfoLevelParameter()
 										  "0::oid ) "
 							"GROUP BY levelunitname, levelparametername "
 							"ORDER BY levelunitname, levelparametername";
-	// Todo: Read of data from the floatvalue table is not handled. 
+	// Todo: Read of data from the floatvalue table is not handled.
 	result rS = t->exec(select0);
-	
+
 	const string info0 = "SELECT * FROM Wci.info( "
 												"NULL,"
 												"NULL,"
@@ -212,11 +211,11 @@ void WciInfoTest::testInfoLevelParameter()
 												"NULL::Wci.levelinfo) "
 						 "ORDER BY levelparameter";
 	result rI = t->exec(info0);
-	
+
 	CPPUNIT_ASSERT_EQUAL( rS.size(), rI.size() );
 
 	double fltRead, fltInfo;
-	for ( int i=0; i<rS.size(); i++ ) 
+	for ( int i=0; i<rS.size(); i++ )
 	{
 		std::string sLevelUnit = rS[0].at(0).as<std::string>();
 		LevelParameterType sLevelParameter = rS[0].at(1).as<std::string>();
@@ -233,5 +232,29 @@ void WciInfoTest::testInfoLevelParameter()
 		CPPUNIT_ASSERT_EQUAL( fltRead, fltInfo );
 	}
 	*/
+}
+
+void WciInfoTest::testInfoParameterUnitSi()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.info( 'm', NULL::wci.infoparameterunit )";
+	// Check Info Unit
+	result rS = t->exec(select0);
+	// Checks
+	CPPUNIT_ASSERT( rS.size() );
+	CPPUNIT_ASSERT( rS.at(0).at("siunitconversioncoefficient").is_null() );
+	CPPUNIT_ASSERT( rS.at(0).at("siunitconversionterm").is_null() );
+}
+
+void WciInfoTest::testInfoParameterUnitConventional()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.info( '[in_i]', NULL::wci.infoparameterunit )";
+	// Check Info Unit
+	result rS = t->exec(select0);
+	// Checks
+	CPPUNIT_ASSERT( rS.size() );
+	CPPUNIT_ASSERT( ! rS.at(0).at("siunitconversioncoefficient").is_null() );
+	CPPUNIT_ASSERT( ! rS.at(0).at("siunitconversionterm").is_null() );
 }
 

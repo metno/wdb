@@ -342,10 +342,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql
-\i $WDB_DATAMODEL_PATH/wdbLoaderBaseDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbGribDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbFeltDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbXmlDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
@@ -364,8 +360,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_metadata.log
 \i $WDB_METADATA_PATH/wdbMetadata.sql 
-\i $WDB_METADATA_PATH/feltLoadMetadata.sql
-\i $WDB_METADATA_PATH/gribLoadMetadata.sql
 EOF
 if [ 0 != $? ]; then
     echo "ERROR"; exit 1

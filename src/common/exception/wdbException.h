@@ -116,58 +116,6 @@ public:
 	};
 };
 
-
-
-/**
- * Basic class for exceptions thrown by applications in the WDB
- * framework. It provides a constructor that takes an error message and
- * the method name as arguments.
- *
- * The class is implemented on top of std::exception. It is meant to be
- * used either directly as is, or inherited by specific exception objects
- * in the various WDB applications.
- */
-class WdbException : public std::exception {
-public:
-	// LIFECYCLE
-
-	/** Default constructor.
-	 */
-    WdbException();
-
-	/**
-	 * Construct a WdbException with a explanatory message.
-	 * @param	message		explanatory message
-	 * @param	method		name of the method where the error occured
-	 */
-    WdbException(const std::string &message, const std::string &method) throw();
-
-	/** Destructor
-	 *  Provided just to guarantee that no exceptions are thrown.
-	 */
-    virtual ~WdbException() throw();
-
-	// ACCESS
-
-	/**  Get the method that caused the exception message
-	 *   @return exception method
-	 */
-    const char * getMethod() const throw();
-
-	/**  Get the exception message
-	 *   @return exception message
-	 */
-    virtual const char * what() const throw();
-
-private:
-
-    /// Exception Message
-    std::string message_;
-
-    /// Exception Method
-    std::string method_;
-};
-
 } // namespace wdb
 
 /**

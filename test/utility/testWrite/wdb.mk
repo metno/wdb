@@ -14,9 +14,9 @@ testWrite_SOURCES =			test/utility/testWrite/testWrite.cpp \
 							test/utility/testWrite/transactors/GridWriteTransactor.h \
 							test/utility/testWrite/transactors/PointWriteTransactor.h
 
-testWrite_LDADD = 			-lwdbConfiguration \
-							-lwdbException \
-							-lwdbLogHandler 
+testWrite_LDADD = 			-lwdbConfig \
+							-lwdbExcept \
+							-lwdbLog 
 
 EXTRA_DIST +=				test/utility/testWrite/wdb.mk \
 							test/utility/testWrite/Makefile.am \

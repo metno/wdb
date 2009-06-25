@@ -14,11 +14,11 @@ wciStabilityTester_SOURCES =	test/stability/callInterface/stabilityTest.cpp \
 								test/stability/callInterface/transactors/RandomPolygonTest.h \
 								test/stability/callInterface/transactors/RandomFieldTest.h 
 
-wciStabilityTester_CPPFLAGS = 	-I$(srcdir)/test/stability/callInterface
+wciStabilityTester_CPPFLAGS = 	$(AM_CPPFLAGS) -I$(srcdir)/test/stability/callInterface
 
 wciStabilityTester_LDFLAGS =	$(AM_LDFLAGS) \
-								-lwdbConfiguration \
-								-lwdbLogHandler
+								-lwdbConfig \
+								-lwdbLog
 
 
 WCISTABTEST_SUPPORT =			test/stability/callInterface/testEnvironment.in.sh

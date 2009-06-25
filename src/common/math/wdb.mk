@@ -16,7 +16,7 @@ libwdbMath_a_SOURCES =		src/common/math/wdbMath.h \
 include_HEADERS += 			src/common/math/wdbMath.h \
 							src/common/math/wdbMathC.h
 							
-libwdbMath_a_CPPFLAGS = 	-fPIC
+libwdbMath_a_CPPFLAGS = 	$(AM_CPPFLAGS) -fPIC
 
 EXTRA_DIST +=				src/common/math/wdb.mk \
 							src/common/math/Makefile.am \

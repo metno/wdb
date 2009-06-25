@@ -104,43 +104,6 @@ LANGUAGE plpgsql STRICT VOLATILE;
 
 
 
---
--- Add new placeId
---
-CREATE OR REPLACE FUNCTION 
-gribload.setplaceid(
-	placegeo_ text,
-	placesrid_ integer,
-	inumber_ integer,
-	jnumber_ integer,
-	iincrement_ real,
-	jincrement_ real,
-	startLon_ real,
-	startLat_ real,
-	origsrid_ integer
-)
-RETURNS bigint AS
-$BODY$
-DECLARE
-	ret bigint;
-BEGIN
---	INSERT INTO __WDB_SCHEMA__.placedefinition ( placeindeterminatecode, placegeometrytype, placestoretime, placegeometry)
---	VALUES ( 0, 'Grid', CURRENT_TIMESTAMP, geomfromtext(placegeo_, 4030) );
-
-	SELECT nextval ( '__WDB_SCHEMA__.placedefinition_placeid_seq' ) INTO ret;
-	
-	INSERT INTO __WDB_SCHEMA__.placeregulargrid ( placeid, inumber, jnumber, iincrement, jincrement, startlongitude, startlatitude, originalsrid)
-	VALUES ( ret, inumber_, jnumber_, iincrement_, jincrement_, startLon_, startLat_, origsrid_ );
-
-	INSERT INTO __WDB_SCHEMA__.placename ( placeid, placenamespaceid, placename, placenamevalidfrom, placenamevalidto )
-	VALUES ( ret, 0, 'Automatic insertion by gribLoad '::text || CURRENT_TIMESTAMP::text, CURRENT_DATE, '12-31-2999' );
-
-	RETURN ret;
-END;
-$BODY$
-SECURITY DEFINER
-LANGUAGE 'plpgsql' STRICT VOLATILE;
-
 
 --
 -- Add SRID

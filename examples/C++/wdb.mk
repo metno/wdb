@@ -7,10 +7,10 @@ CPP_EXAMPLES = 				onePoint extractFullField
 EXTRA_PROGRAMS += 			$(CPP_EXAMPLES) 
 
 extractFullField_SOURCES = 	examples/C++/extractFullField.cpp
-extractFullField_LDADD = 	-lwdbConfiguration
+extractFullField_LDADD = 	-lwdbConfig
 
 onePoint_SOURCES = 			examples/C++/onePoint.cpp
-onePoint_LDADD = 			-lwdbConfiguration
+onePoint_LDADD = 			-lwdbConfig
 
 all_cpp_examples:   		$(CPP_EXAMPLES)
 

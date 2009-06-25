@@ -1,6 +1,7 @@
 #include "GridGeometryTest.h"
 #include <GridGeometry.h>
 
+#include <stdexcept>
 #include <iostream>
 #include <sstream>
 #include <wdbMath.h>
@@ -31,16 +32,16 @@ void GridGeometryTest::setUp()
 	); // Hirlam 10 grid
 	hirlam10Proj = pj_init_plus( "+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs" );
 	if ( !hirlam10Proj )
-		throw wdb::WdbException( "Invalid PROJ definition for Hirlam10", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for Hirlam10" );
 	hirlam20Proj = pj_init_plus( "+proj=ob_tran +o_proj=longlat +lon_0=0 +o_lat_p=25 +a=6367470.0 +no_defs" );
 	if ( !hirlam20Proj )
-		throw wdb::WdbException( "Invalid PROJ definition for Hirlam20", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for Hirlam20" );
 	targetProj = pj_init_plus( "+proj=longlat +ellps=WGS84 +no_defs" );
 	if ( !targetProj )
-		throw wdb::WdbException( "Invalid PROJ definition for target", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for target" );
 	utmProj = pj_init_plus( "+proj=utm +lon_0=15e +datum=WGS84 +units=m +no_defs" );
 	if ( !utmProj )
-		throw wdb::WdbException( "Invalid PROJ definition for utm", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for utm" );
 }
 
 void GridGeometryTest::tearDown()

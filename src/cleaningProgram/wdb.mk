@@ -5,7 +5,7 @@
 
 CLEANER_SOURCES =		src/cleaningProgram/cleanDb.in.sql
 
-sql_DATA += $(CLEANER_SOURCES:.in.sql=.sql)
+sql_DATA += 			$(CLEANER_SOURCES:.in.sql=.sql)
 
 CLEANFILES +=			$(CLEANER_SOURCES:.in.sql=.sql)
 

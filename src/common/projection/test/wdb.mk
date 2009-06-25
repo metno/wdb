@@ -12,7 +12,7 @@ wdbUnitTest_SOURCES += 		src/common/projection/test/WdbProjectionTest.cpp \
 							src/common/projection/test/GridGeometryTest.h
     						
     						
-wdbUnitTest_LDFLAGS += 		-lwdbProjection
+wdbUnitTest_LDFLAGS += 		-lwdbProj
 # HAS_CPPUNIT
 endif
 

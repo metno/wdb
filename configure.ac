@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.9.3, [wdb@met.no])
+AC_INIT(wdb, 0.9.4, [wdb@met.no])
 # Config
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([config/config.h.in])
@@ -139,13 +139,6 @@ WDB_PROJ_CHECK
 # CppUnit
 WDB_DLLIB
 WDB_CPPUNIT
-
-# GRIB Loading
-#WDB_GRIB_CHECK(1.2.0)
-# LibXML
-#WDB_LIBXML_CHECK(2.6.0)
-# Should we build kvalobsLoad?
-#WDB_KVALOBS_CHECK
 
 AM_PATH_PYTHON(2.4,, [:])
 AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])

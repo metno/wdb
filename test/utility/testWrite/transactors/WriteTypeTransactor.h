@@ -99,7 +99,7 @@ public:
 				  << " AND dataprovidernamespaceid = 0";
 		pqxx::result R = T.exec( testQuery.str() );
 		if (R.size() == 0)
-			throw WdbException("Unable to find dataprovider: " + conf_.dataDefinitions().dataProvider, __func__);
+			throw std::runtime_error("Unable to find dataprovider: " + conf_.dataDefinitions().dataProvider);
 		std::string dataType;
 		R.at(0).at(0).to( dataType );
 		if (dataType == "Grid")
@@ -108,7 +108,7 @@ public:
 		if (dataType == "Point")
 			isGrid_ = false;
 		else
-			throw WdbException("Unable to determine data type to load (based on dataprovider)", __func__);
+			throw std::runtime_error("Unable to determine data type to load (based on dataprovider)");
 
 		// Todo: This should be improved so that it takes into consideration the placeId.
 	}

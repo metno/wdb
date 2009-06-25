@@ -17,10 +17,10 @@ wciPerformanceTester_SOURCES =\
 						test/performance/callInterface/transactors/getField.h \
 						test/performance/callInterface/transactors/getBilinearPoint.h
 
-wciPerformanceTester_CPPFLAGS = 	-I$(srcdir)/test/performance/callInterface
+wciPerformanceTester_CPPFLAGS = 	$(AM_CPPFLAGS) -I$(srcdir)/test/performance/callInterface
 
-wciPerformanceTester_LDFLAGS =	$(AM_LDFLAGS)	-lwdbConfiguration \
-						-lwdbLogHandler
+wciPerformanceTester_LDFLAGS =	$(AM_LDFLAGS)	-lwdbConfig \
+						-lwdbLog
 
 WCIPERFTEST_SOURCES =	test/performance/callInterface/caseP001_01.in.test \
 						test/performance/callInterface/caseP001_02.in.test \

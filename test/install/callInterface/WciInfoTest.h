@@ -51,6 +51,8 @@ class WciInfoTest : public AbstractWciTestFixture
 	CPPUNIT_TEST(testInfoValueParameter);
 	CPPUNIT_TEST(testInfoLevelParameter);
 	*/
+	CPPUNIT_TEST( testInfoParameterUnitSi );
+	CPPUNIT_TEST( testInfoParameterUnitConventional );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -71,6 +73,10 @@ public:
 	void testInfoValueParameter();
 	/// Test Info Return: Level
 	void testInfoLevelParameter();
+	/// Test Info Return: Level
+	void testInfoParameterUnitSi();
+	/// Test Info Return: Level
+	void testInfoParameterUnitConventional();
 
 private:
 

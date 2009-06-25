@@ -78,7 +78,7 @@ create or replace function __WDB_SCHEMA__.createGeometryText(
 	projDefinition text
 )
 returns text as
-'__WDB_LIBDIR__/wdb.so', 'createGeometryText'
+'__WDB_LIBDIR__/__WDB_LIB__', 'createGeometryText'
 language C strict immutable;
 
 create or replace function 

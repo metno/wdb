@@ -3,19 +3,13 @@
 # wdbException
 #-----------------------------------------------------------------------------
 
-lib_LIBRARIES +=			libwdbException.a
+lib_LIBRARIES +=			libwdbExcept.a
 
-libwdbException_a_SOURCES =	src/common/exception/wdbException.cpp \
-							src/common/exception/wdbEmptyResultException.cpp \
-							src/common/exception/wdbDoNotLoadException.cpp
+libwdbExcept_a_SOURCES =	src/common/exception/wdbException.h
 							
-include_HEADERS += \
-							src/common/exception/wdbException.h \
-							src/common/exception/wdbEmptyResultException.h \
-							src/common/exception/wdbDoNotLoadException.h
- 
+include_HEADERS += 			src/common/exception/wdbException.h 
 
-libwdbException_a_CPPFLAGS = -fPIC
+libwdbExcept_a_CPPFLAGS = 	-fPIC
 
 EXTRA_DIST +=				src/common/exception/wdb.mk \
 							src/common/exception/Makefile.am \
@@ -27,6 +21,6 @@ DISTCLEANFILES +=			src/common/exception/Makefile
 # Local Makefile Targets
 #-----------------------------------------------------------------------------
 
-src/common/exception/all: libwdbException.la
+src/common/exception/all: libwdbExcept.la
 
 src/common/exception/clean: clean

@@ -13,6 +13,7 @@
 # Scanned by Autoreconf; must be static (no expansion)
 ACLOCAL_AMFLAGS = 		-I config
 
+AM_CPPFLAGS =			-DSYSCONFDIR=\"$(sysconfdir)\"
 AM_LDFLAGS =			-L@builddir@
 
 LIBTOOL_VERSION_FLAG = 	-release $(VERSION)
@@ -34,9 +35,9 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 						| sed s:__POSTGIS_DIR__:@postgis_SQL@:g \
 						| sed s:__WDB_DBNAME__:$(DATABASE_NAME):g \
 						| sed s:__WDB_SCHEMA__:wdb_$(DATABASE_SCHEMA):g \
-						| sed s:__WDB_LIB__:wdb-$(VERSION).so:g \
+						| sed s:__WDB_LIB__:wdbCore-$(VERSION).so:g \
 						| sed s:__WCI_SCHEMA__:wci_$(DATABASE_SCHEMA):g \
-						| sed s:__WCI_LIB__:wci-$(VERSION).so:g \
+						| sed s:__WCI_LIB__:wdbCall-$(VERSION).so:g \
 			 			> $@
 
 CRON_COMPILE =			$(SED_SUBSTITUTION);\

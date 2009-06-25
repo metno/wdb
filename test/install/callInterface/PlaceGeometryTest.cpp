@@ -65,16 +65,16 @@ pointToWgs84( double & lon, double & lat, std::string proj = "+proj=ob_tran +o_p
 {
 	projPJ src = pj_init_plus( proj.c_str() );
 	if ( ! src )
-		throw wdb::WdbException( "Invalid PROJ definition for HIRLAM10 ", __func__ );
+		throw std::logic_error( "Invalid PROJ definition for HIRLAM10 ");
 	projPJ wgs84 = pj_init_plus( "+proj=longlat +ellps=WGS84 +no_defs" );
 	if ( ! wgs84 )
-		throw wdb::WdbException( "Invalid PROJ definition for WGS84 ", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for WGS84 ");
 	lon *= DEG_TO_RAD;
 	lat *= DEG_TO_RAD;
 	int error = pj_transform( src, wgs84, 1, 0, &lon, &lat, NULL);
 	if ( error )
 	{
-		throw wdb::WdbException( "Error in reprojection", __func__ );
+		throw std::runtime_error( "Error in reprojection" );
 	}
 	pj_free( src );
 	pj_free( wgs84 );

@@ -7,14 +7,10 @@
 bin_PROGRAMS += 			wdb
 
 wdb_LDADD = 				libwdbAdmin.a \
-							-lwdbConfiguration 
-#							-lboost_filesystem \
-#							-lboost_thread \
-#							-lreadline \
-#							-lcurses
+							-lwdbConfig 
 
 # additional source files added in subdir
-wdb_SOURCES = 				src/admin/wdb.cpp \
+wdb_SOURCES = 				src/admin/main.cpp \
 							src/admin/adminConfiguration.h \
 							src/admin/adminConfiguration.cpp
 
@@ -25,7 +21,7 @@ noinst_LIBRARIES +=			libwdbAdmin.a
 # source files added in subdir 
 libwdbAdmin_a_SOURCES =		
 
-libwdbAdmin_a_CPPFLAGS =	-fPIC -DWDB_PKGLIBDIR=\"$(libdir)/wdb\" $(AM_CPPFLAGS)
+libwdbAdmin_a_CPPFLAGS =	$(AM_CPPFLAGS) -fPIC -DWDB_PKGLIBDIR=\"$(libdir)/wdb\"
 
 EXTRA_DIST += 				src/admin/wdb.mk \
 							src/admin/Makefile.am \

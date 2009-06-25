@@ -161,7 +161,7 @@
 				is identified by a DataProviderName. DataProviderNames are 
 				used to search for the data. For convenience, Data Providers may be
 				collected into groups; e.g., the DataProviderName "Hirlam" might be used
-			    to search for any of the various hirlam processes: "Hirlam 4", "Hirlam 8", 
+			    to search for any of the various Hirlam processes: "Hirlam 4", "Hirlam 8", 
 				etc.</para>
 			
 			<para>When searching for data, the user may specify a single DataProviderName,
@@ -184,9 +184,17 @@
 			<programlisting>
 SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
 		</programlisting>
-						
+
+			<para>To retrieve all of the DataProviderNames (including data provider groups) that the
+				database currently has the capacity to store and display in the currently specified
+				namespace, the following wci.info function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.info( NULL, NULL::wci.browsedataprovider );
+		</programlisting>
+									
 		</sect1>
-		
+		 
 		<sect1 id="sec:place">
 			<title>Place (Geographic Location)</title>
 			
@@ -221,8 +229,20 @@ SELECT * FROM wci.browse( NULL::wci.browseplace );
 			data value closest to the specified place), and "bilinear" (retrieve the closest data
 			values and perform a bilinear interpolation of those values) are implemented.</para>
 			
-			<para>The form of place specification then becomes one of the two following forms:</para>
+			<para>The form of place specification then becomes one of the two following:</para>
 			
+			<programlisting>
+'Oslo'
+		</programlisting>
+			<programlisting>
+'nearest Oslo'
+		</programlisting>
+			<programlisting>
+'POINT(61 9)'
+		</programlisting>
+			<programlisting>
+'bilinear POINT(61 9)'
+		</programlisting>
 			
 			<para>Specifying NULL for the place definition of a query is logically
 				equivalent to asking for all of the data items in the database, irrespective
@@ -320,7 +340,6 @@ SELECT * FROM wci.browse( NULL::wci.browsevalueparameter );
 			
 			<para>To retrieve a full list of the level parameters currently being stored in the
 				database, use the wci.browse functionality:</para>
-			
 			
 			<programlisting>
 SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
@@ -707,8 +726,9 @@ SELECT wci.begin ( 'michael' );
 		<sect1 id="sec:wci.browse">
 			<title>wci.browse</title>
 			
-			<para>The wci.browse function is utilized to browse the meteorological, hydrological and oceanographic data in the
-				database. Essentially, it can be used to retrieve summary data about what data values exist in
+			<para>The wci.browse function is utilized to browse the meteorological, 
+				hydrological and oceanographic data in the database. Essentially, it 
+				can be used to retrieve summary data about what data values exist in
 				the database. The function takes as input the same search parameters as the
 				wci.read call, but returns summarized rather than detailed data about the
 				values in the database. Using wci.browse will usually be significantly
@@ -872,9 +892,10 @@ wci.browse
 				<para>All the wci.browse input parameters, except the returnType, are
 					precisely the same as the input paramaters to a wci.read call (see
 					Section <xref linkend="sec:wci.read:parameters"></xref>). Calling a function
-					with only the "returnType"
-					parameter specified is basically equivalent to calling the wci.browse function
-					with all NULLs (indicating that all data is required). 
+					with only the "returnType" parameter specified is basically equivalent 
+					to calling the wci.browse function with all NULLs (indicating that 
+					all data is required). Be aware that trying to retrieve aggregates about
+					all the data in a huge database can take a while. 
 					</para>
 				
 				<para>The returnType specifies which of the six different types of
@@ -948,7 +969,7 @@ wci.browse
 SELECT * FROM wci.browse ( NULL::wci.browsedataprovider );					
 				</programlisting>
 				
-				<para>A follow up question could then utilize a result from this query to ask a 
+				<para>The user might then utilize a result from this query to ask a 
 					follow-up determining the reference times of  a specific data provider.</para>
 				
 				<programlisting>
@@ -966,7 +987,7 @@ SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ],
 SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], NULL, 
 						   'exact 1980-03-15 12:00:00+00', 
 						   NULL, NULL, NULL,
-					       NULL::wci.browsereferencetime );			
+					       NULL::wci.browsevalueparameter );
 				</programlisting>
 				
 			</sect2>
@@ -1184,6 +1205,7 @@ wci.info
 				<itemizedlist>
 					<listitem>
 						<para>wci.infodataprovider</para>
+						<para>This return type gives detailed information on the data type specified.</para>
 					</listitem>
 					<listitem>
 						<para>wci.infoplace</para>
@@ -1543,13 +1565,27 @@ FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
 			</sect2>
 			
 			<sect2>
-				<title>Syntax</title>
-				
+				<title>Syntax</title>				
 				
 				<programlisting>
 wci.write
 (
-	value          oid,
+	value          gid,
+	placename      text,
+	referencetime  timestamp without time zone,
+	validtimerom   timestamp without time zone,
+	validtimeto    timestamp without time zone
+	valueparameter text,
+	levelparameter text,
+	levelFrom      float,
+	levelTo        float 
+)
+</programlisting>
+
+				<programlisting>
+wci.write
+(
+	value          gid,
 	placename      text,
 	referencetime  timestamp without time zone,
 	validtimerom   timestamp without time zone,
@@ -1565,7 +1601,7 @@ wci.write
 				<programlisting>	
 wci.write
 (
-          row           wci.returnOid
+          row           wci.returnGid
 )
 </programlisting>
 				
@@ -1677,6 +1713,357 @@ wci.write
 		<para>This section provides an overview of the data types that are returned from the
 			database through WCI; in particular the return rows used by the wci.read and
 			wci.write calls.</para>
+		
+	<sect1>
+			<title>wci.browsedataprovider</title>
+			
+			<para>The wci.browsedataprovider data type is a simple row type used to
+				return summarized information about the data providers of the rows
+				currently stored in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.browsedataprovider</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>dataprovidername</entry>
+							<entry>The name of the data provider that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>referencetimefrom</entry>
+							<entry>The earliest referencetime in the database for the dataprovider for which there exists data.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>referencetimeto</entry>
+							<entry>The latest referencetime in the database for the dataprovider for which there exists data.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>numberoftuples</entry>
+							<entry>The number of data rows that exist in the database for the given dataprovider.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+	<sect1>
+			
+				<title>wci.browseplace</title>
+			
+			<para>The wci.browseplace data type is a simple row type used to
+				return summarized information about the placenames of the rows
+				currently stored in the database. The following table
+				describes the attributes.</para>
+			<table frame="all">
+				<title>wci.browseplace</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>placename</entry>
+							<entry>The name of the placedefinition that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>referencetimefrom</entry>
+							<entry>The earliest referencetime in the database for the placename for which there exists data.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>referencetimeto</entry>
+							<entry>The latest referencetime in the database for the placename for which there exists data.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>numberoftuples</entry>
+							<entry>The number of data rows that exist in the database for the given placename.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.browsereferencetime</title>
+			
+			<para>The wci.browsereferencetime data type is a simple row type used to
+				return summarized information about the referencetime of the rows
+				currently stored in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.browsereferencetime</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>referencetime</entry>
+							<entry>The reference time that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>numberoftuples</entry>
+							<entry>The number of data rows that exist in the database for the given referencetime.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+			<sect1>
+			<title>wci.browsevalidtime</title>
+			
+			<para>The wci.browsevalidtime data type is a simple row type used to
+				return summarized information about the validtime of the rows
+				currently stored in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.browsevalidtime</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>validtimefrom</entry>
+							<entry>The name of the placedefinition that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>validtimeto</entry>
+							<entry>The name of the placedefinition that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>numberoftuples</entry>
+							<entry>The number of data rows that exist in the database for the given placename.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+<!--
+					<listitem>
+						<para>wci.browsevalidtime</para>
+						<para>This returns a list of the validtimes that exist in the
+							database for the parameter definitions given by the
+							wci.browse call. For each validtime, the number of data
+							records in the database are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browsevalueparameter</para>
+						<para>This returns a list of the value parameters that exist in the
+							database for the parameter definitions given by the
+							wci.browse call and the used namespace. For each
+							valueparameter, the number of data records in the database
+							are listed.</para>
+					</listitem>
+					<listitem>
+						<para>wci.browselevelparameter</para>
+						<para>This returns a list of the level parameters that exist in the
+							database for the parameter definitions given by the
+							wci.browse call and the utilized namespace. For each level
+							parameter, the number of data records in the database are
+							listed.</para>
+					</listitem>
+				<itemizedlist>
+					<listitem>
+						<para>wci.infodataprovider</para>
+					</listitem>
+					<listitem>
+						<para>wci.infoplace</para>
+					</listitem>
+					<listitem>
+						<para>wci.infovalueparameter</para>
+					</listitem>
+					<listitem>
+						<para>wci.infolevelparameter</para>
+					</listitem>
+				</itemizedlist>
+	
+		-->
+	<sect1>
+			<title>wci.returnFloat</title>
+			
+			<para>The wci.returnFloat data type is a simple row type used for returning
+				floating-point data to the user from the wci.read call. The following table
+				describes the attributes that are returned from wci.returnFloat;
+				including the ordering of the attributes in the type.</para>
+			
+			<table frame="all">
+				<title>wci.returnFloat</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>value</entry>
+							<entry>The floating point value returned by the
+								query</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>data provider name</entry>
+							<entry>The name of the data provider of the value (as defined
+								within the dataprovidernamespace selected)</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>place name</entry>
+							<entry>The name of the grid definition selected (as defined
+								within the placenamespace selected). If the point value
+								is being returned from a grid, the name returned will be
+								that of the grid.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>place geometry</entry>
+							<entry>The POINT geometry definition of the value
+								returned.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>referencetime</entry>
+							<entry>The time of reference for the value returned</entry>
+						</row>
+						<row>
+							<entry>5</entry>
+							<entry>validtime from</entry>
+							<entry>The first point in time for which the value is
+								valid</entry>
+						</row>
+						<row>
+							<entry>6</entry>
+							<entry>validtime to</entry>
+							<entry>The last point in time for which the value is
+								valid</entry>
+						</row>
+						<row>
+							<entry>7</entry>
+							<entry>value parameter name</entry>
+							<entry>The parameter name for the value returned (as defined
+								within the parameter name space selected)</entry>
+						</row>
+						<row>
+							<entry>8</entry>
+							<entry>value parameter unit</entry>
+							<entry>The measurement unit for the value returned</entry>
+						</row>
+						<row>
+							<entry>9</entry>
+							<entry>level parameter name</entry>
+							<entry>The parameter name for the level of the value returned
+								(as defined within the parameter name space
+								selected)</entry>
+						</row>
+						<row>
+							<entry>10</entry>
+							<entry>level unit name</entry>
+							<entry>The measurement unit for the level of the value
+								returned</entry>
+						</row>
+						<row>
+							<entry>11</entry>
+							<entry>level from</entry>
+							<entry>The lower value of the level</entry>
+						</row>
+						<row>
+							<entry>12</entry>
+							<entry>level</entry>
+							<entry>The upper of the level</entry>
+						</row>
+						<row>
+							<entry>13</entry>
+							<entry>data version</entry>
+							<entry>The data version of the value. Data version is
+								utilized for two separate purposes; to indicate
+								different version of the same data (i.e., to allow
+								corrections and edits to co-exist in the database) and
+								for perturbed versions of the same data (e.g., ensemble
+								members).</entry>
+						</row>
+						<row>
+							<entry>14</entry>
+							<entry>confidence code</entry>
+							<entry>Quality marker (not currently used)</entry>
+						</row>
+						<row>
+							<entry>15</entry>
+							<entry>value store time</entry>
+							<entry>The time when the data was inserted into the
+								database</entry>
+						</row>
+						<row>
+							<entry>16</entry>
+							<entry>value id</entry>
+							<entry>The ID of the value within its value type. Together
+								with valuetype, this costitutes a key of the WDB
+								value</entry>
+						</row>
+						<row>
+							<entry>17</entry>
+							<entry>value type</entry>
+							<entry>The type of the value returned. Together with the
+								valueid, this constitutes a key of the WDB value</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			
+		</sect1>
 		
 		<sect1>
 			<title>wci.returnOid</title>
@@ -1817,146 +2204,7 @@ wci.write
 			</table>
 			
 		</sect1>
-		
-		<sect1>
-			<title>wci.returnFloat</title>
-			
-			<para>The wci.returnFloat data type is a simple row type used for returning
-				floating-point data to the user from the wci.read call. The following table
-				describes the attributes that are returned from wci.returnFloat;
-				including the ordering of the attributes in the type.</para>
-			
-			<table frame="all">
-				<title>wci.returnFloat</title>
-				<tgroup cols="3">
-					<colspec align="center"/>
-					<colspec align="left"/>
-					<colspec align="left"/>
-					<thead>
-						<row>
-							<entry> Order </entry>
-							<entry> Attribute </entry>
-							<entry> Description </entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>0</entry>
-							<entry>value</entry>
-							<entry>The floating point value returned by the
-								query</entry>
-						</row>
-						<row>
-							<entry>1</entry>
-							<entry>data provider name</entry>
-							<entry>The name of the data provider of the value (as defined
-								within the dataprovidernamespace selected)</entry>
-						</row>
-						<row>
-							<entry>2</entry>
-							<entry>place name</entry>
-							<entry>The name of the grid definition selected (as defined
-								within the placenamespace selected). If the point value
-								is being returned from a grid, the name returned will be
-								that of the grid.</entry>
-						</row>
-						<row>
-							<entry>3</entry>
-							<entry>place geometry</entry>
-							<entry>The POINT geometry definition of the value
-								returned.</entry>
-						</row>
-						<row>
-							<entry>4</entry>
-							<entry>referencetime</entry>
-							<entry>The time of reference for the value returned</entry>
-						</row>
-						<row>
-							<entry>5</entry>
-							<entry>validtime from</entry>
-							<entry>The first point in time for which the value is
-								valid</entry>
-						</row>
-						<row>
-							<entry>6</entry>
-							<entry>validtime to</entry>
-							<entry>The last point in time for which the value is
-								valid</entry>
-						</row>
-						<row>
-							<entry>7</entry>
-							<entry>value parameter name</entry>
-							<entry>The parameter name for the value returned (as defined
-								within the parameter name space selected)</entry>
-						</row>
-						<row>
-							<entry>8</entry>
-							<entry>value parameter unit</entry>
-							<entry>The measurement unit for the value returned</entry>
-						</row>
-						<row>
-							<entry>9</entry>
-							<entry>level parameter name</entry>
-							<entry>The parameter name for the level of the value returned
-								(as defined within the parameter name space
-								selected)</entry>
-						</row>
-						<row>
-							<entry>10</entry>
-							<entry>level unit name</entry>
-							<entry>The measurement unit for the level of the value
-								returned</entry>
-						</row>
-						<row>
-							<entry>11</entry>
-							<entry>level from</entry>
-							<entry>The lower value of the level</entry>
-						</row>
-						<row>
-							<entry>12</entry>
-							<entry>level</entry>
-							<entry>The upper of the level</entry>
-						</row>
-						<row>
-							<entry>13</entry>
-							<entry>data version</entry>
-							<entry>The data version of the value. Data version is
-								utilized for two separate purposes; to indicate
-								different version of the same data (i.e., to allow
-								corrections and edits to co-exist in the database) and
-								for perturbed versions of the same data (e.g., ensemble
-								members).</entry>
-						</row>
-						<row>
-							<entry>14</entry>
-							<entry>confidence code</entry>
-							<entry>Quality marker (not currently used)</entry>
-						</row>
-						<row>
-							<entry>15</entry>
-							<entry>value store time</entry>
-							<entry>The time when the data was inserted into the
-								database</entry>
-						</row>
-						<row>
-							<entry>16</entry>
-							<entry>value id</entry>
-							<entry>The ID of the value within its value type. Together
-								with valuetype, this costitutes a key of the WDB
-								value</entry>
-						</row>
-						<row>
-							<entry>17</entry>
-							<entry>value type</entry>
-							<entry>The type of the value returned. Together with the
-								valueid, this constitutes a key of the WDB value</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-			
-		</sect1>
-		
+
 	</chapter>
 	
 	<!--			

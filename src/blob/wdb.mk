@@ -3,7 +3,7 @@
 # WDB Blob Implementation
 #-----------------------------------------------------------------------------
 
-wci_la_SOURCES +=		src/blob/fileblob.cpp \
+wdbCall_la_SOURCES +=	src/blob/fileblob.cpp \
 						src/blob/fileblobimpl_psql.cpp \
 						src/blob/fileblobimpl_psql.h \
 						$(libwdbBlobNoPostgres_la_SOURCES)

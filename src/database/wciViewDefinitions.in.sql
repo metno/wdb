@@ -349,6 +349,28 @@ CREATE INDEX XIE0wci_levelparameter_mv ON __WCI_SCHEMA__.levelparameter_mv
 
 
 
+--
+-- Unit and Unit Conversions
+--
+CREATE VIEW __WCI_SCHEMA__.unitwithconversion AS
+SELECT un.unitname, 
+	   un.unittype, 
+	   co.siunitconversioncoefficient,
+	   co.siunitconversionterm
+FROM  
+	   __WDB_SCHEMA__.unit un
+LEFT OUTER JOIN
+	   __WDB_SCHEMA__.siunitconversion co
+ON 	   (un.unitname = co.unitname);
+
+REVOKE ALL ON __WCI_SCHEMA__.unitwithconversion FROM public;
+GRANT ALL ON __WCI_SCHEMA__.unitwithconversion TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.unitwithconversion TO wdb_felt;
+GRANT SELECT ON __WCI_SCHEMA__.unitwithconversion TO wdb_grib;
+
+
+
+
 CREATE VIEW __WCI_SCHEMA__.gridvalue AS
 SELECT	
 	val.value,

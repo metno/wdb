@@ -3,7 +3,7 @@
 # WDB Call Interface Core Implementation
 #-----------------------------------------------------------------------------
 
-wci_la_SOURCES +=		src/callInterface/core/binaryInterpretation.cpp \
+wdbCall_la_SOURCES +=	src/callInterface/core/binaryInterpretation.cpp \
 						src/callInterface/core/wciGetGridPoint.cpp \
 						src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/psqlTupleInterface.c \

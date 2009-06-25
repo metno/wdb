@@ -61,7 +61,7 @@ WdbProjection::WdbProjection(const string & def)
 {
 	projDef_ = pj_init_plus( projText_.c_str() );
 	if ( !projDef_ )
-		throw WdbException( "Invalid PROJ definition: " + def, __func__ );
+		throw std::runtime_error( "Invalid PROJ definition: " + def );
 }
 
 WdbProjection::~WdbProjection()
@@ -86,7 +86,7 @@ WdbProjection::transform(const WdbProjection & dest, size_t size, double * lon, 
 			msg << '\n' << "Coordinates: " << lon[0] << ' ' << lat[0];
 		}
 
-		throw WdbException( msg.str(), __func__ );
+		throw std::runtime_error( msg.str() );
 	}
 }
 
@@ -103,7 +103,7 @@ WdbProjection::datumTransform(const WdbProjection & dest, size_t size, double * 
 		msg << "Error during datum transform: "<< pj_strerrno(error) << "." << '\n'<< "From:\t"
 				<< projText_ << '\n'<< "To:\t"<< dest.projText_;
 
-		throw WdbException( msg.str(), __func__ );
+		throw std::runtime_error( msg.str() );
 	}
 }
 

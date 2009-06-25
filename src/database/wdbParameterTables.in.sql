@@ -69,8 +69,8 @@ GRANT ALL ON __WDB_SCHEMA__.unit TO wdb_admin;
 -- Conversion tables
 CREATE TABLE __WDB_SCHEMA__.siunitconversion (
     unitname						character varying(80) NOT NULL,
-    siunitconversioncoefficient		real NOT NULL,
-    siunitconversionterm			real NOT NULL
+    siunitconversioncoefficient		float NOT NULL,
+    siunitconversionterm			float NOT NULL
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.siunitconversion

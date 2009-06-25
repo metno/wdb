@@ -13,12 +13,12 @@ pkginclude_HEADERS += \
 	test/install/callInterface/wciInstallTester.h
 
 
-libwciInstallTestBase_la_CPPFLAGS = \
+libwciInstallTestBase_la_CPPFLAGS = $(AM_CPPFLAGS) \
 	$(cppunit_CFLAGS) -I$(srcdir)/test/utility/configuration \
 	-I$(srcdir)/test/install/callInterface
 	
 libwciInstallTestBase_la_LIBS = \
-	-ltestConfiguration -lwdbConfiguration
+	-lwdbTest -lwdbConfig
 	
 
 #-----------------------------------------------------------------------------
@@ -61,14 +61,13 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/TransactionCorrectnessTest.cpp \
 							test/install/callInterface/main.cpp
 
-wciInstallTester_CPPFLAGS =	$(CPPUNIT_CFLAGS) -I$(srcdir)/test/utility/configuration -I$(srcdir)/test/install/callInterface
+wciInstallTester_CPPFLAGS =	$(AM_CPPFLAGS) $(CPPUNIT_CFLAGS) -I$(srcdir)/test/utility/configuration -I$(srcdir)/test/install/callInterface
 
-wciInstallTester_LDFLAGS = \
-	$(AM_LDFLAGS) $(top_builddir)/libwciInstallTestBase.la \
-	-lwciTypesNoPostgres -ltestConfiguration -lwdbConfiguration \
-	$(cppunit_LIBS) 
+wciInstallTester_LDFLAGS =	$(AM_LDFLAGS) $(top_builddir)/libwciInstallTestBase.la \
+							-lwciTypesNoPostgres -lwdbTest -lwdbConfig \
+							$(cppunit_LIBS) 
 
-wciInstallTester_LDADD =	-lwdbProjection -lwdbException -lwdbMath
+wciInstallTester_LDADD =	-lwdbProj -lwdbExcept -lwdbMath
 
 WCIINSTALLTEST_SUPPORT =	test/install/callInterface/buildUp.in.sh \
 							test/install/callInterface/tearDown.in.sh
