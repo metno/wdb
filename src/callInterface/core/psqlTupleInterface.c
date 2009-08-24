@@ -107,8 +107,8 @@ void extractPlaceSpecification( struct PlaceSpecification * out, const Datum * i
 {
     const HeapTupleHeader t = DatumGetHeapTupleHeader( * indata );
 
-    out->startingLongitude_ = extractFloat_( & t, "startlongitude" );
-    out->startingLatitude_ = extractFloat_( & t, "startlatitude" );
+    out->startX_ = extractFloat_( & t, "startlongitude" );
+    out->startY_ = extractFloat_( & t, "startlatitude" );
 
     out->xNumber_ = extractUInt_( & t, "inumber" );
     out->yNumber_ = extractUInt_( & t, "jnumber" );

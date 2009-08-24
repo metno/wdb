@@ -56,8 +56,8 @@ GridGeometry::GridGeometry(const string & projDef, Orientation o,
 	yNumber_ = yNum;
 	xIncrement_ = xIncr;
 	yIncrement_ = yIncr;
-	startingLongitude_ = startingX;
-	startingLatitude_ = startingY;
+	startX_ = startingX;
+	startY_ = startingY;
 
 	projDefinition_ = new char[projDef.size() + 1];
 	strcpy(projDefinition_, projDef.c_str());
@@ -90,8 +90,8 @@ const GridGeometry & GridGeometry::operator = (const GridGeometry & cpy)
 	yNumber_ = cpy.yNumber_;
 	xIncrement_ = cpy.xIncrement_;
 	yIncrement_ = cpy.yIncrement_;
-	startingLongitude_ = cpy.startingLongitude_;
-	startingLatitude_ = cpy.startingLatitude_;
+	startX_ = cpy.startX_;
+	startY_ = cpy.startY_;
 
 	projDefinition_ = new char[strlen(cpy.projDefinition_) + 1];
 	strcpy(projDefinition_, cpy.projDefinition_);
@@ -163,7 +163,7 @@ void GridGeometry::setOrientation(GridGeometry::Orientation o)
 				"LeftUpperHorizontal" : "LeftLowerHorizontal";
 		log.debugStream() << "Changing orientation to " << orientation;
 		orientation_ = o;
-		startingLatitude_ += (yIncrement_ * (yNumber_ -1));
+		startY_ += (yIncrement_ * (yNumber_ -1));
 		yIncrement_ = -yIncrement_;
 	}
 	else
@@ -172,7 +172,7 @@ void GridGeometry::setOrientation(GridGeometry::Orientation o)
 
 GridGeometry::Point GridGeometry::unprojectedLonLat_(const Point & p) const
 {
-	Point ret(startingLongitude_ + (p.x * xIncrement_), startingLatitude_ + (p.y * yIncrement_));
+	Point ret(startX_ + (p.x * xIncrement_), startY_ + (p.y * yIncrement_));
 
 	if ( not isMetric( projDefinition_ ) ) {
 		ret.x *= DEG_TO_RAD;

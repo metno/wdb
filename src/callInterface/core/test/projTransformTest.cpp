@@ -41,8 +41,8 @@ projTransformTest::~projTransformTest()
 
 void projTransformTest::setUp()
 {
-	ps.startingLongitude_ = 5.75;
-	ps.startingLatitude_ = -13.25;
+	ps.startX_ = 5.75;
+	ps.startY_ = -13.25;
 	ps.xNumber_ = 248;
 	ps.yNumber_ = 400;
 	ps.xIncrement_ = 0.1;

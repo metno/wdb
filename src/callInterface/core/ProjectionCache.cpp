@@ -140,8 +140,8 @@ void ProjectionCache::fillCache()
 	metric = isMetric( grid_.projDefinition_);
 	for ( int pos = 0; pos < neededSpace; ++ pos )
 	{
-		lon_[pos] = (grid_.startingLongitude_ + (xFromIndex(offset + pos, grid_) * grid_.xIncrement_));
-		lat_[pos] = (grid_.startingLatitude_  + (yFromIndex(offset + pos, grid_) * grid_.yIncrement_));
+		lon_[pos] = (grid_.startX_ + (xFromIndex(offset + pos, grid_) * grid_.xIncrement_));
+		lat_[pos] = (grid_.startY_  + (yFromIndex(offset + pos, grid_) * grid_.yIncrement_));
 		if ( not metric) {
 			lon_[pos] = lon_[pos] * DEG_TO_RAD;
 			lat_[pos] = lat_[pos] * DEG_TO_RAD;

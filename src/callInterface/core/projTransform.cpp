@@ -137,8 +137,8 @@ struct lonlat transform( int i, int j, const struct PlaceSpecification * p )
 		return lonlat();
 
 	lonlat ret;
-	ret.lon = p->startingLongitude_ + (i * p->xIncrement_);
-	ret.lat = p->startingLatitude_ + (j * p->yIncrement_);
+	ret.lon = p->startX_ + (i * p->xIncrement_);
+	ret.lat = p->startY_ + (j * p->yIncrement_);
 	transform_( & ret.lon, & ret.lat, 1, * p );
 	return ret;
 }
@@ -153,8 +153,8 @@ void transformAll( double * lonOut, double * latOut, const struct PlaceSpecifica
 
 	for ( size_t plainIndex = 0; plainIndex < elements; ++ plainIndex )
 	{
-		lonOut[plainIndex] = p->startingLongitude_ + xFromIndex( plainIndex, * p ) * p->xIncrement_;
-		latOut[plainIndex] = p->startingLatitude_ + yFromIndex( plainIndex, * p ) * p->yIncrement_;
+		lonOut[plainIndex] = p->startX_ + xFromIndex( plainIndex, * p ) * p->xIncrement_;
+		latOut[plainIndex] = p->startY_ + yFromIndex( plainIndex, * p ) * p->yIncrement_;
 	}
 
 	transform_( lonOut, latOut, elements, * p );
@@ -178,8 +178,8 @@ struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification 
 		ret.lon *= RAD_TO_DEG;
 		ret.lat *= RAD_TO_DEG;
 	}
-	ret.lon = ( (ret.lon - p->startingLongitude_ ) / p->xIncrement_ );
-	ret.lat = ( (ret.lat - p->startingLatitude_ ) / p->yIncrement_ );
+	ret.lon = ( (ret.lon - p->startX_ ) / p->xIncrement_ );
+	ret.lat = ( (ret.lat - p->startY_ ) / p->yIncrement_ );
 
 	return ret;
 }

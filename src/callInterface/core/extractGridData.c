@@ -96,8 +96,8 @@ void getGridSpec(struct PlaceSpecification * out, int placeid)
 	out->yNumber_ = DatumGetInt32(SPI_getbinval(row, SPI_tuptable->tupdesc, 3, & isNull));
 	out->xIncrement_ = DatumGetFloat4(SPI_getbinval(row, SPI_tuptable->tupdesc, 4, & isNull));
 	out->yIncrement_ = DatumGetFloat4(SPI_getbinval(row, SPI_tuptable->tupdesc, 5, & isNull));
-	out->startingLongitude_ = DatumGetFloat4(SPI_getbinval(row, SPI_tuptable->tupdesc, 6, & isNull));
-	out->startingLatitude_ = DatumGetFloat4(SPI_getbinval(row, SPI_tuptable->tupdesc, 7, & isNull));
+	out->startX_ = DatumGetFloat4(SPI_getbinval(row, SPI_tuptable->tupdesc, 6, & isNull));
+	out->startY_ = DatumGetFloat4(SPI_getbinval(row, SPI_tuptable->tupdesc, 7, & isNull));
 	out->projDefinition_ = SPI_getvalue(row, SPI_tuptable->tupdesc, 8);
 
 	SPI_finish();

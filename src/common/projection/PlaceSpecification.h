@@ -50,10 +50,10 @@ extern "C" {
 struct PlaceSpecification
 {
 	/// Starting X (longitude of LongLat) of Grid
-	double startingLongitude_;
+	double startX_;
 
 	/// Starting Y (latitude of LongLat) of Grid
-	double startingLatitude_;
+	double startY_;
 
     /// Points along a Parallel of the Grid (Ni)
 	unsigned int xNumber_;
