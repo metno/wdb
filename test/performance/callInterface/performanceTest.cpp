@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
     	case 8: // Prepared Random Point retrieval - individual points
     		isFloat = true;
     		C.prepare("ReadRandom1",
-    				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
+    				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
     				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
     				  "'exact 0 height above ground distance', "
     				  "ARRAY[-1], NULL::wci.returnFloat	)" )

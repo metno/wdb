@@ -5,7 +5,7 @@ export TEST_DESCRIPTION="Single thread, multiple bilinear point retrieval"
 export TEST_PATH=__WDB_BUILDDIR__/test/performance/callInterface
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Parse command line
 case $1 in
@@ -23,19 +23,19 @@ totalTime=0
 startTime=`date +%s%N`
 $EXECUTE > ${TMP_PATH}/$TESTCASE_FILE.out
 endTime=`date +%s%N`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Repeat Test 2
 startTime=`date +%s%N`
 $EXECUTE >> ${TMP_PATH}/$TESTCASE_FILE.out
 endTime=`date +%s%N`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Repeat Test 3
 startTime=`date +%s%N`
 $EXECUTE >> ${TMP_PATH}/$TESTCASE_FILE.out
 endTime=`date +%s%N`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 averageTimeRetrieval=$(echo "$totalTime / 3000000000.0" | bc -l)
 averageRows=$(echo "6000.0 / $averageTimeRetrieval" | bc -l)

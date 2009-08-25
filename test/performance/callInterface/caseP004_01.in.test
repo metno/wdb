@@ -5,7 +5,7 @@ export TEST_DESCRIPTION="Single process, multi-query"
 export TEST_PATH=__WDB_BUILDDIR__/test/performance/callInterface
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Parse command line
 case $1 in
@@ -27,7 +27,7 @@ ${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-1.out &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Execute Test 2
 rm -f ${TMP_PATH}/startTime.log
@@ -38,7 +38,7 @@ ${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-1.out &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Execute Test 3
 rm -f ${TMP_PATH}/startTime.log
@@ -49,7 +49,7 @@ ${TEST_PATH}/wciRead_time.sh 42  > ${TMP_PATH}/$TESTCASE_FILE-1.out &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 averageTimeRetrieval=$(echo "$totalTime / 3000000000.0" | bc -l)
 averageRows=$(echo "601 * 5.0 / $averageTimeRetrieval" | bc -l)

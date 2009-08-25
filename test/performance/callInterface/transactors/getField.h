@@ -63,7 +63,7 @@ public:
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
         std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['test wci 0'], "; // DataProvider
     	queryStr << "'hirlam 10 grid', "; // Place
@@ -148,7 +148,7 @@ public:
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
         std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['Hirlam 10'], "; // DataProvider
     	queryStr << "'hirlam 10 grid', "; // Place

@@ -142,7 +142,7 @@ public:
 		std::string valTime;
 		bilinearTimes(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << bilinearDataProvider() << ", "
 				 << bilinearPoint() << ", "
@@ -219,7 +219,7 @@ public:
 		std::string valTime;
 		bilinearTimeSpan(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << bilinearDataProvider() << ", "
 				 << bilinearPoint() << ", "
@@ -296,7 +296,7 @@ public:
 		std::string valTime;
 		bilinearTimeSpan(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << bilinearDataProvider() << ", "
 				 << bilinearPoint() << ", "

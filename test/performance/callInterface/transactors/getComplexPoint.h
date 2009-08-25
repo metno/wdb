@@ -95,7 +95,7 @@ public:
 		std::string valTime;
 		complexTimes(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << complexDataProvider() << ", "
 				 << complexPoint() << ", "
@@ -172,7 +172,7 @@ public:
 		complexTimes(refTime, valTime);
 		// First Query - 120 Rows
 		std::stringstream queryStr1;
-        queryStr1 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr1 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				  << "from wci.read ( "
 				  << complexDataProvider() << ", "
 				  << complexPoint() << ", "
@@ -212,7 +212,7 @@ public:
 		}
 		// Second Query - 420 Rows (240 rows)
 		std::stringstream queryStr2;
-        queryStr2 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr2 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				  << "from wci.read ( "
 				  << complexDataProvider() << ", "
 				  << complexPoint() << ", "
@@ -250,7 +250,7 @@ public:
 		}
 		// Third Query - 60 Rows
 		std::stringstream queryStr3;
-        queryStr3 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr3 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				  << "from wci.read ( "
 				  << complexDataProvider() << ", "
 				  << complexPoint() << ", "
@@ -288,7 +288,7 @@ public:
 		}
 		// Fourth Query - 1 Rows
 		std::stringstream queryStr4;
-        queryStr4 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr4 << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				  << "from wci.read ( "
 				  << "NULL, "
 				  << complexPoint() << ", "
