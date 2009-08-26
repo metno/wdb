@@ -113,13 +113,13 @@ wci.addSrid(
 	name_ text,
 	projection_ text
 )
-RETURNS void AS
+RETURNS int AS
 $BODY$
 DECLARE
 	srid_ int;
 BEGIN
 	-- WCI User Check
-	SELECT __WCI_SCHEMA__.getSessionData();
+	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Get SRID
 	SELECT max(srid) + 1 INTO srid_
 	FROM spatial_ref_sys;	
@@ -130,6 +130,8 @@ BEGIN
 			 NULL,
 			 NULL,
 			 projection_ );			 
+			 
+	RETURN srid_;
 END;
 $BODY$
 SECURITY DEFINER

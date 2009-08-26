@@ -19,18 +19,18 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-CREATE OR REPLACE FUNCTION
-__WCI_SCHEMA__.getBilinearInterpolationData
-(
-	i float8,
-	j float8,
-	iNumber integer,
-	field bigint
-)
-RETURNS float4 AS
-'__WDB_LIBDIR__/__WCI_LIB__', 'getBilinearInterpolationData'
-LANGUAGE C IMMUTABLE
-SECURITY DEFINER;
+--CREATE OR REPLACE FUNCTION
+--__WCI_SCHEMA__.getBilinearInterpolationData
+--(
+--	i float8,
+--	j float8,
+--	iNumber integer,
+--	field bigint
+--)
+--RETURNS float4 AS
+--'__WDB_LIBDIR__/__WCI_LIB__', 'getBilinearInterpolationData'
+--LANGUAGE C IMMUTABLE
+--SECURITY DEFINER;
 
 
 CREATE OR REPLACE FUNCTION

@@ -115,7 +115,9 @@ public:
 
 	Point point(Corner c) const;
 
-	Point point(size_type x, size_type y) const;
+	//Point point(size_type x, size_type y) const;
+
+	Point lonLatFromIndex(size_type x, size_type y) const;
 
 	/// Change to the given orientation
 	void setOrientation(Orientation o);

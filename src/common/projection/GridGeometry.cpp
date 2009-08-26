@@ -44,13 +44,13 @@
 
 using namespace std;
 
-GridGeometry::GridGeometry(const string & projDef, Orientation o,
-						   size_type xNum, size_type yNum,
-						   double xIncr,
-						   double yIncr,
-						   double startingX,
-						   double startingY ) :
-							   orientation_(o)
+GridGeometry::GridGeometry( const string & projDef, Orientation o,
+						    size_type xNum, size_type yNum,
+						    double xIncr,
+						    double yIncr,
+						    double startingX,
+						    double startingY ) :
+						    orientation_(o)
 {
 	xNumber_ = xNum;
 	yNumber_ = yNum;
@@ -132,13 +132,26 @@ GridGeometry::Point GridGeometry::point(GridGeometry::Corner c) const
 	if ( f == corners_.end() )
 	{
 		size_t idx = getIndex(c);
-		Point lonlat = point(xFromIndex(idx, *this), yFromIndex(idx, *this));
+		Point lonlat = lonLatFromIndex(xFromIndex(idx, *this), yFromIndex(idx, *this));
 		f = corners_.insert(make_pair(c, lonlat)).first;
 	}
 	return f->second;
 }
 
+/*
 GridGeometry::Point GridGeometry::point(GridGeometry::size_type x, GridGeometry::size_type y) const
+{
+	Point start(x ,y);
+	Point p = unprojectedLonLat_(start);
+	project_(p);
+
+	// cout << projDefinition_ << "  ->  " << DEFAULT_PROJECTION << endl;
+
+	return p;
+}
+*/
+
+GridGeometry::Point GridGeometry::lonLatFromIndex(GridGeometry::size_type x, GridGeometry::size_type y) const
 {
 	Point start(x ,y);
 	Point p = unprojectedLonLat_(start);

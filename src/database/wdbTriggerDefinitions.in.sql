@@ -18,54 +18,6 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CREATE TYPE __WDB_SCHEMA__.core_getAllGridPointsReturnType AS (
-    i int,
-    j int,
-    geo text
-);
-
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.core_getAllGridPoints( gridDefinition __WDB_SCHEMA__.placespec )
-RETURNS SETOF __WDB_SCHEMA__.core_getAllGridPointsReturnType AS
-'__WDB_LIBDIR__/__WCI_LIB__', 'wciGetAllGridPoints'
-LANGUAGE 'c' STRICT IMMUTABLE;
-
--- Populating placepoints table when creating a regular grid
-CREATE FUNCTION __WDB_SCHEMA__.triggerfun_populateplacepoints() RETURNS "trigger" AS 
-$$
-DECLARE
-        gridDefinition __WDB_SCHEMA__.placespec;
-        point __WDB_SCHEMA__.core_getAllGridPointsReturnType;
-BEGIN
-        SELECT * INTO gridDefinition FROM __WDB_SCHEMA__.placespec WHERE placeid = NEW.placeid;
-
-		INSERT INTO __WDB_SCHEMA__.placepoint ( placeid, i, j, location )
-		SELECT NEW.placeid, grid.i, grid.j, geomfromtext( grid.geo, 4030 )
-		FROM __WDB_SCHEMA__.core_getAllGridPoints( gridDefinition ) grid;
-
-        RETURN NULL;
-END;
-$$
-LANGUAGE 'plpgsql' STRICT;
-
-
-
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.core_getAllGridPoints( place int )
-RETURNS SETOF __WDB_SCHEMA__.core_getAllGridPointsReturnType AS
-$BODY$
-DECLARE
-	gridDefinition __WDB_SCHEMA__.placespec;
-	entry __WDB_SCHEMA__.core_getAllGridPointsReturnType;
-BEGIN
-	SELECT * INTO gridDefinition FROM __WDB_SCHEMA_.placespec WHERE placeid=place;
-
-	FOR entry IN SELECT * FROM __WDB_SCHEMA_.core_getAllGridPoints(gridDefinition) LOOP
-		RETURN NEXT entry;
-	END LOOP;
-
-	--RETURN QUERY SELECT * FROM __WDB_SCHEMA_.core_getAllGridPoints(gridDefinition);
-END;
-$BODY$
-LANGUAGE plpgsql STRICT IMMUTABLE;
 
 -- Updating of placedefinition when inserting a regular grid
 create or replace function __WDB_SCHEMA__.createGeometryText(
@@ -175,18 +127,6 @@ CREATE TRIGGER trigger___WDB_SCHEMA___deleteObsoleteGrids
     AFTER DELETE ON __WDB_SCHEMA__.gridvalue
     FOR EACH ROW
     EXECUTE PROCEDURE __WDB_SCHEMA__.deleteObsoleteGrids();
-
-
---
--- TOC entry 2509 (class 2620 Grid 1391800)
--- Dependencies: 1793 448
-CREATE TRIGGER trigger___WDB_SCHEMA___populateplacepoints
-    AFTER INSERT ON __WDB_SCHEMA__.placeregulargrid
-    FOR EACH ROW
-    EXECUTE PROCEDURE __WDB_SCHEMA__.triggerfun_populateplacepoints();
-
-
-
 
 
 

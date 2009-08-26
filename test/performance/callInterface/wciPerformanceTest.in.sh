@@ -18,6 +18,9 @@
 ##
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
+# Script Environment
+source __WDB_BUILDDIR__/test/performance/callInterface/testEnvironment.sh
+
 # Help Info
 export SCRIPT_USAGE="Usage: $0 [OPTION]
 
@@ -52,7 +55,7 @@ esac
 echo "WCI Performance Tests"
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Tear down and build up
 source ${TEST_PATH}/tearDown.sh

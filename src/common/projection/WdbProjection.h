@@ -100,6 +100,7 @@ public:
 	 * @param size	The number of points to be reprojected
 	 * @param lon	Pointer to the longitude coordinates of the points being reprojected
 	 * @param lat	Pointer to the latitude coordinataes of the points being reprojected
+	 * @throws		std::runtime_error on fail
 	 */
 	void transform(const WdbProjection & dest, size_t size, double * lon, double * lat) const;
 
@@ -109,8 +110,26 @@ public:
 	 * @param size	The number of points to be reprojected
 	 * @param lon	Pointer to the longitude coordinates of the points being reprojected
 	 * @param lat	Pointer to the latitude coordinataes of the points being reprojected
+	 * @throws		std::runtime_error on fail
 	 */
 	void datumTransform(const WdbProjection & dest, size_t size, double * lon, double * lat) const;
+
+	/** Perform the PROJ transform from this projection to the default WDB projection
+	 * @param size	The number of points to be reprojected
+	 * @param lon	Pointer to the longitude coordinates of the points being reprojected
+	 * @param lat	Pointer to the latitude coordinataes of the points being reprojected
+	 * @throws		std::runtime_error on fail
+	 */
+	void transformToDefault(size_t size, double * lon, double * lat) const;
+
+	/** Perform the PROJ transfrom from the default WDB projection to this projection
+	 * @param size	The number of points to be reprojected
+	 * @param lon	Pointer to the longitude coordinates of the points being reprojected
+	 * @param lat	Pointer to the latitude coordinataes of the points being reprojected
+	 * @throws		std::runtime_error on fail
+	 */
+	void transformFromDefault(size_t size, double * lon, double * lat) const;
+
 	/** Return the projection as a std::strng
 	 * @return	A string representation
 	 */

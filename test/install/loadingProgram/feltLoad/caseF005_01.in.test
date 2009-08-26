@@ -25,7 +25,7 @@ export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/feltLoad
 
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # DELETE
  

@@ -1,7 +1,7 @@
 /*
-    wdb - weather and water data storage
+	wdb - weather and water data storage
 
-    Copyright (C) 2007 met.no
+    Copyright (C) 2009 met.no
 
     Contact information:
     Norwegian Meteorological Institute
@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,25 +22,28 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
-#ifndef PLACEPOINTINTERNAL_H_
-#define PLACEPOINTINTERNAL_H_
+#ifndef READPOINTS_H_
+#define READPOINTS_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <postgres.h>
-#include <fmgr.h>
-	
-Datum getAllLatLonCoordinates( FunctionCallInfo fcinfo );
+
+#include "GridPointData.h"
+#include <fileblobimpl_psql.h>
+#include <types/interpolationType.h>
+
+struct GridPointDataListIterator * readPoints(const struct PlaceSpecification * ps, GEOSGeom location, enum InterpolationType interpolation, FileId dataId);
+
 
 #ifdef __cplusplus
 }
 #endif
 
 
-#endif /*PLACEPOINTINTERNAL_H_*/
+#endif /* READPOINTS_H_ */

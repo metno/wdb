@@ -24,7 +24,7 @@ export TEST_DESCRIPTION="Hirlam 10/p1 Metadata / Met.no"
 export TEST_PATH=__WDB_BUILDDIR__/test/install/metadata
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Parse command line
 case $1 in

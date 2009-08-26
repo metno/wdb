@@ -24,6 +24,7 @@ AC_CONFIG_HEADER([config/config.h])
 src_subdirs="			src/blob \
 						src/callInterface/api \
 			     		src/callInterface/core \
+			     		src/callInterface/core/extractGridData \
 				     	src/callInterface/core/test \
 				     	src/callInterface/types \
 				     	src/callInterface/types/test \

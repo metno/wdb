@@ -24,7 +24,7 @@ export TEST_DESCRIPTION="Verify that files are removed"
 export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Parse command line
 case $1 in

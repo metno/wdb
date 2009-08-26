@@ -62,7 +62,7 @@ struct PlaceSpecification;
  *
  * @throws exception on proj error.
  */
-struct lonlat transform( int i, int j, const struct PlaceSpecification * place );
+struct lonlat wdbTransform( double i, double j, const struct PlaceSpecification * place );
 
 
 /**

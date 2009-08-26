@@ -3,9 +3,11 @@
 # WDB Call Interface Core Implementation
 #-----------------------------------------------------------------------------
 
-wdbCall_la_SOURCES +=	src/callInterface/core/binaryInterpretation.cpp \
-						src/callInterface/core/wciGetGridPoint.cpp \
-						src/callInterface/core/psqlTupleInterface.h \
+libwciCoreNoPostgres_la_SOURCES =
+
+include src/callInterface/core/extractGridData/wdb.mk
+
+wdbCall_la_SOURCES +=	src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/psqlTupleInterface.c \
 						src/callInterface/core/wciSession.h \
 						src/callInterface/core/wciSession.cpp \
@@ -15,20 +17,14 @@ wdbCall_la_SOURCES +=	src/callInterface/core/binaryInterpretation.cpp \
 						src/callInterface/core/readWhereClause.h \
 						src/callInterface/core/readWhereClause.cpp \
 						src/callInterface/core/readQuery.cpp \
-						src/callInterface/core/interpolation.c \
-						src/callInterface/core/placePointInternal.c \
-						src/callInterface/core/placePointInternal.h \
-						src/callInterface/core/ProjectionCache.cpp \
-						src/callInterface/core/ProjectionCache.h \
 						$(libwciCoreNoPostgres_la_SOURCES)
 
 check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 
-libwciCoreNoPostgres_la_SOURCES =\
+libwciCoreNoPostgres_la_SOURCES +=\
 						src/callInterface/core/projTransform.h \
 						src/callInterface/core/projTransform.cpp
 						
-
 WCICORE_SOURCES =		src/callInterface/core/wciExtractGridData.in.sql \
 						src/callInterface/core/wciSession.in.sql \
 						src/callInterface/core/readQuery.in.sql \

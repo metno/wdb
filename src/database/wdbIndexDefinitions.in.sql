@@ -127,19 +127,6 @@ CREATE INDEX XIE4Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
        ValueParameterId
 );
 
--- Moving these alter table constraints here speeds up loading
-ALTER TABLE ONLY __WDB_SCHEMA__.placepoint
-ADD CONSTRAINT placepoint_pkey PRIMARY KEY (placeid, i, j);
-
-ALTER TABLE __WDB_SCHEMA__.placepoint
-	ADD FOREIGN KEY (placeid)
-					REFERENCES __WDB_SCHEMA__.placedefinition
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-CREATE INDEX XIE1Wdb_PlacePoint ON __WDB_SCHEMA__.placepoint
-      USING GIST ( location GIST_GEOMETRY_OPS );
-
 
 CREATE UNIQUE INDEX XAK1Wdb_ValueStandardParameter ON __WDB_SCHEMA__.valuemeasureparameter
 (

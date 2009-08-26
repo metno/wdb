@@ -89,6 +89,7 @@ void dropFile(FileId id)
 		std::ostringstream errMsg;
 		errMsg << "File with id <" << id << "> does not exist";
 		std::string msg = errMsg.str();
+		// Todo: Postgres depedent
 		elog(WARNING, msg.c_str());
 	}
 }
@@ -109,6 +110,7 @@ int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount)
 			if ( ! std::binary_search(referencedFiles, & referencedFiles[refFileCount], fileId) )
 			{
 				const std::string fileName = it->string();
+				// Todo: Postgres dependent
 				elog(DEBUG1, "Removing unreferenced file %s (FileId %d)", fileName.c_str(), (int) fileId);
 				fs::remove(* it);
 				++ unreferencedFiles;
@@ -116,6 +118,7 @@ int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount)
 		}
 		catch ( std::exception & e )
 		{
+			// Todo: Postgres dependent
 			elog(WARNING, e.what());
 		}
 	}
@@ -168,7 +171,7 @@ namespace internal_
 {
 struct end_of_file : public std::runtime_error
 {
-	end_of_file(const char * what) : std::runtime_error(what) {}
+	end_of_file(const std::string & what) : std::runtime_error(what) {}
 };
 
 float readFloat_(std::istream & s)
@@ -186,13 +189,23 @@ float readFloat_(std::istream & s)
 
 float readFloat_(std::istream & s, int position)
 {
-	s.seekg(position * sizeof(float), std::ios_base::beg);
-	return readFloat_(s);
+	try
+	{
+		s.seekg(position * sizeof(float), std::ios_base::beg);
+		return readFloat_(s);
+	}
+	catch ( end_of_file & )
+	{
+		std::ostringstream msg;
+		msg << "File index " << position << " is out of range for file.";
+		throw end_of_file(msg.str());
+	}
 }
 }
 
 BOOST_STATIC_ASSERT(sizeof(float) == 4);
 
+// Todo: Dependent on a function in a Postgres file
 void initializeFileStorage()
 {
 	static bool initialized = false;

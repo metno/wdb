@@ -131,10 +131,11 @@ extern "C" {
 #endif
 
 /// @todo This is painfully slow since we only transform one point per call. Improve speed.
-struct lonlat transform( int i, int j, const struct PlaceSpecification * p )
+struct lonlat wdbTransform( double i, double j, const struct PlaceSpecification * p )
 {
 	if ( ! p )
 		return lonlat();
+
 
 	lonlat ret;
 	ret.lon = p->startX_ + (i * p->xIncrement_);
@@ -183,6 +184,7 @@ struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification 
 
 	return ret;
 }
+
 
 #ifdef __cplusplus
 }

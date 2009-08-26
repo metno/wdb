@@ -74,23 +74,23 @@ void projTransformTest::testTransform()
 
 	const double delta = 0.02;
 
-	lonlat ret = transform( 0, 0, & ps );
+	lonlat ret = wdbTransform( 0, 0, & ps );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[0].lon, ret.lon, delta );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[0].lat, ret.lat, delta );
 
-	ret = transform( 0, 399, & ps );
+	ret = wdbTransform( 0, 399, & ps );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[1].lon, ret.lon, delta );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[1].lat, ret.lat, delta );
 
-	ret = transform( 247, 399, & ps );
+	ret = wdbTransform( 247, 399, & ps );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[2].lon, ret.lon, delta );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[2].lat, ret.lat, delta );
 
-	ret = transform( 247, 0, & ps );
+	ret = wdbTransform( 247, 0, & ps );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[3].lon, ret.lon, delta );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[3].lat, ret.lat, delta );
 
-	ret = transform( 112, 42, & ps );
+	ret = wdbTransform( 112, 42, & ps );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[4].lon, ret.lon, delta );
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( tc[4].lat, ret.lat, delta );
 }

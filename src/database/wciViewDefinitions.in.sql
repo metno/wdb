@@ -209,21 +209,6 @@ CREATE INDEX XIE2wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
 	   PlaceId
 );
 
-CREATE VIEW __WCI_SCHEMA__.placepoint AS
-SELECT 
-	pp.placeid, 
-	pp.i, 
-	pp.j, 
-	pp."location" 
-FROM
-	__WDB_SCHEMA__.placepoint pp;
-
-REVOKE ALL ON TABLE __WCI_SCHEMA__.placepoint FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.placepoint TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.placepoint TO wdb_read;
-
-
-
 CREATE VIEW __WCI_SCHEMA__.valueparameter AS
 SELECT
 	vpp.valueparameterid,

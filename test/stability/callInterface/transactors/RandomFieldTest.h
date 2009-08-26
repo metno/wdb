@@ -80,7 +80,7 @@ public:
 		R = T.exec(query);
 		pqxx::largeobjectaccess * fieldObject;
 		int read;
-		for (int i=0; i<R.size(); i++) {
+		for ( unsigned int i=0; i<R.size(); i++) {
 			GridRow * ret = new GridRow();
 			R.at(i).at(0).to(ret->value_);
 			R.at(i).at(1).to(ret->dataProvider_);
@@ -158,7 +158,7 @@ public:
 		R = T.exec(query);
 		pqxx::largeobjectaccess * fieldObject;
 		int read;
-		for (int i=0; i<R.size(); i++) {
+		for (unsigned int i=0; i<R.size(); i++) {
 			GridRow * ret = new GridRow();
 			R.at(i).at(0).to(ret->value_);
 			R.at(i).at(1).to(ret->dataProvider_);
