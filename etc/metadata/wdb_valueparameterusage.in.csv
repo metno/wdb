@@ -6,6 +6,7 @@ air anomaly|The value describes an anomalous property air
 virtual air|The value describes a virtual property air
 potential air|The value describes a potential property air
 wind|Unknown
+mean sea level|Value reduced to sea level assuming an isothermal layer at the measuring point's temperature.
 visibility|Unknown
 pseudo-abiadetic potential air|Unknown
 dew point|The value describes a property air at the point where water vapor condenses into water

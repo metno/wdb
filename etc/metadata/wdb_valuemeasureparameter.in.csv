@@ -1,5 +1,6 @@
 Id|Value Domain|Unit|QuantityType
 1|air|Pa|scalar
+2|mean sea level|Pa|scalar
 3|air|Pa/s|scalar
 4|air|K.m2/(kg.s)|scalar
 5|icao standard atmospheric reference|m|scalar
