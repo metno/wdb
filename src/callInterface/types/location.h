@@ -40,8 +40,22 @@ public:
 	Location(const std::string & location);
 	~Location();
 
+	/**
+	 * Get the type of interpolation
+	 */
 	const std::string & interpolation() const { return interpolation_; }
+
+	/**
+	 * Get the WKT or name of the location
+	 */
 	const std::string & location() const { return location_; }
+
+	/**
+	 * Is the location represented by a WKT geometry specification? If not, it
+	 * is (supposed to be) a name of a location.
+	 *
+	 * @return True if the geometry looks like a WKT geometry spec.
+	 */
 	bool isGeometry() const { return isGeometry_; }
 
 	/**
