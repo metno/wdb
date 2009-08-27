@@ -24,7 +24,8 @@ Data Provider Id|DataProvider Type|SpatialDomainDelivery|Data Provider Life|Stor
 10014|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 10015|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 10016|Computer System|Grid|2 days|2008-06-27T16:00:00Z
-10017|Computer System|Grid|2 days|2009-04-21T12:00:00Z
+10100|Computer System|Grid|2 days|2008-06-27T16:00:00Z
+10200|Computer System|Grid|2 days|2009-04-21T12:00:00Z
 10001|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 88001|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 88067|Computer System|Grid|2 days|2008-06-27T16:00:00Z
@@ -33,6 +34,7 @@ Data Provider Id|DataProvider Type|SpatialDomainDelivery|Data Provider Life|Stor
 98100|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 98133|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 98134|Computer System|Grid|2 days|2009-03-09T12:00:00Z
+98135|Computer System|Grid|2 days|2009-03-09T12:00:00Z
 1000000|Data Provider Group|Any|2 days|2008-06-27T16:00:00Z
 88222|Computer System|Grid|2 days|2008-06-27T16:00:00Z
 88820|Computer System|Grid|2 days|2008-06-27T16:00:00Z
