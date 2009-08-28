@@ -110,7 +110,7 @@ void PolygonReaderTest::testExtractPolygon()
 	PolygonReader reader(ps);
 	reader.extractPolygon(polygon, location, Nearest);
 
-	CPPUNIT_ASSERT_EQUAL(4u, polygon.size());
+	CPPUNIT_ASSERT_EQUAL(std::vector<GridPointData>::size_type(4), polygon.size());
 
 	double x = polygon[0].x;
 	double y = polygon[0].y;
@@ -130,11 +130,11 @@ void PolygonReaderTest::testExtractPolygonMetric()
 	PolygonReader reader(ps);
 	reader.extractPolygon(polygon, location, Nearest);
 
-	CPPUNIT_ASSERT_EQUAL(4u, polygon.size());
+	CPPUNIT_ASSERT_EQUAL(std::vector<GridPointData>::size_type(4), polygon.size());
 
 	double x = polygon[0].x;
 	double y = polygon[0].y;
 
-	for ( unsigned i = 1; i < polygon.size() -1; ++ i )
+	for ( std::vector<GridPointData>::size_type i = 1; i < polygon.size() -1; ++ i )
 		CPPUNIT_ASSERT(x != polygon[i].x or y != polygon[i].y);
 }
