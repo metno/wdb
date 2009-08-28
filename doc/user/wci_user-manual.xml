@@ -142,6 +142,17 @@
 				not specified (i.e., all NULLs), it is assumed the user wants to retrieve all data items,
 				regardless of their dimension description. Please do not attempt this unless the database 
 				you are querying is extremely small.</para>
+				
+			<para>In the context of WCI search criteria, NULL is always interpreted to mean "ALL".</para>
+			
+			<para>The last parameter of a WCI function call that is intended to return data is always
+			reserved for specifying the data type to be returned (this is because most functions are 
+			overloaded to return many different forms of data. By convention, this parameter is 
+			usually given as a NULL cast to the relevant data type; for example:</para>
+
+			<programlisting>
+NULL::wci.browsereferencetime
+		</programlisting>
 			
 			<para>The dimensions are described in the following sections.</para>
 			
@@ -190,7 +201,7 @@ SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
 				namespace, the following wci.info function call could be used:</para>
 			
 			<programlisting>
-SELECT * FROM wci.info( NULL, NULL::wci.browsedataprovider );
+SELECT * FROM wci.info( NULL, NULL::wci.infodataprovider );
 		</programlisting>
 									
 		</sect1>
@@ -248,6 +259,13 @@ SELECT * FROM wci.browse( NULL::wci.browseplace );
 				equivalent to asking for all of the data items in the database, irrespective
 				of their location.</para>
 			
+			<para>To retrieve all of the place names that are currently registered in the database,
+				the following WCI function call can be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.info( NULL, NULL::wci.infoplace );
+		</programlisting>
+
 		</sect1>
 		
 		<sect1  id="sec:reftime">
@@ -270,6 +288,48 @@ SELECT * FROM wci.browse( NULL::wci.browseplace );
 SELECT * FROM wci.browse( NULL::wci.browsereferencetime );
 		</programlisting>
 			
+			<para>In addition to time points, it is also possible for the user to specify time periods 
+			using a variety of keywords. The keywords are: exact (default), before, after, inside, and contains. 
+			And interval can be specified using two timestamps and separating them with the keyword TO, or a 
+			timestamp and a duration separated by the keyword FOR. As examples, consider:
+			</para>
+			
+			<programlisting>
+exact 2009-03-31T11:20:00+00
+		</programlisting>
+		
+			<para>Denotes the specific time point of 11:20 UTC, on the 31st of March, 2009. The keyword 
+			"exact" is actually redundant, as this is the default interpretation of a timestamp in
+			WCI.</para>
+			
+			<programlisting>
+before 2009-03-31T11:20:00+00
+		</programlisting>
+		
+			<para>Denotes that the user wants to return all data for the time period prior to the time 
+			point of 11:20 UTC, on the 31st of March, 2009.</para>
+			
+			<programlisting>
+after 2009-03-31T11:20:00+00
+		</programlisting>
+		
+			<para>Denotes that the user wants to return all data for the time period after the time 
+			point of 11:20 UTC, on the 31st of March, 2009.</para>
+			
+			<programlisting>
+inside 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
+		</programlisting>
+		
+			<para>Denotes that the user wants to return all data inside the time period between the time 
+			point of 11:20 UTC, on the 31st of March, 2009 and the same time two months later.</para>
+			
+			<programlisting>
+inside 2009-03-31T11:20:00+00 FOR 2 months 
+		</programlisting>
+		
+			<para>Denotes that the user wants to return all data inside the time period between the time 
+			point of 11:20 UTC, on the 31st of March, 2009 and the same time two months later.</para>
+			
 		</sect1>
 				
 		<sect1 id="sec:validtime">
@@ -282,10 +342,48 @@ SELECT * FROM wci.browse( NULL::wci.browsereferencetime );
 				zone), or NULL. NULL indicates that the user wants all data items,
 				regardless of the valid time of the data. Time is specified in WCI as
 			    a text string with datetime's that are interpreted by the WCI parser.</para>
+
+			<para>Time is specified in the same way for time periods as for time points. Examples of
+			how the qualifiers should be interpreted are given below:</para>
+
+			<programlisting>
+exact 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
+		</programlisting>
 			
-			<para>To retrieve a list of the valid times currently being stored in the
-				database, use the wci.browse functionality:</para>
+			<para>The exact keyword returns only time periods that match precisely with the time period specified.
+			</para>
 			
+			<programlisting>
+before 2009-03-31T11:20:00+00
+		</programlisting>
+		
+			<para>The before keyword returns only time periods that end before the specified time
+			point. In other words, the time period from 2009-03-29 to 2009-03-30 would be returned by the query
+			but the time period from 2009-03-29 to 2009-04-01 would not.</para>
+			
+			<programlisting>
+after 2009-03-31T11:20:00+00
+		</programlisting>
+		
+			<para>The after keyword returns only time periods that start after the specified time point</para>
+			
+
+
+
+
+
+			<programlisting>
+inside 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
+		</programlisting>
+		
+			<para>Denotes that the user wants to return all data inside the time period between the time 
+			point of 11:20 UTC, on the 31st of March, 2009 and the same time two months later.</para>
+			
+			<programlisting>
+inside 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
+		</programlisting>
+		
+
 			<programlisting>
 SELECT * FROM wci.browse( NULL::wci.browsevalidtime );
 		</programlisting>

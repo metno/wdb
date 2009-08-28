@@ -117,14 +117,7 @@ BEGIN
 				  FROM __WCI_SCHEMA__.placespec ps,
 					   __WCI_SCHEMA__.getSessionData() s 
 				  WHERE  
-						s.placenamespaceid = ps.placenamespaceid';-- AND 
---						pd.placeindeterminatecode = pi.placeindeterminatecode';
-
--- pd.placeid = pn.placeid AND
---						__WCI_SCHEMA__.placedefinition pd, 
---					   __WCI_SCHEMA__.placename pn, 
---					   __WCI_SCHEMA__.placeindeterminatetype pi, 
-
+						s.placenamespaceid = ps.placenamespaceid';
 
 	IF location IS NOT NULL THEN
 		infoQuery := infoQuery || ' AND placename LIKE ' || location;

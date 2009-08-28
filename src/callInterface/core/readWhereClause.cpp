@@ -190,6 +190,10 @@ extern "C"
 	    	wquery << "v.referencetime >= $$" << timeFrom << "$$ AND v.referencetime <= $$" << timeTo << "$$";
 		}
 	    else
+	    if (strcmp(timeInd, "contains") == 0) {
+	    	wquery << "v.referencetime = $$" << timeFrom << "$$ AND v.referencetime = $$" << timeTo << "$$";
+	    }
+	    else
 	    if (strcmp(timeInd, "before") == 0) {
 	    	wquery << "v.referencetime < $$" << timeFrom << "$$";
 	    }

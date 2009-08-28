@@ -53,6 +53,7 @@ $BODY$
 		p.placename,
 		p.placenamespaceid,
 		p.placegeometry,
+		p.placegeometrytype,
 		p.placeindeterminatetype,
 		p.inumber, 
 		p.jnumber, 
@@ -61,7 +62,8 @@ $BODY$
 		p.startlongitude, 
 		p.startlatitude, 
 		p.originalsrid,
-		p.projdefinition 
+		p.projdefinition,
+		p.placestoretime
 	FROM __WCI_SCHEMA__.placespec p, __WCI_SCHEMA__.getSessionData() s
 	WHERE p.placenamespaceid = s.placenamespaceid;
 $BODY$

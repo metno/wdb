@@ -562,6 +562,7 @@ CREATE VIEW __WCI_SCHEMA__.placespec_v AS SELECT
 	pn.placename,
 	pn.placenamespaceid,
 	pd.placegeometry, 
+	pd.placegeometrytype,
 	pit.placeindeterminatetype,
 	pg.inumber, 
 	pg.jnumber, 
@@ -570,7 +571,8 @@ CREATE VIEW __WCI_SCHEMA__.placespec_v AS SELECT
 	pg.startlongitude, 
 	pg.startlatitude, 
 	pg.originalsrid,
-	srs.proj4text AS projdefinition 
+	srs.proj4text AS projdefinition,
+	pd.placestoretime
 FROM 
 	__WDB_SCHEMA__.placedefinition pd,
 	__WDB_SCHEMA__.placename pn,

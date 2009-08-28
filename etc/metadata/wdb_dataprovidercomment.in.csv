@@ -31,6 +31,7 @@ Data Provider Id|Comment|Store Time
 88067|WAM Model, Norway|2008-06-26T12:00:00Z
 88501|Model derived from ECMWF ensemble for yr.no by the pgen_probability program|2008-06-26T12:00:00Z
 88502|Percentile parameters derived from ECMWF ensemble forecasts using the derived_product_eps SMS-job|2008-06-26T12:00:00Z
+98001|ECMWF Deterministic Model from FELT files|2008-06-26T12:00:00Z
 98100|ECMWF Atmospheric Model Group|2008-06-26T12:00:00Z
 98133|ECMWF Atmospheric Model IFS Cycle 35r1|2008-06-26T12:00:00Z
 98134|ECMWF Atmospheric Model IFS Cycle 35r2|2009-03-09T12:00:00Z
