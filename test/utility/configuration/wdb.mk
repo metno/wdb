@@ -5,7 +5,7 @@
 # Library
 #-----------------------------------------------------------------------------
 
-lib_LTLIBRARIES += 		libwdbTest.la
+noinst_LTLIBRARIES += 		libwdbTest.la
 
 libwdbTest_la_SOURCES = test/utility/configuration/testConfiguration.cpp
 
