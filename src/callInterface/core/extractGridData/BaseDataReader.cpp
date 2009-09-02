@@ -109,8 +109,6 @@ lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
 		if ( geomCache_.size() > 31 )
 			geomCache_.clear();
 
-//		geos::Point * g = (geos::Point *) location;
-//		const geos::Coordinate * coord = g->getCoordinate();
 		const GEOSCoordSeq sequence = GEOSGeom_getCoordSeq(location);
 
 		lonlat ll;
