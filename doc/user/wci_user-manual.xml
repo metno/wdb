@@ -343,6 +343,13 @@ inside 2009-03-31T11:20:00+00 FOR 2 months
 				regardless of the valid time of the data. Time is specified in WCI as
 			    a text string with datetime's that are interpreted by the WCI parser.</para>
 
+			<para>As usual, the list of valid times stored in the database can be retrieved
+			using the wci.browse functionality.</para>
+
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsevalidtime );
+		</programlisting>
+
 			<para>Time is specified in the same way for time periods as for time points. Examples of
 			how the qualifiers should be interpreted are given below:</para>
 
@@ -365,28 +372,24 @@ before 2009-03-31T11:20:00+00
 after 2009-03-31T11:20:00+00
 		</programlisting>
 		
-			<para>The after keyword returns only time periods that start after the specified time point</para>
-			
-
-
-
-
+			<para>The after keyword returns only time periods that start after the specified time point.</para>
 
 			<programlisting>
 inside 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
 		</programlisting>
 		
-			<para>Denotes that the user wants to return all data inside the time period between the time 
-			point of 11:20 UTC, on the 31st of March, 2009 and the same time two months later.</para>
+			<para>The inside keyword for time periods is true if the time period both starts and ends 
+			within the designated time (the time point specified inclusive). It does not return time
+			periods that merely overlap (i.e., where only the start time or the end time are within
+			the given time period).</para>
 			
 			<programlisting>
-inside 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
+contains 2009-03-31T11:20:00+00 TO 2009-05-31T11:20:00+00 
 		</programlisting>
-		
-
-			<programlisting>
-SELECT * FROM wci.browse( NULL::wci.browsevalidtime );
-		</programlisting>
+			
+			<para>The contains keyword returns all the data with valid times beginning prior to the
+			specified time and ending after the specified time. Semantics are inclusive, so a valid 
+			time that matches exactly would be returned as a row by this query.</para>
 			
 		</sect1>
 		
@@ -413,19 +416,41 @@ SELECT * FROM wci.browse( NULL::wci.browsevalidtime );
 SELECT * FROM wci.browse( NULL::wci.browsevalueparameter );
 		</programlisting>
 			
+			<para>To list all of the value parameter names that can be stored in the database using
+			the currently selected parameter namespace, the following wci.info function call could 
+			be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.info( NULL, NULL::wci.infovalueparameter );
+		</programlisting>
+
 		</sect1>
 		
 		<sect1 id="sec:level">
-			<title>Level (Altitude)</title>
+			<title>Level</title>
 			
-			<para>The <emphasis>Level</emphasis> dimension is used to designate the
+			<para>The <emphasis>Level</emphasis> dimension is normally used to designate the
 				altitude or depth of the data value. Level is designated using a level interval (height 
 				from and to) and a level parameter (e.g., height above sea level, pressure). The level
 				definition can be prefixed with a level interpolation option that permits the
 				user a large degree of flexibility in expressing searches. Levels are specified using
 				a level specification in string form that is parsed by the WCI.</para>
 			
-			<para>Specifying <emphasis>ANY</emphasis> for the level interpolation is
+			<para>The level designation in the WCI queries is a string. The form of the level 
+			designation when querying the database is as follows:</para>
+			
+			<programlisting>
+interpolation levelFrom TO levelTo leveparametername
+		</programlisting>
+		
+			<para>The interpolations available are <emphasis>exact</emphasis>, 
+			<emphasis>below</emphasis>, <emphasis>above</emphasis>, <emphasis>inside</emphasis>, 
+			and <emphasis>any</emphasis>. The default interpolation is exact 
+			(specifying the interpolation is optional). One may also omit the 
+			<emphasis>TO levelTo</emphasis> construction if the level being specified is a
+			point.</para>
+
+			<para>Specifying <emphasis>any</emphasis> for the level interpolation is
 				logically equivalent to specifying a NULL for the level; i.e., it retrieves
 				all data items regardless of their level (height).</para>
 
@@ -436,13 +461,35 @@ SELECT * FROM wci.browse( NULL::wci.browsevalueparameter );
 				and is based on international english. 
 			</para>
 			
-			<para>To retrieve a full list of the level parameters currently being stored in the
+			<para>Examples of level designations are given below:</para>
+			
+			<programlisting>
+exact 2 height above ground distance 
+		</programlisting>
+			
+			<programlisting>
+above 0 height above mean sea level distance 
+		</programlisting>
+			
+			<programlisting>
+inside 300 TO 500 isobaric surface pressure
+		</programlisting>
+
+			<para>To retrieve a full list of the levels and level parameters currently being stored in the
 				database, use the wci.browse functionality:</para>
 			
 			<programlisting>
 SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 		</programlisting>
 						
+			<para>To list all of the level parameter names that can be stored in the database using
+			the currently selected parameter namespace, the following wci.info function call could 
+			be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.info( NULL, NULL::wci.levelvalueparameter );
+		</programlisting>
+
 		</sect1>
 		
 		<sect1 id="sec:data_version">
@@ -711,9 +758,6 @@ PQfinish(connection_);
 				
 				<itemizedlist>
 					<listitem>
-						<para>A connection must be open to the database</para>
-					</listitem>
-					<listitem>
 						<para>The user must have been set up as a WDB user (i.e., have access to one 
 							of the wdb user groups</para>
 					</listitem>
@@ -800,7 +844,7 @@ SELECT wci.begin ( 'michael', 1, 0, 1 );
 </programlisting>
 								
 				<para>Note that the default namespaces can be defined by the WDB administrator. Consequently,
-					the user may frequently want to just install using this namespace, which would be donw
+					the user may frequently want to just install using this namespace, which would be done
 				with the following wci.begin call:</para>
 
 				<programlisting>
@@ -840,9 +884,6 @@ SELECT wci.begin ( 'michael' );
 				<title>Prerequisites</title>
 				
 				<itemizedlist>
-					<listitem>
-						<para>The user must be connected to the database</para>
-					</listitem>
 					<listitem>
 						<para>The user must have access to group role wdb_read</para>
 					</listitem>
@@ -1110,15 +1151,8 @@ SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], NULL,
 			
 			<sect2 id="sec:wci.end.prereq">
 				<title>Prerequisites</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>A connection must be open to the database</para>
-					</listitem>
-					<listitem>
-						<para>The user must have successfully called wci.begin</para>
-					</listitem>
-				</itemizedlist>
+
+				<para>None.</para>				
 			</sect2>
 			
 			<sect2 id="sec:wci.end.syntax">
@@ -1189,9 +1223,6 @@ SELECT wci.end ( );
 				
 				<itemizedlist>
 					<listitem>
-						<para>The user must be connected to the database</para>
-					</listitem>
-					<listitem>
 						<para>The user must have access to group role wdb_read</para>
 					</listitem>
 					<listitem>
@@ -1208,8 +1239,8 @@ SELECT wci.end ( );
 				<programlisting>
 wci.info
 (
-          dataProvider   text,
-          returnType     wci.infodataprovider
+          dataProviderName	text,
+          returnType     	wci.infodataprovider
 )
 			</programlisting>
 				
@@ -1217,17 +1248,24 @@ wci.info
 				<programlisting>
 wci.info
 (
-          place          text,
+          placeName      text,
           returnType     wci.infoplace
 )
 			</programlisting>
 				
+				<programlisting>
+wci.info
+(
+          placeName      text,
+          returnType     wci.inforegulargrid
+)
+			</programlisting>
 				
 				<programlisting>
 wci.info
 (
-          valueParameter text,
-          returnType     wci.infovalueparameter
+          valueParameterName	text,
+          returnType     		wci.infovalueparameter
 )
 			</programlisting>
 				
@@ -1235,8 +1273,8 @@ wci.info
 				<programlisting>
 wci.info
 (
-          levelParameter text,
-          returnType     wci.infolevelparameter
+          levelParameterName	text,
+          returnType     		wci.infolevelparameter
 )
 			</programlisting>
 				
@@ -1258,25 +1296,25 @@ wci.info
 						</thead>
 						<tbody>
 							<row>
-								<entry>dataProvider</entry>
+								<entry>dataProviderName</entry>
 								<entry>A text string representing the data providers to
 									list. Wild cards may be used in the string. NULL
 									represents all.</entry>
 							</row>
 							<row>
-								<entry>place</entry>
+								<entry>placeName</entry>
 								<entry>A text string representing the place names to
 									list. Wild cards may be used in the string. NULL
 									represents all.</entry>
 							</row>
 							<row>
-								<entry>valueParameter</entry>
+								<entry>valueParameterName</entry>
 								<entry>A text string representing the value parameters
 									to list. Wild cards may be used in the string. NULL
 									represents all.</entry>
 							</row>
 							<row>
-								<entry>levelParameter</entry>
+								<entry>levelParameterName</entry>
 								<entry>A text string representing the level parameters
 									to list. Wild cards may be used in the string. NULL
 									represents all.</entry>
@@ -1303,16 +1341,23 @@ wci.info
 				<itemizedlist>
 					<listitem>
 						<para>wci.infodataprovider</para>
-						<para>This return type gives detailed information on the data type specified.</para>
+						<para>This return type gives detailed information on the data provider specified.</para>
 					</listitem>
 					<listitem>
 						<para>wci.infoplace</para>
+						<para>This return type provides detailed information about the place definition.</para>
+					</listitem>
+					<listitem>
+						<para>wci.infoplace</para>
+						<para>This return type provides detailed information about the place definitions in the database of the regular grid type.</para>
 					</listitem>
 					<listitem>
 						<para>wci.infovalueparameter</para>
+						<para>This return type provides detailed information about value parameter specified.</para>
 					</listitem>
 					<listitem>
 						<para>wci.infolevelparameter</para>
+						<para>This return type provides detailed information about level parameter specified.</para>
 					</listitem>
 				</itemizedlist>
 			</sect2>
@@ -1342,7 +1387,7 @@ wci.info
 				
 				<itemizedlist>
 					<listitem>
-						<para>The user must be connected to the database</para>
+						<para>The user must have a valid object ID that references a grid</para>
 					</listitem>
 					<listitem>
 						<para>The user must have access to group role wdb_read</para>
@@ -1459,9 +1504,6 @@ FROM wci.fetch ( 11702,
 				<title>Prerequisites</title>
 				
 				<itemizedlist>
-					<listitem>
-						<para>The user must be connected to the database</para>
-					</listitem>
 					<listitem>
 						<para>The user must have access to group role wdb_read</para>
 					</listitem>
@@ -1968,63 +2010,377 @@ wci.write
 						<row>
 							<entry>0</entry>
 							<entry>validtimefrom</entry>
-							<entry>The name of the placedefinition that the summary information is about.</entry>
+							<entry>The start time of the validtime period that is being summarized.</entry>
 						</row>
 						<row>
 							<entry>1</entry>
 							<entry>validtimeto</entry>
-							<entry>The name of the placedefinition that the summary information is about.</entry>
+							<entry>The end time of the validtime period being summarized.</entry>
 						</row>
 						<row>
 							<entry>2</entry>
 							<entry>numberoftuples</entry>
-							<entry>The number of data rows that exist in the database for the given placename.</entry>
+							<entry>The number of data rows that exist in the database for the given validtime period or time point .</entry>
 						</row>
 					</tbody>
 				</tgroup>
 			</table>
 		</sect1>
-<!--
-					<listitem>
-						<para>wci.browsevalidtime</para>
-						<para>This returns a list of the validtimes that exist in the
-							database for the parameter definitions given by the
-							wci.browse call. For each validtime, the number of data
-							records in the database are listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browsevalueparameter</para>
-						<para>This returns a list of the value parameters that exist in the
-							database for the parameter definitions given by the
-							wci.browse call and the used namespace. For each
-							valueparameter, the number of data records in the database
-							are listed.</para>
-					</listitem>
-					<listitem>
-						<para>wci.browselevelparameter</para>
-						<para>This returns a list of the level parameters that exist in the
-							database for the parameter definitions given by the
-							wci.browse call and the utilized namespace. For each level
-							parameter, the number of data records in the database are
-							listed.</para>
-					</listitem>
-				<itemizedlist>
-					<listitem>
-						<para>wci.infodataprovider</para>
-					</listitem>
-					<listitem>
-						<para>wci.infoplace</para>
-					</listitem>
-					<listitem>
-						<para>wci.infovalueparameter</para>
-					</listitem>
-					<listitem>
-						<para>wci.infolevelparameter</para>
-					</listitem>
-				</itemizedlist>
-	
-		-->
-	<sect1>
+
+		<sect1>
+			<title>wci.browsevalueparameter</title>
+			
+			<para>The wci.browsevalueparameter data type is a simple row type used to
+				return summarized information about the valueparameters currently used
+				by the rows in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.browsevalueparameter</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>valueparametername</entry>
+							<entry>The name of the valueparameter that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>valueunitname</entry>
+							<entry>The unit of the parameter in the database.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>numberoftuples</entry>
+							<entry>The number of data rows that exist in the database of the given valueparameter.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.browselevelparameter</title>
+			
+			<para>The wci.browselevelparameter data type is a simple row type used to
+				return summarized information about the levelparameters and level values
+				currently stored by the rows in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.browselevelparameter</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>levelparametername</entry>
+							<entry>The name of the levelparameter that the summary information is about.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>levelunitname</entry>
+							<entry>The unit of the parameter in the database.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>levelfrom</entry>
+							<entry>The level from value of the rows in the database.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>levelto</entry>
+							<entry>The level to value of the rows in the database.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>numberoftuples</entry>
+							<entry>The number of data rows that exist in the database of the given level parameter and level value combination.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.infodataprovider</title>
+			
+			<para>The wci.infodataprovider data type is a simple row type used to
+				return metadata information about the dataproviders that can be stored
+				in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.infodataprovider</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>dataprovidername</entry>
+							<entry>The name of the dataprovider.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>dataprovidertype</entry>
+							<entry>The type of the dataprovider. This specifies whether the dataprovider is a 
+							person, computer system, meteorological station, or something else. It can also
+							specify that the dataprovidername represents a group of other dataproviders.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>spatialdomaindelivery</entry>
+							<entry>The spatialdomaindelivery describes the spatial domain in which the
+							dataprovider returns data. Examples are points and grids. The spatialdomaindelivery
+							<emphasis>any</emphasis> is used to indicate that the dataprovider can store and
+							return data in several formats on the database.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>dataprovidercomment</entry>
+							<entry>A text field that provides additional descriptive information about the dataprovider.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>dataproviderstoretime</entry>
+							<entry>Describes the time at which the dataprovider information was created.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.infoplace</title>
+			
+			<para>The wci.infoplace data type is a simple row type used to
+				return metadata information about the place definitions that can be stored
+				in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.infoplace</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>placename</entry>
+							<entry>The name of the place definition.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>placegeometry</entry>
+							<entry>The geometry (in WKT) that describes the place definition. For regular grids, this 
+							is a polygon of the four corners of the grid transformed into the default projection
+							of the database.</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>placeindeterminatetype</entry>
+							<entry>The place indeterminate type is used to describe imprecision or missing data in
+							the place definition information.</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>placegeometrytype</entry>
+							<entry>The placegeometrytype describes what type of geometry the row describes.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>placestoretime</entry>
+							<entry>Describes the time at which the place definition was created.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.inforegulargrid</title>
+			
+			<para>The wci.inforegulargrid data type is a simple row type used to
+				return detailed metadata information about the place definitions 
+				of the grid type that can be stored in the database. The following table
+				describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.infoplace</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>placename</entry>
+							<entry>The name of the place definition.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>numberX</entry>
+							<entry>The number of points along the X axis of the grid (i.e., the width).</entry>
+						</row>
+						<row>
+							<entry>2</entry>
+							<entry>numberY</entry>
+							<entry>The number of points along the Y axis of the grid (i.e., the height).</entry>
+						</row>
+						<row>
+							<entry>3</entry>
+							<entry>incrementX</entry>
+							<entry>The distance between two points on the X axis of the grid in the original
+							projection of the grid.</entry>
+						</row>
+						<row>
+							<entry>4</entry>
+							<entry>incrementY</entry>
+							<entry>The distance between two points on the Y axis of the grid in the original
+							projection of the grid.</entry>
+						</row>
+						<row>
+							<entry>5</entry>
+							<entry>startX</entry>
+							<entry>The starting point (lower left corner) of the grid on the X axis in the original
+							projection of the grid.</entry>
+						</row>
+						<row>
+							<entry>6</entry>
+							<entry>startY</entry>
+							<entry>The starting point (lower left corner) of the grid on the Y axis in the original
+							projection of the grid.</entry>
+						</row>
+						<row>
+							<entry>7</entry>
+							<entry>projDefinition</entry>
+							<entry>The proj.4 string that defines the original projection of the grid. Since the
+							structure of a grid is not reprojected, this information maya be useful if you need
+							to deal with the grid information directly.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.infovalueparameter</title>
+			
+			<para>The wci.infovalueparameter data type is a simple row type used to
+				return metadata information about the value parameters that can be stored
+				in the database. The following table describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.infovalueparameter</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>valueparametername</entry>
+							<entry>The name of the value parameter.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>valueunitname</entry>
+							<entry>The name of the unit that the parameter data is stored in. By default, this will 
+							always be the SI unit, where possible.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
+			<title>wci.infolevelparameter</title>
+			
+			<para>The wci.infolevelparameter data type is a simple row type used to
+				return metadata information about the level parameters that can be stored
+				in the database. The following table describes the attributes.</para>
+			
+			<table frame="all">
+				<title>wci.infolevelparameter</title>
+				<tgroup cols="3">
+					<colspec align="center"/>
+					<colspec align="left"/>
+					<colspec align="left"/>
+					<thead>
+						<row>
+							<entry> Order </entry>
+							<entry> Attribute </entry>
+							<entry> Description </entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>0</entry>
+							<entry>levelparametername</entry>
+							<entry>The name of the level parameter.</entry>
+						</row>
+						<row>
+							<entry>1</entry>
+							<entry>levelunitname</entry>
+							<entry>The name of the unit that the parameter data is stored in. By default, this will 
+							always be the SI unit, where possible.</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</sect1>
+
+		<sect1>
 			<title>wci.returnFloat</title>
 			
 			<para>The wci.returnFloat data type is a simple row type used for returning
@@ -2062,15 +2418,16 @@ wci.write
 							<entry>2</entry>
 							<entry>place name</entry>
 							<entry>The name of the grid definition selected (as defined
-								within the placenamespace selected). If the point value
-								is being returned from a grid, the name returned will be
-								that of the grid.</entry>
+								within the placenamespace selected). The place name can
+								be then be used to retrieve the original grid definition
+								of the grid, if needed.</entry>
 						</row>
 						<row>
 							<entry>3</entry>
 							<entry>place geometry</entry>
-							<entry>The POINT geometry definition of the value
-								returned.</entry>
+							<entry>The geometry definition of the value returned. This
+								is less useful for rotated grids, as the coordinates will
+								be in regular WGS84.</entry>
 						</row>
 						<row>
 							<entry>4</entry>
@@ -2091,40 +2448,55 @@ wci.write
 						</row>
 						<row>
 							<entry>7</entry>
+							<entry>validtime indeterminate code</entry>
+							<entry>The validtime indeterminate code is used to describe imprecision or 
+								missing data in the level information. The code 0 is used to
+								describe <emphasis>exact</emphasis>, which implies that the
+								validtime interval given is precise.</entry>
+						</row>
+						<row>
+							<entry>8</entry>
 							<entry>value parameter name</entry>
 							<entry>The parameter name for the value returned (as defined
 								within the parameter name space selected)</entry>
 						</row>
 						<row>
-							<entry>8</entry>
+							<entry>9</entry>
 							<entry>value parameter unit</entry>
 							<entry>The measurement unit for the value returned</entry>
 						</row>
 						<row>
-							<entry>9</entry>
+							<entry>10</entry>
 							<entry>level parameter name</entry>
 							<entry>The parameter name for the level of the value returned
 								(as defined within the parameter name space
 								selected)</entry>
 						</row>
 						<row>
-							<entry>10</entry>
+							<entry>11</entry>
 							<entry>level unit name</entry>
 							<entry>The measurement unit for the level of the value
 								returned</entry>
 						</row>
 						<row>
-							<entry>11</entry>
+							<entry>12</entry>
 							<entry>level from</entry>
 							<entry>The lower value of the level</entry>
 						</row>
 						<row>
-							<entry>12</entry>
-							<entry>level</entry>
-							<entry>The upper of the level</entry>
+							<entry>13</entry>
+							<entry>level to</entry>
+							<entry>The upper value of the level</entry>
 						</row>
 						<row>
-							<entry>13</entry>
+							<entry>14</entry>
+							<entry>level indeterminate code</entry>
+							<entry>The level indeterminate code is used to describe imprecision or 
+								missing data in the level information. The code 0 is used to
+								describe <emphasis>exact</emphasis>.</entry>
+						</row>
+						<row>
+							<entry>15</entry>
 							<entry>data version</entry>
 							<entry>The data version of the value. Data version is
 								utilized for two separate purposes; to indicate
@@ -2134,25 +2506,25 @@ wci.write
 								members).</entry>
 						</row>
 						<row>
-							<entry>14</entry>
+							<entry>16</entry>
 							<entry>confidence code</entry>
 							<entry>Quality marker (not currently used)</entry>
 						</row>
 						<row>
-							<entry>15</entry>
+							<entry>17</entry>
 							<entry>value store time</entry>
 							<entry>The time when the data was inserted into the
 								database</entry>
 						</row>
 						<row>
-							<entry>16</entry>
+							<entry>18</entry>
 							<entry>value id</entry>
 							<entry>The ID of the value within its value type. Together
 								with valuetype, this costitutes a key of the WDB
 								value</entry>
 						</row>
 						<row>
-							<entry>17</entry>
+							<entry>19</entry>
 							<entry>value type</entry>
 							<entry>The type of the value returned. Together with the
 								valueid, this constitutes a key of the WDB value</entry>
@@ -2164,15 +2536,15 @@ wci.write
 		</sect1>
 		
 		<sect1>
-			<title>wci.returnOid</title>
+			<title>wci.returnGid</title>
 			
-			<para>The wci.returnOid data type is a simple row type used for returning data to
+			<para>The wci.returnGid data type is a simple row type used for returning data to
 				the user from the wci.read call. The following table describes the
-				attributes that are returned from wci.returnOid; including the ordering
+				attributes that are returned from wci.returnGid; including the ordering
 				of the attributes in the type.</para>
 			
 			<table frame="all">
-				<title>wci.returnOid</title>
+				<title>wci.returnGid</title>
 				<tgroup cols="3">
 					<colspec align="center"/>
 					<colspec align="left"/>
@@ -2188,7 +2560,7 @@ wci.write
 						<row>
 							<entry>0</entry>
 							<entry>value</entry>
-							<entry>The object ID (OID) of the value being
+							<entry>The grid ID (GID) of the value being
 								returned</entry>
 						</row>
 						<row>
@@ -2231,40 +2603,55 @@ wci.write
 						</row>
 						<row>
 							<entry>7</entry>
+							<entry>validtime indeterminate code</entry>
+							<entry>The validtime indeterminate code is used to describe imprecision or 
+								missing data in the level information. The code 0 is used to
+								describe <emphasis>exact</emphasis>, which implies that the
+								validtime interval given is precise.</entry>
+						</row>
+						<row>
+							<entry>8</entry>
 							<entry>value parameter name</entry>
 							<entry>The parameter name for the value returned (as defined
 								within the parameter name space selected)</entry>
 						</row>
 						<row>
-							<entry>8</entry>
+							<entry>9</entry>
 							<entry>value parameter unit</entry>
 							<entry>The measurement unit for the value returned</entry>
 						</row>
 						<row>
-							<entry>9</entry>
+							<entry>10</entry>
 							<entry>level parameter name</entry>
 							<entry>The parameter name for the level of the value returned
 								(as defined within the parameter name space
 								selected)</entry>
 						</row>
 						<row>
-							<entry>10</entry>
+							<entry>11</entry>
 							<entry>level unit name</entry>
 							<entry>The measurement unit for the level of the value
 								returned</entry>
 						</row>
 						<row>
-							<entry>11</entry>
+							<entry>12</entry>
 							<entry>level from</entry>
 							<entry>The lower value of the level</entry>
 						</row>
 						<row>
-							<entry>12</entry>
-							<entry>level</entry>
-							<entry>The upper of the level</entry>
+							<entry>13</entry>
+							<entry>level to</entry>
+							<entry>The upper value of the level</entry>
 						</row>
 						<row>
-							<entry>13</entry>
+							<entry>14</entry>
+							<entry>level indeterminate code</entry>
+							<entry>The level indeterminate code is used to describe imprecision or 
+								missing data in the level information. The code 0 is used to
+								describe <emphasis>exact</emphasis>.</entry>
+						</row>
+						<row>
+							<entry>15</entry>
 							<entry>data version</entry>
 							<entry>The data version of the value. Data version is
 								utilized for two separate purposes; to indicate
@@ -2274,25 +2661,25 @@ wci.write
 								members).</entry>
 						</row>
 						<row>
-							<entry>14</entry>
+							<entry>16</entry>
 							<entry>confidence code</entry>
 							<entry>Quality marker (not currently used)</entry>
 						</row>
 						<row>
-							<entry>15</entry>
+							<entry>17</entry>
 							<entry>value store time</entry>
 							<entry>The time when the data was inserted into the
 								database</entry>
 						</row>
 						<row>
-							<entry>16</entry>
+							<entry>18</entry>
 							<entry>value id</entry>
 							<entry>The ID of the value within its value type. Together
 								with valuetype, this costitutes a key of the WDB
 								value</entry>
 						</row>
 						<row>
-							<entry>17</entry>
+							<entry>19</entry>
 							<entry>value type</entry>
 							<entry>The type of the value returned. Together with the
 								valueid, this constitutes a key of the WDB value</entry>
@@ -2305,13 +2692,38 @@ wci.write
 
 	</chapter>
 	
-	<!--			
+	<chapter id="cha:wci_examples">
+		<title>Examples</title>
+		
+		<para>You can find a number of examples using SQL, perl, java, and C++ 
+		in the source package of WDB, under the examples directory.</para>
+						
+	</chapter>
 	
-	Data Types Reference & Data Retrieval
-	Examples
-	FAQ: Frequently Asked Questions
-	Known Problems, Bugs, and Limitations
+	<chapter id="cha:wci_faq">
+		<title>Frequently Asked Questions</title>
+		
+		<para>This page is for a list of frequently asked questions about WCI.</para>
+						
+	</chapter>
 	
-	-->
+	
+	<chapter id="cha:wci_known-problems">
+		<title>Known Problems, Bugs, and Limitations</title>
+		
+		<para>The following page describes some of the known problems and limitations of the
+		WCI interface, and how to deal with them.</para>
+		
+		<sect1>
+			<title>Limit of 100,000 rows returned by wci.read from a single grid</title>
+			
+			<para>The wci.read function is limited to returning no more than 100,000 rows
+			from a single grid operation. If you need to retrieve a greater number of values
+			from one grid in the database, you should use wci.fetch to retrieve the Grid object
+			directly and perform the retrieval manually.</para>
+
+		</sect1>		
+						
+	</chapter>
 	
 </book>
