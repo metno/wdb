@@ -38,14 +38,14 @@ CREATE TYPE wci.infoplace AS
 
 CREATE TYPE wci.inforegulargrid AS
 (
-	placename text,
-	iNumber int,
-	jNumber int,
-	iIncrement real,
-	jIncrement real,
-	startLatitude real,
-	startLongitude real,
-	projDefinition text
+	placename 		text,
+	numberX			int,
+	numberY			int,
+	incrementX 		real,
+	incrementY 		real,
+	startX			real,
+	startY			real,
+	projDefinition 	text
 );
 
 CREATE TYPE wci.infovalueparameter AS 
@@ -144,16 +144,16 @@ $BODY$
 DECLARE
 	entry 			wci.inforegulargrid;
 BEGIN
-	IF placeid_ IS NULL THEN
+	IF placename_ IS NULL THEN
 		FOR entry IN 
 		SELECT
 			placename,
-			iNumber,
-			jNumber,
-			iIncrement,
-			jIncrement,
-			startLatitude,
-			startLongitude,
+			iNumber AS numberX,
+			jNumber AS numberY,
+			iIncrement AS incrementX,
+			jIncrement AS incrementY,
+			startLatitude AS startX,
+			startLongitude AS startY,
 			projDefinition
 		FROM 
 			__WCI_SCHEMA__.placespec 
@@ -164,12 +164,12 @@ BEGIN
 		FOR entry IN 
 		SELECT
 			placename,
-			iNumber,
-			jNumber,
-			iIncrement,
-			jIncrement,
-			startLatitude,
-			startLongitude,
+			iNumber AS numberX,
+			jNumber AS numberY,
+			iIncrement AS incrementX,
+			jIncrement AS incrementY,
+			startLatitude AS startX,
+			startLongitude AS startY,
 			projDefinition
 		FROM 
 			__WCI_SCHEMA__.placespec
@@ -201,7 +201,7 @@ DECLARE
 BEGIN
 	-- Create Query to Run
 	infoQuery := 'SELECT valueparametername, valueunitname as valueunitnameorref
-				  FROM __WCI_SCHEMA__.valueparameter_mv vp, __WCI_SCHEMA__.getSessionData s
+				  FROM __WCI_SCHEMA__.valueparameter_mv vp, __WCI_SCHEMA__.getSessionData() s
 				  WHERE vp.parameternamespaceid = s.parameternamespaceid';
 	IF parameter IS NOT NULL THEN
 		infoQuery := infoQuery || ' AND valueparametername LIKE ' || parameter;
@@ -238,7 +238,7 @@ DECLARE
 BEGIN
 	-- Create Query to Run
 	infoQuery := 'SELECT levelparametername, levelunitname as levelunitnameorref
-				  FROM __WCI_SCHEMA__.levelparameter_mv lp, __WCI_SCHEMA__.getSessionData s
+				  FROM __WCI_SCHEMA__.levelparameter_mv lp, __WCI_SCHEMA__.getSessionData() s
 				  WHERE lp.parameternamespaceid = s.parameternamespaceid';
 	IF parameter IS NOT NULL THEN
 		infoQuery := infoQuery || ' AND levelparametername LIKE ' || parameter;
