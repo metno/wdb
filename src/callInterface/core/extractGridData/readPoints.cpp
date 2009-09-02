@@ -30,7 +30,7 @@
 #include "AllPointsReader.h"
 #include "SinglePointReader.h"
 #include "PolygonReader.h"
-#include <geos.h>
+//#include <geos_c.h>
 #include <boost/shared_ptr.hpp>
 #include <map>
 
@@ -54,13 +54,13 @@ struct GridPointDataListIterator * readPoints(
 		else
 		{
 			int geometryType = GEOSGeomTypeId(location);
-			if (geometryType == geos::GEOS_POINT)
+			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(* ps);
 				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
-			else if (geometryType == geos::GEOS_POLYGON)
+			else if (geometryType == GEOS_POLYGON)
 			{
 				PolygonReader reader(* ps);
 				GridPointDataList * list = reader.read(location, interpolation, dataId);

@@ -27,7 +27,6 @@
  */
 
 #include "BaseDataReader.h"
-#include <geos.h>
 
 
 namespace
@@ -109,12 +108,14 @@ lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
 	{
 		if ( geomCache_.size() > 31 )
 			geomCache_.clear();
-		geos::Point * g = (geos::Point *) location;
-		const geos::Coordinate * coord = g->getCoordinate();
+
+//		geos::Point * g = (geos::Point *) location;
+//		const geos::Coordinate * coord = g->getCoordinate();
+		const GEOSCoordSeq sequence = GEOSGeom_getCoordSeq(location);
 
 		lonlat ll;
-		ll.lon = coord->x;
-		ll.lat = coord->y;
+		GEOSCoordSeq_getX(sequence, 0, & ll.lon);
+		GEOSCoordSeq_getY(sequence, 0, & ll.lat);
 		lonlat ret = rTransform( ll, & ps_ );
 
 		GeomCache::value_type toInsert(loc, ret);

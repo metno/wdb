@@ -31,7 +31,6 @@
 #endif
 #include "PolygonReader.h"
 #include <WdbProjection.h>
-#include <geos.h>
 #include <sstream>
 
 PolygonReader::PolygonReader(const PlaceSpecification & ps) :

@@ -28,7 +28,7 @@
 
 #include "SinglePointReader.h"
 #include <WdbProjection.h>
-#include <geos.h>
+//#include <geos_c.h>
 #include <limits>
 #include <map>
 #include <cstring>
@@ -88,8 +88,8 @@ double distanceToNearestInteger(double a)
 
 GridPointDataList * SinglePointReader::readExact_(GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
-	std::cout << "Location: " << exactX << ", " << exactY << std::endl;
-	std::cout << "distanceToNearestInteger: " << math::distanceToNearestInteger(exactX) << ", " << math::distanceToNearestInteger(exactY) << std::endl;
+//	std::cout << "Location: " << exactX << ", " << exactY << std::endl;
+//	std::cout << "distanceToNearestInteger: " << math::distanceToNearestInteger(exactX) << ", " << math::distanceToNearestInteger(exactY) << std::endl;
 
 	if ( math::distanceToNearestInteger(exactX) > 0.001 or math::distanceToNearestInteger(exactY) > 0.001 )
 		return GridPointDataListNew(0);
