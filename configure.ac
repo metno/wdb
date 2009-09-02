@@ -231,6 +231,7 @@ AC_CONFIG_FILES([Makefile
 		 		 test/unit/Makefile
 			     examples/Makefile
 		 		 examples/C++/Makefile
+		 		 doc/doxygen/Doxyfile
 		])
 AC_OUTPUT
 
