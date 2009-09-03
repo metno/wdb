@@ -1,4 +1,4 @@
 doxygen-doc:
 	doxygen $(top_builddir)/doc/doxygen/Doxyfile
 	
-CLEANFILES += doc/doxygen/html/* doc/doxygen/latex/* 
+CLEANFILES += doc/doxygen/html/* 
