@@ -109,7 +109,14 @@ lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
 		if ( geomCache_.size() > 31 )
 			geomCache_.clear();
 
-		const GEOSCoordSeq sequence = GEOSGeom_getCoordSeq(location);
+		// KLUDGE: Support several versions of geos
+		//
+		// GEOSGeom_getCoordSeq returns a const GEOSCoordSequence_t *, or a
+		// const GEOSCoordSequence *, depending on which geos version you use.
+		// In all cases there is a typedef GEOSCoordSequence(_t) * GEOSCoordSeq,
+		// but declaring a const GEOSCoordSeq equals a GEOSCoordSequence * const,
+		// and not a const GEOSCoordSequence *
+		GEOSCoordSeq sequence = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(location));
 
 		lonlat ll;
 		GEOSCoordSeq_getX(sequence, 0, & ll.lon);

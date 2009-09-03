@@ -128,7 +128,7 @@ WDB_POSTGRES_CHECK(8.1.x)
 WDB_POSTGIS_CHECK(1.1.x)
 WDB_PQXX_CHECK(2.6.8)
 
-WDB_GEOS
+WDB_GEOS_C
 
 # BOOST
 WDB_BOOST_CHECK(1.33.1)
@@ -148,17 +148,6 @@ AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 
 # DOCBOOK
 WDB_DOCBOOK_CHECK
-
-# Doxygen Support
-DX_HTML_FEATURE(ON)
-DX_CHM_FEATURE(OFF)
-DX_CHI_FEATURE(OFF)
-DX_MAN_FEATURE(OFF)
-DX_RTF_FEATURE(OFF)
-DX_XML_FEATURE(OFF)
-DX_PDF_FEATURE(OFF)
-DX_PS_FEATURE(OFF)
-DX_INIT_DOXYGEN(wdb, doc/doxygen/doxygen.cfg)
 
 # Set Default Projection
 AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +datum=WGS84 +no_defs"],[The default projection used in the database])
@@ -200,7 +189,6 @@ AM_PROG_CC_C_O
 
 # Configuration Files
 AC_CONFIG_FILES([Makefile
-				 doc/Makefile
 				 etc/metadata/Makefile
 				 etc/wdb/Makefile
 				 install/Makefile
