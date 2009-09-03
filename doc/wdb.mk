@@ -17,13 +17,19 @@ DOCUMENTATION_SRC = \
 	doc/developer/wdb_test-plan.xml \
 	doc/developer/wdb_vision.xml
 
-USED_DOCS = \
+DOCUMENTATION_OUTPUT = $(DOCUMENTATION_SRC:.xml=.html)
+	
+html_DATA = $(DOCUMENTATION_OUTPUT)
+
+documentation:	$(DOCUMENTATION_OUTPUT)
+
+
+UNUSED_DOC = \
 	doc/user/feltLoad.man.xml \
-	doc/user/gribLoad.man.xml \
+	doc/user/gribLoad.man.xml
+
+USED_DOCS = \
 	doc/user/load_user-manual.xml \
-	doc/user/wdbConfiguration.man.xml \
-	doc/user/wdb.conf.man.xml \
-	doc/user/wdb.man.xml \
 	doc/user/gfx/wdb_users-architecture-overview.dia \
 	doc/user/gfx/wdb_users-architecture-overview.png \
 	doc/user/gfx/wdb_value-dimensions.dia \
@@ -32,10 +38,6 @@ USED_DOCS = \
 	
 EXTRA_DIST += $(DOCUMENTATION_SRC) $(USED_DOCS)
 
-DOCUMENTATION_OUTPUT = $(DOCUMENTATION_SRC:.xml=.html)
-	
-documentation:	$(DOCUMENTATION_OUTPUT)
-
-html_DATA = $(DOCUMENTATION_OUTPUT)
-
 CLEANFILES += $(DOCUMENTATION_OUTPUT)
+
+include doc/man/wdb.mk

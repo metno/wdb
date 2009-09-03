@@ -33,9 +33,10 @@ endif
 config.status: configure
 	dh_testdir
 	./configure $(confflags) \
-	--prefix=/usr --sysconfdir=/etc --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
+	--prefix=/usr --sysconfdir=/etc \
+	--mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
 	CFLAGS="$(CFLAGS)" \
-	--with-postgis=/usr/share/postgresql-8.1-postgis/ --disable-database-install
+	--disable-database-install
 
 
 build: build-stamp

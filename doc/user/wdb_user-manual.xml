@@ -1270,13 +1270,13 @@ mywdb=# select *
 		
 		<title>Reference Pages</title>
 		
-		<xi:include href="wdb.man.xml"
+		<xi:include href="../man/wdb.xml"
 			xmlns:xi="http://www.w3.org/2003/XInclude"/>
 		
-		<xi:include href="wdbConfiguration.man.xml"
+		<xi:include href="../man/wdbConfiguration.xml"
 			xmlns:xi="http://www.w3.org/2003/XInclude"/>
 		
-		<xi:include href="wdb.conf.man.xml"
+		<xi:include href="../man/wdb.conf.xml"
 			xmlns:xi="http://www.w3.org/2003/XInclude"/>
 		
 	</chapter>
