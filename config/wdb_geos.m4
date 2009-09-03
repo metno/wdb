@@ -59,3 +59,16 @@ AC_SUBST(geos_CFLAGS)
 AC_SUBST(geos_LIBS)
 
 ])
+
+AC_DEFUN([WDB_GEOS_C],
+[
+AC_ARG_WITH([geos],
+	     	AS_HELP_STRING([--with-geos_c=GEOS_PATH], 
+			[Specify the directory in which geos c interface is installed (by default, configure checks your PATH).]),
+	    	[LDFLAGS="-L$withval/lib $LDFLAGS"
+	    	CPPFLAGS="-I$withval/include $CPPFLAGS"])
+
+AC_CHECK_HEADER([geos_c.h])
+AC_CHECK_LIB([geos_c], [GEOSGeom_getCoordSeq])
+            
+])
