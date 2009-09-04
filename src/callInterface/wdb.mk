@@ -1,8 +1,5 @@
-lib_LTLIBRARIES +=		wdbCall.la
-wdbCall_la_SOURCES =
-wdbCall_la_LDFLAGS = 	-module $(LIBTOOL_VERSION_FLAG)
-wdbCall_la_CPPFLAGS = 	$(AM_CPPFLAGS) -I`pg_config --includedir-server` -I$(srcdir)/src/callInterface/ $(geos_CFLAGS)
-wdbCall_la_LIBADD =		libwdbProj.a libwdbMath.a libwdbExcept.a $(geos_LIBS)
+wdb_la_CPPFLAGS += 	-I$(srcdir)/src/callInterface/ $(geos_CFLAGS)
+wdb_la_LIBADD += $(geos_LIBS)
 
 wcidir = 				$(sqldir)/wci
 

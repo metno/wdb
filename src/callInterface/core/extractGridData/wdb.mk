@@ -1,4 +1,4 @@
-wdbCall_la_SOURCES +=	src/callInterface/core/extractGridData/extractGridData.c \
+wdb_la_SOURCES +=		src/callInterface/core/extractGridData/extractGridData.c \
 						src/callInterface/core/extractGridData/GridPointData.h \
 						src/callInterface/core/extractGridData/GridPointData.c \
 						src/callInterface/core/extractGridData/GridPointDataPsql.h \

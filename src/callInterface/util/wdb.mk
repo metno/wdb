@@ -3,7 +3,7 @@
 # WDB Call Interface Utility Functions
 #-----------------------------------------------------------------------------
 
-wdbCall_la_SOURCES += 	src/callInterface/util/conversion.h \
+wdb_la_SOURCES += 	src/callInterface/util/conversion.h \
 						src/callInterface/util/conversion.c \
 						src/callInterface/util/tuple.h \
 						src/callInterface/util/tuple.c

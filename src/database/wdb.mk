@@ -3,12 +3,7 @@
 # Database Source
 #-----------------------------------------------------------------------------
 
-lib_LTLIBRARIES +=		wdbCore.la
-wdbCore_la_LDFLAGS = 	-module  $(LIBTOOL_VERSION_FLAG)
-wdbCore_la_CPPFLAGS = 	$(AM_CPPFLAGS) -I`pg_config --includedir-server`
-wdbCore_la_LIBADD =		libwdbProj.a libwdbMath.a libwdbExcept.a
-wdbCore_la_SOURCES =	src/database/wdbSetup.c \
-						src/database/databaseProjection.cpp
+wdb_la_SOURCES +=	src/database/databaseProjection.cpp
 
 
 DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \

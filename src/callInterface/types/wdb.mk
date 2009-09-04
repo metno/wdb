@@ -3,7 +3,7 @@
 # WDB Call Interface Types
 #-----------------------------------------------------------------------------
 
-wdbCall_la_SOURCES += 	src/callInterface/types/levelIndeterminateType.cpp \
+wdb_la_SOURCES += 		src/callInterface/types/levelIndeterminateType.cpp \
 						src/callInterface/types/levelIndeterminateType.h \
 						src/callInterface/types/timeIndeterminateType.cpp \
 						src/callInterface/types/wciLocation.cpp \

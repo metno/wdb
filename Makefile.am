@@ -35,9 +35,9 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 						| sed s:__POSTGIS_DIR__:@postgis_SQL@:g \
 						| sed s:__WDB_DBNAME__:$(DATABASE_NAME):g \
 						| sed s:__WDB_SCHEMA__:wdb_$(DATABASE_SCHEMA):g \
-						| sed s:__WDB_LIB__:wdbCore-$(VERSION).so:g \
+						| sed s:__WDB_LIB__:wdb-$(VERSION).so:g \
 						| sed s:__WCI_SCHEMA__:wci_$(DATABASE_SCHEMA):g \
-						| sed s:__WCI_LIB__:wdbCall-$(VERSION).so:g \
+						| sed s:__WCI_LIB__:wdb-$(VERSION).so:g \
 			 			> $@
 
 CRON_COMPILE =			$(SED_SUBSTITUTION);\
@@ -89,7 +89,7 @@ bin_SCRIPTS =
 pkglib_PROGRAMS =
 pkglib_SCRIPTS =
 pkginclude_HEADERS =
-lib_LTLIBRARIES =
+lib_LTLIBRARIES = 
 sysconf_DATA =
 man_MANS =
 EXTRA_DIST =
@@ -128,7 +128,10 @@ pkgincludedir = $(includedir)/wdb
 
 DISTCLEANFILES +=		wdb-config
 
+include src/wdb.mk
+
 include doc/wdb.mk
+include doc/doxygen/wdb.mk
 
 include etc/metadata/wdb.mk
 include etc/wdb/wdb.mk
@@ -226,18 +229,12 @@ uninstall-local:
 DISTCHECK_DATABASE_NAME = wdb_distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-database-install --with-database-name=$(DISTCHECK_DATABASE_NAME)
 
-#if SPECIAL_GRIB_API_PATH 
-#DISTCHECK_CONFIGURE_FLAGS += "--with-gribapi=$(GRIB_PATH)"
-#endif
-
 override distuninstallcheck_listfiles =  find . -type f -! -name wdb.conf -print
 
 distcheck-hook:
 	mkdir $(distdir)/_inst/etc/
 	echo "database = $(DISTCHECK_DATABASE_NAME)" > $(distdir)/_inst/etc/wdb.conf
 
-
-#install-exec install-nodist_pkgpythonPYTHON install-pkgpythonPYTHON  
 
 upgrade: all install-man install-sqlDATA install-wciapiDATA \
 	install-wcicoreDATA install-wcitypesDATA install-wdbdataDATA \
@@ -443,18 +440,6 @@ performancecheck:  $(PERFORMANCETESTS)
 	  	test "$$failed" -eq 0; \
 	else :; \
 	fi
-
-
-
-#-----------------------------------------------------------------------------
-# Doxygen Integration
-#-----------------------------------------------------------------------------
-
-include doc/doxygen/wdb.mk
-
-MOSTLYCLEANFILES += 		$(DX_CLEANFILES)
-EXTRA_DIST += 				$(DX_CONFIG)
-
 
 include config/debian.mk
 
