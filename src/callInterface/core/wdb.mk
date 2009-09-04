@@ -30,6 +30,7 @@ WCICORE_SOURCES =		src/callInterface/core/wciExtractGridData.in.sql \
 						src/callInterface/core/readQuery.in.sql \
 						src/callInterface/core/readWhereClause.in.sql \
 						src/callInterface/core/readDataProvider.in.sql \
+						src/callInterface/core/getDataProvider.in.sql \
 						src/callInterface/core/wciWriteInternals.in.sql \
 						src/callInterface/core/wciInterpolation.in.sql
 

@@ -84,7 +84,9 @@ END
 $BODY$
 LANGUAGE 'plpgsql';
 
-SELECT wci.begin ( 'wdb', 0, 0, 0 );
+SELECT __WCI_SCHEMA__.setRole( 'wdb' );
+SELECT __WCI_SCHEMA__.setupSession( 'wdb', 0, 0, 0 );
+
 SELECT __WCI_SCHEMA__.migratetest( );
 
 DROP FUNCTION __WCI_SCHEMA__.migratetest( );

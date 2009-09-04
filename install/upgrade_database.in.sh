@@ -506,7 +506,6 @@ echo -n "dropping views and functions... "
 #psql $PSQLARGS -c "DELETE FROM __WDB_SCHEMA__.materializedView"
 for SCHEMA in test admin wci; do
 	psql $PSQLARGS -c "DROP SCHEMA $SCHEMA CASCADE" -o $LOGDIR/wdb_install_datamodel.log
-	
 done
 echo "done" 
 
@@ -528,6 +527,26 @@ if [ 0 != $? ]; then
 else
     echo "done"
 fi
+
+
+# Install wci
+echo -n "installing upgraded wci api... "
+cd __WDB_DATADIR__/sql/wci
+for FILE in `ls -1f api/*.sql | grep -v [.]in[.]sql`; do
+    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\i $FILE
+EOF
+	if [ 0 != $? ]; then
+    	echo "failed"
+		echo "ERROR: installing $FILE failed. See log for details."
+    	echo "ERROR: The completion of the datamodel upgrade failed. See log for details."
+		echo "ERROR: No roll back possible. Restore database from backup."
+    	exit 1
+	fi
+done
+echo "done"
 
 echo "---- wdb database upgrade completed ----"
 exit 0

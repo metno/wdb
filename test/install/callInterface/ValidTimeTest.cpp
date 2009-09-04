@@ -96,43 +96,43 @@ void ValidTimeTest::testR1_02B_ValidTimePoint()
 
 void ValidTimeTest::testContainsIndeterminateTypeDefault()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-24 08:00:00+00"));
-	CPPUNIT_ASSERT_EQUAL(result::size_type(4), r.size());
+	result r = t->exec(statementOid_("contains 2007-12-24 08:00:00+00"));
+	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeAtExact()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-24 06:00:00+00 TO 2007-12-24 12:00:00+00"));
-	CPPUNIT_ASSERT_EQUAL(result::size_type(4), r.size());
+	result r = t->exec(statementOid_("contains 2007-12-24 06:00:00+00 TO 2007-12-24 12:00:00+00"));
+	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeInside()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-23 04:00:00+00 TO 2007-12-25 08:00:00+00"));
+	result r = t->exec(statementOid_("contains 2007-12-23 04:00:00+00 TO 2007-12-25 08:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeOverlappingBefore()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-24 04:00:00+00 TO 2007-12-24 08:00:00+00"));
+	result r = t->exec(statementOid_("contains 2007-12-24 04:00:00+00 TO 2007-12-24 08:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeOverlappingAfter()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-24 11:00:00+00 TO 2007-12-24 15:00:00+00"));
+	result r = t->exec(statementOid_("contains 2007-12-24 11:00:00+00 TO 2007-12-24 15:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeBefore()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-23 06:00:00+00 TO 2007-12-23 12:00:00+00"));
+	result r = t->exec(statementOid_("contains 2007-12-23 06:00:00+00 TO 2007-12-23 12:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 
 void ValidTimeTest::testContainsIndeterminateTypeAfter()
 {
-	result r = t->exec(statementFloat_("contains 2007-12-25 06:00:00+00 TO 2007-12-25 12:00:00+00"));
+	result r = t->exec(statementOid_("contains 2007-12-25 06:00:00+00 TO 2007-12-25 12:00:00+00"));
 	CPPUNIT_ASSERT(r.empty());
 }
 

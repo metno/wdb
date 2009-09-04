@@ -44,7 +44,7 @@ BEGIN
 		SELECT * FROM wci.read( NULL, NULL, NULL, NULL,
 								NULL, NULL, NULL, NULL::wci.returnGid )
 	LOOP
-		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valGid.dataProviderName );
+		dataProviderId_ 		  := __WCI_SCHEMA__.getdataproviderid( valGid.dataProviderName );
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valGid.placename );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valGid.valueParameterName );
 		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valGid.levelParameterName ); 
@@ -83,7 +83,7 @@ BEGIN
 		SELECT * FROM wci.read( NULL, NULL, NULL, NULL,
 								NULL, NULL, NULL, NULL::wci.returnFloat )
 	LOOP
-		dataProviderId_ 		  := __WCI_SCHEMA__.getDataProviderId( valFlt.dataProviderName );
+		dataProviderId_ 		  := __WCI_SCHEMA__.getdataproviderid( valFlt.dataProviderName );
 		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valFlt.placename );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valFlt.valueParameterName );
 		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valFlt.levelParameterName ); 
@@ -120,7 +120,12 @@ END
 $BODY$
 LANGUAGE 'plpgsql';
 
-SELECT wci.begin ( 'wdb', 0, 0, 0 );
+-- Initialize WCI in previous version
+SELECT wci.begin( 'wdb' );
+-- Initialize WCI in new version
+SELECT __WCI_SCHEMA__.setRole( 'wdb' );
+SELECT __WCI_SCHEMA__.setupSession('wdb', 0, 0, 0 );
+
 SELECT __WCI_SCHEMA__.migratedata( );
 
 DROP FUNCTION __WCI_SCHEMA__.migratedata( );

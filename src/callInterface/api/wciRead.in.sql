@@ -221,7 +221,8 @@ BEGIN
 	--
 	-- Return Grid Values
 	--
-	IF __WCI_SCHEMA__.hasGrid( dataprovider ) = TRUE THEN
+	IF ( ( __WCI_SCHEMA__.hasGrid( dataprovider ) = TRUE ) AND
+	   ( location IS NOT NULL ) ) THEN
 		-- Create Query to Run
 		readQ := 'SELECT * ' ||
 				 __WCI_SCHEMA__.readQuery( 0, 

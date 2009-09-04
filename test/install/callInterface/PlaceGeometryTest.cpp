@@ -215,12 +215,11 @@ void PlaceGeometryTest::testG2_05A_NullGeometry()
 
 void PlaceGeometryTest::testG2_05B_NullGeometry()
 {
-    // We are here only interested in showing that this is valid
-
+    // We are here only interested in showing that this is valid, but returns no rows
     // Since we have had an error here related to return value, we test this
     // aswell: return value is oid instead of floats.
     result floatReturn = t->exec( statement_( "NULL" ) );
-    CPPUNIT_ASSERT( not floatReturn.empty() ); // the result set should be _huge_.
+    CPPUNIT_ASSERT( floatReturn.empty() ); // No rows returned
 }
 
 void PlaceGeometryTest::testG3_01_NoDuplicates()
