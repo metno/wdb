@@ -6,19 +6,45 @@ REVOKE ALL ON __WDB_SCHEMA__.file_blob FROM PUBLIC;
 GRANT ALL ON __WDB_SCHEMA__.file_blob TO wdb_admin;
 GRANT SELECT, UPDATE, DELETE ON __WDB_SCHEMA__.file_blob TO wdb_clean;
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.write_file(data bytea)
+
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.reserve_file_id()
+RETURNS bigint AS
+$BODY$
+	SELECT nextval('wdb_0_9_4.file_blob_file_id_seq');
+$BODY$
+LANGUAGE SQL
+SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.write_file(gridId bigint, data bytea)
+RETURNS void AS
+$BODY$
+BEGIN
+	-- Multiple attempts to write data with the same id as handled by the 
+	-- primary key of __WDB_SCHEMA__.file_blob. (It will fail.)
+	 
+	INSERT INTO __WDB_SCHEMA__.file_blob VALUES (gridId, true);	
+	PERFORM __WDB_SCHEMA__.write_file_impl(gridId, data);
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+SECURITY DEFINER;
+
+
+-- deprecated
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.write_file__(data bytea)
 RETURNS bigint AS
 $BODY$
 DECLARE
 	gridId bigint := nextval('__WDB_SCHEMA__.file_blob_file_id_seq');
 BEGIN
-	PERFORM __WDB_SCHEMA__.write_file_impl(gridId, data);
 	INSERT INTO __WDB_SCHEMA__.file_blob VALUES (gridId, true);
+	PERFORM __WDB_SCHEMA__.write_file_impl(gridId, data);
 	RETURN gridId;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE
 SECURITY DEFINER;
+
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.drop_file( id bigint )
 RETURNS void AS
@@ -26,6 +52,7 @@ $BODY$
 	UPDATE __WDB_SCHEMA__.file_blob SET active=false WHERE file_id=$1;
 $BODY$
 LANGUAGE sql VOLATILE;
+
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.vacuum_file_blob()
 RETURNS void AS
@@ -40,6 +67,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.read_file(id bigint)
 RETURNS bytea AS
@@ -57,6 +85,7 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
+
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.read_float_from_file(id bigint, pos int)
 RETURNS real AS
 $BODY$
@@ -72,6 +101,7 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
+
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.exists_file(id bigint)
 RETURNS bool AS

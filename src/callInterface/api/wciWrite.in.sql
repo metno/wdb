@@ -20,7 +20,7 @@
 
 -- Write GRID Value
 -- Limited Specification
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	data 			bytea,
 	placename_ 		text,
@@ -41,7 +41,8 @@ DECLARE
 	currentVersion_ integer;
 	placeid_ bigint := __WCI_SCHEMA__.getplaceid( placename_ );
 	valueParameterId_ integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
-	levelParameterId_ integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ ); 
+	levelParameterId_ integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
+	dataId bigint;
 BEGIN
 	
 	--PERFORM verifyBlobSize(data, placeid_);
@@ -67,6 +68,8 @@ BEGIN
 	ELSE
 		currentVersion_ := currentVersion_ + 1;
 	END IF;
+	
+	dataId := __WCI_SCHEMA__.reserve_file_id();
 
 	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
@@ -98,7 +101,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		__WCI_SCHEMA__.write_file(data),
+		dataId,
 		mydataproviderid_,
 		NULL,
 		placeid_,
@@ -124,6 +127,8 @@ BEGIN
 		NULL,
 		NULL
 	);
+	
+	PERFORM __WCI_SCHEMA__.write_file(dataId, data);
 END 
 $BODY$
 LANGUAGE 'plpgsql';
@@ -132,7 +137,7 @@ LANGUAGE 'plpgsql';
 
 -- Write GRID Value
 -- All parameter specified
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	data bytea,
 	dataproviderName_ text,
@@ -158,6 +163,8 @@ DECLARE
 	levelParameterId_      	  integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
 	currentVersion_ 		  integer := dataVersion_;
 	confidenceCode_			  integer := setConfidenceCode_;
+	
+	dataId bigint;
 BEGIN
 	--PERFORM verifyBlobSize(data, placeid_);
 	-- Determine dataversion
@@ -187,6 +194,8 @@ BEGIN
 		confidenceCode_ := 0;
 	END IF;
 
+	dataId := __WCI_SCHEMA__.reserve_file_id();
+	
 	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
 		value,
@@ -217,7 +226,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		__WCI_SCHEMA__.write_file(data),
+		dataId,
 		dataproviderid_,
 		NULL,
 		placeid_,
@@ -241,6 +250,8 @@ BEGIN
 		NULL,
 		NULL
 	);
+
+	PERFORM __WCI_SCHEMA__.write_file(dataId, data);
 END 
 $BODY$
 LANGUAGE 'plpgsql';
@@ -249,7 +260,7 @@ LANGUAGE 'plpgsql';
 
 -- Write GRID Value
 -- All parameter specified
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	gridId_ bigint,
 	dataproviderName_ text,
@@ -368,7 +379,7 @@ LANGUAGE 'plpgsql';
 
 -- Write GRID Value
 -- All parameter specified
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	data bytea,
 	dataproviderid_ bigint,
@@ -387,9 +398,13 @@ wci.write(
 )
 RETURNS void AS
 $BODY$
+DECLARE
+	dataId bigint;
 BEGIN
 	--PERFORM verifyBlobSize(data, placeid_);
 
+	dataId := __WCI_SCHEMA__.reserve_file_id();
+	
 	INSERT INTO __WCI_SCHEMA__.gridvalue 
 	(
 		value,
@@ -420,7 +435,7 @@ BEGIN
 	) 
 	VALUES
 	(
-		__WCI_SCHEMA__.write_file(data),
+		dataId,
 		dataproviderid_,
 		NULL,
 		placeid_,
@@ -444,6 +459,8 @@ BEGIN
 		NULL,
 		NULL
 	);
+	
+	PERFORM __WCI_SCHEMA__.write_file(dataId, data);
 END 
 $BODY$
 LANGUAGE 'plpgsql';
@@ -451,7 +468,7 @@ LANGUAGE 'plpgsql';
 
 
 -- Write GRID Value
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	what wci.returnGid
 )
@@ -563,7 +580,7 @@ LANGUAGE 'plpgsql';
 
 -- Write Float Value
 -- Limited Specification
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	value_ 			float,
 	placename_ 		text,
@@ -673,7 +690,7 @@ LANGUAGE 'plpgsql';
 
 
 -- Write OID Value
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	what wci.returnFloat
 )
@@ -779,7 +796,7 @@ LANGUAGE 'plpgsql';
 -- Write Float Value
 -- Explicit data specification
 --
-CREATE OR REPLACE FUNCTION 
+CREATE FUNCTION 
 wci.write(
 	value_ 			float,
 	dataproviderid_ bigint,
