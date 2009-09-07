@@ -29,6 +29,7 @@
 #ifndef BASEDATAREADER_H_
 #define BASEDATAREADER_H_
 
+#include <string.h>
 #include <PlaceSpecification.h>
 #include "GridPointData.h"
 #include "GEOSGeomWrapper.h"

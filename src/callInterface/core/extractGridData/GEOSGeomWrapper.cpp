@@ -98,15 +98,10 @@ bool operator ==(const GEOSGeomWrapper & a, const GEOSGeomWrapper & b)
 	return GEOSEquals(a.get(), b.get());
 }
 
-extern const GEOSCoordSeq GEOS_DLL GEOSGeom_getCoordSeq(const GEOSGeom g);
-extern int GEOS_DLL GEOSCoordSeq_getSize(const GEOSCoordSeq s, unsigned int *size);
-extern int GEOS_DLL GEOSCoordSeq_getX(const GEOSCoordSeq s, unsigned int idx, double *val);
-extern int GEOS_DLL GEOSCoordSeq_getY(const GEOSCoordSeq s, unsigned int idx, double *val);
-
 bool GEOSGeomWrapperCmp::operator () (const GEOSGeomWrapper & wa, const GEOSGeomWrapper & wb) const
 {
-	const GEOSCoordSeq a = GEOSGeom_getCoordSeq(wa.get());
-	const GEOSCoordSeq b = GEOSGeom_getCoordSeq(wb.get());
+	const GEOSCoordSeq a = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(wa.get()));
+	const GEOSCoordSeq b = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(wb.get()));
 
 	unsigned sizeA;
 	GEOSCoordSeq_getSize(a, & sizeA);

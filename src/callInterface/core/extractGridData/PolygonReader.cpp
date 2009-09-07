@@ -64,11 +64,11 @@ GridPointDataList * PolygonReader::read( GEOSGeom location, InterpolationType in
 
 void PolygonReader::extractPolygon( std::vector<GridPointData> & polygon, GEOSGeom location, InterpolationType interpolation ) const
 {
-	GEOSGeom outerRing = GEOSGetExteriorRing( location );
+	GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( location ));
 	if ( outerRing == NULL )
 		throw std::runtime_error( "Outer ring of location is NULL" );
 
-	GEOSCoordSeq coordSeq = GEOSGeom_getCoordSeq( outerRing );
+	GEOSCoordSeq coordSeq = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq( outerRing ));
 	if ( coordSeq == NULL )
 		throw std::runtime_error( "Coordinate sequence returned NULL" );
 
