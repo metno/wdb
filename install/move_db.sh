@@ -45,7 +45,7 @@ version() {
 help() {
 	version
 	echo
-	echo "Usage: move_db DESTINATION"
+	echo "Usage: move_db [OPTIONS] DESTINATION"
 	echo
 	echo "Moves a debian-style postgresql cluster - version <$PG_VERSION> cluster name" 
 	echo "<$PG_CLUSTER> - to the given destination."
