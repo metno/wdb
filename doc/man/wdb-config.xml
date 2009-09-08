@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	  <!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	  %wdb.entities;
+]
+>
+
+<refentry id='wdb-config1'>
+	<refentryinfo>
+			<date>2009-09-08</date>
+			<productname>WDB-CONFIG</productname>
+			<productnumber>&version;</productnumber>
+	</refentryinfo>		
+	<refmeta>
+		<refentrytitle>wdb-config</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+	<refnamediv>
+		<refname>wdb-config</refname>
+		<refpurpose>Get information about the wdb installation.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>wdb-config</command>
+			<arg choice='opt'>OPTION</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+	
+	<refsect1>
+		<title>Description</title>
+		<para> wdb-config gives basic information about what flags have been set when compiling wdb.
+			</para>
+	</refsect1>
+	<refsect1>
+		<title>Options</title>
+		
+		<para>An argument must be given at the command line. Here are the most useful ones:</para>
+		
+		<variablelist remap='TP'>
+			<?dbfo list-presentation="blocks"?>
+			
+			<varlistentry>
+				<term>--help</term>
+				<listitem>
+					<para>Produces the help message and then exits.</para>
+				</listitem>
+			</varlistentry>
+			
+			<varlistentry>
+				<term>--version</term>
+				<listitem>
+					<para>Produce version information and then exits.</para>
+				</listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>--cflags</term>
+			  <listitem>
+			    <para>Show flags used to compile wdb</para>
+			  </listitem>
+			</varlistentry>
+
+			<varlistentry>
+			  <term>--libs</term>
+			  <listitem>
+			    <para>Show flags used to link wdb</para>
+			  </listitem>
+			</varlistentry>
+
+			
+		</variablelist>
+		
+	</refsect1>
+</refentry>

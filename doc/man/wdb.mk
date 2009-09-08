@@ -7,7 +7,8 @@
 
 MAN_DOCS = \
 	doc/man/wdb.xml \
-	doc/man/wdbConfiguration.xml
+	doc/man/wdbConfiguration.xml \
+	doc/man/wdb-config.xml
 
 man1_MANS = $(MAN_DOCS:.xml=.1)
 

@@ -124,7 +124,7 @@ pkgincludedir = $(includedir)/wdb
 # WDB Configuration
 #-----------------------------------------------------------------------------
 
-#nodist_bin_SCRIPTS = 	wdb-config
+nodist_bin_SCRIPTS = 	wdb-config
 
 DISTCLEANFILES +=		wdb-config
 
