@@ -10,7 +10,14 @@ INSTALL_SOURCES =		install/install_database.in.sh \
 INSTALL_SQL 	= 		install/upgrade_database.in.sql \
 						install/upgrade_test.in.sql						
 
+EXTRA_DIST += install/move_db.sh
+
 pkglib_SCRIPTS += 		$(INSTALL_SOURCES:.in.sh=)
+
+nodist_pkglib_SCRIPTS = install/move_db
+
+install/move_db:	install/move_db.sh
+	 cp $< $@
 
 sql_DATA += 			$(INSTALL_SQL:.in.sql=.sql)
 
@@ -31,7 +38,8 @@ EXTRA_DIST +=			$(INSTALL_SOURCES) \
 						install/Makefile.in
 
 CLEANFILES += 			$(INSTALL_SOURCES:.in.sh=) \
-						$(INSTALL_SQL:.in.sql=.sql)
+						$(INSTALL_SQL:.in.sql=.sql) \
+						install/move_db
 
 DISTCLEANFILES +=		install/Makefile
 
