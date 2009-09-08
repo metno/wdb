@@ -125,6 +125,6 @@ if [ x != x$PG_XLOG ]; then
 fi
 
 # restart database
-$PG_CTL start -l /dev/null || error unable to restart database
+$PG_CTL start || error unable to restart database
 
 echo Moved database successfully
