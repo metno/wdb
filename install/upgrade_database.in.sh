@@ -227,12 +227,12 @@ else
 fi
 
 # Install Metadata
-echo -n "installing upgraded metadata (1/2)... "
+echo -n "installing upgraded metadata (1/3)... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP off
 \o $LOGDIR/wdb_install_metadata.log
-\i $WDB_METADATA_PATH/wdbMetadata.sql 
+\i $WDB_METADATA_PATH/wdbMetadata.sql
 EOF
 if [ 0 != $? ]; then
     echo "failed"
@@ -247,6 +247,32 @@ DROP SCHEMA __WDB_SCHEMA__ CASCADE;
 EOF
     echo "done"
     exit 1
+else
+    echo "done"
+fi
+
+# Upgrade Metadata
+echo -n "installing upgraded metadata (2/3)... "
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q  <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+\i $WDB_DATAMODEL_PATH/upgrade_metadata.sql
+EOF
+if [ 0 != $? ]; then
+    echo "failed"
+    echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
+    echo "ERROR: See wdb_migrate_data.log for details."
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_migrate_data.log
+--DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+--DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+    echo "done"
+	exit 1
 else
     echo "done"
 fi
@@ -510,7 +536,7 @@ done
 echo "done" 
 
 # Install additional schemas
-echo -n "installing upgraded datamodel (2/2)... "
+echo -n "installing upgraded datamodel (3/3)... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP

@@ -180,20 +180,32 @@ REVOKE ALL ON __WDB_SCHEMA__.softwareversion FROM public;
 GRANT ALL ON __WDB_SCHEMA__.softwareversion TO wdb_admin;
 
 
-
--- Indeterminate type for time
-CREATE TABLE __WDB_SCHEMA__.timeindeterminatetype (
-    timeindeterminatecode		integer NOT NULL,
-    timeindeterminatetype		character varying(80) NOT NULL,
-    timeindeterminatedescription	character varying(255) NOT NULL
+-- currentconfiguration stores the WDB version information in
+-- the database
+CREATE TABLE __WDB_SCHEMA__.currentconfiguration (
+    singleton					integer NOT NULL,
+    softwareversionpartyid		integer NOT NULL,
+    productionstatus			character varying(80) NOT NULL,
+    CONSTRAINT currentconfiguration_productionstatus_check
+	CHECK (	((productionstatus)::text = 'Development'::text) OR 
+			((productionstatus)::text = 'Integration Test'::text) OR
+			((productionstatus)::text = 'Production Test'::text) OR
+			((productionstatus)::text = 'Production'::text) ),
+    CONSTRAINT currentconfiguration_singleton_check 
+	CHECK ( singleton = 1 )
 );
 
-ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
-    ADD CONSTRAINT timeindeterminatetype_pkey PRIMARY KEY (timeindeterminatecode);
+ALTER TABLE ONLY __WDB_SCHEMA__.currentconfiguration
+    ADD CONSTRAINT currentconfiguration_pkey PRIMARY KEY (singleton);
 
-REVOKE ALL ON __WDB_SCHEMA__.timeindeterminatetype FROM public;
-GRANT ALL ON __WDB_SCHEMA__.timeindeterminatetype TO wdb_admin;
+ALTER TABLE __WDB_SCHEMA__.currentconfiguration
+	ADD FOREIGN KEY (softwareversionpartyid)
+					REFERENCES __WDB_SCHEMA__.softwareversion
+					ON DELETE RESTRICT
+					ON UPDATE RESTRICT;
 
+REVOKE ALL ON __WDB_SCHEMA__.currentconfiguration FROM public;
+GRANT ALL ON __WDB_SCHEMA__.currentconfiguration TO wdb_admin;
 
 
 -- Namespace descriptors
@@ -227,29 +239,16 @@ GRANT ALL ON __WDB_SCHEMA__.namespace TO wdb_admin;
 
 
 
--- currentconfiguration stores the WDB version information in
--- the database
-CREATE TABLE __WDB_SCHEMA__.currentconfiguration (
-    singleton					integer NOT NULL,
-    softwareversionpartyid		integer NOT NULL,
-    productionstatus			character varying(80) NOT NULL,
-    CONSTRAINT currentconfiguration_productionstatus_check
-	CHECK (	((productionstatus)::text = 'Development'::text) OR 
-			((productionstatus)::text = 'Integration Test'::text) OR
-			((productionstatus)::text = 'Production Test'::text) OR
-			((productionstatus)::text = 'Production'::text) ),
-    CONSTRAINT currentconfiguration_singleton_check 
-	CHECK ( singleton = 1 )
+
+-- Indeterminate type for time
+CREATE TABLE __WDB_SCHEMA__.timeindeterminatetype (
+    timeindeterminatecode			integer NOT NULL,
+    timeindeterminatetype			character varying(80) NOT NULL,
+    timeindeterminatedescription	character varying(255) NOT NULL
 );
 
-ALTER TABLE ONLY __WDB_SCHEMA__.currentconfiguration
-    ADD CONSTRAINT currentconfiguration_pkey PRIMARY KEY (singleton);
+ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
+    ADD CONSTRAINT timeindeterminatetype_pkey PRIMARY KEY (timeindeterminatecode);
 
-ALTER TABLE __WDB_SCHEMA__.currentconfiguration
-	ADD FOREIGN KEY (softwareversionpartyid)
-					REFERENCES __WDB_SCHEMA__.softwareversion
-					ON DELETE RESTRICT
-					ON UPDATE RESTRICT;
-
-REVOKE ALL ON __WDB_SCHEMA__.currentconfiguration FROM public;
-GRANT ALL ON __WDB_SCHEMA__.currentconfiguration TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.timeindeterminatetype FROM public;
+GRANT ALL ON __WDB_SCHEMA__.timeindeterminatetype TO wdb_admin;

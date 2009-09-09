@@ -34,7 +34,7 @@ CREATE TABLE __WDB_SCHEMA__.measure (
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.measure
-    ADD CONSTRAINT measures_pkey PRIMARY KEY (measure);
+    ADD CONSTRAINT measure_pkey PRIMARY KEY (measure);
 
 REVOKE ALL ON __WDB_SCHEMA__.measure FROM public;
 GRANT ALL ON __WDB_SCHEMA__.measure TO wdb_admin;
@@ -98,20 +98,6 @@ ALTER TABLE ONLY __WDB_SCHEMA__.parameterfunctiontype
 
 REVOKE ALL ON __WDB_SCHEMA__.parameterfunctiontype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.parameterfunctiontype TO wdb_admin;
-
-
-
--- Parameter quantity types
-CREATE TABLE __WDB_SCHEMA__.parameterquantitytype (
-    parameterquantitytype				character varying(80) NOT NULL,
-	parameterquantitytypedescription	character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.parameterquantitytype
-    ADD CONSTRAINT parameterquantitytype_pkey PRIMARY KEY (parameterquantitytype);
-
-REVOKE ALL ON __WDB_SCHEMA__.parameterquantitytype FROM public;
-GRANT ALL ON __WDB_SCHEMA__.parameterquantitytype TO wdb_admin;
 
 
 
@@ -218,6 +204,9 @@ CREATE TABLE __WDB_SCHEMA__.valuedimensionlessparameter (
 	valuedimensionlessparametername character varying(255) NOT NULL,
 	valueparameterdescription		character varying(255) NOT NULL
 );
+
+ALTER TABLE ONLY __WDB_SCHEMA__.valuedimensionlessparameter
+    ADD CONSTRAINT valuedimensionlessparameter_pkey PRIMARY KEY (valueparameterid);
 
 REVOKE ALL ON __WDB_SCHEMA__.valuedimensionlessparameter FROM public;
 GRANT ALL ON __WDB_SCHEMA__.valuedimensionlessparameter TO wdb_admin;

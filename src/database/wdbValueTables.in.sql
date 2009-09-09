@@ -25,6 +25,9 @@ CREATE TABLE __WDB_SCHEMA__.qualityconfidencecode (
     confidencecodedescription	character varying(255) NOT NULL
 );
 
+ALTER TABLE ONLY __WDB_SCHEMA__.qualityconfidencecode
+    ADD CONSTRAINT confidencecode_pkey PRIMARY KEY (confidencecode);
+
 REVOKE ALL ON __WDB_SCHEMA__.qualityconfidencecode FROM public;
 GRANT ALL ON __WDB_SCHEMA__.qualityconfidencecode TO wdb_admin;
 

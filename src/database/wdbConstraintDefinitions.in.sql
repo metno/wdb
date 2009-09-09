@@ -23,9 +23,6 @@ SET SESSION client_min_messages TO 'warning';
 --
 -- Primary Key Constraints
 --
-ALTER TABLE ONLY __WDB_SCHEMA__.qualityconfidencecode
-    ADD CONSTRAINT qualityconfidencecode_pkey PRIMARY KEY (confidencecode);
-
 
 ALTER TABLE ONLY __WDB_SCHEMA__.floatvalue
     ADD CONSTRAINT floatvalue_pkey PRIMARY KEY (valueid, valuetype);
