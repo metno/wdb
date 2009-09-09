@@ -67,7 +67,9 @@ void readFile_(FileId id, char * out, int readSize)
 
 float readFloatFromFile_(FileId id, int position)
 {
-	HANDLE_EXCEPTIONS(return readFloatFromFile(id, position));
+	float ret = 0;
+	HANDLE_EXCEPTIONS(ret = readFloatFromFile(id, position));
+	return ret;
 }
 
 namespace

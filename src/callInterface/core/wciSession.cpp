@@ -76,6 +76,8 @@ extern "C"
                       errmsg( sMsg.c_str() ) ) );
 		}
 		setRole(sRole.c_str());
+
+		PG_RETURN_VOID();
 	}
 	
     PG_FUNCTION_INFO_V1( wciSession_initialize );
@@ -91,8 +93,8 @@ extern "C"
 
         try
         {
-        	const std::string u = "itsme!";
-        	s.initialize( u/*VARDATA(user)*/, dataProviderNs, placeNs, parameterNs );
+        	const std::string u(VARDATA(user), VARDATA(user) + (VARSIZE(user) - VARHDRSZ));
+        	s.initialize( u, dataProviderNs, placeNs, parameterNs );
         }
         catch ( std::logic_error & e )
         {

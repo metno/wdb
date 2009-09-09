@@ -34,7 +34,7 @@
 /// Return a place query given the place
 char * getPlaceQuery_( const char * pquery, int returnSize )
 {
-	const size_t maxQuerySize = returnSize; // Todo: Need to calculate this 
+	//const size_t maxQuerySize = returnSize; // Todo: Need to calculate this
     if ( SPI_OK_CONNECT != SPI_connect() )
     {
         ereport( ERROR,
@@ -43,13 +43,12 @@ char * getPlaceQuery_( const char * pquery, int returnSize )
     }
     int res = SPI_execute( pquery, true, 0 );
     int proc = SPI_processed;
-    char * result;
+    char * result = 0;
     if ( (res > 0) && ( proc == 1 ) && (SPI_tuptable != NULL) )
     {
     	// Valid result returned
         TupleDesc tupdesc 		= SPI_tuptable->tupdesc;
         SPITupleTable *tuptable = SPI_tuptable;
-        size_t rSize = maxQuerySize;
         HeapTuple tuple = tuptable->vals[0];
         result = SPI_getvalue( tuple, tupdesc, 1) ;
     }

@@ -76,7 +76,7 @@ extern "C"
 		ArrayType * dProvArray = DatumGetArrayTypeP(in);
 		int ndims = ARR_NDIM(dProvArray);
 		int	* dim_counts = ARR_DIMS(dProvArray);
-		int nItems;
+		int nItems  = 0;
 		bool isNull;
 
 		// Check array size
@@ -130,7 +130,7 @@ extern "C"
 		ArrayType * placeIdArray = DatumGetArrayTypeP(in);
 		int ndims = ARR_NDIM(placeIdArray);
 		int	* dim_counts = ARR_DIMS(placeIdArray);
-		int nItems;
+		int nItems = 0;
 		bool isNull;
 
 		// Check array size
@@ -255,7 +255,6 @@ extern "C"
 
 	void writeValueParameter(stringstream & out, const char * param)
 	{
-		bool firstParam = true;
 		try {
 			ValueParameterType pt ( param );
 			if ( pt.isPattern() ) {
@@ -278,7 +277,7 @@ extern "C"
 		ArrayType * paramArray = DatumGetArrayTypeP(in);
 		int ndims = ARR_NDIM(paramArray);
 		int	* dim_counts = ARR_DIMS(paramArray);
-		int nItems;
+		int nItems = 0;
 		bool isNull;
 
 		// Check array size
@@ -389,8 +388,7 @@ extern "C"
 		ArrayType * wantedDataVersions = DatumGetArrayTypeP(in);
 		int ndims = ARR_NDIM(wantedDataVersions);
 		int	* dim_counts = ARR_DIMS(wantedDataVersions);
-		int nItems;
-		bool isNull;
+		int nItems = 0;
 
 		// Check array size
 		if (ndims == 1)

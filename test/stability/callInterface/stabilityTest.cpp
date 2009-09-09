@@ -106,13 +106,13 @@ int main(int argc, char *argv[])
 		// Result Vector - used to store results from queries
 		vector <GridRow *> resultG;
 		// Size of a field
-		const int fieldSize = 1000000;
+		//const int fieldSize = 1000000;
 		// The bufer for holding a field
-		char resultBuffer[fieldSize];
+		//char resultBuffer[fieldSize];
 		// Float Return
 		bool isFloat = false;
 		// Grid Return
-		bool isGrid = false;
+		//bool isGrid = false;
 		
 		int iterations = (900 * rand() / RAND_MAX) + 100; // Iterate a random number of times between 1-1000
 		

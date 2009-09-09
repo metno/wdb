@@ -57,14 +57,14 @@ static Datum extractDatum_( const HeapTupleHeader * t, const char * name )
 }
 
 /// Extract datum "name" from the given HeapTupleHeader and interpret it as a double
-static double extractDouble_( const HeapTupleHeader * t, const char * name )
-{
-    char buf[ 128 ];
-    Datum extracted = extractDatum_( t, name );
-    double ret = DatumGetFloat8( extracted );
-    //sprintf( buf, "%s:\t%lf\n", name, ret );elog( INFO, buf ); fflush(0);
-    return ret;
-}
+//static double extractDouble_( const HeapTupleHeader * t, const char * name )
+//{
+//    char buf[ 128 ];
+//    Datum extracted = extractDatum_( t, name );
+//    double ret = DatumGetFloat8( extracted );
+//    //sprintf( buf, "%s:\t%lf\n", name, ret );elog( INFO, buf ); fflush(0);
+//    return ret;
+//}
 
 /// Extract datum "name" from the given HeapTupleHeader and interpret it as a float
 static float extractFloat_( const HeapTupleHeader * t, const char * name )

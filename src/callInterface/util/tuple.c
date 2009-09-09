@@ -28,6 +28,7 @@
 
 #include "tuple.h"
 #include <funcapi.h>
+#include <access/heapam.h>
 
 Datum createTupleFromCStringArray(FunctionCallInfo fcinfo, const char ** specList)
 {
@@ -38,7 +39,7 @@ Datum createTupleFromCStringArray(FunctionCallInfo fcinfo, const char ** specLis
                  (errcode(ERRCODE_DATA_EXCEPTION),
                  errmsg( "Function returning record called in context that cannot accept type record" ) ) );
 	}
-	HeapTuple tuple = BuildTupleFromCStrings(TupleDescGetAttInMetadata(td), specList);
+	HeapTuple tuple = BuildTupleFromCStrings(TupleDescGetAttInMetadata(td), (char**) specList);
 
 	return HeapTupleGetDatum(tuple);
 }

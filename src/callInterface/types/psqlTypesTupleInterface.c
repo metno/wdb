@@ -1,6 +1,7 @@
 #include "psqlTypesTupleInterface.h"
 #include <util/conversion.h>
 #include <funcapi.h>
+#include <access/heapam.h>
 
 Datum packWciParameter( const char * statisticsType,
                        const char * physicalPhenomena,

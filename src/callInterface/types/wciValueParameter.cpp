@@ -72,6 +72,7 @@ extern "C"
                      ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
                        errmsg( e.what() ) ) );
         }
+        PG_RETURN_NULL();
     }
 
 }

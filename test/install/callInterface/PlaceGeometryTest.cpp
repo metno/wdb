@@ -538,7 +538,7 @@ void PlaceGeometryTest::testG9_03_MoreThan1000PointsInPolygon()
 
     const double radius = 15;
     const double centreLon = 0; //13;
-    const double centreLat = 0; //60;
+    //const double centreLat = 0; //60;
     const double noOfPoints = 20;
 
     const double increment = ( 2 * radius ) / noOfPoints;

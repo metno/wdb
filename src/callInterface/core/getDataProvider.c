@@ -44,7 +44,7 @@ char * getDataProvider_( const char * dquery )
     }
     int res = SPI_execute( dquery, true, 0 );
     int proc = SPI_processed;
-    char * result;
+    char * result = 0;
     if ( (res > 0) && ( proc > 0 ) && (SPI_tuptable != NULL) )
     {
         TupleDesc tupdesc 		= SPI_tuptable->tupdesc;

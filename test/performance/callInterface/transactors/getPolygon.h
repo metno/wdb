@@ -77,7 +77,7 @@ public:
     	log.infoStream() <<  "Query: " << query;
     	pqxx::result R;
 		R = T.exec(query);
-		for (int i=0; i<R.size(); i++) {
+		for (pqxx::result::size_type i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
 			R.at(i).at(0).to(ret->value_);
 			R.at(i).at(1).to(ret->dataProvider_);
@@ -146,7 +146,7 @@ public:
     	log.infoStream() <<  "Query: " << query;
     	pqxx::result R;
 		R = T.exec(query);
-		for (int i=0; i<R.size(); i++) {
+		for (pqxx::result::size_type i=0; i<R.size(); i++) {
 			FloatRow * ret = new FloatRow();
 			R.at(i).at(0).to(ret->value_);
 			R.at(i).at(1).to(ret->dataProvider_);

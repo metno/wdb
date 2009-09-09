@@ -90,8 +90,6 @@ public:
 	 */
 	void operator()(argument_type &T)
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-
 		// Get Grid Dimensions
 		std::ostringstream testQuery;
 		testQuery << "SELECT spatialdomaindelivery FROM test.dataprovider WHERE dataprovidername = "
