@@ -10,7 +10,7 @@ GRANT SELECT, UPDATE, DELETE ON __WDB_SCHEMA__.file_blob TO wdb_clean;
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.reserve_file_id()
 RETURNS bigint AS
 $BODY$
-	SELECT nextval('wdb_0_9_4.file_blob_file_id_seq');
+	SELECT nextval('__WDB_SCHEMA__.file_blob_file_id_seq');
 $BODY$
 LANGUAGE SQL
 SECURITY DEFINER;
