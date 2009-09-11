@@ -1,4 +1,27 @@
 #!/bin/sh
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## 
+## wdb - weather and water data storage
+##
+## Copyright (C) 2007 met.no
+##
+##  Contact information:
+##  Norwegian Meteorological Institute
+##  Box 43 Blindern
+##  0313 OSLO
+##  NORWAY
+##  E-mail: wdb@met.no
+##
+##  This is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#
+# General scrip to move a PostgreSQL database
+#
 
 set -e
 
@@ -39,13 +62,13 @@ move_and_link() {
 }
 
 version() {
-	echo move_db 1.0.0
+	echo $0 __WDB_VERSION__
 }
 
 help() {
 	version
 	echo
-	echo "Usage: move_db [OPTIONS] DESTINATION"
+	echo "Usage: $0 [OPTIONS] DESTINATION"
 	echo
 	echo "Moves a debian-style postgresql cluster - version <$PG_VERSION> cluster name" 
 	echo "<$PG_CLUSTER> - to the given destination."
