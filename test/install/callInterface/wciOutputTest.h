@@ -48,6 +48,9 @@ class wciOutputTest : public AbstractWciTestFixture
 	// TODO: Reintroduce these tests if this kind of sanity check becomes practical:
 	//CPPUNIT_TEST_EXCEPTION( testInvalidFieldSizeInDatabaseQueryOnOidThrows, pqxx::sql_error );
 	//CPPUNIT_TEST_EXCEPTION( testInvalidFieldSizeInDatabaseQueryOnFloatThrows, pqxx::sql_error );
+
+	CPPUNIT_TEST( testReturnedValueAreMissing );
+	CPPUNIT_TEST( testReturnedValueAreMissingWithInterpolation );
 	CPPUNIT_TEST_SUITE_END();
 public:
 	wciOutputTest();
@@ -55,6 +58,9 @@ public:
 
 	void testInvalidFieldSizeInDatabaseQueryOnOidThrows();
 	void testInvalidFieldSizeInDatabaseQueryOnFloatThrows();
+
+	void testReturnedValueAreMissing();
+	void testReturnedValueAreMissingWithInterpolation();
 };
 
 /// @}

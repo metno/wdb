@@ -37,6 +37,7 @@
 #include <PlaceSpecification.h>
 #include "GridPointDataPsql.h"
 #include "readPoints.h"
+#include <math.h>
 
 void logInfo(const char *fmt, ...)
 {
@@ -69,6 +70,12 @@ struct GridPointDataListIterator * getExtractGridDataReturnValues(FunctionCallIn
     return ret;
 }
 
+/// Is the given value not-a-number? Normal equal does not work for this
+inline bool isNaN(float val)
+{
+	return isnanf(val);
+}
+
 Datum getNextReturnTupleViaDatums(const struct GridPointData * data, TupleDesc tuple_desc)
 {
     HeapTuple    tuple;
@@ -76,7 +83,7 @@ Datum getNextReturnTupleViaDatums(const struct GridPointData * data, TupleDesc t
     Datum values[4];
     GridPointDataGetDatum(values, data);
 
-    bool isNull[4] = {false,false,false,false};
+    bool isNull[4] = {false, isNaN(data->value), false,false};
 
     tuple = heap_form_tuple(tuple_desc, values, isNull);
     return HeapTupleGetDatum(tuple);

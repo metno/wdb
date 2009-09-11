@@ -28,6 +28,7 @@
 
 
 #include "wciOutputTest.h"
+#include <cmath>
 
 CPPUNIT_TEST_SUITE_REGISTRATION( wciOutputTest );
 
@@ -67,4 +68,41 @@ void wciOutputTest::testInvalidFieldSizeInDatabaseQueryOnFloatThrows()
 		"'2004-12-24 06:00:00+00',"
 		"0::float)"
 	);
+}
+
+void wciOutputTest::testReturnedValueAreMissing()
+{
+	pqxx::result r = t->exec(
+			"SELECT * FROM wci.read("
+			"'{\"test group\"}',"
+			"'POINT(-40 68)',"
+			"'2008-04-21 06:00:00+00',"
+			"NULL,"
+			"NULL,"
+			"NULL,"
+			"NULL,"
+			"NULL::wci.returnfloat)"
+	);
+
+	CPPUNIT_ASSERT_EQUAL(pqxx::result::size_type(1), r.size());
+	CPPUNIT_ASSERT( r[0]["value"].is_null() );
+}
+
+void wciOutputTest::testReturnedValueAreMissingWithInterpolation()
+{
+	pqxx::result r = t->exec(
+			"SELECT * FROM wci.read("
+			"'{\"test group\"}',"
+			"'bilinear POINT(-40 68)',"
+			"'2008-04-21 06:00:00+00',"
+			"NULL,"
+			"NULL,"
+			"NULL,"
+			"NULL,"
+			"NULL::wci.returnfloat)"
+	);
+
+	CPPUNIT_ASSERT_EQUAL(pqxx::result::size_type(1), r.size());
+	CPPUNIT_ASSERT( r[0]["value"].is_null() );
+
 }

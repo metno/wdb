@@ -146,6 +146,10 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29
 # TransactionCorrectnessTest 
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '1975-04-21 06:00:00+00' --validtimefrom='1975-04-21 06:00:00+00' --validtimeto='1975-04-21 06:00:00+00' --levelparameter 'height above ground distance' --levelfrom 0 --levelto 0
 
+#wciOutputTest
+$TEST_WRITE  --reftime '2008-04-21 06:00:00+00' -P0,0=NaN
+
+
 # Load Test Data
 #$LOAD_GRIB_FILE --loadPlaceDefinition $GRIB_FILE
 #$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE1

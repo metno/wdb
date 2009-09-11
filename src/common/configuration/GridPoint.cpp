@@ -31,6 +31,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <limits>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
@@ -48,7 +49,7 @@ GridPoint::GridPoint( const std::string & point )
 {
 	using namespace boost;
 
-	static const regex r( "(\\d+),(\\d+)(=(\\d+\\.?\\d*))?" );
+	static const regex r( "(\\d+),(\\d+)(=(\\d+\\.?\\d*|NaN))?" );
 
 	smatch match;
 	if ( regex_match( point, match, r ) )
@@ -56,7 +57,12 @@ GridPoint::GridPoint( const std::string & point )
 		x_ = boost::lexical_cast<int>( match[ 1 ] );
 		y_ = boost::lexical_cast<int>( match[ 2 ] );
 		if ( match[ 4 ].matched )
-			val_ = boost::lexical_cast<double>( match[ 4 ] );
+		{
+			if ( match[4] == "NaN" )
+				val_ = std::numeric_limits<double>::quiet_NaN();
+			else
+				val_ = boost::lexical_cast<double>( match[ 4 ] );
+		}
 		else
 			val_ = 1;
 	}

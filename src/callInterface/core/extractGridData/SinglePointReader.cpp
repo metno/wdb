@@ -115,6 +115,13 @@ GridPointDataList * SinglePointReader::readNearest_(GEOSGeom location, double ex
 
 GridPointDataList * SinglePointReader::readSurround_(GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
+	// In case we ask for a position which is exactly on a grid line, we cheat
+	// to be able to return four points, by adding 0.5 to the value
+	if ( exactX == int(exactX) )
+		exactX += 0.5;
+	if ( exactY == int(exactY) )
+		exactY += 0.5;
+
 	GridPointData out[4];
 	int count = 0;
 	if ( reader_.readPoint(out[count],std::floor(exactX), std::floor(exactY), dataId) )
@@ -169,6 +176,8 @@ GridPointDataList * SinglePointReader::readBilinear_(GEOSGeom location, double e
 	data.y = exactY;
 	data.value = interpolate::bilinear(surroundingPoints, exactX, exactY);
 	data.location = GEOSGeom_clone(location);
+
+	GridPointDataListDelete(surroundingPoints);
 
 	return list;
 }
