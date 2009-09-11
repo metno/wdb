@@ -190,34 +190,20 @@ LANGUAGE 'plpgsql' STABLE;
 --   valueparametername
 --   valueunitname
 --   count 
-CREATE OR REPLACE FUNCTION 
+CREATE OR REPLACE FUNCTION
 wci.info( parameter 		text,
 		  returntype 		wci.infovalueparameter )	
 RETURNS SETOF wci.infovalueparameter AS
 $BODY$
-DECLARE
-	infoQuery 		text;
-	entry 			wci.infovalueparameter;
-BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT valueparametername, valueunitname as valueunitnameorref
-				  FROM __WCI_SCHEMA__.valueparameter_mv vp, __WCI_SCHEMA__.getSessionData() s
-				  WHERE vp.parameternamespaceid = s.parameternamespaceid';
-	IF parameter IS NOT NULL THEN
-		infoQuery := infoQuery || ' AND valueparametername LIKE ' || parameter;
-	END IF;
-	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
-
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
-END;
+	SELECT 
+		valueparametername, valueunitname as valueunitnameorref
+	FROM 
+		__WCI_SCHEMA__.valueparameter_mv vp, __WCI_SCHEMA__.getSessionData() s
+	WHERE 
+		vp.parameternamespaceid = s.parameternamespaceid AND
+		($1 IS NULL OR valueparametername LIKE $1);
 $BODY$
-LANGUAGE 'plpgsql' STABLE;
-
+LANGUAGE sql;
 
 
 -- place info by name
@@ -232,25 +218,13 @@ wci.info( parameter 		text,
 		  returntype 		wci.infolevelparameter )	
 RETURNS SETOF wci.infolevelparameter AS
 $BODY$
-DECLARE
-	infoQuery 		text;
-	entry 			wci.infolevelparameter;
-BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT levelparametername, levelunitname as levelunitnameorref
-				  FROM __WCI_SCHEMA__.levelparameter_mv lp, __WCI_SCHEMA__.getSessionData() s
-				  WHERE lp.parameternamespaceid = s.parameternamespaceid';
-	IF parameter IS NOT NULL THEN
-		infoQuery := infoQuery || ' AND levelparametername LIKE ' || parameter;
-	END IF;
-	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
-
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
-END;
+	SELECT 
+		levelparametername, levelunitname as levelunitnameorref
+	FROM 
+		__WCI_SCHEMA__.levelparameter_mv lp, __WCI_SCHEMA__.getSessionData() s
+	WHERE 
+		lp.parameternamespaceid = s.parameternamespaceid AND
+		($1 IS NULL OR levelparametername LIKE $1);
 $BODY$
-LANGUAGE 'plpgsql' STABLE;
+LANGUAGE sql;
+
