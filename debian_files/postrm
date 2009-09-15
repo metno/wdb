@@ -68,7 +68,7 @@ case "$1" in
     	# otherwise go to old postinst abort-upgrade
     	test $INSTALLED_VERSION = $OLD_VERSION
     ;;
-    remove|abort-install||disappear)
+    remove|abort-install|disappear)
     ;;
 
     *)
