@@ -42,7 +42,12 @@ case "$1" in
     	# By this time, all sql files should have been overwritten by the new 
     	# version's, so this should be ok (even if this is called from the old 
     	# postrm script). 
-		/usr/lib/wdb/upgrade_database -d $DB_NAME
+		su postgres -c "/usr/lib/wdb/upgrade_database -d $DB_NAME"
+
+		# Extra sanity check after upgrade
+	    INSTALLED_VERSION=`su postgres -c "psql $DB_NAME -tc 'SELECT wci.version()' | cut -sd\  -f3"`
+    	NEW_VERSION=`echo $2 | sed s/-.*//`
+    	test $INSTALLED_VERSION = $NEW_VERSION
 		# Fail goes to new-postrm: failed-upgrade
     ;;
      
