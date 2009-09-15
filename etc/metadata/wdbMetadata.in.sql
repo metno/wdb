@@ -78,10 +78,3 @@ COPY __WDB_SCHEMA__.levelcodeparameter FROM '__WDB_DATADIR__/sql/wdb_levelcodepa
 
 -- Confidence Code
 COPY __WDB_SCHEMA__.qualityconfidencecode FROM '__WDB_DATADIR__/sql/wdb_qualityconfidencecode.csv' CSV HEADER DELIMITER '|';
-
--- XML Metadata
---COPY xmlload.valueparameterxref FROM '__WDB_DATADIR__/sql/wdb_xmlparameterxref.csv' CSV HEADER DELIMITER '|'; 
-
---COPY __WDB_SCHEMA__.kvalobsparameterxref FROM '__WDB_DATADIR__/sql/wdb_kvalobsparameterxref.csv' CSV HEADER DELIMITER '|';
---COPY __WDB_SCHEMA__.kvalobsvalidtimexref FROM '__WDB_DATADIR__/sql/wdb_kvalobsvalidtimexref.csv' CSV HEADER DELIMITER '|';
-
