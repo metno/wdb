@@ -28,28 +28,31 @@ db_get wdb/database_name && DB_NAME="$RET"
 case "$1" in
     configure)
         #Create wdb admin user
-	#echo $$ adduser --gecos 0 --disabled-password $DB_USER >> /dev/null
+		#echo $$ adduser --gecos 0 --disabled-password $DB_USER >> /dev/null
+		
+		if ! grep -q "^$DB_USER:" /etc/passwd ; then
+		    adduser --gecos 0 --disabled-password $DB_USER
+		    # Remove any old crontab entries if this account have had any before
+		    su $DB_USER -c "crontab -r" 2> /dev/null || true
+		fi
+		echo 'PATH=$PATH:/usr/lib/wdb/' >> /home/$DB_USER/.bashrc
 	
-	if ! grep -q "^$DB_USER:" /etc/passwd ; then
-	    adduser --gecos 0 --disabled-password $DB_USER
-	    # Remove any old crontab entries if this account have had any before
-	    su $DB_USER -c "crontab -r" 2> /dev/null || true
-	fi
-	echo 'PATH=$PATH:/usr/lib/wdb/' >> /home/$DB_USER/.bashrc
-
-	# Generate config file
-	if [ ! -f /etc/wdb.conf ]; then
-	    echo "database = $DB_NAME" > /etc/wdb.conf
-	    PORT=`pg_lsclusters -h | grep main | xargs echo | cut -d' ' -f3`
-	    echo "port = $PORT" >> /etc/wdb.conf
-	    echo "user = $DB_USER" >> /etc/wdb.conf
-	fi
-
-	su postgres -c "psql -c \"ALTER USER $DB_USER WITH SUPERUSER\"" >> /dev/null
-	su postgres -c "psql -c \"GRANT wdb_admin, wdb_grib, wdb_felt TO $DB_USER\"" >> /dev/null 
+		# Generate config file
+		if [ ! -f /etc/wdb.conf ]; then
+		    echo "database = $DB_NAME" > /etc/wdb.conf
+		    PORT=`pg_lsclusters -h | grep main | xargs echo | cut -d' ' -f3`
+		    echo "port = $PORT" >> /etc/wdb.conf
+		    echo "user = $DB_USER" >> /etc/wdb.conf
+		fi
+	
+		su postgres -c "psql -c \"ALTER USER $DB_USER WITH SUPERUSER\"" >> /dev/null
+		su postgres -c "psql -c \"GRANT wdb_admin, wdb_grib, wdb_felt TO $DB_USER\"" >> /dev/null 
     ;;
 
-    abort-upgrade|abort-remove|abort-deconfigure)
+    abort-upgrade)
+    	# success: We have successfully aborted an upgrade
+    ;;
+    abort-remove|abort-deconfigure)
     ;;
 
     *)

@@ -24,6 +24,8 @@ if [ -f /usr/share/dbconfig-common/dpkg/postrm.pgsql ]; then
    dbc_go wdb $@
 fi
 
+db_get wdb/database_name && DB_NAME="$RET"
+
 case "$1" in
     purge)
 	rm -f /etc/wdb.conf
@@ -36,10 +38,32 @@ case "$1" in
     ;;
 
     upgrade)
-	
+		# Called on old postrm
+    	# By this time, all sql files should have been overwritten by the new 
+    	# version's, so this should be ok (even if this is called from the old 
+    	# postrm script). 
+		/usr/lib/wdb/upgrade_database -d $DB_NAME
+		# Fail goes to new-postrm: failed-upgrade
     ;;
      
-    remove|failed-upgrade|abort-install|abort-upgrade|disappear)
+	failed-upgrade)
+		# Called on new postrm
+		# nothing we can do here, so fail
+		false
+		# Fail goes to old preinst: abort-upgrade, and eventually to new 
+		# postrm abort-upgrade
+	;;
+     
+	abort-upgrade)
+		# Called on new postrm
+	    INSTALLED_VERSION=`su postgres -c "psql $DB_NAME -tc 'SELECT wci.version()' | cut -sd\  -f3"`
+    	OLD_VERSION=`echo $2 | sed s/-.*//`
+    	
+    	# If this fails, leaves package in half-installed state.
+    	# otherwise go to old postinst abort-upgrade
+    	test $INSTALLED_VERSION = $OLD_VERSION
+    ;;
+    remove|abort-install||disappear)
     ;;
 
     *)

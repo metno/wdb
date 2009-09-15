@@ -23,10 +23,11 @@ case "$1" in
     ;;
 
     upgrade)
-	
     ;;
 
     abort-upgrade)
+	    # Called after new postrm: failed-upgrade
+    	# success: go to new postrm abort-upgrade
     ;;
 
     *)
