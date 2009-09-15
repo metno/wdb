@@ -21,9 +21,6 @@
 #
 # upgrade - upgrade the wdb system
 #
-UPGRADE_LIMIT_MAJOR=0
-UPGRADE_LIMIT_MINOR=9
-UPGRADE_LIMIT_MICRO=0
 
 DEFAULT_DATABASE=`wdbConfiguration --database`@`wdbConfiguration --host`
 DEFAULT_USER=`wdbConfiguration --user`
@@ -134,6 +131,26 @@ if test -z "$WDB_INSTALL_PORT"; then
 	WDB_INSTALL_PORT=$DEFAULT_PORT
 fi
 
+WDB_LIBDIR=` wdb-config --libdir`
+OLD_VERSION=__OLD_VERSION__
+
+# Code to rollback installation
+upgrade_rollback() {
+	echo -n "rolling back upgraded datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+--\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+DROP SCHEMA __WCI_SCHEMA__ CASCADE;
+DROP SCHEMA __WDB_SCHEMA__ CASCADE;
+EOF
+	cd $WDB_LIBDIR
+	rm wdb.so
+	ln -s wdb-$OLD_VERSION.so wdb.so
+	echo "done"
+ }
+ 
+
 # Start Upgrade
 echo "---- wdb database upgrade ----"
 
@@ -181,14 +198,23 @@ fi
 echo -n "current version of WDB... "
 PSQLARGS=`wdbConfiguration --psqlArgs`
 current_version=`psql $PSQLARGS -l -c "select wci.version();" -q | sed -e '1,2d' | sed -e '2,$d' | sed 's/^[ ]//g'`
-echo $current_version
-major_version=`echo $current_version | sed 's/\..*$//'`
-minor_version=`echo $current_version | sed 's/[0-9]*\.//' | sed 's/\..*$//'`
+major_version=`echo $current_version | sed 's/[A-Za-z]*\s*//' |sed 's/\..*$//'`
+minor_version=`echo $current_version | sed 's/[A-Za-z]*\s[0-9]*\.//' | sed 's/\..*$//'`
 patch_version=`echo $current_version | sed 's/.*\.//'`
-
-# Todo: Check that current version is upgradeable
-
-# Todo: Check differences between major and minor upgrade
+version_number=`echo $major_version.$minor_version.$patch_version`
+if [ "$version_number" = "$OLD_VERSION" ]; then
+	echo $current_version
+else
+	echo $current_version
+	if [ "$version_number" = "__WDB_VERSION__" ]; then
+		echo "EXIT: No upgrade of the database schema is required." 
+		echo "---- wdb database upgrade completed ----"
+		exit 0			
+	else
+	    echo "ERROR: Cannot upgrade WDB version $version_number to __WDB_VERSION__. This upgrade is only valid for WDB version $OLD_VERSION."
+    	exit 1
+	fi
+fi
 
 # Install Datamodel
 echo -n "installing upgraded datamodel (1/2)... "
@@ -212,15 +238,7 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: The upgrade of the datamodel failed. See log for details."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
     exit 1
 else
     echo "done"
@@ -237,15 +255,7 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: installing new metadata failed."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
     exit 1
 else
     echo "done"
@@ -263,15 +273,7 @@ if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
     echo "ERROR: See wdb_migrate_data.log for details."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_migrate_data.log
---DROP SCHEMA __WCI_SCHEMA__ CASCADE;
---DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
 	exit 1
 else
     echo "done"
@@ -291,15 +293,7 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: installing new materialized views failed."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
 	exit 1
 else
     echo "done"
@@ -316,15 +310,7 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: installing new indexes failed."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
 	exit 1
 else
     echo "done"
@@ -342,15 +328,7 @@ EOF
 	if [ 0 != $? ]; then
 	    echo "failed"
 		echo "ERROR: installing $FILE failed. See log for details."
-		echo -n "rolling back upgraded datamodel... "
-		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    	echo "done"
+	    upgrade_rollback
 		exit 1
     fi
 done
@@ -367,15 +345,7 @@ EOF
 	if [ 0 != $? ]; then
 	    echo "failed"
 		echo "ERROR: installing $FILE failed. See log for details."
-		echo -n "rolling back upgraded datamodel... "
-		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    	echo "done"
+	    upgrade_rollback
 		exit 1
     fi
 done
@@ -392,15 +362,7 @@ EOF
 if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: The installation of the cleanup script failed. See log for details."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-   	echo "done"
+    upgrade_rollback
 	exit 1
 else
     echo "done"
@@ -422,27 +384,11 @@ EOF
 	    echo "ERROR: it would not be possible to migrate all of the data in"
 	    echo "ERROR: the database correctly."
 	    echo "ERROR: See wdb_migrate_data.log for details."
-		echo -n "rolling back upgraded datamodel... "
-		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_migrate_data.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-	    echo "done"
+	    upgrade_rollback
 		exit 1
 	fi
 	echo "done"
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_migrate_data.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
 	echo "---- wdb database upgrade test successful ----"
 	exit 0
 fi
@@ -464,15 +410,7 @@ EOF
 	    echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
 	    echo "ERROR: Pre-operation of data migration failed."
 	    echo "ERROR: See wdb_migrate_data.log for details."
-		echo -n "rolling back upgraded datamodel... "
-		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_migrate_data.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-	    echo "done"
+	    upgrade_rollback
 		exit 1
 	fi
 fi
@@ -487,15 +425,7 @@ if [ 0 != $? ]; then
     echo "failed"
     echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
     echo "ERROR: See wdb_migrate_data.log for details."
-	echo -n "rolling back upgraded datamodel... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_migrate_data.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-    echo "done"
+    upgrade_rollback
 	exit 1
 fi
 
@@ -512,15 +442,7 @@ EOF
 	    echo "ERROR: Migrating data WDB version __WDB_VERSION__ failed."
 	    echo "ERROR: Post-operation of data migration failed."
 	    echo "ERROR: See wdb_migrate_data.log for details."
-		echo -n "rolling back upgraded datamodel... "
-		psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
---\set ON_ERROR_STOP
-\o $LOGDIR/wdb_migrate_data.log
-DROP SCHEMA __WCI_SCHEMA__ CASCADE;
-DROP SCHEMA __WDB_SCHEMA__ CASCADE;
-EOF
-	    echo "done"
+	    upgrade_rollback
 		exit 1
 	fi
 fi
