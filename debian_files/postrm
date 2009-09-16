@@ -25,11 +25,11 @@ if [ -f /usr/share/dbconfig-common/dpkg/postrm.pgsql ]; then
 fi
 
 db_get wdb/database_name && DB_NAME="$RET"
+db_get wdb/user_account && DB_USER="$RET" || DB_USER=wdb
 
 case "$1" in
     purge)
 	rm -f /etc/wdb.conf
-	db_get wdb/user_account && DB_USER="$RET" || DB_USER=wdb
 	if [ -n "$DB_USER" ]; then
 	    deluser --remove-home $DB_USER >> /dev/null || true
 	    delgroup --only-if-empty $DB_USER >> /dev/null || true
@@ -38,20 +38,20 @@ case "$1" in
     ;;
 
     upgrade)
-		# Called on old postrm
+	# Called on old postrm
     	# By this time, all sql files should have been overwritten by the new 
-    	# version's, so this should be ok (even if this is called from the old 
-    	# postrm script). 
-		su postgres -c "/usr/lib/wdb/upgrade_database -d $DB_NAME"
+	# version's, so this should be ok (even if this is called from the old 
+	# postrm script). 
+	su $DB_USER -c "/usr/lib/wdb/upgrade_database -d $DB_NAME"
 
-		# Extra sanity check after upgrade
-	    INSTALLED_VERSION=`su postgres -c "psql $DB_NAME -tc 'SELECT wci.version()' | cut -sd\  -f3"`
-    	NEW_VERSION=`echo $2 | sed s/-.*//`
-    	test $INSTALLED_VERSION = $NEW_VERSION
-		# Fail goes to new-postrm: failed-upgrade
+	# Extra sanity check after upgrade
+	INSTALLED_VERSION=`su postgres -c "psql $DB_NAME -tc 'SELECT wci.version()' | cut -sd\  -f3"`
+	NEW_VERSION=`echo $2 | sed s/-.*//`
+	test $INSTALLED_VERSION = $NEW_VERSION
+	# Fail goes to new-postrm: failed-upgrade
     ;;
      
-	failed-upgrade)
+    failed-upgrade)
 		# Called on new postrm
 		# nothing we can do here, so fail
 		false
@@ -60,13 +60,13 @@ case "$1" in
 	;;
      
 	abort-upgrade)
-		# Called on new postrm
+	    # Called on new postrm
 	    INSTALLED_VERSION=`su postgres -c "psql $DB_NAME -tc 'SELECT wci.version()' | cut -sd\  -f3"`
-    	OLD_VERSION=`echo $2 | sed s/-.*//`
-    	
-    	# If this fails, leaves package in half-installed state.
-    	# otherwise go to old postinst abort-upgrade
-    	test $INSTALLED_VERSION = $OLD_VERSION
+	    OLD_VERSION=`echo $2 | sed s/-.*//`
+	
+	    # If this fails, leaves package in half-installed state.
+	    # otherwise go to old postinst abort-upgrade
+	    test $INSTALLED_VERSION = $OLD_VERSION
     ;;
     remove|abort-install|disappear)
     ;;
