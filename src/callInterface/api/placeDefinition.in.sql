@@ -33,12 +33,12 @@ DECLARE
 BEGIN
 	SELECT placename INTO ret
 	FROM __WCI_SCHEMA__.regulargrid, __WCI_SCHEMA__.getSessionData()
-	WHERE inumber = numX_
-	AND   jnumber = numY_
-	AND   round(iIncrement::numeric, 3) = round(incX_::numeric, 3)
-	AND   round(jIncrement::numeric, 3) = round(incY_::numeric, 3)
-	AND	  round(startLongitude::numeric, 3) = round(startX_::numeric, 3)
-	AND   round(startLatitude::numeric, 3) = round(startY_::numeric, 3)
+	WHERE numberX = numX_
+	AND   numberY = numY_
+	AND   round(incrementX::numeric, 3) = round(incX_::numeric, 3)
+	AND   round(incrementY::numeric, 3) = round(incY_::numeric, 3)
+	AND	  round(startX::numeric, 3) = round(startX_::numeric, 3)
+	AND   round(startY::numeric, 3) = round(startY_::numeric, 3)
 	AND   projdefinition = projection_;
 	RETURN ret;
 END;

@@ -36,7 +36,7 @@ DECLARE
 	specSize int;
 BEGIN
 	SELECT sum(length(data)) INTO blobSize FROM pg_largeobject WHERE loid=value_;
-	SELECT iNumber*jNumber*4 INTO specSize FROM __WCI_SCHEMA__.placespec WHERE placeid_=placeid;
+	SELECT numberX*numberY*4 INTO specSize FROM __WCI_SCHEMA__.placespec WHERE placeid_=placeid;
 	IF blobSize != specSize THEN
 		RAISE WARNING 'verifyBlobSize(%, %), Missized data field (size=%, should be %)', value_, placeid_, blobSize, specSize;
 	END IF;

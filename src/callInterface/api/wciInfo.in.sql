@@ -148,12 +148,12 @@ BEGIN
 		FOR entry IN 
 		SELECT
 			placename,
-			iNumber AS numberX,
-			jNumber AS numberY,
-			iIncrement AS incrementX,
-			jIncrement AS incrementY,
-			startLatitude AS startX,
-			startLongitude AS startY,
+			numberX AS numberX,
+			numberY AS numberY,
+			incrementX AS incrementX,
+			incrementY AS incrementY,
+			startY AS startX,
+			startX AS startY,
 			projDefinition
 		FROM 
 			__WCI_SCHEMA__.placespec 
@@ -164,12 +164,12 @@ BEGIN
 		FOR entry IN 
 		SELECT
 			placename,
-			iNumber AS numberX,
-			jNumber AS numberY,
-			iIncrement AS incrementX,
-			jIncrement AS incrementY,
-			startLatitude AS startX,
-			startLongitude AS startY,
+			numberX AS numberX,
+			numberY AS numberY,
+			incrementX AS incrementX,
+			incrementY AS incrementY,
+			startY AS startX,
+			startX AS startY,
 			projDefinition
 		FROM 
 			__WCI_SCHEMA__.placespec

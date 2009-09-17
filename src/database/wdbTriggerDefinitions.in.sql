@@ -45,12 +45,12 @@ begin
 	SELECT proj4text INTO projDef FROM spatial_ref_sys WHERE srid=grid.originalsrid;
 
 	geo := __WDB_SCHEMA__.createGeometryText(
-		grid.inumber, 
-		grid.jnumber, 
-		grid.iincrement, 
-		grid.jincrement, 
-		grid.startlongitude, 
-		grid.startlatitude, 
+		grid.numberX, 
+		grid.numberY, 
+		grid.incrementX, 
+		grid.incrementY, 
+		grid.startX, 
+		grid.startY, 
 		projdef
 	); 
 	

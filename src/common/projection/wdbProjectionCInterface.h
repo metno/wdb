@@ -50,28 +50,28 @@
 
 ///**
 // * Convert from a 1-dimensional array to a the X-axis of a 2-dimensional array.
-// * The value will be in the range [0, ps.iNumber).
+// * The value will be in the range [0, ps.numberX).
 // * 
-// * @warning Undefined behaviour if iNumber or jNumber is 0.
+// * @warning Undefined behaviour if numberX or numberY is 0.
 // * 
 // * @see yFromIndex, indexFromXy
 // */
-//inline int x_from_index( int index, int iNumber, int jNumber )
+//inline int x_from_index( int index, int numberX, int numberY )
 //{
-//	return index % iNumber; 
+//	return index % numberX; 
 //}
 //
 ///**
 // * Convert from a 1-dimensional array to a the Y-axis of a 2-dimensional array.
-// * The value will be in the range [0, ps.iNumber). 
+// * The value will be in the range [0, ps.numberX). 
 // * 
-// * @warning Undefined behaviour if iNumber or jNumber is 0.
+// * @warning Undefined behaviour if numberX or numberY is 0.
 // * 
 // *  @see xFromIndex, indexFromXy
 // */
-//inline int y_from_index( int index, int iNumber, int jNumber )
+//inline int y_from_index( int index, int numberX, int numberY )
 //{
-//	return index / iNumber;
+//	return index / numberX;
 //}
 //
 //
@@ -79,19 +79,19 @@
 // * Convert an index from a 2-dimensional array to a one-dimensional one, using 
 // * ps as a specification of the x/y arrays dimensions. 
 // * 
-// * @warning Undefined behaviour if iNumber or jNumber is 0.
+// * @warning Undefined behaviour if numberX or numberY is 0.
 // * 
 // * @see xFromIndex, yFromIndex
 // */
-//inline int index_from_xy( int x, int y, int iNumber, int jNumber )
+//inline int index_from_xy( int x, int y, int numberX, int numberY )
 //{
-//	return (y * iNumber) + x;
+//	return (y * numberX) + x;
 //}
 
 
-#define x_from_index(index, iNumber, jNumber) (index % iNumber)
-#define y_from_index(index, iNumber, jNumber) (index / iNumber)
-#define index_from_xy(x, y, iNumber, jNumber) ((y * iNumber) + x)
+#define x_from_index(index, numberX, numberY) (index % numberX)
+#define y_from_index(index, numberX, numberY) (index / numberX)
+#define index_from_xy(x, y, numberX, numberY) ((y * numberX) + x)
 
 
 //#ifdef __cplusplus

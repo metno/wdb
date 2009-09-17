@@ -72,12 +72,12 @@ GRANT SELECT,UPDATE ON __WDB_SCHEMA__.placedefinition_placeid_seq TO wdb_write;
 -- Regular Grid
 CREATE TABLE __WDB_SCHEMA__.placeregulargrid (
     placeid						bigint NOT NULL,
-    inumber						integer NOT NULL,
-    jnumber						integer NOT NULL,
-    iincrement					real NOT NULL,
-    jincrement					real NOT NULL,
-    startLongitude				real NOT NULL,
-    startLatitude				real NOT NULL,
+    numberX						integer NOT NULL,
+    numberY						integer NOT NULL,
+    incrementX					real NOT NULL,
+    incrementY					real NOT NULL,
+    startX				real NOT NULL,
+    startY				real NOT NULL,
     originalsrid				integer NOT NULL
 );
 

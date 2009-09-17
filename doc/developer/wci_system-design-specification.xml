@@ -548,7 +548,7 @@
 				<title>Implementation</title>
 				
 				<para>The original SRID (defined in PROJ) allows the system to compute
-					startLatitude and startLongitude of the original grid, as well as to
+					startY and startX of the original grid, as well as to
 					determine poleLat and poleLon.</para>
 				
 			</sect3>

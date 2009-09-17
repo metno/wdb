@@ -70,8 +70,8 @@ struct lonlat wdbTransform( double i, double j, const struct PlaceSpecification 
  * PlaceSpecification, placing the result in lonOut and latOut.
  *
  * @warning The output parameters must have enough memory allocated to place
- * the result in. The size requirements of each buffer is (p.iNumber *
- * p.jNumber)
+ * the result in. The size requirements of each buffer is (p.numberX *
+ * p.numberY)
  *
  * Noop if p == NULL.
  *

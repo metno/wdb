@@ -24,7 +24,7 @@
 --(
 --	i float8,
 --	j float8,
---	iNumber integer,
+--	numberX integer,
 --	field bigint
 --)
 --RETURNS float4 AS
@@ -45,18 +45,18 @@ $BODY$
 DECLARE
 	i double precision;
 	j double precision;
-	iNumber integer;
-	jNumber integer;
+	numberX integer;
+	numberY integer;
 	val float4;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-	SELECT * INTO i, j, iNumber, jNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	SELECT * INTO i, j, numberX, numberY FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
 	
-	IF i < 0 OR j < 0 OR i >= iNumber-1 OR j >= jNumber-1 THEN
+	IF i < 0 OR j < 0 OR i >= numberX-1 OR j >= numberY-1 THEN
 		RETURN NULL;
 	END IF;
 	
-	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, iNumber, valueoid );
+	val := __WCI_SCHEMA__.getBilinearInterpolationData(i, j, numberX, valueoid );
 	ret := (location, val, -1, -1);
 	RETURN ret;
 END;
@@ -68,13 +68,13 @@ __WCI_SCHEMA__.getSinglePointData
 (
 	i integer,
 	j integer,
-	iNumber integer,
+	numberX integer,
 	field bigint
 )
 RETURNS float4 AS
 $BODY$
 DECLARE
-	idx int := i + (j * iNumber);
+	idx int := i + (j * numberX);
 BEGIN
 	RETURN __WCI_SCHEMA__.read_float_from_file(field, idx);
 END;
@@ -96,17 +96,17 @@ DECLARE
 	j double precision;
 	i_i integer;
 	i_j integer;
-	iNumber integer;
-	jNumber integer;
+	numberX integer;
+	numberY integer;
 	val float4;
 	ret __WCI_SCHEMA__.extractGridDataReturnType;
 BEGIN
-	SELECT * INTO i, j, iNumber, jNumber FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
+	SELECT * INTO i, j, numberX, numberY FROM __WCI_SCHEMA__.getExactIJ( location, placeid );
 	i_i := round(i); -- using round before cursor query improves 
 	i_j := round(j); -- performance by a factor of 50-300, for some reason
-	RAISE DEBUG 'NEAREST: %, %, %, %', i_i, i_j, iNumber, valueoid;
+	RAISE DEBUG 'NEAREST: %, %, %, %', i_i, i_j, numberX, valueoid;
 	--SELECT * INTO ret FROM __WCI_SCHEMA__.placepoint WHERE __WCI_SCHEMA__.placepoint.placeid = placeid AND __WCI_SCHEMA__.placepoint.i = i_i AND __WCI_SCHEMA__.placepoint.j = i_j;
-	val := __WCI_SCHEMA__.getNearestInterpolationData( i_i, i_j, iNumber, valueoid );
+	val := __WCI_SCHEMA__.getNearestInterpolationData( i_i, i_j, numberX, valueoid );
 	ret := (location, val, i_i, i_j);
 	RETURN ret;
 END;

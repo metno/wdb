@@ -40,13 +40,30 @@
 --$BODY$
 --LANGUAGE 'sql';
 
+CREATE TYPE __WCI_SCHEMA__.placespectype AS ( 
+	placeid bigint,
+	placename varchar(80),
+	placenamespaceid integer,
+	placegeometry GEOMETRY, 
+	placegeometrytype varchar(80),
+	placeindeterminatetype varchar(80),
+	iNumber integer, 
+	jNumber integer, 
+	iIncrement real, 
+	jIncrement real,
+	startLongitude real,
+	startLatitude real,
+	originalsrid integer,
+	projdefinition text,
+	placestoretime timestamp with time zone
+);
 
 -- Get the full list of place specifications, for which there exists a regular 
 -- grid.
 --
 -- @return All data on all registered regular grids  
 CREATE OR REPLACE FUNCTION wci.placespecification()
-  RETURNS SETOF __WCI_SCHEMA__.placespec AS
+  RETURNS SETOF __WCI_SCHEMA__.placespectype AS
 $BODY$
 	SELECT 
 		p.placeid,
@@ -55,12 +72,12 @@ $BODY$
 		p.placegeometry,
 		p.placegeometrytype,
 		p.placeindeterminatetype,
-		p.inumber, 
-		p.jnumber, 
-		p.iincrement, 
-		p.jincrement, 
-		p.startlongitude, 
-		p.startlatitude, 
+		p.numberX as iNumber, 
+		p.numberY as jNumber, 
+		p.incrementX as iIncrement, 
+		p.incrementY as jIncrement, 
+		p.startX as startLongitude, 
+		p.startY as startLatitude, 
 		p.originalsrid,
 		p.projdefinition,
 		p.placestoretime

@@ -107,14 +107,14 @@ void extractPlaceSpecification( struct PlaceSpecification * out, const Datum * i
 {
     const HeapTupleHeader t = DatumGetHeapTupleHeader( * indata );
 
-    out->startX_ = extractFloat_( & t, "startlongitude" );
-    out->startY_ = extractFloat_( & t, "startlatitude" );
+    out->startX_ = extractFloat_( & t, "startx" );
+    out->startY_ = extractFloat_( & t, "starty" );
 
-    out->xNumber_ = extractUInt_( & t, "inumber" );
-    out->yNumber_ = extractUInt_( & t, "jnumber" );
+    out->xNumber_ = extractUInt_( & t, "numberx" );
+    out->yNumber_ = extractUInt_( & t, "numbery" );
 
-    out->xIncrement_ = extractFloat_( & t, "iincrement" );
-    out->yIncrement_ = extractFloat_( & t, "jincrement" );
+    out->xIncrement_ = extractFloat_( & t, "incrementx" );
+    out->yIncrement_ = extractFloat_( & t, "incrementy" );
 
     //out->poleLongitude = -40.0; //extractFloat_( & t, "polelongitude" );
     //out->poleLatitude = -22.0;//extractFloat_( & t, "polelatitude" )	;

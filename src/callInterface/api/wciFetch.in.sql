@@ -54,12 +54,12 @@ BEGIN
 	-- Pack result and return
 	returnObject_ := (
 					__WCI_SCHEMA__.read_file( gridid ),
-					placeinfo_.inumber,
-					placeinfo_.jnumber,
-					placeinfo_.iincrement,
-					placeinfo_.jincrement,
-					placeinfo_.startlongitude,
-					placeinfo_.startlatitude,
+					placeinfo_.numberX,
+					placeinfo_.numberY,
+					placeinfo_.incrementX,
+					placeinfo_.incrementY,
+					placeinfo_.startX,
+					placeinfo_.startY,
 					placeinfo_.projdefinition );
 	RETURN returnObject_;
 END;

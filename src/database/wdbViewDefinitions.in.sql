@@ -26,12 +26,12 @@
 CREATE VIEW __WDB_SCHEMA__.placespec AS SELECT 
 	pd.placeid,
 	pd.placegeometry, 
-	pg.inumber, 
-	pg.jnumber, 
-	pg.iincrement, 
-	pg.jincrement, 
-	pg.startlongitude, 
-	pg.startlatitude, 
+	pg.numberX, 
+	pg.numberY, 
+	pg.incrementX, 
+	pg.incrementY, 
+	pg.startX, 
+	pg.startY, 
 	pg.originalsrid,
 	srs.proj4text AS projdefinition 
 FROM 
