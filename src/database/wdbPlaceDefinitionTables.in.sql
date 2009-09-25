@@ -72,24 +72,33 @@ GRANT SELECT,UPDATE ON __WDB_SCHEMA__.placedefinition_placeid_seq TO wdb_write;
 -- Regular Grid
 CREATE TABLE __WDB_SCHEMA__.placeregulargrid (
     placeid						bigint NOT NULL,
-    numberX						integer NOT NULL,
-    numberY						integer NOT NULL,
-    incrementX					real NOT NULL,
-    incrementY					real NOT NULL,
-    startX				real NOT NULL,
-    startY				real NOT NULL,
+    numberx						integer NOT NULL,
+    numbery						integer NOT NULL,
+    incrementx					real NOT NULL,
+    incrementy					real NOT NULL,
+    startx						real NOT NULL,
+    starty						real NOT NULL,
     originalsrid				integer NOT NULL
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placeregulargrid
     ADD CONSTRAINT placeregulargrid_pkey PRIMARY KEY (placeid);
 
+ALTER TABLE ONLY __WDB_SCHEMA__.placeregulargrid
+    ADD CONSTRAINT plcaeregulargrid_skey UNIQUE ( numberx,
+    											  numbery,
+    											  incrementx,
+    											  incrementy,
+    											  startx,
+    											  starty,
+    											  originalsrid );
+    
 ALTER TABLE __WDB_SCHEMA__.placeregulargrid
 	ADD FOREIGN KEY (placeid)
 					REFERENCES __WDB_SCHEMA__.placedefinition
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
-
+					
 REVOKE ALL ON __WDB_SCHEMA__.placeregulargrid FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placeregulargrid TO wdb_admin;
 --GRANT INSERT ON __WDB_SCHEMA__.placeregulargrid TO wdb_write;

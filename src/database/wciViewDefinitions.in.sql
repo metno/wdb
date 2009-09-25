@@ -154,8 +154,16 @@ GRANT ALL ON __WCI_SCHEMA__.placename TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placename TO wdb_read, wdb_write;
 
 CREATE VIEW __WCI_SCHEMA__.placedefinition AS
-SELECT pdd.placeid, placegeometrytype, placegeometry, placeindeterminatecode, originalsrid, placename, placenamespaceid
-FROM ( SELECT  
+SELECT
+	pdd.placeid,
+	pdd.placegeometrytype,
+	pdd.placegeometry,
+	pdd.placeindeterminatecode,
+	pdd.originalsrid,
+	pn.placename,
+	pn.placenamespaceid
+FROM (
+	SELECT  
 		pd.placeid,
 		pd.placegeometrytype,
 		pd.placegeometry,
@@ -176,7 +184,9 @@ FROM ( SELECT
 	FROM 	
 		__WDB_SCHEMA__.placedefinition pd
 	WHERE
-		pd.placegeometrytype != 'Grid' ) pdd, __WDB_SCHEMA__.placename pn
+		pd.placegeometrytype != 'Grid' 
+	) pdd,
+	__WDB_SCHEMA__.placename pn
 WHERE
 	pdd.placeid = pn.placeid;
 		
