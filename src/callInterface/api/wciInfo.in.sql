@@ -60,10 +60,20 @@ CREATE TYPE wci.infolevelparameter AS
 	levelunitname		text
 );
 
+CREATE TYPE wci.infoparameterunit AS 
+(
+	unitname						text,
+	unittype						text,
+	siunitconversioncoefficient		float,
+	siunitconversionterm			float
+);
+
+
+
 -- dataprovider info by name
 -- returns wci.infodataprovider
 CREATE OR REPLACE FUNCTION 
-wci.info( dataprovider 		text[], 
+wci.info( dataprovider 		text, 
 		  returntype 		 wci.infodataprovider )	
 RETURNS SETOF wci.infodataprovider AS
 $BODY$
@@ -78,7 +88,7 @@ BEGIN
 						 INNER JOIN __WCI_SCHEMA__.getSessionData() s ON (dp.dataprovidernamespaceid = s.dataprovidernamespaceid)';
 						 --LEFT OUTER JOIN __WDB_SCHEMA__.dataprovidercomment dc ON (dp.dataproviderid = dc.dataproviderid)';
 	IF dataprovider IS NOT NULL THEN
-		infoQuery := infoQuery || ' WHERE dataprovidername LIKE ' || dataprovider;
+		infoQuery := infoQuery || ' WHERE dataprovidername LIKE $$' || dataprovider || '$$';
 	END IF;
 	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
 
@@ -120,7 +130,7 @@ BEGIN
 						s.placenamespaceid = ps.placenamespaceid';
 
 	IF location IS NOT NULL THEN
-		infoQuery := infoQuery || ' AND placename LIKE ' || location;
+		infoQuery := infoQuery || ' AND placename LIKE $$' || location || '$$';
 	END IF;
 	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
 
@@ -148,12 +158,12 @@ BEGIN
 		FOR entry IN 
 		SELECT
 			placename,
-			numberX AS numberX,
-			numberY AS numberY,
-			incrementX AS incrementX,
-			incrementY AS incrementY,
-			startY AS startX,
-			startX AS startY,
+			numberX,
+			numberY,
+			incrementX,
+			incrementY,
+			startX,
+			startY,
 			projDefinition
 		FROM 
 			__WCI_SCHEMA__.placespec 
@@ -164,12 +174,12 @@ BEGIN
 		FOR entry IN 
 		SELECT
 			placename,
-			numberX AS numberX,
-			numberY AS numberY,
-			incrementX AS incrementX,
-			incrementY AS incrementY,
-			startY AS startX,
-			startX AS startY,
+			numberX,
+			numberY,
+			incrementX,
+			incrementY,
+			startX,
+			startY,
 			projDefinition
 		FROM 
 			__WCI_SCHEMA__.placespec
@@ -228,3 +238,17 @@ $BODY$
 $BODY$
 LANGUAGE sql;
 
+
+CREATE OR REPLACE FUNCTION 
+wci.info(
+	parameterunit	text,
+	returnType		wci.infoparameterunit	
+)
+RETURNS SETOF wci.infoparameterunit AS
+$BODY$
+	SELECT *
+	FROM __WCI_SCHEMA__.unitwithconversion
+	WHERE $1 = unitname;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;

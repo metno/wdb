@@ -67,7 +67,7 @@ AdminOperations::performCreateUser( const string & username, bool admin, bool re
 {
 	try {
 		connection().perform(
-			CreateUser( to_lower_copy(username), admin, read, write )
+			CreateUser( wciUser_, to_lower_copy(username), admin, read, write )
 	 	);
 	}
 	catch ( std::exception & )

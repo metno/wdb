@@ -1,0 +1,267 @@
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-- 
+-- wdb - weather and water data storage
+--
+-- Copyright (C) 2009 met.no
+--
+--  Contact information:
+--  Norwegian Meteorological Institute
+--  Box 43 Blindern
+--  0313 OSLO
+--  NORWAY
+--  E-mail: wdb@met.no
+--
+--  This is free software; you can redistribute it and/or modify
+--  it under the terms of the GNU General Public License as published by
+--  the Free Software Foundation; either version 2 of the License, or
+--  (at your option) any later version.
+--
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--
+-- add New Data Provider
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addDataProvider
+(
+	dataProviderName_		text,
+	dataProviderType_ 		text,
+	domainDelivery_			text,
+	dataProviderComment_	text
+)
+RETURNS bigint AS
+$BODY$
+	SELECT __WCI_SCHEMA__.addDataProvider( $1, $2, $3, $4 ); 
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
+
+
+
+CREATE OR REPLACE FUNCTION
+wci.addwciuser
+(
+	newDataProviderName text
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	id bigint;
+BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	
+	SELECT dataproviderid INTO id 
+	FROM __WCI_SCHEMA__.dataprovider
+	WHERE dataprovidername = newDataProviderName AND
+		dataprovidertype = 'WCI User';
+
+	IF NOT FOUND THEN
+		id := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
+
+		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
+		(id, 'WCI User', 'Any', '1 day', 'now');
+	
+		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
+		(id, 'wci user', 'now');
+	
+		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
+		(id, 0, newDataProviderName, 'today', '2999-12-31', id, id);
+	ELSE
+		RAISE INFO 'User was already defined as a dataprovider';
+	END IF;
+
+	RETURN id;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+
+
+--
+-- add New Place Definition
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addPlacePoint
+(
+	placeName_ 		text,
+	placeGeometry_ 	geometry
+)
+RETURNS bigint AS
+$BODY$
+	SELECT __WCI_SCHEMA__.addPlacePoint( $1, $2 ); 
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
+
+
+
+--
+-- add New Place Definition
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addPlaceRegularGrid(
+	placeName_ 	text,
+	numX_ 		int,
+	numY_ 		int,
+	incX_ 		float,
+	incY_ 		float,
+	startX_ 	float,
+	startY_ 	float,
+	projection_ text
+)
+RETURNS bigint AS
+$BODY$
+	SELECT __WCI_SCHEMA__.addPlaceRegularGrid( $1, $2, $3, $4, $5, $6, $7, $8 );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
+
+
+--
+-- Add SRID
+--
+CREATE OR REPLACE FUNCTION
+wci.addSrid(
+	name_		text,
+	projection_	text
+)
+RETURNS int AS
+$BODY$
+DECLARE
+	srid_ int;
+BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Get SRID
+	SELECT max(srid) + 1 INTO srid_
+	FROM spatial_ref_sys;	
+	-- Insert Data
+	INSERT INTO spatial_ref_sys
+	VALUES ( srid_,
+			 name_,
+			 NULL,
+			 NULL,
+			 projection_ );			 
+	-- The two nulls represent the EPSG codes, which we do not attempt to 
+	-- derive at this point.
+	-- Return	 
+	RETURN srid_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+
+--
+-- add Value Parameter
+--
+CREATE OR REPLACE FUNCTION
+wci.addValueParameter
+(
+	parameterType_					text,
+	parameterUsageOrName_ 			text,
+	parameterUnitOrReference_		text,
+	parameterFunctionOrDescription_	text,
+	parameterQuantity_				text
+)
+RETURNS int AS
+$BODY$
+DECLARE	
+	parameterid_ int;
+BEGIN
+	-- Insert Base
+	INSERT INTO __WDB_SCHEMA__.valueparameter
+	VALUES ( parameterType_ );
+	-- Get inserted valueid
+	--TODO
+	-- Insert Value
+	IF ( parameterType_ = 'Measure Parameter'::text) THEN
+		-- Base Table
+		INSERT INTO __WDB_SCHEMA__.valuemeasureparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_,
+				 parameterQuantity_ );
+	ELSIF ( parameterType_ = 'Function Parameter'::text) THEN
+		-- Function Table
+		INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
+		VALUES ( parameterid_,
+				 parameterFunctionOrReference_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_,
+				 parameterQuantity_ );
+	ELSIF ( parameterType_ = 'Code Parameter'::text) THEN
+		-- Code Table
+		INSERT INTO __WDB_SCHEMA__.valuecodeparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_ );
+	ELSIF ( parameterType_ = 'Dimensionless Parameter'::text) THEN
+		-- Dimensionless Table
+		INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterFunctionOrDescription_ );
+	END IF;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+--
+-- add Level Parameter
+--
+CREATE OR REPLACE FUNCTION
+wci.addLevelParameter
+(
+	parameterType_					text,
+	parameterUsageOrName_ 			text,
+	parameterUnitOrReference_		text,
+	parameterFunctionOrDescription_	text,
+	parameterQuantity_				text
+)
+RETURNS void AS
+$BODY$
+DECLARE	
+	parameterid_ int;
+BEGIN
+	-- Get value parameter Id 
+	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_parameterid_seq');
+	-- Insert Base
+	INSERT INTO __WDB_SCHEMA__.valueparameter
+	VALUES ( parameterType_ );
+	-- Insert Value
+	IF ( parameterType_ = 'Measure Parameter'::text) THEN
+		-- Base Table
+		INSERT INTO __WDB_SCHEMA__.valuemeasureparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_,
+				 parameterQuantity_ );
+	ELSIF ( parameterType_ = 'Function Parameter'::text) THEN
+		-- Function Table
+		INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
+		VALUES ( parameterid_,
+				 parameterFunctionOrReference_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_,
+				 parameterQuantity_ );
+	ELSIF ( parameterType_ = 'Code Parameter'::text) THEN
+		-- Code Table
+		INSERT INTO __WDB_SCHEMA__.valuecodeparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterUnitOrReference_ );
+	ELSIF ( parameterType_ = 'Dimensionless Parameter'::text) THEN
+		-- Dimensionless Table
+		INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
+		VALUES ( parameterid_,
+				 parameterUsageOrName_,
+				 parameterFunctionOrDescription_ );
+	END IF;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;

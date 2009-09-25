@@ -90,6 +90,7 @@ class DataProviderTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testD5_02B_GroupNoData );
 	CPPUNIT_TEST( testD5_03A_SeveralGroups );
 	//CPPUNIT_TEST( testD5_03B_SeveralGroups );
+	//CPPUNIT_TEST( testD6_01_AddMeta );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -141,6 +142,9 @@ public:
 	void testD5_02B_GroupNoData();
 	void testD5_03A_SeveralGroups();
 	void testD5_03B_SeveralGroups();
+
+	// Add and Get Metadata
+	void testD6_01_AddMeta();
 
 private:
 	/// Statement to test wci.read with OIDs

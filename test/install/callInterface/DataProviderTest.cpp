@@ -424,6 +424,20 @@ void DataProviderTest::testD5_03B_SeveralGroups()
     CPPUNIT_ASSERT_EQUAL( count_val( r2, "dataprovidername", "test wci 0" ) + count_val( r2, "dataprovidername", "test wci 1" ) + count_val( r2, "dataprovidername", "test wci 2" ) + count_val( r2, "dataprovidername", "test wci 4" ) + count_val( r2, "dataprovidername", "test xml" ), size_t( r2.size() ) );
 }
 
+void DataProviderTest::testD6_01_AddMeta()
+{
+	// Add Meta
+    result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest Dataprovider\',"
+													  "\'Computer System\',"
+													  "\'Grid\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+    // Check for meta
+    result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Dataprovider\', NULL::wci.infodataprovider )" );
+    CPPUNIT_ASSERT( rC.size() > 0 );
+
+}
+
+
 // Support Functions
 //---------------------------------------------------------------------------
 

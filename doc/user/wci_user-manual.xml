@@ -1678,6 +1678,72 @@ FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
 			
 		</sect1>		
 		
+		<sect1 id="sec:wci.version">
+			<title>wci.version</title>
+			
+			<para>wci.version is a simple function that permits the user to retrieve version
+			information about the WDB system.</para>
+					
+			<sect2 id="sec:wci.version:prerequisites">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have access to group role wdb_read</para>
+					</listitem>
+				</itemizedlist>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.version:syntax">
+				<title>Syntax</title>
+				
+				<programlisting>
+wci.version ( )
+			</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.version:parameters">
+				<title>Parameters</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.version:expected_result">
+				<title>Expected Result</title>
+				
+				<para>The function returns a text with a string that describes the version of the 
+				WDB system in the PostgreSQL database.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.version:examples">
+				<title>Examples</title>
+				
+				<para>The following query returns the WDB version:</para>
+				
+			<programlisting>
+SELECT wci.version ( )
+		</programlisting>
+			
+			<para>The result is a single row of the text type containing the WDB version string.</para>
+			
+			</sect2>
+
+			<sect2 id="sec:wci.version:see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>wci.begin</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>		
+
 		<sect1>
 			<title>wci.write</title>
 			

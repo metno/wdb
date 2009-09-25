@@ -71,9 +71,10 @@ public:
 	 * @param 	read	should the user be given reading rights?
 	 * @param	write	should the user be given write rights?
 	 */
-	CreateUser( const std::string username, bool admin, bool read, bool write ) :
+	CreateUser( const std::string myuser, const std::string newuser, bool admin, bool read, bool write ) :
     	pqxx::transactor<>("CreateUser"),
-    	userName_(username),
+    	myUserName_(myuser),
+    	newUserName_(newuser),
     	admin_(admin),
     	read_(read),
     	write_(write)
@@ -96,25 +97,28 @@ public:
 	void createDataProvider(argument_type & T, const std::string & userName)
 	{
 		std::ostringstream query;
-		query << "SELECT wci.createWciDataProvider('" << userName << "')";
+		query << "SELECT wci.addwciuser('" << userName << "')";
 		pqxx::result dataProviderId = T.exec(query.str());
 	}
 
 	void operator()(argument_type &T)
 	{
-		if ( ! query::roleExists(T, userName_) )
+		std::ostringstream query;
+		query << "SELECT wci.begin( '" << myUserName_ << "' );";
+		T.exec( query.str() );
+		if ( ! query::roleExists(T, newUserName_) )
 		{
-			createRole(T, userName_, admin_, read_, write_);
-			if ( ! query::roleExists(T, userName_) )
-				throw std::runtime_error("Error when trying to create role " + userName_);
+			createRole(T, newUserName_, admin_, read_, write_);
+			if ( ! query::roleExists(T, newUserName_) )
+				throw std::runtime_error("Error when trying to create role " + newUserName_);
 		}
 		else
-			std::clog << "Role <" << userName_ << "> already existed" << std::endl;
+			std::clog << "Role <" << newUserName_ << "> already existed" << std::endl;
 
-		ChangeUser changeUser(userName_, admin_, read_, write_);
+		ChangeUser changeUser(newUserName_, admin_, read_, write_);
 		changeUser(T);
 
-		createDataProvider(T, userName_);
+		createDataProvider(T, newUserName_);
 	}
 
 
@@ -146,7 +150,9 @@ public:
 
 private:
     /// User Name
-    std::string userName_;
+    std::string newUserName_;
+    /// User Name
+    std::string myUserName_;
     /// Admin Options
     bool admin_;
     /// Read Options

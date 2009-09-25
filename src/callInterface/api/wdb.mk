@@ -8,16 +8,11 @@ WCIAPI_SOURCES = 		src/callInterface/api/wciWrite.in.sql \
 						src/callInterface/api/wciFetch.in.sql \
 						src/callInterface/api/wciInfo.in.sql \
 						src/callInterface/api/wciBrowse.in.sql \
+						src/callInterface/api/wciAddMeta.in.sql \
+						src/callInterface/api/wciGetMeta.in.sql \
 						src/callInterface/api/wciBegin.in.sql \
 						src/callInterface/api/wciEnd.in.sql \
-						src/callInterface/api/dataprovider.in.sql \
-						src/callInterface/api/placeDefinition.in.sql \
-						src/callInterface/api/placegeo.in.sql \
-						src/callInterface/api/regulargrid.in.sql \
-						src/callInterface/api/parameterunit.in.sql \
-						src/callInterface/api/listmetadata.in.sql \
-						src/callInterface/api/wciVersion.in.sql \
-						src/callInterface/api/loadPlaceDefinition.in.sql
+						src/callInterface/api/wciVersion.in.sql
 
 wciapidir=				$(wcidir)/api
 

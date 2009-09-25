@@ -25,7 +25,8 @@ libwciCoreNoPostgres_la_SOURCES +=\
 						src/callInterface/core/projTransform.h \
 						src/callInterface/core/projTransform.cpp
 						
-WCICORE_SOURCES =		src/callInterface/core/wciExtractGridData.in.sql \
+WCICORE_SOURCES =		src/callInterface/core/addMeta.in.sql \
+						src/callInterface/core/wciExtractGridData.in.sql \
 						src/callInterface/core/wciSession.in.sql \
 						src/callInterface/core/readQuery.in.sql \
 						src/callInterface/core/readWhereClause.in.sql \

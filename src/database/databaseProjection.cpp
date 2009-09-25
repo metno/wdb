@@ -12,8 +12,8 @@ extern "C"
 PG_FUNCTION_INFO_V1(createGeometryText);
 Datum createGeometryText(PG_FUNCTION_ARGS)
 {
-	const unsigned iNum = PG_GETARG_UINT32(0);
-	const unsigned jNum = PG_GETARG_UINT32(1);
+	const unsigned numX = PG_GETARG_UINT32(0);
+	const unsigned numY = PG_GETARG_UINT32(1);
 	const double incrementX = PG_GETARG_FLOAT8(2);
 	const double incrementY = PG_GETARG_FLOAT8(3);
 	const double startX = PG_GETARG_FLOAT8(4);
@@ -25,7 +25,7 @@ Datum createGeometryText(PG_FUNCTION_ARGS)
 	std::string geoText;
 	try
 	{
-		GridGeometry geo(projDefinition, GridGeometry::LeftLowerHorizontal, iNum, jNum, incrementX, incrementY, startX, startY);
+		GridGeometry geo(projDefinition, GridGeometry::LeftLowerHorizontal, numX, numY, incrementX, incrementY, startX, startY);
 		geoText = geo.wktRepresentation();
 	}
 	catch ( std::exception & e )

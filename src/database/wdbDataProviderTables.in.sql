@@ -56,8 +56,8 @@ CREATE TABLE __WDB_SCHEMA__.dataprovidername (
 	dataproviderid 					bigint NOT NULL,
 	dataprovidernamespaceid 		integer NOT NULL,
 	dataprovidername 				character varying(255) NOT NULL,
-    dataprovidernamevalidfrom 		date NOT NULL,
-    dataprovidernamevalidto 		date NOT NULL,
+    dataprovidernamevalidfrom 		TIMESTAMP WITH TIME ZONE NOT NULL,
+    dataprovidernamevalidto 		TIMESTAMP WITH TIME ZONE NOT NULL,
 	dataprovidernameleftset			bigint NOT NULL,
 	dataprovidernamerightset		bigint NOT NULL
 );
