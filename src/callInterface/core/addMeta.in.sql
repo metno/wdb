@@ -32,8 +32,8 @@ __WCI_SCHEMA__.addDataProvider
 RETURNS bigint AS
 $BODY$
 DECLARE
-	dpid_	bigint;
-	namespace_	integer;
+	dpid_		bigint;
+	namespace_	int;
 BEGIN
 	-- Add new dataprovider
 	SELECT dataprovidernamespaceid INTO namespace_
@@ -45,7 +45,7 @@ BEGIN
 	-- Add dataprovider
 	IF NOT FOUND THEN
 		dpid_ := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
-
+		
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
 		( dpid_, dataProviderType_, domainDelivery_, '1 day', 'now' );
 	

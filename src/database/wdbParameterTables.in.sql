@@ -127,6 +127,7 @@ CREATE TABLE __WDB_SCHEMA__.valueparameter (
 
 ALTER TABLE ONLY __WDB_SCHEMA__.valueparameter
     ADD CONSTRAINT valueparameter_pkey PRIMARY KEY (valueparameterid);
+ALTER SEQUENCE __WDB_SCHEMA__.valueparameter_valueparameterid_seq RESTART WITH 100000;
 
 REVOKE ALL ON __WDB_SCHEMA__.valueparameter FROM public;
 GRANT ALL ON __WDB_SCHEMA__.valueparameter TO wdb_admin;
@@ -247,6 +248,7 @@ CREATE TABLE __WDB_SCHEMA__.levelparameter (
 
 ALTER TABLE ONLY __WDB_SCHEMA__.levelparameter
     ADD CONSTRAINT levelparameter_pkey PRIMARY KEY (levelparameterid);
+ALTER SEQUENCE __WDB_SCHEMA__.levelparameter_levelparameterid_seq RESTART WITH 100000;
 
 REVOKE ALL ON __WDB_SCHEMA__.levelparameter FROM public;
 GRANT ALL ON __WDB_SCHEMA__.levelparameter TO wdb_admin;

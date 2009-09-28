@@ -37,7 +37,6 @@ SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;
 
 
-
 CREATE OR REPLACE FUNCTION
 wci.addwciuser
 (
@@ -78,7 +77,6 @@ SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
 
 
-
 --
 -- add New Place Definition
 -- 
@@ -94,7 +92,6 @@ $BODY$
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;
-
 
 
 --
@@ -171,11 +168,13 @@ $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Get ID
+	parameterid_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq'::regclass);
 	-- Insert Base
 	INSERT INTO __WDB_SCHEMA__.valueparameter
-	VALUES ( parameterType_ );
-	-- Get inserted valueid
-	--TODO
+	VALUES ( parameterid_, parameterType_ );
 	-- Insert Value
 	IF ( parameterType_ = 'Measure Parameter'::text) THEN
 		-- Base Table
@@ -205,10 +204,50 @@ BEGIN
 				 parameterUsageOrName_,
 				 parameterFunctionOrDescription_ );
 	END IF;
+	RETURN parameterid_;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
+
+
+--
+-- add Value Parameter
+--
+CREATE OR REPLACE FUNCTION
+wci.addValueParameter
+(
+	canonicalName_					text,
+	valueParameterName_ 			text
+)
+RETURNS int AS
+$BODY$
+DECLARE	
+	namespace_ 		int;
+	parameterid_ 	int;
+BEGIN
+	-- Get namespace
+	SELECT parameternamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Get parameterid
+	SELECT valueparameterid INTO parameterid_
+	FROM __WCI_SCHEMA__.valueparameter
+	WHERE valueparametername = lower(canonicalName_) AND
+		  parameternamespaceid = namespace_;
+	-- Delete old name if it exists
+	DELETE FROM __WDB_SCHEMA__.valueparametername
+	WHERE parameternamespaceid = namespace_ AND
+		  valueparameterid = parameterid_;
+	-- Insert new name
+	INSERT INTO __WDB_SCHEMA__.valueparametername
+	VALUES ( parameterid_,
+			 namespace_,
+			 valueParameterName_ );
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
 
 --
 -- add Level Parameter
@@ -218,50 +257,132 @@ wci.addLevelParameter
 (
 	parameterType_					text,
 	parameterUsageOrName_ 			text,
-	parameterUnitOrReference_		text,
-	parameterFunctionOrDescription_	text,
-	parameterQuantity_				text
+	parameterUnitOrReference_		text
 )
-RETURNS void AS
+RETURNS int AS
 $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
 	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_parameterid_seq');
+	parameterId_ := nextval('__WDB_SCHEMA__.levelparameter_levelparameterid_seq');
 	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.valueparameter
-	VALUES ( parameterType_ );
+	INSERT INTO __WDB_SCHEMA__.levelparameter
+	VALUES ( parameterid_, parameterType_ );
 	-- Insert Value
 	IF ( parameterType_ = 'Measure Parameter'::text) THEN
 		-- Base Table
-		INSERT INTO __WDB_SCHEMA__.valuemeasureparameter
+		INSERT INTO __WDB_SCHEMA__.levelmeasureparameter
 		VALUES ( parameterid_,
-				 parameterUsageOrName_,
 				 parameterUnitOrReference_,
-				 parameterQuantity_ );
-	ELSIF ( parameterType_ = 'Function Parameter'::text) THEN
-		-- Function Table
-		INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
-		VALUES ( parameterid_,
-				 parameterFunctionOrReference_,
-				 parameterUsageOrName_,
-				 parameterUnitOrReference_,
-				 parameterQuantity_ );
+				 parameterUsageOrName_ );
 	ELSIF ( parameterType_ = 'Code Parameter'::text) THEN
 		-- Code Table
-		INSERT INTO __WDB_SCHEMA__.valuecodeparameter
+		INSERT INTO __WDB_SCHEMA__.levelcodeparameter
 		VALUES ( parameterid_,
 				 parameterUsageOrName_,
 				 parameterUnitOrReference_ );
-	ELSIF ( parameterType_ = 'Dimensionless Parameter'::text) THEN
-		-- Dimensionless Table
-		INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
-		VALUES ( parameterid_,
-				 parameterUsageOrName_,
-				 parameterFunctionOrDescription_ );
 	END IF;
+	RETURN parameterid_;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
+
+
+--
+-- Measure
+--
+CREATE OR REPLACE FUNCTION
+wci.addMeasure(
+    measure						varchar(80),
+    distancepower				int,
+    masspower					int,
+    timepower					int,
+    luminositypower				int,
+    electriccurrentpower		int,
+    temperaturepower			int,
+    substanceamountpower		int,
+	anglepower					int
+)
+RETURNS void AS
+$BODY$
+	INSERT INTO __WDB_SCHEMA__.measure
+	VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9 );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
+
+
+--
+-- Unit
+--
+CREATE OR REPLACE FUNCTION
+wci.addUnit(
+    unitname_						varchar(80),
+    unittype_						varchar(80),
+    measure_						varchar(80),
+	description_					varchar(255),
+    siunitconversioncoefficient_	float,
+    siunitconversionterm_			float
+)
+RETURNS void AS
+$BODY$
+DECLARE	
+	namespace_ 		int;
+	parameterid_ 	int;
+BEGIN
+	-- Insert into units
+	INSERT INTO __WDB_SCHEMA__.unit 
+	VALUES ( unitname_, unittype_, measure_, description );
+	-- If not SI unit
+	IF ( unittype_::text <> 'SI Unit'::text ) THEN
+		INSERT INTO __WDB_SCHEMA__.siunitconversion
+		VALUES( unitname_, siunitconversioncoefficient_, siunitconversionterm_ );	
+	END IF;	
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION
+wci.addParameterFunctionType(
+    parameterfunctiontype 			varchar(80),
+    parameterfunctiondescription 	varchar(255)
+)
+RETURNS void AS
+$BODY$
+	INSERT INTO __WDB_SCHEMA__.parameterfunctiontype
+	VALUES ( $1, $2 );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION
+wci.addValueParameterUsage(
+    valueparameterusage 	varchar(80),
+    description 			varchar(255)
+)
+RETURNS void AS
+$BODY$
+	INSERT INTO __WDB_SCHEMA__.valueparameterusage
+	VALUES ( $1, $2 );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION
+wci.addLevelParameterUsage(
+    levelparameterusage 	varchar(80),
+    description 			varchar(255)
+)
+RETURNS void AS
+$BODY$
+	INSERT INTO __WDB_SCHEMA__.levelparameterusage
+	VALUES ( $1, $2 );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT VOLATILE;
