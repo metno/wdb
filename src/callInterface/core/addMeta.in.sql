@@ -104,7 +104,6 @@ BEGIN
 		INSERT INTO __WDB_SCHEMA__.placename VALUES
 		( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
 	END IF;
-	RETURN placeId_;
 	-- Default Name
 	namespace_ := 0;
 	SELECT astext( placeGeometry_ ) INTO newName_;
