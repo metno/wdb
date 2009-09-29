@@ -72,7 +72,11 @@ void readFile(FileId id, char * out, int readSize);
  */
 float readFloatFromFile(FileId id, int position);
 
-
+/**
+ * Put the given file in a cache, so that subsequent reads becomes faster.
+ * There is no need to uncache files later, as this happens automatically.
+ */
+void cacheFile(FileId id);
 
 
 

@@ -169,4 +169,21 @@ Datum read_float_from_file(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT4(ret);
 }
 
+PG_FUNCTION_INFO_V1(cache_file);
+/**
+ * Put the given file in a cache, so that subsequent reads becomes faster.
+ * There is no need to uncache files later, as this happens automatically.
+ */
+Datum cache_file(PG_FUNCTION_ARGS)
+{
+	int64 id = PG_GETARG_INT64(0);
+
+	// WARNING:
+	// Do not use any postgres functionality within this macro
+	// It will cause a resource leak.
+	HANDLE_EXCEPTIONS(cacheFile(id));
+
+	PG_RETURN_NULL();
+}
+
 }

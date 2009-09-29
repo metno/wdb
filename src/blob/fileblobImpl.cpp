@@ -167,6 +167,21 @@ void readFile(FileId id, std::vector<char> & out)
 	//	std::back_inserter(out));
 }
 
+void cacheFile(FileId id)
+{
+	initializeFileStorage();
+
+	// We simply cache things by reading through the file, while discarding
+	// the results.
+	// This causes the OS to cache the file.
+
+	lo::ibstream_p f = lo::getBStream(id);
+	char c;
+	while ( f->get(c) )
+		; // nothing
+}
+
+
 namespace internal_
 {
 struct end_of_file : public std::runtime_error
