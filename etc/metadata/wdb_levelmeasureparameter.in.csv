@@ -5,4 +5,5 @@ ParameterId|Level Unit|Level Parameter
 3|m|height above ground
 5|m|depth below sea level
 7|Pa|sea surface
+12|m|depth below land surface
 113|K|isentropic (theta) level
