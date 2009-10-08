@@ -38,6 +38,7 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 						| sed s:__WDB_LIB__:wdb-$(VERSION).so:g \
 						| sed s:__WCI_SCHEMA__:wci_$(DATABASE_SCHEMA):g \
 						| sed s:__WCI_LIB__:wdb-$(VERSION).so:g \
+						| sed s:__WDB_SRID__:$(DEFAULT_SRID):g \
 						| sed s:__OLD_VERSION__:$(OLD_MAJOR_VERSION).$(OLD_MINOR_VERSION).$(OLD_MICRO_VERSION):g \
 						| sed s:__OLD_SCHEMA__:wdb_$(OLD_MAJOR_VERSION)_$(OLD_MINOR_VERSION)_$(OLD_MICRO_VERSION):g \
 			 			> $@

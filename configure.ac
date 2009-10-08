@@ -154,7 +154,7 @@ AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 WDB_DOCBOOK_CHECK
 
 # Set Default Projection
-AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +datum=WGS84 +no_defs"],[The default projection used in the database])
+AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +ellps=WGS84 +no_defs"],[The default projection used in the database])
 
 # Set Database Install
 WDB_DATABASE_NAME
