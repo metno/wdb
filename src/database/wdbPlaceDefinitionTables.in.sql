@@ -119,7 +119,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.placename
     ADD CONSTRAINT placename_pkey PRIMARY KEY (placeid, placenamespaceid);
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placename
-	ADD CONSTRAINT placename_unique UNIQUE (placename);
+	ADD CONSTRAINT placename_unique UNIQUE (placename, placenamespaceid);
 
 ALTER TABLE __WDB_SCHEMA__.placename
 	ADD FOREIGN KEY (placeid)
