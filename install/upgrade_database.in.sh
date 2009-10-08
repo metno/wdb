@@ -230,7 +230,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbValueTables.sql
 \i $WDB_DATAMODEL_PATH/wdbConstraintDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbMaterializedView.sql
-\i $WDB_DATAMODEL_PATH/wdbViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql

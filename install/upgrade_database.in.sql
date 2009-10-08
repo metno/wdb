@@ -129,3 +129,6 @@ SELECT __WCI_SCHEMA__.setupSession('wdb', 0, 0, 0 );
 SELECT __WCI_SCHEMA__.migratedata( );
 
 DROP FUNCTION __WCI_SCHEMA__.migratedata( );
+
+-- Migrate fileblob
+INSERT INTO __WDB_SCHEMA__.fileblob SELECT * FROM __OLD_SCHEMA__.fileblob;
