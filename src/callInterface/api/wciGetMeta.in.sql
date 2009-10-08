@@ -61,14 +61,15 @@ wci.getPlaceName(
 RETURNS text AS
 $BODY$
 	SELECT placename
-	FROM __WCI_SCHEMA__.regulargrid, __WCI_SCHEMA__.getSessionData()
+	FROM __WCI_SCHEMA__.placeregulargrid_mv grd, __WCI_SCHEMA__.getSessionData() s
 	WHERE numberX = $1
 	AND   numberY = $2
 	AND   round(incrementX::numeric, 3) = round($3::numeric, 3)
 	AND   round(incrementY::numeric, 3) = round($4::numeric, 3)
 	AND	  round(startX::numeric, 3) = round($5::numeric, 3)
 	AND   round(startY::numeric, 3) = round($6::numeric, 3)
-	AND   projdefinition = $7;
+	AND   projdefinition = $7
+	AND   grd.placenamespaceid = s.placenamespaceid;
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;

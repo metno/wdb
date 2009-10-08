@@ -424,19 +424,59 @@ void DataProviderTest::testD5_03B_SeveralGroups()
     CPPUNIT_ASSERT_EQUAL( count_val( r2, "dataprovidername", "test wci 0" ) + count_val( r2, "dataprovidername", "test wci 1" ) + count_val( r2, "dataprovidername", "test wci 2" ) + count_val( r2, "dataprovidername", "test wci 4" ) + count_val( r2, "dataprovidername", "test xml" ), size_t( r2.size() ) );
 }
 
-void DataProviderTest::testD6_01_AddMeta()
+void DataProviderTest::testD6_01_AddDataProvider()
 {
 	// Add Meta
-    result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest Dataprovider\',"
+    result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-01\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Dataprovider\', NULL::wci.infodataprovider )" );
+    result rC = t->exec( "SELECT * FROM wci.info( \'installTest 06-01\', NULL::wci.infodataprovider )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
 
 }
 
+void DataProviderTest::testD6_02_AddDataProviderName()
+{
+	// Set namespace to 1
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+	// Add Meta
+    result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-02\',"
+													  "\'Computer System\',"
+													  "\'Grid\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+    // Check for meta
+    result rC = t->exec( "SELECT * FROM wci.info( \'Installtest 06-02\', NULL::wci.infodataprovider )" );
+    CPPUNIT_ASSERT( rC.size() > 0 );
+	// Set namespace to 1
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 0, 0 )" );
+    // Set Name
+    result rN = t->exec( "SELECT wci.addDataProviderName(\'InstallTest 06-02\',\'InstallationsTest 06-02\')" );
+    // Check for meta
+    result rC1 = t->exec( "SELECT * FROM wci.info( \'Installtest 06-02\', NULL::wci.infodataprovider )" );
+    CPPUNIT_ASSERT( rC1.size() == 0 );
+    result rC2 = t->exec( "SELECT * FROM wci.info( \'Installationstest 06-02\', NULL::wci.infodataprovider )" );
+    CPPUNIT_ASSERT( rC2.size() > 0 );
+    // Return
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+}
+
+void DataProviderTest::testD6_03_AddDataProviderNameFail()
+{
+	// Add Meta
+    result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-03\',"
+													  "\'Computer System\',"
+													  "\'Grid\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+    // Set Name
+    result rN = t->exec( "SELECT wci.addDataProviderName(\'InstallTest 06-03\',\'InstallationsTest 06-03\')" );
+    // Check for meta
+    result rC1 = t->exec( "SELECT * FROM wci.info( \'Installtest 06-03\', NULL::wci.infodataprovider )" );
+    CPPUNIT_ASSERT( rC1.size() > 0 );
+    result rC2 = t->exec( "SELECT * FROM wci.info( \'Installationstest 06-03\', NULL::wci.infodataprovider )" );
+    CPPUNIT_ASSERT( rC2.size() == 0 );
+}
 
 // Support Functions
 //---------------------------------------------------------------------------

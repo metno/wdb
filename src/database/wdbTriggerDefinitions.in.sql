@@ -157,6 +157,10 @@ CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv1
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv2
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placeregulargrid
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
+	
+CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv3
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
@@ -187,7 +191,7 @@ CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv4
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateregulargrid_mv() RETURNS "trigger"
 	AS $$
 BEGIN
-	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.regulargrid');
+	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placeregulargrid_mv');
 	RETURN NULL;
 END;
 $$ LANGUAGE 'plpgsql';

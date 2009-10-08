@@ -37,6 +37,52 @@ SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;
 
 
+--
+-- add new data provider name in namespace
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addDataProviderName
+(
+	canonicalName_		text,
+	dataProviderName_ 	text
+)
+RETURNS void AS
+$BODY$
+DECLARE	
+	namespace_ 		int;
+	dataProviderId_ int;
+BEGIN
+	-- Get namespace
+	SELECT dataprovidernamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	IF ( namespace_ = 0 ) THEN
+		RETURN;
+	END IF;	
+	-- Get parameterid
+	SELECT dataproviderid INTO dataProviderId_
+	FROM __WCI_SCHEMA__.dataprovider
+	WHERE dataprovidername = lower(canonicalName_) AND
+		  dataprovidernamespaceid = 0;
+	-- Delete old name if any exist
+	DELETE FROM __WDB_SCHEMA__.dataprovidername
+	WHERE dataprovidernamespaceid = namespace_ AND
+		  dataproviderid = dataProviderId_;
+	-- Insert new name
+	INSERT INTO __WDB_SCHEMA__.dataprovidername
+	VALUES ( dataProviderId_,
+			 namespace_,
+			 lower(dataProviderName_),
+			  'today'::TIMESTAMP WITH TIME ZONE, 
+			  'infinity'::TIMESTAMP WITH TIME ZONE, 
+			  dataproviderid_, 
+			  dataproviderid_ );
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+
+
 CREATE OR REPLACE FUNCTION
 wci.addwciuser
 (
@@ -45,27 +91,26 @@ wci.addwciuser
 RETURNS bigint AS
 $BODY$
 DECLARE
-	id bigint;
+	namespace_	int;
+	id 			bigint;
 BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
-	
+	-- Check for existing name
 	SELECT dataproviderid INTO id 
 	FROM __WCI_SCHEMA__.dataprovider
 	WHERE dataprovidername = newDataProviderName AND
 		dataprovidertype = 'WCI User';
-
 	IF NOT FOUND THEN
 		id := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
-
+		namespace_ = 0;
+		-- Insert into tables
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
 		(id, 'WCI User', 'Any', '1 day', 'now');
-	
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		(id, 'wci user', 'now');
-	
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-		(id, 0, newDataProviderName, 'today', '2999-12-31', id, id);
+		(id, namespace_, newDataProviderName, 'today', '2999-12-31', id, id);
 	ELSE
 		RAISE INFO 'User was already defined as a dataprovider';
 	END IF;
@@ -115,7 +160,6 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;
 
-
 --
 -- Add SRID
 --
@@ -149,6 +193,52 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
+
+--
+-- add new data provider name in namespace
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addPlaceName
+(
+	canonicalName_	text,
+	placeName_ 		text
+)
+RETURNS void AS
+$BODY$
+DECLARE	
+	namespace_ 		int;
+	placeId_ 		int;
+BEGIN
+	-- Get namespace
+	SELECT placenamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	IF ( namespace_ = 0 ) THEN
+		RAISE EXCEPTION 'Cannot set the WDB Canonical PlaceName';
+	END IF;	
+	-- Get placeid
+	SELECT placeid INTO placeId_
+	FROM __WCI_SCHEMA__.placedefinition_mv
+	WHERE placename = lower(canonicalName_) AND
+		  placenamespaceid = 0;
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Could not identify any place definition with the specified canonical PlaceName';		
+	END IF;
+	-- Delete old name if any exist
+	DELETE FROM __WDB_SCHEMA__.placename
+	WHERE placenamespaceid = namespace_ AND
+		  placeid = placeId_;
+	-- Insert new name
+	INSERT INTO __WDB_SCHEMA__.placename
+	VALUES ( placeId_,
+			 namespace_,
+			 lower(placeName_),
+			  'today'::TIMESTAMP WITH TIME ZONE, 
+			  'infinity'::TIMESTAMP WITH TIME ZONE );
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
 
 
 --

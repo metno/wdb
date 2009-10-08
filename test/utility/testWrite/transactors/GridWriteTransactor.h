@@ -96,14 +96,14 @@ public:
 
 		// WCI Begin
 		std::ostringstream beginQuery;
-		beginQuery << "SELECT wci.begin( 'writetest' );";
+		beginQuery << "SELECT wci.begin( 'writetest', 0, 999, 0 );";
 		T.exec( beginQuery.str() );
 
 		// Get Grid Dimensions
 		std::ostringstream gridQuery;
 		gridQuery << "SELECT * FROM test.placeregulargrid WHERE placename = "
 				  << "'" << conf_.dataDefinitions().placeName << "'"
-				  << " AND placenamespaceid = 0";
+				  << " AND placenamespaceid = 999";
 		pqxx::result R = T.exec( gridQuery.str() );
 		if (R.size() == 0)
 			throw std::runtime_error("Unable to find place " + conf_.dataDefinitions().placeName);

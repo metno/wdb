@@ -58,9 +58,12 @@ DECLARE
 	ret bigint;
 BEGIN
 	SELECT placeid INTO ret
-	FROM __WCI_SCHEMA__.placename
+	FROM
+		__WCI_SCHEMA__.placedefinition_mv p,
+		__WCI_SCHEMA__.getSessionData() s
 	WHERE
-		placename = lower(name_);
+		p.placenamespaceid = s.placenamespaceid AND
+		p.placename = lower(name_);
 
 	IF NOT FOUND THEN
 		RAISE EXCEPTION 'Failed to identify placename in namespace: %', name_;
@@ -71,13 +74,6 @@ END;
 $BODY$
 LANGUAGE 'plpgsql';
 
-
-
-CREATE VIEW __WCI_SCHEMA__.place AS
-SELECT placename, placegeometry AS placegeo
-FROM __WDB_SCHEMA__.placedefinition def, __WDB_SCHEMA__.placename nam
-WHERE def.placeid = nam.placeid;
-GRANT SELECT ON __WCI_SCHEMA__.place TO wdb_read;
 
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getGeometry(
@@ -93,13 +89,15 @@ BEGIN
 	END IF;
 
 	SELECT 
-		placegeo 
+		placegeometry
 	INTO 
 		ret 
 	FROM 
-		__WCI_SCHEMA__.place 
+		__WCI_SCHEMA__.placedefinition_mv p,
+		__WCI_SCHEMA__.getSessionData() s
 	WHERE 
-		placename = lower(location.location);
+		p.placenamespaceid = s.placenamespaceid AND
+		p.placename = lower(location.location);
 
 	-- This should not be required. 
 	--IF ret IS NULL THEN

@@ -135,7 +135,7 @@ string Location::query( int returnType ) const
 		if ( ! isGeometry() )
 		{
 			// Get the geometry of the placeId
-			std::string pquery = "SELECT astext(placegeo) FROM " + std::string(WCI_SCHEMA) + ".place WHERE placename = '" + location() + "'";
+			std::string pquery = "SELECT astext(placegeometry) FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "'";
 			myGeometry = getPlaceQuery_( pquery.c_str(), 5000 );
 		}
 		else
@@ -164,7 +164,7 @@ string Location::query( int returnType ) const
 		if ( ! isGeometry() )
 		{
 			// Get the geometry of the placeId
-			std::string pquery = "SELECT astext(placegeo) FROM " + std::string(WCI_SCHEMA) + ".place WHERE placename = '" + location() + "'";
+			std::string pquery = "SELECT astext(placegeometry) FROM " + std::string(WCI_SCHEMA) + ".placedefinition p," + std::string(WCI_SCHEMA) + ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "'";
 			myGeometry = getPlaceQuery_( pquery.c_str(), 5000 );
 		}
 		else

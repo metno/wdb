@@ -88,7 +88,7 @@ BEGIN
 						 INNER JOIN __WCI_SCHEMA__.getSessionData() s ON (dp.dataprovidernamespaceid = s.dataprovidernamespaceid)';
 						 --LEFT OUTER JOIN __WDB_SCHEMA__.dataprovidercomment dc ON (dp.dataproviderid = dc.dataproviderid)';
 	IF dataprovider IS NOT NULL THEN
-		infoQuery := infoQuery || ' WHERE dataprovidername LIKE $$' || dataprovider || '$$';
+		infoQuery := infoQuery || ' WHERE dataprovidername LIKE lower($$' || dataprovider || '$$)';
 	END IF;
 	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
 
@@ -106,10 +106,6 @@ LANGUAGE 'plpgsql' STABLE;
 
 -- place info by name
 -- returns wci.infoplace
---   PlaceName
---   min ReferenceTime
---   max ReferenceTime
---   count 
 CREATE OR REPLACE FUNCTION 
 wci.info( location 			text,
 		  returntype 		wci.infoplace
@@ -121,16 +117,20 @@ DECLARE
 	entry 			wci.infoplace;
 BEGIN
 	-- Create Query to Run
-	infoQuery := 'SELECT placename, astext(placegeometry), 
-						 placeindeterminatetype, placegeometrytype,
+	infoQuery := 'SELECT placename, 
+						 astext(placegeometry), 
+						 placeindeterminatetype, 
+						 placegeometrytype,
 						 placestoretime 
-				  FROM __WCI_SCHEMA__.placespec ps,
+				  FROM __WCI_SCHEMA__.placedefinition_mv ps,
+					   __WCI_SCHEMA__.placeindeterminatetype pi,
 					   __WCI_SCHEMA__.getSessionData() s 
 				  WHERE  
-						s.placenamespaceid = ps.placenamespaceid';
+						s.placenamespaceid = ps.placenamespaceid
+						AND pi.placeindeterminatecode = ps.placeindeterminatecode';
 
 	IF location IS NOT NULL THEN
-		infoQuery := infoQuery || ' AND placename LIKE $$' || location || '$$';
+		infoQuery := infoQuery || ' AND placename LIKE lower($$' || location || '$$)';
 	END IF;
 	RAISE DEBUG 'WCI.INFO.Query: %', infoQuery;
 
@@ -184,7 +184,7 @@ BEGIN
 		FROM 
 			__WCI_SCHEMA__.placespec
 		WHERE
-			placename_=placename
+			placename_=lower(placename)
 		LOOP
 			RETURN NEXT entry;
 		END LOOP;
@@ -211,7 +211,7 @@ $BODY$
 		__WCI_SCHEMA__.valueparameter_mv vp, __WCI_SCHEMA__.getSessionData() s
 	WHERE 
 		vp.parameternamespaceid = s.parameternamespaceid AND
-		($1 IS NULL OR valueparametername LIKE $1);
+		($1 IS NULL OR valueparametername LIKE lower($1));
 $BODY$
 LANGUAGE sql;
 
@@ -234,7 +234,7 @@ $BODY$
 		__WCI_SCHEMA__.levelparameter_mv lp, __WCI_SCHEMA__.getSessionData() s
 	WHERE 
 		lp.parameternamespaceid = s.parameternamespaceid AND
-		($1 IS NULL OR levelparametername LIKE $1);
+		($1 IS NULL OR levelparametername LIKE lower($1));
 $BODY$
 LANGUAGE sql;
 

@@ -132,17 +132,17 @@ void wciBeginTest::testB3_02_NamespaceWithoutData()
 
 void wciBeginTest::testB3_03_NamespacePartialMatch()
 {
-	t->exec( statement_( "wcitest",999,0,0 ) );
+	t->exec( statement_( "wcitest",998,0,0 ) );
 	result r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 	CPPUNIT_ASSERT( r.empty() );
 	t->exec( "SELECT wci.end()" );
 
-	t->exec( statement_( "wcitest",0,999,0 ) );
+	t->exec( statement_( "wcitest",0,998,0 ) );
 	r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 	CPPUNIT_ASSERT( r.empty() );
 	t->exec( "SELECT wci.end()" );
 
-	t->exec( statement_( "wcitest",0,0,999 ) );
+	t->exec( statement_( "wcitest",0,0,998 ) );
 	r = t->exec( "SELECT * FROM wci.read( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 	CPPUNIT_ASSERT( r.empty() );
 	t->exec( "SELECT wci.end()" );

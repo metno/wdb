@@ -1146,6 +1146,34 @@ void PlaceGeometryTest::testG31_03_ReturnNoRows()
     CPPUNIT_ASSERT( r.empty() );
 }
 
+void PlaceGeometryTest::testG40_01_AddPlacePoint()
+{
+	ostringstream q;
+	q << "SELECT wci.addPlacePoint( \'InstallTest Point\',"
+	  << "geomfromtext(\'POINT( 15 65 )\', "
+	  << DEFAULT_SRID
+	  << " ) )";
+	// Add Meta
+    result rId = t->exec( q.str() );
+    CPPUNIT_ASSERT( rId.size() > 0 );
+    // Check for meta
+    result rC = t->exec( "SELECT * FROM wci.info( \'installTest poINt\', NULL::wci.infoplace )" );
+    CPPUNIT_ASSERT( rC.size() > 0 );
+}
+
+void PlaceGeometryTest::testG40_02_AddPlaceRegularGrid()
+{
+	ostringstream q;
+	q << "SELECT wci.addPlaceRegularGrid( \'InstallTest Grid\',"
+	  << "2, 2, 0.2, 0.2, 0.5, 0.5, \'+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs\' )";
+	// Add Meta
+    result rId = t->exec( q.str() );
+    CPPUNIT_ASSERT( rId.size() > 0 );
+    // Check for meta
+    result rC = t->exec( "SELECT * FROM wci.info( \'installTest gRId\', NULL::wci.infoplace )" );
+    CPPUNIT_ASSERT( rC.size() > 0 );
+}
+
 
 
 // Support Functions

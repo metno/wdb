@@ -38,7 +38,7 @@ RETURNS wci.grid AS
 $BODY$
 DECLARE
 	placeid_		bigint;
-	placeinfo_		__WCI_SCHEMA__.placespec;
+	placeinfo_		__WCI_SCHEMA__.placeregulargrid;
 	returnObject_ 	wci.grid;
 BEGIN
 	-- Fetch PlaceId
@@ -48,8 +48,10 @@ BEGIN
 
 	-- Retrieve PlaceInfo
 	SELECT 	* INTO STRICT placeinfo_
-	FROM 	__WCI_SCHEMA__.placespec
-	WHERE 	placeid_ = placeid;
+	FROM 	__WCI_SCHEMA__.placeregulargrid_mv p,
+			__WCI_SCHEMA__.getSessionData() s
+	WHERE 	placeid_ = placeid AND
+			p.placenamespaceid = s.placenamespaceid;
 
 	-- Pack result and return
 	returnObject_ := (

@@ -85,7 +85,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.placeregulargrid
     ADD CONSTRAINT placeregulargrid_pkey PRIMARY KEY (placeid);
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placeregulargrid
-    ADD CONSTRAINT plcaeregulargrid_skey UNIQUE ( numberx,
+    ADD CONSTRAINT placeregulargrid_skey UNIQUE ( numberx,
     											  numbery,
     											  incrementx,
     											  incrementy,

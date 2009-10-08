@@ -51,7 +51,7 @@ AbstractWciTestFixture::~AbstractWciTestFixture()
 void AbstractWciTestFixture::startNewTransaction()
 {
     AbstractWdbTestFixture::startNewTransaction();
-    t->exec( "SELECT wci.begin('" + currentUser_ + "')" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
     t->exec( "SET TIME ZONE 'UTC';" );
 }
 

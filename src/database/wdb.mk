@@ -17,7 +17,6 @@ DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
 						src/database/wdbConstraintDefinitions.in.sql \
 						src/database/wdbTriggerDefinitions.in.sql \
 						src/database/wdbUserDefinitions.in.sql \
-						src/database/wdbViewDefinitions.in.sql \
 						src/database/wciSchemaDefinitions.in.sql \
 						src/database/wciViewDefinitions.in.sql \
 						src/database/wdbAdminDefinitions.in.sql \

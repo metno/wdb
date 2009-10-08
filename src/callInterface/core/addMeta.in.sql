@@ -35,9 +35,11 @@ DECLARE
 	dpid_		bigint;
 	namespace_	int;
 BEGIN
-	-- Add new dataprovider
-	SELECT dataprovidernamespaceid INTO namespace_
-	FROM __WCI_SCHEMA__.getSessionData();
+	-- Session
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Namespace
+	namespace_ := 0;	
+	-- Check 
 	SELECT dataproviderid INTO dpid_ 
 	FROM __WCI_SCHEMA__.dataprovider
 	WHERE dataprovidername = lower(dataProviderName_) AND
@@ -93,7 +95,8 @@ BEGIN
 	-- Get placedef
 	SELECT placeid INTO placeId_ 
 	FROM  __WCI_SCHEMA__.placedefinition
-	WHERE st_equals( placegeometry, placeGeometry_);
+	WHERE st_equals( placegeometry, placeGeometry_) AND
+		  placenamespaceid = 0;
 	-- Add dataprovider
 	IF NOT FOUND THEN
 		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
@@ -104,15 +107,6 @@ BEGIN
 		INSERT INTO __WDB_SCHEMA__.placename VALUES
 		( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
 	END IF;
-	-- Default Name
-	namespace_ := 0;
-	SELECT astext( placeGeometry_ ) INTO newName_;
-	INSERT INTO __WDB_SCHEMA__.placename
-	VALUES ( placeId_,
-			 namespace_,
-			 lower(newName_),
-			 'today'::TIMESTAMP WITH TIME ZONE,
-			 'infinity'::TIMESTAMP WITH TIME ZONE );
 	RETURN placeId_;
 END;
 $BODY$
@@ -188,19 +182,6 @@ BEGIN
 				 'today'::TIMESTAMP WITH TIME ZONE,
 				 'infinity'::TIMESTAMP WITH TIME ZONE );
 	END IF;
-	-- Default Name
-	namespace_ := 0;
-	newname_ := 'grid( ' ||
-				 numX_ || ' ' || numY_ || ' ' ||
-				 incX_ || ' ' || incY_ || ' ' ||
-				 startX_ || ' ' || startY_ || ' ' ||
-				 srid_ || ')';
-	INSERT INTO __WDB_SCHEMA__.placename
-	VALUES ( placeId_,
-			 namespace_,
-			 newName_,
-			 'today'::TIMESTAMP WITH TIME ZONE,
-			 'infinity'::TIMESTAMP WITH TIME ZONE );
 	RETURN placeId_;
 END;
 $BODY$

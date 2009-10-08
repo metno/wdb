@@ -25,4 +25,5 @@ psql `./wdbConfiguration --psqlArgs` -q <<EOF
 \o __WDB_LOGDIR__/wdb_test_wci.log
 DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
 DELETE FROM __WDB_SCHEMA__.floatvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
+DELETE FROM __WDB_SCHEMA__.dataprovider WHERE dataproviderid IN ( SELECT dataproviderid FROM __WDB_SCHEMA__.dataprovidername WHERE dataprovidername LIKE 'installtest%' );
 EOF

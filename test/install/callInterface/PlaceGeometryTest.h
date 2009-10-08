@@ -187,6 +187,9 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG31_02_ReturnSomeRows );
 	CPPUNIT_TEST( testG31_03_ReturnNoRows );
 
+	CPPUNIT_TEST( testG40_01_AddPlacePoint );
+	CPPUNIT_TEST( testG40_02_AddPlaceRegularGrid );
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -347,6 +350,13 @@ public:
 	void testG31_01_ReturnAllRows();
 	void testG31_02_ReturnSomeRows();
 	void testG31_03_ReturnNoRows();
+
+	/**
+	 * Add Place Points + Place Regular Grids
+	 */
+	void testG40_01_AddPlacePoint();
+	void testG40_02_AddPlaceRegularGrid();
+
 
 private:
 	/**

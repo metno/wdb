@@ -182,6 +182,53 @@ void PlaceNameTest::testL3_03B_MixedCase()
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }
 
+ void PlaceNameTest::testL4_01_AddPlacePointName()
+{
+	// Set namespace to 0
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    // Insert
+	ostringstream q;
+	q << "SELECT wci.addPlacePoint( \'InstallTest Point Name\',"
+	  << "geomfromtext(\'POINT( 16 69 )\', "
+	  << DEFAULT_SRID
+	  << " ) )";
+    result rId = t->exec( q.str() );
+    CPPUNIT_ASSERT( rId.size() > 0 );
+    // Check for meta
+    result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Point Name\', NULL::wci.infoplace )" );
+    CPPUNIT_ASSERT( rC.size() == 0 );
+    // Insert name
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+    result rN = t->exec( "SELECT wci.addPlaceName( 'point(16 69)', 'InstallTest Point Name' )" );
+    CPPUNIT_ASSERT( rN.size() > 0 );
+    // Check for meta
+    result rM = t->exec( "SELECT * FROM wci.info( \'insTallTest pOINt name\', NULL::wci.infoplace )" );
+    CPPUNIT_ASSERT( rM.size() > 0 );
+
+}
+
+void PlaceNameTest::testL4_02_AddPlaceRegularGridName()
+{
+	// Set namespace to 0
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    // Insert
+	ostringstream q;
+	q << "SELECT wci.addPlaceRegularGrid( \'InstallTest Grid Name\',"
+	  << "4, 4, 0.2, 0.2, 0.5, 0.5, \'+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs\' )";
+    result rId = t->exec( q.str() );
+    CPPUNIT_ASSERT( rId.size() > 0 );
+    // Check for meta
+    result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Grid Name\', NULL::wci.infoplace )" );
+    CPPUNIT_ASSERT( rC.size() == 0 );
+    // Insert name
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+    result rN = t->exec( "SELECT wci.addPlaceName( 'grid(0.5 0.5, 0.2 0.2, 4 4, 50000)', 'InstallTest Grid Name' )" );
+    CPPUNIT_ASSERT( rN.size() > 0 );
+    // Check for meta
+    result rM = t->exec( "SELECT * FROM wci.info( \'insTallTest GRID name\', NULL::wci.infoplace )" );
+    CPPUNIT_ASSERT( rM.size() > 0 );
+}
+
 
 std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 {
