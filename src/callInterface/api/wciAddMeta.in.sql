@@ -305,7 +305,7 @@ LANGUAGE plpgsql STRICT VOLATILE;
 -- add Value Parameter
 --
 CREATE OR REPLACE FUNCTION
-wci.addValueParameter
+wci.addValueParameterName
 (
 	canonicalName_					text,
 	valueParameterName_ 			text
@@ -374,6 +374,44 @@ BEGIN
 				 parameterUnitOrReference_ );
 	END IF;
 	RETURN parameterid_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql STRICT VOLATILE;
+
+
+--
+-- add Value Parameter
+--
+CREATE OR REPLACE FUNCTION
+wci.addLevelParameterName
+(
+	canonicalName_					text,
+	levelParameterName_ 			text
+)
+RETURNS int AS
+$BODY$
+DECLARE	
+	namespace_ 		int;
+	parameterid_ 	int;
+BEGIN
+	-- Get namespace
+	SELECT parameternamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Get parameterid
+	SELECT levelparameterid INTO parameterid_
+	FROM __WCI_SCHEMA__.levelparameter
+	WHERE levelparametername = lower(canonicalName_) AND
+		  parameternamespaceid = namespace_;
+	-- Delete old name if it exists
+	DELETE FROM __WDB_SCHEMA__.levelparametername
+	WHERE parameternamespaceid = namespace_ AND
+		  levelparameterid = parameterid_;
+	-- Insert new name
+	INSERT INTO __WDB_SCHEMA__.levelparametername
+	VALUES ( parameterid_,
+			 namespace_,
+			 levelParameterName_ );
 END;
 $BODY$
 SECURITY DEFINER

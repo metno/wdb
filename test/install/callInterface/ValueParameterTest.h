@@ -95,6 +95,19 @@ class ValueParameterTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testWildCardOnlyUsage );
 	CPPUNIT_TEST( testWildCardAll );
 
+	// Test Add and Delete of Value Parameters Components
+	CPPUNIT_TEST( testP7_01_AddMeasure );
+//	CPPUNIT_TEST( testP7_02_AddUnit );
+//	CPPUNIT_TEST( testP7_03_AddFunction );
+//	CPPUNIT_TEST( testP7_04_AddParameterUsage );
+//
+//	// Add Parameters
+//	CPPUNIT_TEST( testP8_01_AddMeasureParameter );
+//	CPPUNIT_TEST( testP8_02_AddFunctionParameter );
+//	CPPUNIT_TEST( testP8_03_AddCodeParameter );
+//	CPPUNIT_TEST( testP8_04_AddDimensionlessParameter );
+//	CPPUNIT_TEST( testP8_05_AddParameterName );
+
 	CPPUNIT_TEST_SUITE_END();
 public:
 	ValueParameterTest();
@@ -151,6 +164,19 @@ public:
 	void testWildCardOnlyPhysical();
 	void testWildCardOnlyUsage();
 	void testWildCardAll();
+
+	// Test Add and Delete of Value Parameters Components
+	void testP7_01_AddMeasure();
+	void testP7_02_AddUnit();
+	void testP7_03_AddFunction();
+	void testP7_04_AddParameterUsage();
+
+	// Add Parameters
+	void testP8_01_AddMeasureParameter();
+	void testP8_02_AddFunctionParameter();
+	void testP8_03_AddCodeParameter();
+	void testP8_04_AddDimensionlessParameter();
+	void testP8_05_AddParameterName();
 
 private:
 	std::string statementFloat_( const std::string & paramSpec ) const;

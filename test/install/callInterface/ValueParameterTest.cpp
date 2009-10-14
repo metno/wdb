@@ -359,7 +359,54 @@ void ValueParameterTest::testWildCardAll()
 }
 
 
+void ValueParameterTest::testP7_01_AddMeasure()
+{
+    // Insert
+    result rAdd = t->exec( "SELECT wci.addMeasure('installtest71',-71,-71,-71,-71,-71,-71,-71,-71)" );
+    // Get and check
+    result rGet = t->exec( "SELECT wci.getMeasure('installtest71')" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
+
+void ValueParameterTest::testP7_02_AddUnit()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addMeasure('installtest71',-71,-71,-71,-71,-71,-71,-71,-71)" );
+
+}
+
+
+void ValueParameterTest::testP7_03_AddFunction() {}
+void ValueParameterTest::testP7_04_AddParameterUsage() {}
+
+// Add Parameters
+void ValueParameterTest::testP8_01_AddMeasureParameter() {}
+void ValueParameterTest::testP8_02_AddFunctionParameter() {}
+void ValueParameterTest::testP8_03_AddCodeParameter() {}
+void ValueParameterTest::testP8_04_AddDimensionlessParameter() {}
+void ValueParameterTest::testP8_05_AddParameterName() {}
+
+/*
+// Set namespace to 0
+t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+// Insert
+ostringstream q;
+q << "SELECT wci.addPlaceRegularGrid( \'InstallTest Grid Name\',"
+  << "4, 4, 0.2, 0.2, 0.5, 0.5, \'+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs\' )";
+result rId = t->exec( q.str() );
+CPPUNIT_ASSERT( rId.size() > 0 );
+// Check for meta
+result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Grid Name\', NULL::wci.infoplace )" );
+CPPUNIT_ASSERT( rC.size() == 0 );
+// Insert name
+t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+result rN = t->exec( "SELECT wci.addPlaceName( 'grid(0.5 0.5, 0.2 0.2, 4 4, 50000)', 'InstallTest Grid Name' )" );
+CPPUNIT_ASSERT( rN.size() > 0 );
+// Check for meta
+result rM = t->exec( "SELECT * FROM wci.info( \'insTallTest GRID name\', NULL::wci.infoplace )" );
+CPPUNIT_ASSERT( rM.size() > 0 );
+*/
 // Support Functions
 string ValueParameterTest::statementOid_( const std::string & paramSpec ) const
 {

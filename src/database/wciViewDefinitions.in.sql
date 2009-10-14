@@ -140,11 +140,37 @@ GRANT ALL ON __WCI_SCHEMA__.wciuserdataprovider TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.wciuserdataprovider TO wdb_write;
 
 
+CREATE VIEW __WCI_SCHEMA__.dataprovidername_v AS
+SELECT
+    dataproviderid,
+    dataprovidernamespaceid,
+    dataprovidername
+FROM
+	__WDB_SCHEMA__.dataprovidername;
+
+REVOKE ALL ON __WCI_SCHEMA__.dataprovidername_v FROM public;
+GRANT ALL ON __WCI_SCHEMA__.dataprovidername_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.dataprovidername_v TO wdb_read, wdb_write;
+
+
+CREATE VIEW __WCI_SCHEMA__.placename_v AS
+SELECT
+    p.placeid,
+    p.placenamespaceid,
+    p.placename
+FROM
+	__WDB_SCHEMA__.placename p;
+
+REVOKE ALL ON __WCI_SCHEMA__.placename_v FROM public;
+GRANT ALL ON __WCI_SCHEMA__.placename_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.placename_v TO wdb_read, wdb_write;
+
 
 CREATE VIEW __WCI_SCHEMA__.placename AS
 SELECT
-    placeid,
-    placename
+    p.placeid,
+    p.placenamespaceid,
+    p.placename
 FROM
 	__WDB_SCHEMA__.placename p,
 	__WCI_SCHEMA__.getSessionData() s
