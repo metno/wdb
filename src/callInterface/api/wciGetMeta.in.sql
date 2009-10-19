@@ -167,3 +167,39 @@ $BODY$
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql;
+
+
+
+--
+-- Get Measure
+--
+CREATE OR REPLACE FUNCTION 
+wci.getParameterFunctionType(
+	unit_	text
+)
+RETURNS __WCI_SCHEMA__.parameterfunctiontype AS
+$BODY$
+	SELECT 	*
+	FROM 	__WCI_SCHEMA__.parameterfunctiontype
+	WHERE 	parameterfunctiontype LIKE $1 OR $1 IS NULL;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
+
+
+
+--
+-- Get Measure
+--
+CREATE OR REPLACE FUNCTION 
+wci.getValueParameterUsage(
+	unit_	text
+)
+RETURNS __WCI_SCHEMA__.valueparameterusage AS
+$BODY$
+	SELECT 	*
+	FROM 	__WCI_SCHEMA__.valueparameterusage
+	WHERE 	valueparameterusage LIKE $1 OR $1 IS NULL;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;

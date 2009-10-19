@@ -372,13 +372,29 @@ void ValueParameterTest::testP7_01_AddMeasure()
 void ValueParameterTest::testP7_02_AddUnit()
 {
     // Insert
-    result rId = t->exec( "SELECT wci.addMeasure('installtest71',-71,-71,-71,-71,-71,-71,-71,-71)" );
-
+    result rId = t->exec( "SELECT wci.addUnit( 'installUnit', 'Conventional Unit', 'distance', 'Test parameter', 1.0, 0.0 )" );
+    // Get and check
+    result rGet = t->exec( "SELECT wci.info('installUnit', NULL::wci.infoparameterunit)" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
 }
 
+void ValueParameterTest::testP7_03_AddFunction()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addParameterFunctionType( 'installFunction', 'Test function' )" );
+    // Get and check
+    result rGet = t->exec( "SELECT wci.getParameterFunctionType('insTAllfuncTION')" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
-void ValueParameterTest::testP7_03_AddFunction() {}
-void ValueParameterTest::testP7_04_AddParameterUsage() {}
+void ValueParameterTest::testP7_04_AddParameterUsage()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addValueParameterUsage( 'installUsage', 'Test usage' )" );
+    // Get and check
+    result rGet = t->exec( "SELECT wci.getValueParameterUsage('insTAllUSage')" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
 // Add Parameters
 void ValueParameterTest::testP8_01_AddMeasureParameter() {}

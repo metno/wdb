@@ -488,7 +488,9 @@ CREATE INDEX XIE0wci_levelparameter_mv ON __WCI_SCHEMA__.levelparameter_mv
 --
 CREATE VIEW __WCI_SCHEMA__.unitwithconversion AS
 SELECT un.unitname, 
-	   un.unittype, 
+	   un.unittype,
+	   un.measure,
+	   un.description,
 	   co.siunitconversioncoefficient,
 	   co.siunitconversionterm
 FROM  
@@ -639,19 +641,6 @@ GRANT SELECT ON __WCI_SCHEMA__.unit TO wdb_read;
 GRANT SELECT ON __WCI_SCHEMA__.unit TO wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.parameterfunctiontype AS
-	SELECT  
-		parameterfunctiontype,
-		parameterfunctiondescription
-	FROM 	
-		__WDB_SCHEMA__.parameterfunctiontype;
-		
-REVOKE ALL ON __WCI_SCHEMA__.parameterfunctiontype FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_read;
-GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_write;
-
-
 CREATE VIEW __WCI_SCHEMA__.measure AS
 	SELECT  
 		measure
@@ -664,17 +653,31 @@ GRANT SELECT ON __WCI_SCHEMA__.measure TO wdb_read;
 GRANT SELECT ON __WCI_SCHEMA__.measure TO wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.valuedomain AS
+
+CREATE VIEW __WCI_SCHEMA__.parameterfunctiontype AS
 	SELECT  
-		valueparameterusage as valuedomain,
-		valueparameterusagedescription as valuedomaindescription
+    	parameterfunctiontype,
+	    parameterfunctiondescription
+	FROM 	
+		__WDB_SCHEMA__.parameterfunctiontype;
+		
+REVOKE ALL ON __WCI_SCHEMA__.parameterfunctiontype FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_read;
+GRANT SELECT ON __WCI_SCHEMA__.parameterfunctiontype TO wdb_write;
+
+
+CREATE VIEW __WCI_SCHEMA__.valueparameterusage AS
+	SELECT  
+		valueparameterusage,
+		valueparameterusagedescription
 	FROM 	
 		__WDB_SCHEMA__.valueparameterusage;
 		
-REVOKE ALL ON __WCI_SCHEMA__.valuedomain FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.valuedomain TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.valuedomain TO wdb_read;
-GRANT SELECT ON __WCI_SCHEMA__.valuedomain TO wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.valueparameterusage FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.valueparameterusage TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.valueparameterusage TO wdb_read;
+GRANT SELECT ON __WCI_SCHEMA__.valueparameterusage TO wdb_write;
 
 
 CREATE VIEW __WCI_SCHEMA__.leveldomain AS
@@ -687,7 +690,7 @@ CREATE VIEW __WCI_SCHEMA__.leveldomain AS
 REVOKE ALL ON __WCI_SCHEMA__.leveldomain FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.leveldomain TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.leveldomain TO wdb_read;
-GRANT SELECT ON __WCI_SCHEMA__.valuedomain TO wdb_write;
+GRANT SELECT ON __WCI_SCHEMA__.leveldomain TO wdb_write;
 
 
 

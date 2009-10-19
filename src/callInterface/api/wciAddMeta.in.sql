@@ -462,7 +462,7 @@ DECLARE
 BEGIN
 	-- Insert into units
 	INSERT INTO __WDB_SCHEMA__.unit 
-	VALUES ( unitname_, unittype_, measure_, description );
+	VALUES ( unitname_, unittype_, measure_, description_ );
 	-- If not SI unit
 	IF ( unittype_::text <> 'SI Unit'::text ) THEN
 		INSERT INTO __WDB_SCHEMA__.siunitconversion

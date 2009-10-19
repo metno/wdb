@@ -64,6 +64,8 @@ CREATE TYPE wci.infoparameterunit AS
 (
 	unitname						text,
 	unittype						text,
+	measure							text,
+	description						text,
 	siunitconversioncoefficient		float,
 	siunitconversionterm			float
 );
