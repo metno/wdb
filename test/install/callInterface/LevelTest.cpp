@@ -376,6 +376,36 @@ void LevelTest::testL6_03B_MixedCaseInterpolation()
 	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "levelto", 10 ) );
 }
 
+void LevelTest::testL7_01_AddParameterUsage()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addLevelParameterUsage( 'installUsage', 'Test usage' )" );
+    // Get and check
+    result rGet = t->exec( "SELECT * FROM wci.getLevelParameterUsage('insTAllUSage')" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
+
+// Add Parameters
+void LevelTest::testL8_01_AddMeasureParameter()
+{
+    // Insert
+    result uId = t->exec( "SELECT wci.addLevelParameterUsage( 'install0801', 'Test usage' )" );
+    // Insert
+    result rId = t->exec( "SELECT wci.addLevelParameter( 'Measure Parameter', 'install0801', 'm' )" );
+    // Get and check
+    result rGet = t->exec( "SELECT * FROM wci.info( '%install0801%', NULL::wci.infolevelparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
+
+// Add Parameters
+void LevelTest::testL8_02_AddCodeParameter()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addLevelParameter( 'Code Parameter', 'insTAll0802 CODE param', 'Install Test Code Book' )" );
+    // Get and check
+    result rGet = t->exec( "SELECT * FROM wci.info( '%insTALL0802%', NULL::wci.infolevelparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
 //
 // Support Functions

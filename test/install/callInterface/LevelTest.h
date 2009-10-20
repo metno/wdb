@@ -91,6 +91,11 @@ class LevelTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL6_03A_MixedCaseInterpolation );
 	CPPUNIT_TEST( testL6_03B_MixedCaseInterpolation );
 
+	CPPUNIT_TEST( testL7_01_AddParameterUsage );
+
+	CPPUNIT_TEST( testL8_01_AddMeasureParameter );
+	CPPUNIT_TEST( testL8_02_AddCodeParameter );
+
 	CPPUNIT_TEST_SUITE_END();
 public:
 	LevelTest();
@@ -149,6 +154,12 @@ public:
 	void testL6_02B_UpperCaseInterpolation();
 	void testL6_03A_MixedCaseInterpolation();
 	void testL6_03B_MixedCaseInterpolation();
+
+	void testL7_01_AddParameterUsage();
+
+	// Add Parameters
+	void testL8_01_AddMeasureParameter();
+	void testL8_02_AddCodeParameter();
 
 private:
 	/** Generate the statement for testing with wci::returnOid

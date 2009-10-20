@@ -680,17 +680,17 @@ GRANT SELECT ON __WCI_SCHEMA__.valueparameterusage TO wdb_read;
 GRANT SELECT ON __WCI_SCHEMA__.valueparameterusage TO wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.leveldomain AS
+CREATE VIEW __WCI_SCHEMA__.levelparameterusage AS
 	SELECT  
-		levelparameterusage as leveldomain,
-		levelparameterusagedescription as leveldomaindescription
+		levelparameterusage,
+		levelparameterusagedescription
 	FROM 	
 		__WDB_SCHEMA__.levelparameterusage;
 		
-REVOKE ALL ON __WCI_SCHEMA__.leveldomain FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.leveldomain TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.leveldomain TO wdb_read;
-GRANT SELECT ON __WCI_SCHEMA__.leveldomain TO wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.levelparameterusage FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.levelparameterusage TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.levelparameterusage TO wdb_read;
+GRANT SELECT ON __WCI_SCHEMA__.levelparameterusage TO wdb_write;
 
 
 

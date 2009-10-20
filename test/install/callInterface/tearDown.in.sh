@@ -31,4 +31,5 @@ DELETE FROM __WDB_SCHEMA__.measure WHERE measure LIKE 'installtest%';
 DELETE FROM __WDB_SCHEMA__.unit WHERE unitname LIKE 'install%';
 DELETE FROM __WDB_SCHEMA__.parameterfunctiontype WHERE parameterfunctiontype LIKE 'install%';
 DELETE FROM __WDB_SCHEMA__.valueparameterusage WHERE valueparameterusage LIKE 'install%';
+DELETE FROM __WDB_SCHEMA__.levelparameterusage WHERE levelparameterusage LIKE 'install%';
 EOF

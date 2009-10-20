@@ -258,10 +258,12 @@ $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
+	RAISE INFO 'Start AddValueParam';
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Get ID
-	parameterid_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq'::regclass);
+	SELECT nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq'::regclass) INTO parameterid_;
+	RAISE DEBUG 'ParameterID is: %', parameterid_;
 	-- Insert Base
 	INSERT INTO __WDB_SCHEMA__.valueparameter
 	VALUES ( parameterid_, parameterType_ );
@@ -273,6 +275,7 @@ BEGIN
 				 parameterUsageOrName_,
 				 parameterUnitOrReference_,
 				 parameterQuantity_ );
+		RETURN parameterid_;
 	ELSIF ( parameterType_ = 'Function Parameter'::text) THEN
 		-- Function Table
 		INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
@@ -281,20 +284,25 @@ BEGIN
 				 parameterUsageOrName_,
 				 parameterUnitOrReference_,
 				 parameterQuantity_ );
+		RETURN parameterid_;
 	ELSIF ( parameterType_ = 'Code Parameter'::text) THEN
 		-- Code Table
 		INSERT INTO __WDB_SCHEMA__.valuecodeparameter
 		VALUES ( parameterid_,
 				 parameterUsageOrName_,
 				 parameterUnitOrReference_ );
+		RETURN parameterid_;
 	ELSIF ( parameterType_ = 'Dimensionless Parameter'::text) THEN
 		-- Dimensionless Table
 		INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
 		VALUES ( parameterid_,
 				 parameterUsageOrName_,
 				 parameterFunctionOrDescription_ );
+		RETURN parameterid_;
+	ELSE
+		RAISE EXCEPTION 'Undefined parameter type: %', parameterType_;
 	END IF;
-	RETURN parameterid_;
+	RETURN -1;
 END;
 $BODY$
 SECURITY DEFINER
@@ -354,6 +362,8 @@ $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Get value parameter Id 
 	parameterId_ := nextval('__WDB_SCHEMA__.levelparameter_levelparameterid_seq');
 	-- Insert Base
@@ -365,12 +375,12 @@ BEGIN
 		INSERT INTO __WDB_SCHEMA__.levelmeasureparameter
 		VALUES ( parameterid_,
 				 parameterUnitOrReference_,
-				 parameterUsageOrName_ );
+				 lower(parameterUsageOrName_) );
 	ELSIF ( parameterType_ = 'Code Parameter'::text) THEN
 		-- Code Table
 		INSERT INTO __WDB_SCHEMA__.levelcodeparameter
 		VALUES ( parameterid_,
-				 parameterUsageOrName_,
+				 lower(parameterUsageOrName_),
 				 parameterUnitOrReference_ );
 	END IF;
 	RETURN parameterid_;

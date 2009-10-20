@@ -189,17 +189,35 @@ LANGUAGE sql;
 
 
 --
--- Get Measure
+-- Get Usage
 --
 CREATE OR REPLACE FUNCTION 
 wci.getValueParameterUsage(
-	unit_	text
+	usage_	text
 )
 RETURNS __WCI_SCHEMA__.valueparameterusage AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.valueparameterusage
-	WHERE 	valueparameterusage LIKE $1 OR $1 IS NULL;
+	WHERE 	valueparameterusage LIKE lower($1) OR $1 IS NULL;
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql;
+
+
+--
+-- Get Usage
+--
+CREATE OR REPLACE FUNCTION 
+wci.getLevelParameterUsage(
+	usage_	text
+)
+RETURNS __WCI_SCHEMA__.levelparameterusage AS
+$BODY$
+	SELECT 	*
+	FROM 	__WCI_SCHEMA__.levelparameterusage
+	WHERE 	levelparameterusage LIKE lower($1) OR $1 IS NULL;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
+

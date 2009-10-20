@@ -221,11 +221,23 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv
+CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv1
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valuemeasureparameter
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
 
+CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv2
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valuefunctionparameter
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
 
+CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv3
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valuecodeparameter
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
+
+CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv4
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valuedimensionlessparameter
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
+
+	
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatelevelparameter_mv() RETURNS "trigger"
 	AS $$
 BEGIN
@@ -234,6 +246,11 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv
+CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv1
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.levelmeasureparameter
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatelevelparameter_mv();
+
+CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv2
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.levelcodeparameter
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatelevelparameter_mv();
+	
