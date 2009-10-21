@@ -65,8 +65,8 @@ class PlaceNameTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL3_02B_UpperCase );
 	CPPUNIT_TEST( testL3_03A_MixedCase );
 	CPPUNIT_TEST( testL3_03B_MixedCase );
-	CPPUNIT_TEST( testL4_01_AddPlacePointName );
-	CPPUNIT_TEST( testL4_02_AddPlaceRegularGridName );
+	CPPUNIT_TEST( testL4_01_SetPlacePointName );
+	CPPUNIT_TEST( testL4_02_SetPlaceRegularGridName );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -95,8 +95,8 @@ public:
 	void testL3_03A_MixedCase();
 	void testL3_03B_MixedCase();
 
-	void testL4_01_AddPlacePointName();
-	void testL4_02_AddPlaceRegularGridName();
+	void testL4_01_SetPlacePointName();
+	void testL4_02_SetPlaceRegularGridName();
 
 private:
 	std::string statementOid_( const std::string & placeDef ) const;

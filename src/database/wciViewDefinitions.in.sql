@@ -361,6 +361,19 @@ GRANT SELECT ON TABLE __WCI_SCHEMA__.placeindeterminatetype TO wdb_read, wdb_wri
 CREATE VIEW __WCI_SCHEMA__.valueparameter AS
 SELECT
 	vpp.valueparameterid,
+	vpn.parameternamespaceid,
+	vpn.valueparametername,
+	unit.unitname AS valueunitname
+FROM
+	__WDB_SCHEMA__.valuemeasureparameter AS vpp, 
+	__WDB_SCHEMA__.unit AS unit,
+	__WDB_SCHEMA__.valueparametername AS vpn
+WHERE
+	unit.unitname = vpp.valueparameterunitname AND
+	vpp.valueparameterid = vpn.valueparameterid
+UNION ALL
+SELECT
+	vpp.valueparameterid,
 	0 AS parameternamespaceid,
 	vpp.valueparameterusage || ' ' || unit.measure AS valueparametername,
 	unit.unitname AS valueunitname
@@ -384,6 +397,17 @@ WHERE
 	vpp.parameterquantitytype <> 'scalar'
 UNION ALL
 SELECT
+	vpp.valueparameterid,
+	vpn.parameternamespaceid,
+	vpn.valueparametername,
+	'ratio' AS valueunitname
+FROM
+	__WDB_SCHEMA__.valuedimensionlessparameter AS vpp, 
+	__WDB_SCHEMA__.valueparametername AS vpn
+WHERE
+	vpp.valueparameterid = vpn.valueparameterid
+UNION ALL
+SELECT
 	vdp.valueparameterid,
 	0 AS parameternamespaceid,
 	vdp.valuedimensionlessparametername,
@@ -392,12 +416,36 @@ FROM
 	__WDB_SCHEMA__.valuedimensionlessparameter AS vdp
 UNION ALL
 SELECT
+	vpp.valueparameterid,
+	vpn.parameternamespaceid,
+	vpn.valueparametername,
+	NULL AS valueunitname
+FROM
+	__WDB_SCHEMA__.valuecodeparameter AS vpp, 
+	__WDB_SCHEMA__.valueparametername AS vpn
+WHERE
+	vpp.valueparameterid = vpn.valueparameterid
+UNION ALL
+SELECT
 	vcp.valueparameterid,
 	0 AS parameternamespaceid,
 	vcp.valuecodeparametername,
 	NULL AS valueunitname
 FROM
 	__WDB_SCHEMA__.valuecodeparameter AS vcp
+UNION ALL
+SELECT
+	vpp.valueparameterid,
+	vpn.parameternamespaceid,
+	vpn.valueparametername,
+	unit.unitname AS valueunitname
+FROM
+	__WDB_SCHEMA__.valuefunctionparameter AS vpp, 
+	__WDB_SCHEMA__.unit AS unit,
+	__WDB_SCHEMA__.valueparametername AS vpn
+WHERE
+	unit.unitname = vpp.valueparameterunitname AND
+	vpp.valueparameterid = vpn.valueparameterid
 UNION ALL
 SELECT
 	vfp.valueparameterid,
@@ -446,6 +494,19 @@ CREATE INDEX XIE0wci_valueparameter_mv ON __WCI_SCHEMA__.valueparameter_mv
 CREATE VIEW __WCI_SCHEMA__.levelparameter AS
 SELECT
 	lpp.levelparameterid,
+	lpn.parameternamespaceid,
+	lpn.levelparametername,
+	unit.unitname AS levelunitname
+FROM
+	__WDB_SCHEMA__.levelmeasureparameter AS lpp,
+	__WDB_SCHEMA__.levelparametername AS lpn,
+	__WDB_SCHEMA__.unit AS unit
+WHERE
+	unit.unitname = lpp.levelparameterunitname AND
+	lpp.levelparameterid = lpn.levelparameterid
+UNION ALL
+SELECT
+	lpp.levelparameterid,
 	0 AS parameternamespaceid,
 	lpp.levelparameterusage || ' ' || unit.measure AS levelparametername,
 	unit.unitname AS levelunitname
@@ -454,6 +515,17 @@ FROM
 	__WDB_SCHEMA__.unit AS unit
 WHERE
 	unit.unitname = lpp.levelparameterunitname
+UNION ALL
+SELECT
+	lcp.levelparameterid,
+	lpn.parameternamespaceid,
+	lpn.levelparametername,
+	NULL AS levelunitname
+FROM
+	__WDB_SCHEMA__.levelcodeparameter AS lcp, 
+	__WDB_SCHEMA__.levelparametername AS lpn
+WHERE
+	lcp.levelparameterid = lpn.levelparameterid
 UNION ALL
 SELECT
 	lcp.levelparameterid, 

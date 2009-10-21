@@ -41,7 +41,7 @@ LANGUAGE sql STRICT VOLATILE;
 -- add new data provider name in namespace
 -- 
 CREATE OR REPLACE FUNCTION
-wci.addDataProviderName
+wci.setDataProviderName
 (
 	canonicalName_		text,
 	dataProviderName_ 	text
@@ -198,7 +198,7 @@ LANGUAGE plpgsql STRICT VOLATILE;
 -- add new data provider name in namespace
 -- 
 CREATE OR REPLACE FUNCTION
-wci.addPlaceName
+wci.setPlaceName
 (
 	canonicalName_	text,
 	placeName_ 		text
@@ -258,12 +258,10 @@ $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
-	RAISE INFO 'Start AddValueParam';
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get ID
-	SELECT nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq'::regclass) INTO parameterid_;
-	RAISE DEBUG 'ParameterID is: %', parameterid_;
+	-- Get value parameter Id 
+	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq');
 	-- Insert Base
 	INSERT INTO __WDB_SCHEMA__.valueparameter
 	VALUES ( parameterid_, parameterType_ );
@@ -280,7 +278,7 @@ BEGIN
 		-- Function Table
 		INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
 		VALUES ( parameterid_,
-				 parameterFunctionOrReference_,
+				 parameterFunctionOrDescription_,
 				 parameterUsageOrName_,
 				 parameterUnitOrReference_,
 				 parameterQuantity_ );
@@ -302,23 +300,22 @@ BEGIN
 	ELSE
 		RAISE EXCEPTION 'Undefined parameter type: %', parameterType_;
 	END IF;
-	RETURN -1;
 END;
 $BODY$
 SECURITY DEFINER
-LANGUAGE plpgsql STRICT VOLATILE;
+LANGUAGE plpgsql VOLATILE;
 
 
 --
 -- add Value Parameter
 --
 CREATE OR REPLACE FUNCTION
-wci.addValueParameterName
+wci.setValueParameterName
 (
 	canonicalName_					text,
 	valueParameterName_ 			text
 )
-RETURNS int AS
+RETURNS void AS
 $BODY$
 DECLARE	
 	namespace_ 		int;
@@ -327,11 +324,17 @@ BEGIN
 	-- Get namespace
 	SELECT parameternamespaceid INTO namespace_
 	FROM __WCI_SCHEMA__.getSessionData();
+	IF ( namespace_ = 0 ) THEN
+		RAISE EXCEPTION 'Cannot set the WDB Canonical ValueParameterName';
+	END IF;	
 	-- Get parameterid
 	SELECT valueparameterid INTO parameterid_
-	FROM __WCI_SCHEMA__.valueparameter
+	FROM __WCI_SCHEMA__.valueparameter_mv
 	WHERE valueparametername = lower(canonicalName_) AND
-		  parameternamespaceid = namespace_;
+		  parameternamespaceid = 0;
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Could not identify any value parameter with the specified canonical ValueParameterName';		
+	END IF;
 	-- Delete old name if it exists
 	DELETE FROM __WDB_SCHEMA__.valueparametername
 	WHERE parameternamespaceid = namespace_ AND
@@ -344,7 +347,7 @@ BEGIN
 END;
 $BODY$
 SECURITY DEFINER
-LANGUAGE plpgsql STRICT VOLATILE;
+LANGUAGE plpgsql VOLATILE;
 
 
 --
@@ -387,19 +390,19 @@ BEGIN
 END;
 $BODY$
 SECURITY DEFINER
-LANGUAGE plpgsql STRICT VOLATILE;
+LANGUAGE plpgsql VOLATILE;
 
 
 --
 -- add Value Parameter
 --
 CREATE OR REPLACE FUNCTION
-wci.addLevelParameterName
+wci.setLevelParameterName
 (
 	canonicalName_					text,
 	levelParameterName_ 			text
 )
-RETURNS int AS
+RETURNS void AS
 $BODY$
 DECLARE	
 	namespace_ 		int;
@@ -408,11 +411,17 @@ BEGIN
 	-- Get namespace
 	SELECT parameternamespaceid INTO namespace_
 	FROM __WCI_SCHEMA__.getSessionData();
+	IF ( namespace_ = 0 ) THEN
+		RAISE EXCEPTION 'Cannot set the WDB Canonical LevelParameterName';
+	END IF;	
 	-- Get parameterid
 	SELECT levelparameterid INTO parameterid_
-	FROM __WCI_SCHEMA__.levelparameter
+	FROM __WCI_SCHEMA__.levelparameter_mv
 	WHERE levelparametername = lower(canonicalName_) AND
-		  parameternamespaceid = namespace_;
+		  parameternamespaceid = 0;
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Could not identify any level parameter with the specified canonical LevelParameterName';		
+	END IF;
 	-- Delete old name if it exists
 	DELETE FROM __WDB_SCHEMA__.levelparametername
 	WHERE parameternamespaceid = namespace_ AND
@@ -425,7 +434,7 @@ BEGIN
 END;
 $BODY$
 SECURITY DEFINER
-LANGUAGE plpgsql STRICT VOLATILE;
+LANGUAGE plpgsql VOLATILE;
 
 
 --
@@ -506,7 +515,7 @@ wci.addValueParameterUsage(
 RETURNS void AS
 $BODY$
 	INSERT INTO __WDB_SCHEMA__.valueparameterusage
-	VALUES ( $1, $2 );
+	VALUES ( lower($1), $2 );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;
@@ -520,7 +529,7 @@ wci.addLevelParameterUsage(
 RETURNS void AS
 $BODY$
 	INSERT INTO __WDB_SCHEMA__.levelparameterusage
-	VALUES ( $1, $2 );
+	VALUES ( lower($1), $2 );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STRICT VOLATILE;

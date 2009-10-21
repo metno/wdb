@@ -237,6 +237,9 @@ CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv4
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valuedimensionlessparameter
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
 
+CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv5
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.valueparametername
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatevalueparameter_mv();
 	
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatelevelparameter_mv() RETURNS "trigger"
 	AS $$
@@ -252,5 +255,9 @@ CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv1
 
 CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv2
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.levelcodeparameter
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatelevelparameter_mv();
+
+CREATE TRIGGER trigger___WDB_SCHEMA___updatelevelparameter_mv3
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.levelparametername
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatelevelparameter_mv();
 	

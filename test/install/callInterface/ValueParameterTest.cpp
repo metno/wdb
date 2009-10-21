@@ -408,21 +408,52 @@ void ValueParameterTest::testP8_01_AddMeasureParameter()
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
 }
 
+void ValueParameterTest::testP8_02_AddFunctionParameter()
+{
+    // Insert
+    result uId = t->exec( "SELECT wci.addValueParameterUsage( 'install0802', 'Test usage' )" );
+    // Insert
+    result rId = t->exec( "SELECT wci.addValueParameter( 'Function Parameter', 'install0802', 'm', 'max', 'scalar' )" );
+    // Get and check
+    result rGet = t->exec( "SELECT * FROM wci.info( '%install0802%', NULL::wci.infovalueparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
+void ValueParameterTest::testP8_03_AddCodeParameter()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addValueParameter( 'Code Parameter', 'install0803 code', 'The Install Code Book', NULL, NULL )" );
+    // Get and check
+    result rGet = t->exec( "SELECT * FROM wci.info( '%install0803%', NULL::wci.infovalueparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
-void ValueParameterTest::testP8_02_AddFunctionParameter() {}
-void ValueParameterTest::testP8_03_AddCodeParameter() {}
-void ValueParameterTest::testP8_04_AddDimensionlessParameter() {}
+void ValueParameterTest::testP8_04_AddDimensionlessParameter()
+{
+    // Insert
+    result rId = t->exec( "SELECT wci.addValueParameter( 'Dimensionless Parameter', 'install0804 weird', NULL, 'InstallTest Description', NULL )" );
+    // Get and check
+    result rGet = t->exec( "SELECT * FROM wci.info( '%install0804%', NULL::wci.infovalueparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+}
 
-/*
-parameterType_					text,
-parameterUsageOrName_ 			text,
-parameterUnitOrReference_		text,
-parameterFunctionOrDescription_	text,
-parameterQuantity_				text
-*/
-
-void ValueParameterTest::testP8_05_AddParameterName() {}
+void ValueParameterTest::testP9_01_SetParameterName()
+{
+	// Set namespace to 0
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    // Insert
+    // Insert
+    result uId = t->exec( "SELECT wci.addValueParameterUsage( 'iNStall0901', 'Test usage' )" );
+    result rId = t->exec( "SELECT wci.addValueParameter( 'Measure Parameter', 'install0901', 'K', NULL, 'scalar' )" );
+    result rGet = t->exec( "SELECT * FROM wci.info( '%install0901%', NULL::wci.infovalueparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+    // Insert name
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 999 )" );
+    result rN = t->exec( "SELECT wci.setValueParameterName( 'install0901 temperature', 'i901' )" );
+    // Check for meta
+    result rM = t->exec( "SELECT * FROM wci.info( 'I901', NULL::wci.infovalueparameter )" );
+    CPPUNIT_ASSERT( rM.size() > 0 );
+}
 
 
 /*

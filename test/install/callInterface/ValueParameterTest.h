@@ -102,11 +102,13 @@ class ValueParameterTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testP7_04_AddParameterUsage );
 
 	// Add Parameters
-//	CPPUNIT_TEST( testP8_01_AddMeasureParameter );
-//	CPPUNIT_TEST( testP8_02_AddFunctionParameter );
-//	CPPUNIT_TEST( testP8_03_AddCodeParameter );
-//	CPPUNIT_TEST( testP8_04_AddDimensionlessParameter );
-//	CPPUNIT_TEST( testP8_05_AddParameterName );
+	CPPUNIT_TEST( testP8_01_AddMeasureParameter );
+	CPPUNIT_TEST( testP8_02_AddFunctionParameter );
+	CPPUNIT_TEST( testP8_03_AddCodeParameter );
+	CPPUNIT_TEST( testP8_04_AddDimensionlessParameter );
+
+	// Names
+	CPPUNIT_TEST( testP9_01_SetParameterName );
 
 	CPPUNIT_TEST_SUITE_END();
 public:
@@ -176,7 +178,8 @@ public:
 	void testP8_02_AddFunctionParameter();
 	void testP8_03_AddCodeParameter();
 	void testP8_04_AddDimensionlessParameter();
-	void testP8_05_AddParameterName();
+
+	void testP9_01_SetParameterName();
 
 private:
 	std::string statementFloat_( const std::string & paramSpec ) const;

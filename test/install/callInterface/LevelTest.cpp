@@ -407,6 +407,24 @@ void LevelTest::testL8_02_AddCodeParameter()
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
 }
 
+void LevelTest::testL9_01_SetParameterName()
+{
+	// Set namespace to 0
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    // Insert
+    result uId = t->exec( "SELECT wci.addLevelParameterUsage( 'instaLL0901', 'Test usage' )" );
+    result rId = t->exec( "SELECT wci.addLevelParameter( 'Measure Parameter', 'inSTall0901', 'hPa' )" );
+    result rGet = t->exec( "SELECT * FROM wci.info( '%install0901%', NULL::wci.infolevelparameter )" );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
+    // Insert name
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 999 )" );
+    result rN = t->exec( "SELECT wci.setLevelParameterName( 'install0901 pressure', 'l901' )" );
+    // Check for meta
+    result rM = t->exec( "SELECT * FROM wci.info( 'L901', NULL::wci.infolevelparameter )" );
+    CPPUNIT_ASSERT( rM.size() > 0 );
+}
+
+
 //
 // Support Functions
 //

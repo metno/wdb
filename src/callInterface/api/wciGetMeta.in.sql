@@ -171,11 +171,11 @@ LANGUAGE sql;
 
 
 --
--- Get Measure
+-- Get Function Type
 --
 CREATE OR REPLACE FUNCTION 
 wci.getParameterFunctionType(
-	unit_	text
+	type_	text
 )
 RETURNS __WCI_SCHEMA__.parameterfunctiontype AS
 $BODY$

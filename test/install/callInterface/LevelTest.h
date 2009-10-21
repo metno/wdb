@@ -96,6 +96,8 @@ class LevelTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL8_01_AddMeasureParameter );
 	CPPUNIT_TEST( testL8_02_AddCodeParameter );
 
+	CPPUNIT_TEST( testL9_01_SetParameterName );
+
 	CPPUNIT_TEST_SUITE_END();
 public:
 	LevelTest();
@@ -160,6 +162,8 @@ public:
 	// Add Parameters
 	void testL8_01_AddMeasureParameter();
 	void testL8_02_AddCodeParameter();
+
+	void testL9_01_SetParameterName();
 
 private:
 	/** Generate the statement for testing with wci::returnOid
