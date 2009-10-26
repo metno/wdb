@@ -39,9 +39,9 @@ wci.begin( newUser NAME )
 RETURNS VOID AS
 $BODY$
 DECLARE
-	dataproviderNameSpaceId integer;
-	placeNameSpaceId integer;
-	parameterNameSpaceId integer;
+	dataproviderNameSpaceId integer := 0;
+	placeNameSpaceId integer := 0;
+	parameterNameSpaceId integer := 0;
 BEGIN
 
 	PERFORM __WCI_SCHEMA__.setRole( newUser );

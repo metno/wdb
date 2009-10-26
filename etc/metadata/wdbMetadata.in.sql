@@ -18,6 +18,7 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
 -- SRIDs
 COPY spatial_ref_sys FROM '__WDB_DATADIR__/sql/wdb_spatial_ref_sys.csv' CSV HEADER DELIMITER '|';
 
@@ -29,10 +30,9 @@ COPY __WDB_SCHEMA__.organizationalias FROM '__WDB_DATADIR__/sql/wdb_organization
 COPY __WDB_SCHEMA__.person FROM '__WDB_DATADIR__/sql/wdb_person.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.softwareversion FROM '__WDB_DATADIR__/sql/wdb_softwareversion.csv' CSV HEADER DELIMITER '|';
 
--- Codespace
+-- Namespace
 COPY __WDB_SCHEMA__.namespace FROM '__WDB_DATADIR__/sql/wdb_namespace.csv' CSV HEADER DELIMITER '|';
---COPY __WDB_SCHEMA__.codespace FROM '__WDB_DATADIR__/sql/wdb_codespace.csv' CSV HEADER DELIMITER '|';
---COPY __WDB_SCHEMA__.defaultCodespace FROM '__WDB_DATADIR__/sql/wdb_defaultCodespace.csv' CSV HEADER DELIMITER '|';
+COPY __WDB_SCHEMA__.defaultnamespace FROM '__WDB_DATADIR__/sql/wdb_defaultnamespace.csv' CSV HEADER DELIMITER '|';
 
 -- Configuration
 COPY __WDB_SCHEMA__.currentconfiguration FROM '__WDB_DATADIR__/sql/wdb_currentconfiguration.csv' CSV HEADER DELIMITER '|';
