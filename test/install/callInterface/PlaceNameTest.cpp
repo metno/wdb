@@ -195,14 +195,14 @@ void PlaceNameTest::testL3_03B_MixedCase()
     result rId = t->exec( q.str() );
     CPPUNIT_ASSERT( rId.size() > 0 );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Point Name\', NULL::wci.infoplace )" );
+    result rC = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'InstallTest Point Name\' )" );
     CPPUNIT_ASSERT( rC.size() == 0 );
     // Insert name
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
     result rN = t->exec( "SELECT wci.setPlaceName( 'point(16 69)', 'InstallTest Point Name' )" );
     CPPUNIT_ASSERT( rN.size() > 0 );
     // Check for meta
-    result rM = t->exec( "SELECT * FROM wci.info( \'insTallTest pOINt name\', NULL::wci.infoplace )" );
+    result rM = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'insTallTest pOINt name\' )" );
     CPPUNIT_ASSERT( rM.size() > 0 );
 
 }
@@ -218,14 +218,14 @@ void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
     result rId = t->exec( q.str() );
     CPPUNIT_ASSERT( rId.size() > 0 );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'InstallTest Grid Name\', NULL::wci.infoplace )" );
+    result rC = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'InstallTest Grid Name\' )" );
     CPPUNIT_ASSERT( rC.size() == 0 );
     // Insert name
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
     result rN = t->exec( "SELECT wci.setPlaceName( 'grid(0.5 0.5, 0.2 0.2, 4 4, 50000)', 'InstallTest Grid Name' )" );
     CPPUNIT_ASSERT( rN.size() > 0 );
     // Check for meta
-    result rM = t->exec( "SELECT * FROM wci.info( \'insTallTest GRID name\', NULL::wci.infoplace )" );
+    result rM = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'insTallTest GRID name\' )" );
     CPPUNIT_ASSERT( rM.size() > 0 );
 }
 

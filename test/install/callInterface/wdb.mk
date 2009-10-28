@@ -53,8 +53,6 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/WciWriteTest.cpp \
 							test/install/callInterface/WciBrowseTest.h \
 							test/install/callInterface/WciBrowseTest.cpp \
-							test/install/callInterface/WciInfoTest.h \
-							test/install/callInterface/WciInfoTest.cpp \
 							test/install/callInterface/wciOutputTest.h \
 							test/install/callInterface/wciOutputTest.cpp \
 							test/install/callInterface/TransactionCorrectnessTest.h \

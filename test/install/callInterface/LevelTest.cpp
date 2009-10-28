@@ -391,9 +391,9 @@ void LevelTest::testL8_01_AddMeasureParameter()
     // Insert
     result uId = t->exec( "SELECT wci.addLevelParameterUsage( 'install0801', 'Test usage' )" );
     // Insert
-    result rId = t->exec( "SELECT wci.addLevelParameter( 'Measure Parameter', 'install0801', 'm' )" );
+    result rId = t->exec( "SELECT wci.addMeasureLevelParameter( 'install0801', 'm' )" );
     // Get and check
-    result rGet = t->exec( "SELECT * FROM wci.info( '%install0801%', NULL::wci.infolevelparameter )" );
+    result rGet = t->exec( "SELECT * FROM wci.getMeasureLevelParameter( '%install0801%' )" );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
 }
 
@@ -401,9 +401,9 @@ void LevelTest::testL8_01_AddMeasureParameter()
 void LevelTest::testL8_02_AddCodeParameter()
 {
     // Insert
-    result rId = t->exec( "SELECT wci.addLevelParameter( 'Code Parameter', 'insTAll0802 CODE param', 'Install Test Code Book' )" );
+    result rId = t->exec( "SELECT wci.addCodeLevelParameter( 'insTAll0802 CODE param', 'Install Test Code Book' )" );
     // Get and check
-    result rGet = t->exec( "SELECT * FROM wci.info( '%insTALL0802%', NULL::wci.infolevelparameter )" );
+    result rGet = t->exec( "SELECT * FROM wci.getCodeLevelParameter( '%insTALL0802%' )" );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
 }
 
@@ -413,14 +413,14 @@ void LevelTest::testL9_01_SetParameterName()
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
     // Insert
     result uId = t->exec( "SELECT wci.addLevelParameterUsage( 'instaLL0901', 'Test usage' )" );
-    result rId = t->exec( "SELECT wci.addLevelParameter( 'Measure Parameter', 'inSTall0901', 'hPa' )" );
-    result rGet = t->exec( "SELECT * FROM wci.info( '%install0901%', NULL::wci.infolevelparameter )" );
+    result rId = t->exec( "SELECT wci.addMeasureLevelParameter( 'inSTall0901', 'hPa' )" );
+    result rGet = t->exec( "SELECT * FROM wci.getLevelParameter( '%install0901%' )" );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
     // Insert name
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 999 )" );
     result rN = t->exec( "SELECT wci.setLevelParameterName( 'install0901 pressure', 'l901' )" );
     // Check for meta
-    result rM = t->exec( "SELECT * FROM wci.info( 'L901', NULL::wci.infolevelparameter )" );
+    result rM = t->exec( "SELECT * FROM wci.getLevelParameter( 'L901' )" );
     CPPUNIT_ASSERT( rM.size() > 0 );
 }
 

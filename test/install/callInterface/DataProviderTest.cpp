@@ -432,7 +432,7 @@ void DataProviderTest::testD6_01_AddDataProvider()
 													  "\'Grid\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'installTest 06-01\', NULL::wci.infodataprovider )" );
+    result rC = t->exec( "SELECT * FROM wci.getDataProvider( \'installTest 06-01\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
 
 }
@@ -447,16 +447,16 @@ void DataProviderTest::testD6_02_SetDataProviderName()
 													  "\'Grid\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'Installtest 06-02\', NULL::wci.infodataprovider )" );
+    result rC = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-02\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
 	// Set namespace to 1
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 0, 0 )" );
     // Set Name
     result rN = t->exec( "SELECT wci.SetDataProviderName(\'InstallTest 06-02\',\'InstallationsTest 06-02\')" );
     // Check for meta
-    result rC1 = t->exec( "SELECT * FROM wci.info( \'Installtest 06-02\', NULL::wci.infodataprovider )" );
+    result rC1 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-02\' )" );
     CPPUNIT_ASSERT( rC1.size() == 0 );
-    result rC2 = t->exec( "SELECT * FROM wci.info( \'Installationstest 06-02\', NULL::wci.infodataprovider )" );
+    result rC2 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installationstest 06-02\' )" );
     CPPUNIT_ASSERT( rC2.size() > 0 );
     // Return
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
@@ -472,9 +472,9 @@ void DataProviderTest::testD6_03_SetDataProviderNameFail()
     // Set Name
     result rN = t->exec( "SELECT wci.setDataProviderName(\'InstallTest 06-03\',\'InstallationsTest 06-03\')" );
     // Check for meta
-    result rC1 = t->exec( "SELECT * FROM wci.info( \'Installtest 06-03\', NULL::wci.infodataprovider )" );
+    result rC1 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-03\' )" );
     CPPUNIT_ASSERT( rC1.size() > 0 );
-    result rC2 = t->exec( "SELECT * FROM wci.info( \'Installationstest 06-03\', NULL::wci.infodataprovider )" );
+    result rC2 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installationstest 06-03\' )" );
     CPPUNIT_ASSERT( rC2.size() == 0 );
 }
 

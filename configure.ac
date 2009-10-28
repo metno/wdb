@@ -8,10 +8,10 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.9.5, [wdb@met.no])
+AC_INIT(wdb, 0.9.6, [wdb@met.no])
 AC_SUBST( [OLD_MAJOR_VERSION], ["0"] )
 AC_SUBST( [OLD_MINOR_VERSION], ["9"] )
-AC_SUBST( [OLD_MICRO_VERSION], ["4"] )
+AC_SUBST( [OLD_MICRO_VERSION], ["5"] )
 
 # Config
 AC_CONFIG_AUX_DIR([config])

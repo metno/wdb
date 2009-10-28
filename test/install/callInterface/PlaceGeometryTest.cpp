@@ -1157,7 +1157,7 @@ void PlaceGeometryTest::testG40_01_AddPlacePoint()
     result rId = t->exec( q.str() );
     CPPUNIT_ASSERT( rId.size() > 0 );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'installTest poINt\', NULL::wci.infoplace )" );
+    result rC = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'installTest poINt\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
 }
 
@@ -1170,7 +1170,7 @@ void PlaceGeometryTest::testG40_02_AddPlaceRegularGrid()
     result rId = t->exec( q.str() );
     CPPUNIT_ASSERT( rId.size() > 0 );
     // Check for meta
-    result rC = t->exec( "SELECT * FROM wci.info( \'installTest gRId\', NULL::wci.infoplace )" );
+    result rC = t->exec( "SELECT * FROM wci.getPlaceRegularGrid( \'installTest gRId\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
 }
 

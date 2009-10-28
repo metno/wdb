@@ -358,14 +358,68 @@ GRANT SELECT ON TABLE __WCI_SCHEMA__.placeindeterminatetype TO wdb_read, wdb_wri
 
 
 
-CREATE VIEW __WCI_SCHEMA__.valueparameter AS
+
+CREATE VIEW __WCI_SCHEMA__.measurevalueparameter AS
+SELECT
+	v.valueparameterid,
+	v.valueparameterusage,
+	v.parameterquantitytype,
+	u.measure, 
+	u.unitname AS valueunitname,
+	n.parameternamespaceid,
+	n.valueparametername
+FROM
+	__WDB_SCHEMA__.valuemeasureparameter AS v, 
+	__WDB_SCHEMA__.unit AS u,
+	__WDB_SCHEMA__.valueparametername AS n
+WHERE 	u.unitname = v.valueparameterunitname 
+  AND	v.valueparameterid = n.valueparameterid
+UNION ALL
+SELECT
+	v.valueparameterid,
+	v.valueparameterusage,
+	v.parameterquantitytype,
+	u.measure, 
+	u.unitname AS valueunitname,
+	0 AS parameternamespaceid,
+	v.valueparameterusage || ' ' || u.measure  AS valueparametername
+FROM
+	__WDB_SCHEMA__.valuemeasureparameter AS v, 
+	__WDB_SCHEMA__.unit AS u
+WHERE 	u.unitname = v.valueparameterunitname 
+  AND	v.parameterquantitytype = 'scalar'
+UNION ALL
+SELECT
+	v.valueparameterid,
+	v.valueparameterusage,
+	v.parameterquantitytype,
+	u.measure,
+	u.unitname AS valueunitname,
+	0 AS parameternamespaceid,
+	v.valueparameterusage || ' ' || u.measure || ' (' || v.parameterquantitytype || ')' AS valueparametername
+FROM
+	__WDB_SCHEMA__.valuemeasureparameter AS v, 
+	__WDB_SCHEMA__.unit AS u
+WHERE 	u.unitname = v.valueparameterunitname 
+  AND	v.parameterquantitytype <> 'scalar';
+
+REVOKE ALL ON __WCI_SCHEMA__.measurevalueparameter FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.measurevalueparameter TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.measurevalueparameter TO wdb_read, wdb_write;
+
+
+CREATE VIEW __WCI_SCHEMA__.functionvalueparameter AS
 SELECT
 	vpp.valueparameterid,
+	vpp.parameterfunctiontype,
+	vpp.valueparameterusage,
+	vpp.parameterquantitytype,
+	unit.measure, 
+	unit.unitname AS valueunitname,
 	vpn.parameternamespaceid,
-	vpn.valueparametername,
-	unit.unitname AS valueunitname
+	vpn.valueparametername
 FROM
-	__WDB_SCHEMA__.valuemeasureparameter AS vpp, 
+	__WDB_SCHEMA__.valuefunctionparameter AS vpp, 
 	__WDB_SCHEMA__.unit AS unit,
 	__WDB_SCHEMA__.valueparametername AS vpn
 WHERE
@@ -373,31 +427,75 @@ WHERE
 	vpp.valueparameterid = vpn.valueparameterid
 UNION ALL
 SELECT
-	vpp.valueparameterid,
+	vfp.valueparameterid,
+	vfp.parameterfunctiontype,
+	vfp.valueparameterusage,
+	vfp.parameterquantitytype,
+	vsunit.measure, 
+	vsunit.unitname AS valueunitname,
 	0 AS parameternamespaceid,
-	vpp.valueparameterusage || ' ' || unit.measure AS valueparametername,
-	unit.unitname AS valueunitname
+	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.measure  AS valueparametername
 FROM
-	__WDB_SCHEMA__.valuemeasureparameter AS vpp, 
-	__WDB_SCHEMA__.unit AS unit
+	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
+	__WDB_SCHEMA__.unit AS vsunit
 WHERE
-	unit.unitname = vpp.valueparameterunitname AND
-	vpp.parameterquantitytype = 'scalar'
+	vsunit.unitname = vfp.valueparameterunitname AND
+	vfp.parameterquantitytype = 'scalar'
 UNION ALL
 SELECT
-	vpp.valueparameterid,
+	vfp.valueparameterid,
+	vfp.parameterfunctiontype,
+	vfp.valueparameterusage,
+	vfp.parameterquantitytype,
+	vsunit.measure, 
+	vsunit.unitname AS valueunitname,
 	0 AS parameternamespaceid,
-	vpp.valueparameterusage || ' ' || unit.measure || ' (' || vpp.parameterquantitytype || ')' AS valueparametername,
-	unit.unitname AS valueunitname
+	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.measure || ' (' || vfp.parameterquantitytype || ')' AS valueparametername
 FROM
-	__WDB_SCHEMA__.valuemeasureparameter AS vpp, 
-	__WDB_SCHEMA__.unit AS unit
+	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
+	__WDB_SCHEMA__.unit AS vsunit
 WHERE
-	unit.unitname = vpp.valueparameterunitname AND
-	vpp.parameterquantitytype <> 'scalar'
-UNION ALL
+	vsunit.unitname = vfp.valueparameterunitname AND
+	vfp.parameterquantitytype <> 'scalar';
+
+REVOKE ALL ON __WCI_SCHEMA__.functionvalueparameter FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.functionvalueparameter TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.functionvalueparameter TO wdb_read, wdb_write;
+
+
+	
+CREATE VIEW __WCI_SCHEMA__.codevalueparameter AS
 SELECT
 	vpp.valueparameterid,
+	vpp.valuecodeparametername,
+	vpp.codeparameterreference,
+	vpn.parameternamespaceid,
+	vpn.valueparametername
+FROM
+	__WDB_SCHEMA__.valuecodeparameter AS vpp, 
+	__WDB_SCHEMA__.valueparametername AS vpn
+WHERE
+	vpp.valueparameterid = vpn.valueparameterid
+UNION ALL
+SELECT
+	vcp.valueparameterid,
+	vcp.valuecodeparametername,
+	vcp.codeparameterreference,
+	0 AS parameternamespaceid,
+	vcp.valuecodeparametername
+FROM
+	__WDB_SCHEMA__.valuecodeparameter AS vcp;
+	
+REVOKE ALL ON __WCI_SCHEMA__.codevalueparameter FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.codevalueparameter TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.codevalueparameter TO wdb_read, wdb_write;
+
+
+CREATE VIEW __WCI_SCHEMA__.dimensionlessvalueparameter AS
+SELECT
+	vpp.valueparameterid,
+	vpp.valuedimensionlessparametername,
+	vpp.valueparameterdescription,
 	vpn.parameternamespaceid,
 	vpn.valueparametername,
 	'ratio' AS valueunitname
@@ -409,67 +507,52 @@ WHERE
 UNION ALL
 SELECT
 	vdp.valueparameterid,
+	vdp.valuedimensionlessparametername,
+	vdp.valueparameterdescription,
 	0 AS parameternamespaceid,
 	vdp.valuedimensionlessparametername,
 	'ratio' AS valueunitname
 FROM
-	__WDB_SCHEMA__.valuedimensionlessparameter AS vdp
+	__WDB_SCHEMA__.valuedimensionlessparameter AS vdp;
+
+REVOKE ALL ON __WCI_SCHEMA__.dimensionlessvalueparameter FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.dimensionlessvalueparameter TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.dimensionlessvalueparameter TO wdb_read, wdb_write;
+
+
+
+CREATE VIEW __WCI_SCHEMA__.valueparameter AS
+SELECT
+	valueparameterid,
+	parameternamespaceid,
+	valueparametername,
+	valueunitname
+FROM
+	__WCI_SCHEMA__.measurevalueparameter
 UNION ALL
 SELECT
-	vpp.valueparameterid,
-	vpn.parameternamespaceid,
-	vpn.valueparametername,
+	valueparameterid,
+	parameternamespaceid,
+	valueparametername,
+	valueunitname
+FROM
+	__WCI_SCHEMA__.functionvalueparameter
+UNION ALL
+SELECT
+	valueparameterid,
+	parameternamespaceid,
+	valueparametername,
 	NULL AS valueunitname
 FROM
-	__WDB_SCHEMA__.valuecodeparameter AS vpp, 
-	__WDB_SCHEMA__.valueparametername AS vpn
-WHERE
-	vpp.valueparameterid = vpn.valueparameterid
+	__WCI_SCHEMA__.codevalueparameter
 UNION ALL
 SELECT
-	vcp.valueparameterid,
-	0 AS parameternamespaceid,
-	vcp.valuecodeparametername,
-	NULL AS valueunitname
+	valueparameterid,
+	parameternamespaceid,
+	valueparametername,
+	valueunitname
 FROM
-	__WDB_SCHEMA__.valuecodeparameter AS vcp
-UNION ALL
-SELECT
-	vpp.valueparameterid,
-	vpn.parameternamespaceid,
-	vpn.valueparametername,
-	unit.unitname AS valueunitname
-FROM
-	__WDB_SCHEMA__.valuefunctionparameter AS vpp, 
-	__WDB_SCHEMA__.unit AS unit,
-	__WDB_SCHEMA__.valueparametername AS vpn
-WHERE
-	unit.unitname = vpp.valueparameterunitname AND
-	vpp.valueparameterid = vpn.valueparameterid
-UNION ALL
-SELECT
-	vfp.valueparameterid,
-	0 AS parameternamespaceid,
-	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.measure  AS valueparametername,
-	vsunit.unitname AS valueunitname
-FROM
-	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
-	__WDB_SCHEMA__.unit AS vsunit
-WHERE
-	vsunit.unitname = vfp.valueparameterunitname AND
-	vfp.parameterquantitytype = 'scalar'
-UNION ALL
-SELECT
-	vfp.valueparameterid,
-	0 AS parameternamespaceid,
-	vfp.parameterfunctiontype || ' ' || vfp.valueparameterusage || ' ' || vsunit.measure || ' (' || vfp.parameterquantitytype || ')' AS valueparametername,
-	vsunit.unitname AS valueunitname
-FROM
-	__WDB_SCHEMA__.valuefunctionparameter AS vfp,
-	__WDB_SCHEMA__.unit AS vsunit
-WHERE
-	vsunit.unitname = vfp.valueparameterunitname AND
-	vfp.parameterquantitytype <> 'scalar';
+	__WCI_SCHEMA__.dimensionlessvalueparameter;
 
 REVOKE ALL ON __WCI_SCHEMA__.valueparameter FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.valueparameter TO wdb_admin;
@@ -491,12 +574,14 @@ CREATE INDEX XIE0wci_valueparameter_mv ON __WCI_SCHEMA__.valueparameter_mv
 
 
 
-CREATE VIEW __WCI_SCHEMA__.levelparameter AS
+CREATE VIEW __WCI_SCHEMA__.measurelevelparameter AS
 SELECT
 	lpp.levelparameterid,
+	lpp.levelparameterusage,
+	unit.measure, 
+	unit.unitname AS levelunitname,
 	lpn.parameternamespaceid,
-	lpn.levelparametername,
-	unit.unitname AS levelunitname
+	lpn.levelparametername
 FROM
 	__WDB_SCHEMA__.levelmeasureparameter AS lpp,
 	__WDB_SCHEMA__.levelparametername AS lpn,
@@ -507,20 +592,29 @@ WHERE
 UNION ALL
 SELECT
 	lpp.levelparameterid,
+	lpp.levelparameterusage,
+	unit.measure, 
+	unit.unitname AS levelunitname,
 	0 AS parameternamespaceid,
-	lpp.levelparameterusage || ' ' || unit.measure AS levelparametername,
-	unit.unitname AS levelunitname
+	lpp.levelparameterusage || ' ' || unit.measure AS levelparametername
 FROM
 	__WDB_SCHEMA__.levelmeasureparameter AS lpp, 
 	__WDB_SCHEMA__.unit AS unit
 WHERE
-	unit.unitname = lpp.levelparameterunitname
-UNION ALL
+	unit.unitname = lpp.levelparameterunitname;
+
+REVOKE ALL ON __WCI_SCHEMA__.measurelevelparameter FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.measurelevelparameter TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.measurelevelparameter TO wdb_read, wdb_write;
+	
+
+CREATE VIEW __WCI_SCHEMA__.codelevelparameter AS
 SELECT
 	lcp.levelparameterid,
+	lcp.levelcodeparametername,
+	lcp.codeparameterreference,
 	lpn.parameternamespaceid,
-	lpn.levelparametername,
-	NULL AS levelunitname
+	lpn.levelparametername
 FROM
 	__WDB_SCHEMA__.levelcodeparameter AS lcp, 
 	__WDB_SCHEMA__.levelparametername AS lpn
@@ -529,11 +623,35 @@ WHERE
 UNION ALL
 SELECT
 	lcp.levelparameterid, 
+	lcp.levelcodeparametername,
+	lcp.codeparameterreference,
 	0 as parameternamespaceid, 
-	lcp.levelcodeparametername, 
-	NULL as unitname 
+	lcp.levelcodeparametername AS levelparametername
 FROM
 	__WDB_SCHEMA__.levelcodeparameter as lcp;
+
+REVOKE ALL ON __WCI_SCHEMA__.codelevelparameter FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.codelevelparameter TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.codelevelparameter TO wdb_read, wdb_write;
+	
+
+
+CREATE VIEW __WCI_SCHEMA__.levelparameter AS
+SELECT
+	l.levelparameterid,
+	l.parameternamespaceid,
+	l.levelparametername,
+	l.levelunitname
+FROM
+	__WCI_SCHEMA__.measurelevelparameter AS l
+UNION ALL
+SELECT
+	c.levelparameterid, 
+	c.parameternamespaceid, 
+	c.levelcodeparametername, 
+	NULL as levelunitname 
+FROM
+	__WCI_SCHEMA__.codelevelparameter as c;
 
 REVOKE ALL ON __WCI_SCHEMA__.levelparameter FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.levelparameter TO wdb_admin;
@@ -565,11 +683,20 @@ SELECT un.unitname,
 	   un.description,
 	   co.siunitconversioncoefficient,
 	   co.siunitconversionterm
-FROM  
-	   __WDB_SCHEMA__.unit un
-LEFT OUTER JOIN
-	   __WDB_SCHEMA__.siunitconversion co
-ON 	   (un.unitname = co.unitname);
+FROM  	__WDB_SCHEMA__.unit un,
+		__WDB_SCHEMA__.siunitconversion co
+WHERE	un.unitname = co.unitname
+UNION ALL
+SELECT un.unitname, 
+	   un.unittype,
+	   un.measure,
+	   un.description,
+	   1.0 AS siunitconversioncoefficient,
+	   0.0 AS siunitconversionterm
+FROM  	__WDB_SCHEMA__.unit un
+WHERE 	NOT EXISTS ( SELECT * 
+					 FROM 	__WDB_SCHEMA__.siunitconversion co
+					 WHERE	un.unitname = co.unitname );
 
 REVOKE ALL ON __WCI_SCHEMA__.unitwithconversion FROM public;
 GRANT ALL ON __WCI_SCHEMA__.unitwithconversion TO wdb_admin;
