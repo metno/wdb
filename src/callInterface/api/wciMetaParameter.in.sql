@@ -43,9 +43,9 @@ BEGIN
 	-- Insert Value
 	INSERT INTO __WDB_SCHEMA__.valuemeasureparameter
 	VALUES ( parameterid_,
-			 parameterUsage_,
+			 lower(parameterUsage_),
 			 parameterUnit_,
-			 parameterQuantity_ );
+			 lower(parameterQuantity_) );
 	RETURN parameterid_;
 END;
 $BODY$
@@ -79,10 +79,10 @@ BEGIN
 	-- Insert Value
 	INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
 	VALUES ( parameterid_,
-			 parameterFunction_,
-			 parameterUsage_,
+			 lower(parameterFunction_),
+			 lower(parameterUsage_),
 			 parameterUnit_,
-			 parameterQuantity_ );
+			 lower(parameterQuantity_) );
 	RETURN parameterid_;
 END;
 $BODY$
@@ -114,7 +114,7 @@ BEGIN
 	-- Insert Value
 	INSERT INTO __WDB_SCHEMA__.valuecodeparameter
 	VALUES ( parameterid_,
-			 parameterName_,
+			 lower(parameterName_),
 			 parameterReference_ );
 	RETURN parameterid_;
 END;
@@ -148,7 +148,7 @@ BEGIN
 	-- Insert Value
 	INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
 	VALUES ( parameterid_,
-			 parameterName_,
+			 lower(parameterName_),
 			 parameterDescription_ );
 	RETURN parameterid_;
 END;
@@ -250,9 +250,9 @@ $BODY$
 		v.valueparameterid,
 		v.valuedimensionlessparametername,
 		v.valueparameterdescription,
+		v.valueunitname,
 		v.parameternamespaceid,
-		v.valueparametername,
-		v.valueunitname
+		v.valueparametername
 	FROM 
 		__WCI_SCHEMA__.dimensionlessvalueparameter v, 
 		__WCI_SCHEMA__.getSessionData() s
@@ -299,7 +299,7 @@ BEGIN
 	INSERT INTO __WDB_SCHEMA__.valueparametername
 	VALUES ( parameterid_,
 			 namespace_,
-			 valueParameterName_ );
+			 lower(valueParameterName_) );
 END;
 $BODY$
 SECURITY DEFINER
@@ -468,7 +468,7 @@ BEGIN
 	INSERT INTO __WDB_SCHEMA__.levelparametername
 	VALUES ( parameterid_,
 			 namespace_,
-			 levelParameterName_ );
+			 lower(levelParameterName_) );
 END;
 $BODY$
 SECURITY DEFINER
@@ -491,7 +491,7 @@ wci.addMeasure(
 RETURNS void AS
 $BODY$
 	INSERT INTO __WDB_SCHEMA__.measure
-	VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9 );
+	VALUES ( lower($1), $2, $3, $4, $5, $6, $7, $8, $9 );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
@@ -507,7 +507,7 @@ RETURNS SETOF __WCI_SCHEMA__.measure AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.measure
-	WHERE 	measure LIKE $1 OR $1 IS NULL;
+	WHERE 	measure LIKE lower($1) OR $1 IS NULL;
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;

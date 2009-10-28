@@ -148,8 +148,8 @@ $BODY$
 			p.placegeometrytype,
 			p.placegeometry,
 			p.placeindeterminatecode,
-			p.placename,
 			p.placenamespaceid,
+			p.placename,
 			p.originalsrid,
 			p.placestoretime
 	FROM	__WCI_SCHEMA__.placeDefinition_mv p,
@@ -161,16 +161,39 @@ SECURITY DEFINER
 LANGUAGE sql STABLE;
 
 
+-- Place Point Info
+CREATE OR REPLACE FUNCTION 
+wci.getPlacePoint( location 			text )	
+RETURNS SETOF __WCI_SCHEMA__.placedefinition AS
+$BODY$
+	SELECT 	p.placeid,
+			p.placegeometrytype,
+			p.placegeometry,
+			p.placeindeterminatecode,
+			p.placenamespaceid,
+			p.placename,
+			p.originalsrid,
+			p.placestoretime
+	FROM	__WCI_SCHEMA__.placeDefinition_mv p,
+			__WCI_SCHEMA__.getSessionData() s
+	WHERE	p.placenamespaceid = s.placenamespaceid
+	  AND	( $1 IS NULL OR placename LIKE lower($1) )
+	  AND	p.placegeometrytype = 'Point';
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STABLE;
+
+
 CREATE OR REPLACE FUNCTION 
 wci.getPlaceRegularGrid( grid_ 		text )
 RETURNS SETOF __WCI_SCHEMA__.placeregulargrid AS
 $BODY$
 	SELECT 	p.placeid,
-			p.placename,
-			p.placenamespaceid,
-			p.placegeometry,
 			p.placegeometrytype,
+			p.placegeometry,
 			p.placeindeterminatetype,
+			p.placenamespaceid,
+			p.placename,
 			p.numberx,
 			p.numbery,
 			p.incrementx,
@@ -190,9 +213,7 @@ LANGUAGE sql STABLE;
 
 
 
---
 -- Add SRID
---
 CREATE OR REPLACE FUNCTION
 wci.addSrid(
 	name_		text,
@@ -214,7 +235,7 @@ BEGIN
 			 name_,
 			 NULL,
 			 NULL,
-			 projection_ );			 
+			 lower(btrim(projection_)) );			 
 	-- The two nulls represent the EPSG codes, which we do not attempt to 
 	-- derive at this point.
 	-- Return	 
@@ -225,22 +246,35 @@ SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
---
 -- Get SRID
---
 CREATE OR REPLACE FUNCTION 
 wci.getSrid(
-	srid_	text
+	name_	text
 )
-RETURNS integer AS
+RETURNS SETOF public.spatial_ref_sys AS
 $BODY$
-	SELECT 	srid 
+	SELECT 	*
 	FROM 	public.spatial_ref_sys
-	WHERE 	proj4text LIKE $1
+	WHERE 	auth_name ILIKE $1
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql;
 
+
+
+-- Get SRID
+CREATE OR REPLACE FUNCTION 
+wci.getSridFromProj(
+	proj_	text
+)
+RETURNS integer AS
+$BODY$
+	SELECT 	srid
+	FROM 	public.spatial_ref_sys
+	WHERE 	btrim(proj4text) LIKE lower($1)
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
 
 
 --

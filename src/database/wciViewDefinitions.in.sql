@@ -189,8 +189,8 @@ SELECT
 	pd.placegeometrytype,
 	pd.placegeometry,
 	pd.placeindeterminatecode,
-	pn.placename,
 	pn.placenamespaceid,
+	pn.placename,
 	pg.originalsrid,
 	pd.placestoretime
 FROM 
@@ -206,8 +206,8 @@ SELECT
 	pd.placegeometrytype,
 	pd.placegeometry,
 	pd.placeindeterminatecode,
-	pn.placename,
 	pn.placenamespaceid,
+	pn.placename,
 	__WDB_SRID__ as originalsrid,
 	pd.placestoretime	
 FROM 
@@ -222,8 +222,8 @@ SELECT
 	pd.placegeometrytype,
 	pd.placegeometry,
 	pd.placeindeterminatecode,
-	'grid(' || pg.startX || ' ' || pg.startY || ', ' || pg.incrementX || ' ' || pg.incrementY || ', ' || pg.numberX || ' ' || pg.numberY || ', ' || pg.originalsrid || ')' AS placename,
 	0 AS placenamespaceid,
+	'grid(' || pg.startX || ' ' || pg.startY || ', ' || pg.incrementX || ' ' || pg.incrementY || ', ' || pg.numberX || ' ' || pg.numberY || ', ' || pg.originalsrid || ')' AS placename,
 	pg.originalsrid,
 	pd.placestoretime	
 FROM 	
@@ -237,8 +237,8 @@ SELECT
 	pd.placegeometrytype,
 	pd.placegeometry,
 	pd.placeindeterminatecode,
-	lower(astext( pd.placegeometry )) as placename,
 	0 AS placenamespaceid,
+	lower(astext( pd.placegeometry )) as placename,
 	__WDB_SRID__ as originalsrid,
 	pd.placestoretime	
 FROM 	
@@ -280,11 +280,11 @@ CREATE INDEX XIE2wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
 CREATE VIEW __WCI_SCHEMA__.placeregulargrid AS 
 SELECT 
 	pd.placeid,
-	pn.placename,	
-	pn.placenamespaceid,
-	pd.placegeometry,
 	pd.placegeometrytype,
+	pd.placegeometry,
 	pit.placeindeterminatetype,
+	pn.placenamespaceid,
+	pn.placename,	
 	pg.numberX, 
 	pg.numberY, 
 	pg.incrementX, 
@@ -308,11 +308,11 @@ WHERE
 UNION ALL
 SELECT
 	pd.placeid,
-	'grid(' || pg.startX || ' ' || pg.startY || ', ' || pg.incrementX || ' ' || pg.incrementY || ', ' || pg.numberX || ' ' || pg.numberY || ', ' || pg.originalsrid || ')' AS placename,
-	0 AS placenamespaceid,
-	pd.placegeometry, 
 	pd.placegeometrytype,
+	pd.placegeometry, 
 	pit.placeindeterminatetype,
+	0 AS placenamespaceid,
+	'grid(' || pg.startX || ' ' || pg.startY || ', ' || pg.incrementX || ' ' || pg.incrementY || ', ' || pg.numberX || ' ' || pg.numberY || ', ' || pg.originalsrid || ')' AS placename,
 	pg.numberX, 
 	pg.numberY, 
 	pg.incrementX, 
@@ -496,9 +496,9 @@ SELECT
 	vpp.valueparameterid,
 	vpp.valuedimensionlessparametername,
 	vpp.valueparameterdescription,
+	'ratio' AS valueunitname,
 	vpn.parameternamespaceid,
-	vpn.valueparametername,
-	'ratio' AS valueunitname
+	vpn.valueparametername
 FROM
 	__WDB_SCHEMA__.valuedimensionlessparameter AS vpp, 
 	__WDB_SCHEMA__.valueparametername AS vpn
@@ -509,9 +509,9 @@ SELECT
 	vdp.valueparameterid,
 	vdp.valuedimensionlessparametername,
 	vdp.valueparameterdescription,
+	'ratio' AS valueunitname,
 	0 AS parameternamespaceid,
-	vdp.valuedimensionlessparametername,
-	'ratio' AS valueunitname
+	vdp.valuedimensionlessparametername
 FROM
 	__WDB_SCHEMA__.valuedimensionlessparameter AS vdp;
 
