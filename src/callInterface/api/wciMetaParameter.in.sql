@@ -638,7 +638,7 @@ CREATE OR REPLACE FUNCTION
 wci.getLevelParameterUsage(
 	usage_	text
 )
-RETURNS __WCI_SCHEMA__.levelparameterusage AS
+RETURNS SETOF __WCI_SCHEMA__.levelparameterusage AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.levelparameterusage
