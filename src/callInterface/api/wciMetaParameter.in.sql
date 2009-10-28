@@ -567,7 +567,7 @@ wci.addParameterFunctionType(
 RETURNS void AS
 $BODY$
 	INSERT INTO __WDB_SCHEMA__.parameterfunctiontype
-	VALUES ( $1, $2 );
+	VALUES ( lower($1), $2 );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
