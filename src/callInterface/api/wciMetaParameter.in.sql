@@ -582,7 +582,7 @@ RETURNS SETOF __WCI_SCHEMA__.parameterfunctiontype AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.parameterfunctiontype
-	WHERE 	parameterfunctiontype LIKE $1 OR $1 IS NULL;
+	WHERE 	parameterfunctiontype ILIKE $1 OR $1 IS NULL;
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;
