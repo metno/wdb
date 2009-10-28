@@ -1,3 +1,9 @@
+wdb (0.9.6-1) hardy; urgency=low
+
+  * new version
+
+ -- Vegard Bønes <vegard.bones@met.no>  Wed, 28 Oct 2009 11:16:00 +0100
+
 wdb (0.9.4-2) hardy; urgency=low
 
   * bugfixes
