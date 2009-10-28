@@ -842,7 +842,7 @@ GRANT SELECT ON __WCI_SCHEMA__.unit TO wdb_write;
 
 CREATE VIEW __WCI_SCHEMA__.measure AS
 	SELECT  
-		measure
+		*
 	FROM 	
 		__WDB_SCHEMA__.measure;
 		

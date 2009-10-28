@@ -503,7 +503,7 @@ CREATE OR REPLACE FUNCTION
 wci.getMeasure(
 	measure_	text
 )
-RETURNS __WCI_SCHEMA__.measure AS
+RETURNS SETOF __WCI_SCHEMA__.measure AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.measure
@@ -578,7 +578,7 @@ CREATE OR REPLACE FUNCTION
 wci.getParameterFunctionType(
 	type_	text
 )
-RETURNS __WCI_SCHEMA__.parameterfunctiontype AS
+RETURNS SETOF __WCI_SCHEMA__.parameterfunctiontype AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.parameterfunctiontype
@@ -608,7 +608,7 @@ CREATE OR REPLACE FUNCTION
 wci.getValueParameterUsage(
 	usage_	text
 )
-RETURNS __WCI_SCHEMA__.valueparameterusage AS
+RETURNS SETOF __WCI_SCHEMA__.valueparameterusage AS
 $BODY$
 	SELECT 	*
 	FROM 	__WCI_SCHEMA__.valueparameterusage
