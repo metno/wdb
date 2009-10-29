@@ -1174,6 +1174,37 @@ void PlaceGeometryTest::testG40_02_AddPlaceRegularGrid()
     CPPUNIT_ASSERT( rC.size() > 0 );
 }
 
+void PlaceGeometryTest::testG41_01_addWithTrimmedSrid()
+{
+    result rC = t->exec( "SELECT wci.addPlaceRegularGrid('installTestSrid_01', 10,10,1,1,0,0,'+proj=longlat +ellps=airy +no_defs');" );
+    CPPUNIT_ASSERT( rC.size() );
+}
+
+void PlaceGeometryTest::testG41_02_addWithRightSpacedSrid()
+{
+    result rC = t->exec( "SELECT wci.addPlaceRegularGrid('installTestSrid_02', 10,10,1,1,0,0,'+proj=longlat +ellps=airy +no_defs');" );
+    CPPUNIT_ASSERT( rC.size() );
+}
+
+void PlaceGeometryTest::testG41_03_addWithLeftSpacedSrid()
+{
+    result rC = t->exec( "SELECT wci.addPlaceRegularGrid('installTestSrid_03', 10,10,1,1,0,0,' +proj=longlat +ellps=airy +no_defs');" );
+    CPPUNIT_ASSERT( rC.size() );
+}
+
+void PlaceGeometryTest::testG41_04_addWithBothSpacedSrid()
+{
+    result rC = t->exec( "SELECT wci.addPlaceRegularGrid('installTestSrid_04', 10,10,1,1,0,0,'+proj=longlat +ellps=airy +no_defs ');" );
+    CPPUNIT_ASSERT( rC.size() );
+}
+
+void PlaceGeometryTest::testG41_05_addWithArbitrarySpacedSrid()
+{
+    result rC = t->exec( "SELECT wci.addPlaceRegularGrid('installTestSrid_05', 10,10,1,1,0,0,'+proj=longlat     +ellps=airy +no_defs');" );
+    CPPUNIT_ASSERT( rC.size() );
+}
+
+
 
 
 // Support Functions

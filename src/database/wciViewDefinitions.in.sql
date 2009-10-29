@@ -292,7 +292,7 @@ SELECT
 	pg.startX, 
 	pg.startY, 
 	pg.originalsrid,
-	srs.proj4text AS projdefinition,
+	btrim(lower(srs.proj4text)) AS projdefinition,
 	pd.placestoretime
 FROM 
 	__WDB_SCHEMA__.placedefinition pd,
@@ -320,7 +320,7 @@ SELECT
 	pg.startX, 
 	pg.startY, 
 	pg.originalsrid,
-	srs.proj4text AS projdefinition,
+	btrim(lower(srs.proj4text)) AS projdefinition,
 	pd.placestoretime
 FROM 
 	__WDB_SCHEMA__.placedefinition pd,
@@ -907,7 +907,7 @@ CREATE VIEW __WCI_SCHEMA__.placespec_v AS SELECT
 	pg.startX, 
 	pg.startY, 
 	pg.originalsrid,
-	srs.proj4text AS projdefinition,
+	btrim(lower(srs.proj4text)) AS projdefinition,
 	pd.placestoretime
 FROM 
 	__WDB_SCHEMA__.placedefinition pd,

@@ -93,7 +93,7 @@ BEGIN
 	-- Get SRID
 	SELECT srid INTO srid_
 	FROM spatial_ref_sys
-	WHERE proj4text = projection_;
+	WHERE btrim(lower(proj4text)) = btrim(lower(projection_));
 	-- If SRID not found...
 	IF srid_ IS NULL THEN
 		RAISE EXCEPTION 'Could not identify the PROJ.4 projection in the database. Check that the projection is valid and, if needed, insert it into the database using wci.addSrid( ... )';		
@@ -107,7 +107,7 @@ BEGIN
 		  incrementy = incY_ AND
 		  startx = startX_ AND
 		  starty = startY_ AND
-		  projdefinition = projection_;
+		  projdefinition = btrim(lower(projection_));
 	-- Add dataprovider
 	IF NOT FOUND THEN
 		-- Get PlaceId
@@ -253,7 +253,11 @@ wci.getSrid(
 )
 RETURNS SETOF public.spatial_ref_sys AS
 $BODY$
-	SELECT 	*
+	SELECT	srid,
+			auth_name,
+			auth_srid,
+			srtext,
+			lower(btrim(proj4text))        
 	FROM 	public.spatial_ref_sys
 	WHERE 	auth_name ILIKE $1
 $BODY$
@@ -271,7 +275,7 @@ RETURNS integer AS
 $BODY$
 	SELECT 	srid
 	FROM 	public.spatial_ref_sys
-	WHERE 	btrim(proj4text) LIKE lower($1)
+	WHERE 	lower(btrim(proj4text)) LIKE lower(btrim($1))
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql;
@@ -368,7 +372,7 @@ $BODY$
 	AND   round(incrementY::numeric, 3) = round($4::numeric, 3)
 	AND	  round(startX::numeric, 3) = round($5::numeric, 3)
 	AND   round(startY::numeric, 3) = round($6::numeric, 3)
-	AND   projdefinition = $7
+	AND   projdefinition = btrim(lower($7))
 	AND   grd.placenamespaceid = s.placenamespaceid;
 $BODY$
 SECURITY DEFINER

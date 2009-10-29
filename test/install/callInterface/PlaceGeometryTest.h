@@ -190,6 +190,12 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG40_01_AddPlacePoint );
 	CPPUNIT_TEST( testG40_02_AddPlaceRegularGrid );
 
+	CPPUNIT_TEST( testG41_01_addWithTrimmedSrid );
+	CPPUNIT_TEST( testG41_02_addWithRightSpacedSrid );
+	CPPUNIT_TEST( testG41_03_addWithLeftSpacedSrid );
+	CPPUNIT_TEST( testG41_04_addWithBothSpacedSrid );
+	CPPUNIT_TEST_EXCEPTION( testG41_05_addWithArbitrarySpacedSrid, pqxx::sql_error );
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -356,6 +362,15 @@ public:
 	 */
 	void testG40_01_AddPlacePoint();
 	void testG40_02_AddPlaceRegularGrid();
+
+	/**
+	 * Test the adding of grids for SRID inconsistencies
+	 */
+	void testG41_01_addWithTrimmedSrid();
+	void testG41_02_addWithRightSpacedSrid();
+	void testG41_03_addWithLeftSpacedSrid();
+	void testG41_04_addWithBothSpacedSrid();
+	void testG41_05_addWithArbitrarySpacedSrid();
 
 
 private:
