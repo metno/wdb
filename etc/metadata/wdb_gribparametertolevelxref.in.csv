@@ -1,9 +1,0 @@
-GeneratingCenterId|Grib1CodeTable2Version|Grib1Parameter|Grib1TimeRange|Grib1ParameterThresholdIndicator|Grib1ParameterThresholdLower|Grib1ParametersThresholdUpper|Grib1ParameterThresholdScale|LevelParamId|LevelFrom|LevelTo|LevelIndeterminateCode|Load
-88|3|245|0|0|0|0|0|2|10|10|0|t
-88|3|246|0|0|0|0|0|2|10|10|0|t
-96|1|73|0|0|0|0|0|1|85000|85000|0|t
-96|1|73|1|0|0|0|0|1|85000|85000|0|t
-96|1|74|0|0|0|0|0|1|50000|50000|0|t
-96|1|74|1|0|0|0|0|1|50000|50000|0|t
-96|1|75|0|0|0|0|0|1|30000|30000|0|t
-96|1|75|1|0|0|0|0|1|30000|30000|0|t

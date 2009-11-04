@@ -1,9 +1,0 @@
-FeltLevel|Niveau1GTE|Niveau1LTE|LevelParameterId|LevelParameterUnit|Load
-1|0|999999|1|hPa|t
-2|1|999|1|hPa|t
-2|1000|1000|6|none|f
-3|0|999999|2|m|t
-4|0|1000|113|K|t
-5|0|999999|5|m|t
-7|0|999999|7|hPa|t
-8|0|999999|3|m|t

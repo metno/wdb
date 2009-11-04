@@ -18,8 +18,6 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_timeindeterminatetype.in.csv \
 						etc/metadata/wdb_dataprovider.in.csv \
 						etc/metadata/wdb_dataprovidercomment.in.csv \
-						etc/metadata/wdb_gribgeneratingprocess.in.csv \
-						etc/metadata/wdb_feltgeneratingprocess.in.csv \
 						etc/metadata/wdb_wciuserdataprovider.in.csv \
 						etc/metadata/wdb_dataprovidername.in.csv \
 						etc/metadata/wdb_placedefinition.in.csv \
@@ -44,44 +42,15 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_qualityprocess.in.csv \
 						etc/metadata/wdb_spatial_ref_sys.in.csv
 
-GRIBLOAD_METADATA =		etc/metadata/wdb_griblevelparameterxref.in.csv \
-						etc/metadata/wdb_gribparametertolevelxref.in.csv \
-						etc/metadata/wdb_gribparameterxref.in.csv 
-
-FELTLOAD_METADATA =		etc/metadata/wdb_feltlevelparameterxref.in.csv \
-						etc/metadata/wdb_feltparametertolevelxref.in.csv \
-						etc/metadata/wdb_feltparameterxref.in.csv \
-						etc/metadata/wdb_feltparametertovaliddurationxref.in.csv
-
-XMLLOAD_METADATA =		etc/metadata/wdb_xmlparameterxref.in.csv
-
-KVALOBSLOAD_METADATA =	etc/metadata/wdb_kvalobsparameterxref.in.csv \
-						etc/metadata/wdb_kvalobsvalidtimexref.in.csv
- 
-
-METADATA_SOURCES =		etc/metadata/wdbMetadata.in.sql \
-						etc/metadata/feltLoadMetadata.in.sql \
-						etc/metadata/gribLoadMetadata.in.sql
+METADATA_SOURCES =		etc/metadata/wdbMetadata.in.sql
 
 sql_DATA +=		 		$(METADATA_SOURCES:.in.sql=.sql) \
-						$(CORE_METADATA:.in.csv=.csv) \
-						$(GRIBLOAD_METADATA:.in.csv=.csv) \
-						$(FELTLOAD_METADATA:.in.csv=.csv) \
-						$(XMLLOAD_METADATA:.in.csv=.csv) \
-						$(KVALOBSLOAD_METADATA:.in.csv=.csv)
+						$(CORE_METADATA:.in.csv=.csv)
 
 CLEANFILES +=		 	$(METADATA_SOURCES:.in.sql=.sql) \
-						$(CORE_METADATA:.in.csv=.csv) \
-						$(GRIBLOAD_METADATA:.in.csv=.csv) \
-						$(FELTLOAD_METADATA:.in.csv=.csv) \
-						$(XMLLOAD_METADATA:.in.csv=.csv) \
-						$(KVALOBSLOAD_METADATA:.in.csv=.csv)
+						$(CORE_METADATA:.in.csv=.csv)
 
 EXTRA_DIST +=			$(CORE_METADATA) \
-						$(GRIBLOAD_METADATA) \
-						$(FELTLOAD_METADATA) \
-						$(XMLLOAD_METADATA) \
-						$(KVALOBSLOAD_METADATA) \
 						$(METADATA_SOURCES) \
 						etc/metadata/wdb.mk \
 						etc/metadata/Makefile.am \
@@ -93,6 +62,6 @@ DISTCLEANFILES +=		etc/metadata/Makefile
 # Local Makefile Targets
 #-----------------------------------------------------------------------------
 
-etc/metadata/all: $(METADATA_SOURCES:.in.sql=.sql) $(CORE_METADATA:.in.csv=.csv) $(GRIBLOAD_METADATA:.in.csv=.csv) $(FELTLOAD_METADATA:.in.csv=.csv) $(XMLLOAD_METADATA:.in.csv=.csv) $(KVALOBSLOAD_METADATA:.in.csv=.csv)
+etc/metadata/all: $(METADATA_SOURCES:.in.sql=.sql) $(CORE_METADATA:.in.csv=.csv)
 
 etc/metadata/clean: clean

@@ -54,10 +54,10 @@ COPY __WDB_SCHEMA__.placeregulargrid FROM '__WDB_DATADIR__/sql/wdb_placeregularg
 COPY __WDB_SCHEMA__.placename FROM '__WDB_DATADIR__/sql/wdb_placename.csv' CSV HEADER DELIMITER '|';
 
 -- Parameters & Units
-COPY __WDB_SCHEMA__.parameterfunctiontype FROM '__WDB_DATADIR__/sql/wdb_parameterfunctiontype.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.measure FROM '__WDB_DATADIR__/sql/wdb_measure.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.unit FROM '__WDB_DATADIR__/sql/wdb_unit.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.siunitconversion FROM '__WDB_DATADIR__/sql/wdb_siunitconversion.csv' CSV HEADER DELIMITER '|';
+COPY __WDB_SCHEMA__.parameterfunctiontype FROM '__WDB_DATADIR__/sql/wdb_parameterfunctiontype.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.valueparameterusage FROM '__WDB_DATADIR__/sql/wdb_valueparameterusage.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.levelparameterusage FROM '__WDB_DATADIR__/sql/wdb_levelparameterusage.csv' CSV HEADER DELIMITER '|'; 
 COPY __WDB_SCHEMA__.valueparameter FROM '__WDB_DATADIR__/sql/wdb_valueparameter.csv' CSV HEADER DELIMITER '|'; 
@@ -71,10 +71,6 @@ COPY __WDB_SCHEMA__.levelcodeparameter FROM '__WDB_DATADIR__/sql/wdb_levelcodepa
 -- AutoGenerate
 --COPY __WDB_SCHEMA__.valueparametername FROM '__WDB_DATADIR__/sql/wdb_valueparametername.csv' CSV HEADER DELIMITER '|';
 --COPY __WDB_SCHEMA__.levelparametername FROM '__WDB_DATADIR__/sql/wdb_levelparametername.csv' CSV HEADER DELIMITER '|';
-
--- Quality Processes
---COPY __WDB_SCHEMA__.qualitycontrolstage FROM '__WDB_DATADIR__/sql/wdb_qualitycontrolstage.csv' CSV HEADER DELIMITER '|';
---COPY __WDB_SCHEMA__.qualityprocess FROM '__WDB_DATADIR__/sql/wdb_qualityprocess.csv' CSV HEADER DELIMITER '|';
 
 -- Confidence Code
 COPY __WDB_SCHEMA__.qualityconfidencecode FROM '__WDB_DATADIR__/sql/wdb_qualityconfidencecode.csv' CSV HEADER DELIMITER '|';
