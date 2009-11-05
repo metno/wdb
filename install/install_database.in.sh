@@ -1,23 +1,23 @@
 #!/bin/sh
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## 
-## wdb - weather and water data storage
-##
-## Copyright (C) 2007 met.no
-##
-##  Contact information:
-##  Norwegian Meteorological Institute
-##  Box 43 Blindern
-##  0313 OSLO
-##  NORWAY
-##  E-mail: wdb@met.no
-##
-##  This is free software; you can redistribute it and/or modify
-##  it under the terms of the GNU General Public License as published by
-##  the Free Software Foundation; either version 2 of the License, or
-##  (at your option) any later version.
-##
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 
+# wdb - weather and water data storage
+#
+# Copyright (C) 2007 met.no
+#
+#  Contact information:
+#  Norwegian Meteorological Institute
+#  Box 43 Blindern
+#  0313 OSLO
+#  NORWAY
+#  E-mail: wdb@met.no
+#
+#  This is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # install - install the wdb system
 
 # TODO: Add support for reading additional configuration files
@@ -166,18 +166,33 @@ else
 fi
 
 # Check for Postgis file lw_postgis.sql
-echo -n "checking for the presence of lwpostgis.sql... "
+echo -n "checking for the presence of postgis.sql... "
+POSTGIS_FILE=lwpostgis.sql
 if test -f $POSTGIS_DIR/lwpostgis.sql; then
-    echo "yes"
+	POSTGIS_FILE=lwpostgis.sql
+    echo $POSTGIS_FILE
 elif test -f $POSTGIS_DIR/../lwpostgis.sql; then
-    echo "yes"
+	POSTGIS_FILE=lwpostgis.sql
     POSTGIS_DIR=$POSTGIS_DIR/..
+    echo $POSTGIS_FILE
 elif test -f $POSTGIS_DIR/contrib/lwpostgis.sql; then
-    echo "yes"
+	POSTGIS_FILE=lwpostgis.sql
     POSTGIS_DIR=$POSTGIS_DIR/contrib
+    echo $POSTGIS_FILE
+elif test -f $POSTGIS_DIR/postgis.sql; then
+	POSTGIS_FILE=postgis.sql
+    echo $POSTGIS_FILE
+elif test -f $POSTGIS_DIR/../postgis.sql; then
+	POSTGIS_FILE=postgis.sql
+    POSTGIS_DIR=$POSTGIS_DIR/..
+    echo $POSTGIS_FILE
+elif test -f $POSTGIS_DIR/contrib/postgis.sql; then
+	POSTGIS_FILE=postgis.sql
+    POSTGIS_DIR=$POSTGIS_DIR/contrib
+    echo $POSTGIS_FILE
 else 
     echo "no"
-    echo "Error: could not find lwpostgis.sql. Postgis must be installed together with postgres. Installation assumes that lwpostgis.sql is installed in $POSTGIS_DIR/contrib."
+    echo "Error: could not find the postgis.sql file (alternately lwpostgis.sql). Postgis must be installed together with postgres. Installation assumes that postgis.sql is installed in $POSTGIS_DIR/contrib."
     exit 1
 fi
 
@@ -301,7 +316,7 @@ createlang -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT plpgsql $WDB_NAME
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
-\i $POSTGIS_DIR/lwpostgis.sql
+\i $POSTGIS_DIR/$POSTGIS_FILE
 \i $POSTGIS_DIR/spatial_ref_sys.sql
 EOF
 if [ 0 != $? ]; then
