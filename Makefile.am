@@ -11,7 +11,7 @@
 #-----------------------------------------------------------------------------
 
 # Scanned by Autoreconf; must be static (no expansion)
-ACLOCAL_AMFLAGS = 		-I config
+ACLOCAL_AMFLAGS = 		-I m4
 
 AM_CPPFLAGS =			-DSYSCONFDIR=\"$(sysconfdir)\"
 AM_LDFLAGS =			-L@builddir@
@@ -462,4 +462,4 @@ upgradecheck: dist
 	  && $(MAKE) $(AM_MAKEFLAGS)
 
 
-include config/debian.mk
+include mk/debian.mk

@@ -14,9 +14,8 @@ AC_SUBST( [OLD_MINOR_VERSION], ["9"] )
 AC_SUBST( [OLD_MICRO_VERSION], ["5"] )
 
 # Config
-AC_CONFIG_AUX_DIR([config])
-AC_CONFIG_SRCDIR([config/config.h.in])
-AC_CONFIG_HEADER([config/config.h])
+AC_CONFIG_SRCDIR([config.h.in])
+AC_CONFIG_HEADER([config.h])
 
 
 #-----------------------------------------------------------------------------
