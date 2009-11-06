@@ -22,6 +22,7 @@ wdb_la_SOURCES += 		src/callInterface/types/levelIndeterminateType.cpp \
 
 noinst_LTLIBRARIES = 	libwciTypesNoPostgres.la
 
+# This contains all files that may be (relatively) meaningfully used outside of a postgresql server
 libwciTypesNoPostgres_la_SOURCES =\
 						src/callInterface/types/ValueParameterType.cpp \
 						src/callInterface/types/ValueParameterType.h \

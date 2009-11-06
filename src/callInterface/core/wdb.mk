@@ -19,6 +19,7 @@ wdb_la_SOURCES +=	src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/readQuery.cpp \
 						$(libwciCoreNoPostgres_la_SOURCES)
 
+# This contains all files that may be (relatively) meaningfully used outside of a postgresql server
 check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 
 libwciCoreNoPostgres_la_SOURCES +=\
