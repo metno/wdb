@@ -22,7 +22,7 @@
 CREATE TYPE wci.returnFloat AS (
 	value float,
 	dataprovidername varchar( 255 ),
-	placename varchar( 255 ),
+	placename text,
 	placegeometry GEOMETRY,
 	referencetime timestamp with time zone,
 	validtimefrom timestamp with time zone,
@@ -45,7 +45,7 @@ CREATE TYPE wci.returnFloat AS (
 CREATE TYPE wci.returnGid AS (
 	value bigint,
 	dataprovidername varchar( 255 ),
-	placename varchar( 255 ),
+	placename text,
 	placegeometry GEOMETRY,
 	referencetime timestamp with time zone,
 	validtimefrom timestamp with time zone,

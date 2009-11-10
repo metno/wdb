@@ -566,7 +566,46 @@ void PlaceGeometryTest::testG9_03_MoreThan1000PointsInPolygon()
 	// Should with with noOfPoints = 1000. Currently, WCI has a problem
 	// with this (decoding of geometries).
 	NOT_FINISHED();
+}
 
+void PlaceGeometryTest::testG9_02_LongPolygonSpecification()
+{
+//    const char * polygon = "POLYGON(( "
+//                           "11.34 60.75, "
+//						   "11.84 60.75, "
+//                           "12.34 60.75, "
+//						   "12.34 61.00, "
+//                           "12.34 61.25, "
+//                           "11.34 61.25, "
+//                           "11.34 60.75 ))";
+
+    double lon = 11.34;
+    double lat = 60.75;
+    std::ostringstream p;
+    p << "POLYGON((";
+    for ( ; lon < 12.34; lon += 0.1 )
+    	p << lon << ' ' << lat << ", ";
+    for ( ; lat < 61.25; lat += 0.1 )
+    	p << lon << ' ' << lat << ", ";
+    for ( ; lon > 11.34; lon -= 0.1 )
+    	p << lon << ' ' << lat << ", ";
+    for ( ; lat > 60.75; lat -= 0.1 )
+    	p << lon << ' ' << lat << ", ";
+    p << 11.34 << ' ' << 60.75 << "))";
+
+    const std::string polygon = p.str();
+
+    CPPUNIT_ASSERT(polygon.size() > 255);
+
+    result r = t->exec( statement_( polygon, 11 ) );
+
+//    CPPUNIT_ASSERT( (result::size_type( 25 ) == r.size())||(result::size_type( 29 ) == r.size()) );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 25, count );
 }
 
 void PlaceGeometryTest::testG10_01_ConvexPolygon()

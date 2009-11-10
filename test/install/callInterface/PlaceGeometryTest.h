@@ -115,6 +115,7 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG9_01_4PointsInPolygon );
 	CPPUNIT_TEST( testG9_02_SeveralPointsInPolygon );
 	//CPPUNIT_TEST( testG9_03_MoreThan1000PointsInPolygon );
+	CPPUNIT_TEST( testG9_02_LongPolygonSpecification );
 
 	//CPPUNIT_TEST( testG10_01_ConvexPolygon );
 	//CPPUNIT_TEST( testG10_02_ConcavePolygon );
@@ -267,6 +268,7 @@ public:
 	void testG9_01_4PointsInPolygon();
 	void testG9_02_SeveralPointsInPolygon();
 	void testG9_03_MoreThan1000PointsInPolygon();
+	void testG9_02_LongPolygonSpecification();
 
 	// Convexity
 	void testG10_01_ConvexPolygon();
