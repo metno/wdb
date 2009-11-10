@@ -45,7 +45,7 @@ BEGIN
 								NULL, NULL, NULL, NULL::wci.returnGid )
 	LOOP
 		dataProviderId_ 		  := __WCI_SCHEMA__.getdataproviderid( valGid.dataProviderName );
-		placeId_ 				  := __WCI_SCHEMA__.getPlaceId( valGid.placename );
+		placeId_ 				  := __WCI_SCHEMA__.getplaceid( valGid.placename );
 		valueParameterId_ 		  := __WCI_SCHEMA__.getvalueparameterid( valGid.valueParameterName );
 		levelParameterId_ 		  := __WCI_SCHEMA__.getlevelparameterid( valGid.levelParameterName ); 
 		

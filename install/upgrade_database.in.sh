@@ -1,23 +1,23 @@
 #!/bin/sh
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## 
-## wdb - weather and water data storage
-##
-## Copyright (C) 2008 met.no
-##
-##  Contact information:
-##  Norwegian Meteorological Institute
-##  Box 43 Blindern
-##  0313 OSLO
-##  NORWAY
-##  E-mail: wdb@met.no
-##
-##  This is free software; you can redistribute it and/or modify
-##  it under the terms of the GNU General Public License as published by
-##  the Free Software Foundation; either version 2 of the License, or
-##  (at your option) any later version.
-##
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 
+# wdb - weather and water data storage
+#
+# Copyright (C) 2008 met.no
+#
+#  Contact information:
+#  Norwegian Meteorological Institute
+#  Box 43 Blindern
+#  0313 OSLO
+#  NORWAY
+#  E-mail: wdb@met.no
+#
+#  This is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
 # upgrade - upgrade the wdb system
 #
@@ -134,13 +134,17 @@ fi
 WDB_LIBDIR=` wdb-config --libdir`
 OLD_VERSION=__OLD_VERSION__
 
+# Directory for logging
+export LOGDIR=/tmp/$USER/wdb/upgrade/logs/
+mkdir -p $LOGDIR
+
 # Code to rollback installation
 upgrade_rollback() {
 	echo -n "rolling back upgraded datamodel... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 --\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_datamodel.log
+\o $LOGDIR/wdb_rollback_datamodel.log
 DROP SCHEMA __WCI_SCHEMA__ CASCADE;
 DROP SCHEMA __WDB_SCHEMA__ CASCADE;
 EOF
@@ -153,10 +157,6 @@ EOF
 
 # Start Upgrade
 echo "---- wdb database upgrade ----"
-
-# Directory for logging
-export LOGDIR=/tmp/$USER/wdb/upgrade/logs/
-mkdir -p $LOGDIR
 
 # checking if we can find the sql source files
 WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
@@ -388,6 +388,9 @@ EOF
 	fi
 	echo "done"
     upgrade_rollback
+    echo "Dry run of data migration worked as expected. This suggests that"
+    echo "an upgrade of the database should work correctly. Nevertheless,"
+    echo "make sure your system is backed up before attempting an upgrade."
 	echo "---- wdb database upgrade test successful ----"
 	exit 0
 fi
@@ -497,3 +500,6 @@ echo "done"
 
 echo "---- wdb database upgrade completed ----"
 exit 0
+
+# Comments for the DOCS
+# Default namespace is not preserved - this has to be reset by the user.

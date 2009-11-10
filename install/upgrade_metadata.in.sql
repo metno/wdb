@@ -27,11 +27,12 @@ INSERT INTO __WDB_SCHEMA__.organizationalias SELECT * FROM __OLD_SCHEMA__.organi
 INSERT INTO __WDB_SCHEMA__.person SELECT * FROM __OLD_SCHEMA__.person src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.person WHERE partyid = src.partyid );
 INSERT INTO __WDB_SCHEMA__.softwareversion SELECT * FROM __OLD_SCHEMA__.softwareversion src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.softwareversion WHERE partyid = src.partyid );
 
--- Configuration
--- NOOP (Singleton)
-
 -- Namespace
 INSERT INTO __WDB_SCHEMA__.namespace SELECT * FROM __OLD_SCHEMA__.namespace src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.namespace WHERE namespaceid = src.namespaceid );
+-- Default Namespace of existing database is not preserved
+
+-- Configuration
+-- NOOP (Singleton)
 
 -- Indeterminate Types
 INSERT INTO __WDB_SCHEMA__.placeindeterminatetype SELECT * FROM __OLD_SCHEMA__.placeindeterminatetype src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.placeindeterminatetype WHERE placeindeterminatecode = src.placeindeterminatecode );
@@ -55,16 +56,17 @@ INSERT INTO __WDB_SCHEMA__.unit SELECT * FROM __OLD_SCHEMA__.unit src WHERE NOT 
 INSERT INTO __WDB_SCHEMA__.siunitconversion SELECT * FROM __OLD_SCHEMA__.siunitconversion src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.siunitconversion WHERE unitname = src.unitname );
 INSERT INTO __WDB_SCHEMA__.parameterfunctiontype SELECT * FROM __OLD_SCHEMA__.parameterfunctiontype src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.parameterfunctiontype WHERE parameterfunctiontype = src.parameterfunctiontype );
 INSERT INTO __WDB_SCHEMA__.valueparameterusage SELECT * FROM __OLD_SCHEMA__.valueparameterusage src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valueparameterusage WHERE valueparameterusage = src.valueparameterusage ); 
+INSERT INTO __WDB_SCHEMA__.levelparameterusage SELECT * FROM __OLD_SCHEMA__.levelparameterusage src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.levelparameterusage WHERE levelparameterusage = src.levelparameterusage ); 
 INSERT INTO __WDB_SCHEMA__.valueparameter SELECT * FROM __OLD_SCHEMA__.valueparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valueparameter WHERE valueparameterid = src.valueparameterid ); 
 INSERT INTO __WDB_SCHEMA__.valuemeasureparameter SELECT * FROM __OLD_SCHEMA__.valuemeasureparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valuemeasureparameter WHERE valueparameterid = src.valueparameterid ); 
 INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter SELECT * FROM __OLD_SCHEMA__.valuedimensionlessparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valuedimensionlessparameter WHERE valueparameterid = src.valueparameterid ); 
 INSERT INTO __WDB_SCHEMA__.valuecodeparameter SELECT * FROM __OLD_SCHEMA__.valuecodeparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valuecodeparameter WHERE valueparameterid = src.valueparameterid ); 
 INSERT INTO __WDB_SCHEMA__.valuefunctionparameter SELECT * FROM __OLD_SCHEMA__.valuefunctionparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valuefunctionparameter WHERE valueparameterid = src.valueparameterid ); 
 INSERT INTO __WDB_SCHEMA__.valueparametername SELECT * FROM __OLD_SCHEMA__.valueparametername src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.valueparametername WHERE valueparameterid = src.valueparameterid AND parameternamespaceid = src.parameternamespaceid ); 
-INSERT INTO __WDB_SCHEMA__.levelparameterusage SELECT * FROM __OLD_SCHEMA__.levelparameterusage src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.levelparameterusage WHERE levelparameterusage = src.levelparameterusage ); 
 INSERT INTO __WDB_SCHEMA__.levelparameter SELECT * FROM __OLD_SCHEMA__.levelparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.levelparameter WHERE levelparameterid = src.levelparameterid ); 
 INSERT INTO __WDB_SCHEMA__.levelmeasureparameter SELECT * FROM __OLD_SCHEMA__.levelmeasureparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.levelmeasureparameter WHERE levelparameterid = src.levelparameterid ); 
 INSERT INTO __WDB_SCHEMA__.levelcodeparameter SELECT * FROM __OLD_SCHEMA__.levelcodeparameter src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.levelcodeparameter WHERE levelparameterid = src.levelparameterid ); 
+INSERT INTO __WDB_SCHEMA__.levelparametername SELECT * FROM __OLD_SCHEMA__.levelparametername src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.levelparametername WHERE levelparameterid = src.levelparameterid AND parameternamespaceid = src.parameternamespaceid ); 
 
 -- Confidence Code
 INSERT INTO __WDB_SCHEMA__.qualityconfidencecode SELECT * FROM __OLD_SCHEMA__.qualityconfidencecode src WHERE NOT EXISTS ( SELECT * FROM __WDB_SCHEMA__.qualityconfidencecode WHERE confidencecode = src.confidencecode );
