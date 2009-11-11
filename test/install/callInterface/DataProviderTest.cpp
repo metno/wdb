@@ -434,7 +434,6 @@ void DataProviderTest::testD6_01_AddDataProvider()
     // Check for meta
     result rC = t->exec( "SELECT * FROM wci.getDataProvider( \'installTest 06-01\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
-
 }
 
 void DataProviderTest::testD6_02_SetDataProviderName()
@@ -476,6 +475,22 @@ void DataProviderTest::testD6_03_SetDataProviderNameFail()
     CPPUNIT_ASSERT( rC1.size() > 0 );
     result rC2 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installationstest 06-03\' )" );
     CPPUNIT_ASSERT( rC2.size() == 0 );
+}
+
+void DataProviderTest::multipleAddDataProvider()
+{
+	// Add Meta
+	result rId = t->exec("SELECT wci.addDataProvider(\'InstallTest 06-01\',"
+		"\'Computer System\',"
+		"\'Grid\',"
+		"\'Data Provider inserted by the WDB install tests\')");
+
+	CPPUNIT_ASSERT_THROW(
+		t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-01\',"
+				"\'Computer System\',"
+				"\'Grid\',"
+				"\'Another Data Provider inserted by the WDB install tests\')" ),
+		pqxx::sql_error );
 }
 
 // Support Functions
