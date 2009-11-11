@@ -29,14 +29,14 @@
 #ifndef PATHOPERATIONS_H_
 #define PATHOPERATIONS_H_
 
+#include "FileId.h"
 #include <boost/filesystem/path.hpp>
 #include <boost/noncopyable.hpp>
 #include <functional>
 
+
 namespace lo
 {
-typedef long long FileId;
-
 /**
  * Set the base directory in which files will be stored. The directory will
  * be created if it did not exist before

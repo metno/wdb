@@ -119,4 +119,4 @@ FileId getFileId(const boost::filesystem::path & fileBlobPath)
 
 }
 
-BOOST_STATIC_ASSERT(sizeof(lo::FileId) == 8);
+BOOST_STATIC_ASSERT(sizeof(FileId) == 8);

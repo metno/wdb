@@ -38,12 +38,14 @@
 #include <algorithm>
 #include <iostream>
 
+namespace fs = boost::filesystem;
+
+// This must be defined by users of the functions in this file. It is called
+// by initializeFileStorage()
 extern "C"
 {
-#include <postgres.h>
+extern bool doInitializeFileStorage();
 }
-
-namespace fs = boost::filesystem;
 
 /// Must be called first by all functions to use the file storage
 void initializeFileStorage();
@@ -76,7 +78,7 @@ void writeFile(FileId id, const char * data, int dataSize)
 	fs::rename(tmpFile, file);
 }
 
-void dropFile(FileId id)
+void dropFile(FileId id, std::string & warningOut)
 {
 	initializeFileStorage();
 
@@ -88,13 +90,11 @@ void dropFile(FileId id)
 	{
 		std::ostringstream errMsg;
 		errMsg << "File with id <" << id << "> does not exist";
-		std::string msg = errMsg.str();
-		// Todo: Postgres depedent
-		elog(WARNING, msg.c_str());
+		warningOut = errMsg.str();
 	}
 }
 
-int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount)
+int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::string & warningOut)
 {
 	initializeFileStorage();
 
@@ -110,16 +110,13 @@ int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount)
 			if ( ! std::binary_search(referencedFiles, & referencedFiles[refFileCount], fileId) )
 			{
 				const std::string fileName = it->string();
-				// Todo: Postgres dependent
-				elog(DEBUG1, "Removing unreferenced file %s (FileId %d)", fileName.c_str(), (int) fileId);
 				fs::remove(* it);
 				++ unreferencedFiles;
 			}
 		}
 		catch ( std::exception & e )
 		{
-			// Todo: Postgres dependent
-			elog(WARNING, e.what());
+			warningOut += std::string(e.what()) + '\n';
 		}
 	}
 	return unreferencedFiles;
@@ -220,7 +217,6 @@ float readFloat_(std::istream & s, int position)
 
 BOOST_STATIC_ASSERT(sizeof(float) == 4);
 
-// Todo: Dependent on a function in a Postgres file
 void initializeFileStorage()
 {
 	static bool initialized = false;

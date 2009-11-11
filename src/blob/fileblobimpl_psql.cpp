@@ -57,7 +57,10 @@ void writeFile_(FileId id, const char * data, int dataSize)
 
 void dropFile_(FileId id)
 {
-	HANDLE_EXCEPTIONS(dropFile(id));
+	std::string warning;
+	HANDLE_EXCEPTIONS(dropFile(id, warning));
+	if ( not warning.empty() )
+		elog(WARNING, warning.c_str());
 }
 
 void readFile_(FileId id, char * out, int readSize)

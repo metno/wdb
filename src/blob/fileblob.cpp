@@ -83,10 +83,15 @@ Datum drop_file(PG_FUNCTION_ARGS)
 {
 	int64 id = PG_GETARG_INT64(0);
 
+	std::string warning;
+
 	// WARNING:
 	// Do not use any postgres functionality within this macro
 	// It will cause a resource leak.
-	HANDLE_EXCEPTIONS(dropFile(id));
+	HANDLE_EXCEPTIONS(dropFile(id, warning));
+
+	if ( not warning.empty() )
+		elog(WARNING, warning.c_str());
 
 	PG_RETURN_NULL();
 }
@@ -99,10 +104,15 @@ Datum remove_unreferenced_files()
 	int count = 0;
 	FileId * refFiles = all_referenced_files(& count);
 
+	std::string warning;
+
 	// WARNING:
 	// Do not use any postgres functionality within this macro
 	// It will cause a resource leak.
-	HANDLE_EXCEPTIONS(unreferencedFiles = removeUnreferencedFiles(refFiles, count));
+	HANDLE_EXCEPTIONS(unreferencedFiles = removeUnreferencedFiles(refFiles, count, warning));
+
+	if ( not warning.empty() )
+		elog(WARNING, warning.c_str());
 
 	PG_RETURN_INT32(unreferencedFiles);
 }

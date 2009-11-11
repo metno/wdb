@@ -33,8 +33,7 @@
 #include <vector>
 #include <string>
 #include "bstream.h"
-#include "fileblobimpl_psql.h"
-
+#include "FileId.h"
 
 void readFile(FileId id, std::vector<char> & out);
 
@@ -52,13 +51,20 @@ void writeFile(FileId id, const char * data, int dataSize);
 
 /**
  * Delete the file associated with the given id
+ *
+ * @param id The file to delete
+ * @param warningOut will be populated by any warning messages
  */
-void dropFile(FileId id);
+void dropFile(FileId id, std::string & warningOut);
 
 /**
  * Delete any files not on the given list.
+ *
+ * @param referencedFiles List of files to check
+ * @param refFileCount Number of files in referencedFiles
+ * @param warningOut will be populated by any warning messages
  */
-int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount);
+int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::string & warningOut);
 
 /**
  * Read the entire file associated with the given file. readSize must be

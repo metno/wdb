@@ -11,6 +11,7 @@ wdb_la_SOURCES +=		src/blob/fileblob.cpp \
 check_LTLIBRARIES +=	libwdbBlobNoPostgres.la
 
 libwdbBlobNoPostgres_la_SOURCES = \
+						src/blob/FileId.h \
 						src/blob/bstream.h \
 						src/blob/database_query.c \
 						src/blob/database_query.h \

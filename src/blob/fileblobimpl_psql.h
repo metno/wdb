@@ -30,12 +30,11 @@
 #ifndef FILEBLOBIMPL_C_H_
 #define FILEBLOBIMPL_C_H_
 
+#include "FileId.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef long long FileId;
-
 
 /**
  * Nothrow variation of file with same name. ereports postgresql error instead
