@@ -150,9 +150,9 @@ public:
 
 private:
     /// User Name
-    std::string newUserName_;
-    /// User Name
     std::string myUserName_;
+    /// User Name
+    std::string newUserName_;
     /// Admin Options
     bool admin_;
     /// Read Options
