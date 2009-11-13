@@ -38,30 +38,41 @@
 
 using namespace std;
 
-// This will fetch all fields generated at, and valid for, midnight today, 
-// from Hirlam 10.
+/**
+ * This will fetch all fields generated at midnight UTC time,
+ * from Hirlam 10, which have a validity period inside the time range of
+ * midnight, and for 12 hours forward in time.
+ *
+ * If we had ommitted the 'inside' keyword in the valid time, we would only
+ * have gotten values which are valid for that specific time range, such as
+ * total precipitation for those twelve hours.
+ */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['Hirlam 10'],"
+	"ARRAY['proff'],"
 	"NULL,"
-	"('today','today','exact'),"
-	"('today', 'today', 'exact'),"
+	"'2009-11-13 00:00:00+00',"
+	"'inside 2009-11-13 00:00:00+00 FOR 12 hours',"
 	"NULL,"
 	"NULL,"
 	"NULL,"
-	"0::wci.returnoid )";
+	"NULL::wci.returngid )";
 
 
 /**
  * All queries to the database is done through this transaction. pqxx 
  * automatically handles errors such as disconnects and such through this.
  * 
- * @see The pwxx documentation for details on how this works and how to use it. 
+ * Entry point for callers is operator ().
+ *
+ * @see The pqxx documentation for details on how this works and how to use it.
  */
 class MyTransaction : public pqxx::transactor<pqxx::work>
 {
 public:
-	
+	/// A simple mechanism for storing fields
 	typedef boost::shared_array<float> DataField;
+	
+	/// Simple way of storing return values
 	typedef std::map<std::string, DataField> Param2Data;
 	
 	/**
@@ -73,33 +84,48 @@ public:
 	MyTransaction( Param2Data & out )
 		: out_( out )
 	{}
-	
+
+	/// Extract an entire field
+	DataField extractGrid(long long gridId, pqxx::work & t) const
+	{
+		std::ostringstream fetchQuery;
+		fetchQuery << "SELECT * FROM wci.fetch(" << gridId << ", NULL::wci.grid)";
+
+		pqxx::result r = t.exec(fetchQuery.str());
+
+		if ( r.size() != 1 )
+			throw std::runtime_error("Exactly one result row expected");
+
+		const pqxx::result::tuple & field = r[0];
+
+		unsigned size = field["numberX"].as<int>() * field["numberY"].as<int>();
+		DataField buffer( new float[ size ] );
+
+		const pqxx::binarystring res_data(field["grid"]);
+		std::copy(res_data.begin(), res_data.end(), reinterpret_cast<char *>(buffer.get()));
+
+		return buffer;
+	}
+
 	/// Perform the transaction itself
 	void operator ()(pqxx::work & t)
 	{
 		// Setup wci:
 		t.exec("SELECT wci.begin( 'wcitest' )");
-		
-		// Expected size of BLOB:
-		const size_t size = 99200; // TODO: Find out through a function
 
-		// Request BLOB oid: 
+		// Request BLOB oid:
 		const pqxx::result result = t.exec(myQuery);
 
 		// Fetch each BLOB, and store it in the return object
 		for (pqxx::result::const_iterator it = result.begin(); it != result.end(); ++it )
 		{
-			// Prepare reading:
-			pqxx::largeobject field((*it)["value"].as<pqxx::oid>() );
-			pqxx::ilostream reader(t, field );
-			
-			// Setup a new buffer:
-			DataField buffer( new float[ size ] );
-			reader.read( (char*) buffer.get(), size * sizeof(float) );
-			
+			// Fetch the grid
+			long long gridId = (*it)["value"].as<long long>();
+			DataField field = extractGrid(gridId, t);
+
 			// Store data:
-			const std::string parameter = (*it)["parameter"].as<std::string>(); 
-			internalStorage_[parameter] = buffer;
+			const std::string identifier = (*it)["validtimeto"].as<std::string>() + " - " + (*it)["valueparametername"].as<std::string>();
+			internalStorage_[identifier] = field;
 		}
 	}
 
@@ -118,6 +144,7 @@ private:
 
 int main(int argc, char ** argv)
 {
+	// general setup
 	wdb::WdbConfiguration conf;
 	conf.parse( argc, argv );
 
@@ -134,18 +161,21 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 
+
+	// Here is the actual work
 	try
 	{
-		MyTransaction::Param2Data data;
-		MyTransaction t( data );
-		
+		// create a database connection
 		pqxx::connection wdbConnection(conf.pqDatabaseConnection());
 
-		wdbConnection.perform( t );
+		MyTransaction::Param2Data data; // result data
+		MyTransaction t( data ); // the transaction to run
+
+		wdbConnection.perform( t ); // run it!
 		
 		// Just print a random point at each field
 		for ( MyTransaction::Param2Data::const_iterator it = data.begin(); it != data.end(); ++ it )
-			cout << it->first << ":\t" << it->second[99199] << endl;
+			cout << it->first << ":\t" << it->second[2] << endl;
 	}
 	catch ( std::exception & e )
 	{
