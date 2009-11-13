@@ -38,29 +38,39 @@
 
 using namespace std;
 
-// This will fetch all points at location  "10.73 59.9" generated at midnight 
-// today, from the Hirlam 10 data provider
+/**
+ * This will fetch all fields generated at midnight UTC time,
+ * from any proff fields, which have a validity instant at 12 the following
+ * day. We only request air temperature at 2 meter above ground level.
+ *
+ * The location to fetch data from is Blindern, Oslo (lat=59.9406,
+ * lon=10.7231). Instead of fetching just the nearest point for which we have
+ * data, we request a bilinear interpolation to get a (possibly) more correct
+ * value.
+ */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['Hirlam 10'],"
-	"'POINT(10.73 59.9)',"
-	"('today','today','exact'),"
-	"('today', 'today', 'exact'),"
-	"NULL,"
-	"NULL,"
-	"NULL,"
-	"0::wci.returnFloat )";
+	"ARRAY['proff'],"  // Data provider
+	"'bilinear POINT(10.7231 59.9406)',"  // Location
+	"'2009-11-13 00:00:00+00'," // Reference time (data creation time)
+	"'2009-11-14 12:00:00+00',"// Valid time
+	"ARRAY['air temperature']," // Parameter
+	"NULL," // Level (NULL Means any)
+	"ARRAY[-1]," // Data version (-1 means last)
+	"NULL::wci.returnfloat )";
 
 
 /**
  * All queries to the database is done through this transaction. pqxx 
  * automatically handles errors such as disconnects and such through this.
  * 
- * @see The pqxx documentation for details on how this works and how to use it. 
+ * Entry point for callers is operator ().
+ *
+ * @see The pqxx documentation for details on how this works and how to use it.
  */
 class MyTransaction : public pqxx::transactor<pqxx::work>
 {
 public:
-	
+	/// Simple way of storing return values
 	typedef std::map<std::string, float> Param2Data;
 	
 	/**
@@ -72,22 +82,25 @@ public:
 	MyTransaction( Param2Data & out )
 		: out_( out )
 	{}
-	
+
 	/// Perform the transaction itself
 	void operator ()(pqxx::work & t)
 	{
 		// Setup wci:
 		t.exec("SELECT wci.begin( 'wcitest' )");
-		
-		// Request data:
+
+		// Request BLOB oid:
 		const pqxx::result result = t.exec(myQuery);
 
-		// Store each value:
+		// Fetch each BLOB, and store it in the return object
 		for (pqxx::result::const_iterator it = result.begin(); it != result.end(); ++it )
 		{
+			// Fetch the grid
+			float value = (*it)["value"].as<float>();
+
 			// Store data:
-			const std::string parameter = (*it)["parameter"].as<std::string>(); 
-			internalStorage_[parameter] = (*it)["value"].as<float>();
+			const std::string identifier = (*it)["validtimeto"].as<std::string>() + " - " + (*it)["valueparametername"].as<std::string>();
+			internalStorage_[identifier] = value;
 		}
 	}
 
@@ -106,12 +119,13 @@ private:
 
 int main(int argc, char ** argv)
 {
+	// general setup
 	wdb::WdbConfiguration conf;
 	conf.parse( argc, argv );
 
 	if ( conf.general().help )
 	{
-		cout << "extractFullField (" << PACKAGE << ") " << VERSION << endl;
+		cout << "onePoint (" << PACKAGE << ") " << VERSION << endl;
 		cout << "wci example program.\n";
 		cout << conf.shownOptions() << endl;
 		return 0;
@@ -122,15 +136,19 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 
+
+	// Here is the actual work
 	try
 	{
-		MyTransaction::Param2Data data;
-		MyTransaction t( data );
-		
+		// create a database connection
 		pqxx::connection wdbConnection(conf.pqDatabaseConnection());
 
-		wdbConnection.perform( t );
+		MyTransaction::Param2Data data; // result data
+		MyTransaction t( data ); // the transaction to run
+
+		wdbConnection.perform( t ); // run it!
 		
+		// Print the value for each returned point
 		for ( MyTransaction::Param2Data::const_iterator it = data.begin(); it != data.end(); ++ it )
 			cout << it->first << ":\t" << it->second << endl;
 	}

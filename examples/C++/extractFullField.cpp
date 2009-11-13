@@ -40,7 +40,7 @@ using namespace std;
 
 /**
  * This will fetch all fields generated at midnight UTC time,
- * from Hirlam 10, which have a validity period inside the time range of
+ * from any proff fields, which have a validity period inside the time range of
  * midnight, and for 12 hours forward in time.
  *
  * If we had ommitted the 'inside' keyword in the valid time, we would only
@@ -48,13 +48,13 @@ using namespace std;
  * total precipitation for those twelve hours.
  */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['proff'],"
-	"NULL,"
-	"'2009-11-13 00:00:00+00',"
-	"'inside 2009-11-13 00:00:00+00 FOR 12 hours',"
-	"NULL,"
-	"NULL,"
-	"NULL,"
+	"ARRAY['proff']," // Data provider
+	"NULL," // Location (NULL means any)
+	"'2009-11-13 00:00:00+00'," // Reference time (data creation time)
+	"'inside 2009-11-13 00:00:00+00 FOR 12 hours'," // Valid time
+	"NULL," // Parameter
+	"NULL," // Level
+	"NULL," // Data version
 	"NULL::wci.returngid )";
 
 
