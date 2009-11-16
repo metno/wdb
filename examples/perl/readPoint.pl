@@ -84,10 +84,10 @@ use DBI;
 
 #Connect parameters to the WDB database
 my $dbpasswd="";
-my $dbuser="guest1";
+my $dbuser="wcitest";
 my $dbname="wdb";
 my $dbport=5432;
-my $dbhost="prologdev1";
+my $dbhost="localhost";
 
 print "bi:Pg:dbname=$dbname\n";
 
@@ -124,18 +124,16 @@ my ($value,
 # The select statement to query the database.
 my $sql = qq( SELECT value, dataProviderName, placeName, placeGeometry, 
                      referencetime, 
-                     validFrom, validTo,
+                     validTimeFrom, validTimeTo,
                      valueParameterName, valueParameterUnit,
                      levelParameterName, levelUnitName, levelFrom, levelTo,
                      dataVersion, confidenceCode, storetime, valueid, valuetype 
-              FROM wci.read( array['hirlam 10'], 'POINT( 10.0 59.0 )', 
-                            ('2000-01-03 01:00:00', '2000-01-03 01:00:00', 'exact'), 
+              FROM wci.read( array['test wci 5'], 'POINT( 10.0 59.0 )', 
+                            '2009-11-13 00:00:00+00', 
                             NULL, 
-                            array['instant pressure of air',
-                                  'instant temperature of air',
-                                  'instant velocity of air (u vector)',
-                                  'instant velocity of air (v vector)'], 
-                            ( 0, 10, 'distance above ground', 'inside' ), 
+                            ARRAY['air pressure',
+                                  'air temperature'], 
+                            NULL, 
                             array[-1], 
                             NULL::wci.returnFloat )
             );
