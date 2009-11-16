@@ -56,13 +56,13 @@ using namespace std;
  *
  */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['proff']," // Data provider
+	"ARRAY['test wci 5']," // Data provider
 	"'bilinear POINT(10.7231 59.9406)',"  // Location
 	"'2009-11-13 00:00:00+00'," // Reference time (data creation time)
 	"'inside 2009-11-13 00:00:00+00 FOR 12 hours'," // Valid time
 	"NULL," // Parameter
 	"NULL," // Level
-	"NULL," // Data version
+	"ARRAY[-1]," // Data version
 	"NULL::wci.returnfloat )";
 
 
@@ -159,13 +159,19 @@ int main(int argc, char ** argv)
 
 		wdbConnection.perform( t ); // run it!
 		
+		if ( data.empty() )
+		{
+			clog << "Oh dear! No data!" << endl;
+			return 1;
+		}
+
 		// Print the value for each returned point
 		for ( MyTransaction::Param2Data::const_iterator it = data.begin(); it != data.end(); ++ it )
 			cout << it->first << ":\t" << it->second << endl;
 	}
 	catch ( std::exception & e )
 	{
-		cout << e.what() << endl;
+		clog << e.what() << endl;
 		return 1;
 	}
 }

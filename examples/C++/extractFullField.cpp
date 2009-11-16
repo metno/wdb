@@ -40,17 +40,18 @@ using namespace std;
 
 /**
  * This will fetch all fields generated at midnight UTC time,
- * from any proff fields, which have a validity instant at 12 the following
- * day. We only request air temperature at 2 meter above ground level.
+ * from any fields fields delivered by "test group", which have a validity
+ * instant at 12 the following day. We only request air temperature at 2 meter
+ * above ground level.
  *
  * The return value is a grid specification, which we may call wci.fetch on to
  * extract the complete grid.
  */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['proff'],"  // Data provider
+	"ARRAY['test wci 5'],"  // Data provider
 	"NULL," // Location (NULL means any)
 	"'2009-11-13 00:00:00+00'," // Reference time (data creation time)
-	"'2009-11-14 12:00:00+00',"// Valid time
+	"'2009-11-13 18:00:00+00',"// Valid time
 	"ARRAY['air temperature']," // Parameter
 	"NULL," // Level (NULL Means any)
 	"ARRAY[-1]," // Data version (-1 means last)
@@ -172,13 +173,19 @@ int main(int argc, char ** argv)
 
 		wdbConnection.perform( t ); // run it!
 		
+		if ( data.empty() )
+		{
+			clog << "Oh dear! No data!" << endl;
+			return 1;
+		}
+
 		// Just print a random point at each field
 		for ( MyTransaction::Param2Data::const_iterator it = data.begin(); it != data.end(); ++ it )
 			cout << it->first << ":\t" << it->second[2] << endl;
 	}
 	catch ( std::exception & e )
 	{
-		cout << e.what() << endl;
+		clog << e.what() << endl;
 		return 1;
 	}
 }
