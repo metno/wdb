@@ -1,29 +1,29 @@
--- Get pressure between 0 and 0 metre above mean sea level at midnight today, as generated at midnight today.
+-- Get pressure between 0 and 0 metre above ground level
 
 SELECT wci.begin('wcitest');
 
 -- Get the oid for a specific field
 SELECT * FROM wci.read(
-	ARRAY['hirlam'],      					-- dataprovider
-	'hirlam 10 grid',					-- location
-	('today', 'today', 'exact'),			-- reference time
-	('today', 'today', 'exact'),			-- valid time
-	'{"instant pressure of air"}',			-- parameter
-	(0,0,'above mean sea level','exact'),	-- level
-	NULL,									-- data version (Currently not in use)
-	0::returnoid							-- return type
+	ARRAY['test wci 5'],			-- dataprovider
+	NULL,--'hirlam 10 grid',		-- location
+	'2009-11-13 00:00:00+00',		-- reference time
+	'2009-11-13 18:00:00+00',		-- valid time
+	'{"air pressure"}',			-- parameter
+	'0 height above ground distance',	-- level, in meter
+	ARRAY[-1],				-- data version (-1 is latest)
+	NULL::wci.returngid			-- return type
 );
 
--- Get value for for Bodø (14.38, 67.28).
+-- Get value for for the town of Bodø (14.405, 67.28).
 SELECT * FROM wci.read(
-	ARRAY['hirlam'],      					-- dataprovider
-	'near POINT(14.38 67.28)',				-- location (note: long lat)
-	('today','today','exact'),				-- reference time
-	('today', 'today', 'exact'),			-- valid time
-	'{"instant pressure of air"}',			-- parameter
-	(0,0,'above mean sea level','exact'),	-- level
-	NULL,									-- data version (Currently not in use)
-	0::returnfloat								-- return type
+	ARRAY['test wci 5'],			-- dataprovider
+	'POINT(14.405 67.28)',			-- location (note: long lat)
+	'2009-11-13 00:00:00+00',		-- reference time
+	'2009-11-13 18:00:00+00',		-- valid time
+	'{"air pressure"}',			-- parameter
+	'0 height above ground distance',	-- level, in meter
+	ARRAY[-1],				-- data version (-1 is latest)
+	NULL::wci.returnfloat			-- return type
 );
 
 --SELECT wci.end();

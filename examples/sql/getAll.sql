@@ -1,5 +1,6 @@
 SELECT wci.begin('wcitest');
 
+-- Get all data in database, as fields
 SELECT * FROM wci.read(
 	NULL,      		-- dataprovider
 	NULL, 	   		-- location
@@ -8,7 +9,7 @@ SELECT * FROM wci.read(
 	NULL,      		-- parameter
 	NULL,      		-- level
 	NULL,      		-- data version
-	0::returnoid  	-- return type
+	NULL::wci.returngid  	-- return type
 );
 
 -- Do NOT do this (and preferably not the above either):

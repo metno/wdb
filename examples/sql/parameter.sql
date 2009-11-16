@@ -2,44 +2,29 @@
 
 SELECT wci.begin('wcitest');
 
--- Get all parameters related to pressure
+-- Get all parameters related to pressure (ie. the name contains the word pressure)
 SELECT * FROM wci.read(
-	NULL,      					-- dataprovider
-	'hirlam 10 grid',			-- location (hirlam 10 area)
-	('today','today','exact'),	-- reference time
-	('today', 'today', 'exact'),-- valid time
-	'{"* pressure of *"}',		-- parameter
-	NULL,						-- level
-	NULL,						-- data version (Currently not in use)
-	0::returnoid				-- return type
+	ARRAY['test wci 5'],			-- dataprovider
+	NULL,--'hirlam 10 grid',		-- location
+	'2009-11-13 00:00:00+00',		-- reference time
+	'2009-11-13 18:00:00+00',		-- valid time
+	'{"%pressure%"}',			-- parameter
+	NULL,					-- level, in meter
+	ARRAY[-1],				-- data version (-1 is latest)
+	NULL::wci.returngid			-- return type
 );
 
 
--- Get all instant parameters related to air (but not 'air (water content)' and such)
+-- Get all accumulated values
 SELECT * FROM wci.read(
-	NULL,      					-- dataprovider
-	'hirlam 10 grid',			-- location (hirlam 10 area)
-	('today','today','exact'),	-- reference time
-	('today', 'today', 'exact'),-- valid time
-	'{"instant * of air"}',		-- parameter
-	NULL,						-- level
-	NULL,						-- data version (Currently not in use)
-	0::returnoid				-- return type
+	ARRAY['test wci 5'],			-- dataprovider
+	NULL,--'hirlam 10 grid',		-- location
+	'2009-11-13 00:00:00+00',		-- reference time
+	'inside 2009-11-13 00:00:00+00 FOR 18 hours',	-- valid time
+	'{"accumulated %"}',			-- parameter
+	NULL,					-- level, in meter
+	ARRAY[-1],				-- data version (-1 is latest)
+	NULL::wci.returngid			-- return type
 );
-
-
--- Get all precipitation
-SELECT * FROM wci.read(
-	NULL,      					-- dataprovider
-	'hirlam 10 grid',			-- location (hirlam 10 area)
-	('today','today','exact'),	-- reference time
-	('today', 'today', 'exact'),-- valid time
-	'{"accumulated surface density of air (precipitation)"}',	-- parameter
-	NULL,						-- level
-	NULL,						-- data version (Currently not in use)
-	0::returnoid				-- return type
-);
-
-
 
 --SELECT wci.end();
