@@ -96,8 +96,8 @@ public class wdbGetDataPoint {
     public static void main(String[] args)
     {
     	final String dbdriver="org.postgresql.Driver";
-    	final String dbconnect="jdbc:postgresql://prologdev1:5432/wdb";
-    	final String dbuser="guest2";
+    	final String dbconnect="jdbc:postgresql://localhost:5432/wdb";
+    	final String dbuser="wcitest";
     	final String dbpasswd="";
     	
     	Connection con = null;
@@ -114,27 +114,17 @@ public class wdbGetDataPoint {
     	}
     	
     	String wdbInit="SELECT wci.begin('"+dbuser+"')";
-    	String sql=" SELECT value, dataProviderName, placeName, placeGeometry," +   
-                   "        referencetime, " +
-                   "        validFrom, validTo, "+
-                   "        valueParameterName, valueParameterUnit, " +
-                   "        levelParameterName, levelUnitName, levelFrom, levelTo, " +
-                   "        dataVersion, confidenceCode, storetime, valueid, valuetype " + 
-                   " FROM wci.read( array['hirlam 10'], 'POINT( 10.0 59.0 )', " +
-                   "                ('2000-01-03 01:00:00', '2000-01-03 01:00:00', 'exact'), " + 
+    	String sql=" SELECT * " + 
+                   " FROM wci.read( array['test wci 5'], 'POINT( 10.0 59.0 )', " +
+                   "                '2009-11-13 00:00:00+00', " + 
                    "                NULL, " + 
-                   "                array['instant pressure of air', " +
-                   "                      'instant temperature of air', " +
-                   "                      'instant velocity of air (u vector)', " +
-                   "                      'instant velocity of air (v vector)'], " +  
-                   "                ( 2, 2, 'distance above ground', 'exact' ), " + 
+                   "                array['air temperature', " +
+                   "                      'air pressure'], " +  
+                   "                NULL, " + 
                    "                array[-1], " +
                    "                NULL::wci.returnFloat )";
     	
-    	final String colNames[] = {"value", "dataProviderName", "placeName",     
-                                   "referencetime", "validFrom", "validTo", "valueParameterName",
-                                   "valueParameterUnit","levelParameterName", "levelUnitName", 
-                                   "levelFrom", "levelTo", "dataVersion" };
+    	final String colNames[] = {"value", "valueParameterName", "validTimeFrom"};
     	
     	ResultSet rs=null;
     	

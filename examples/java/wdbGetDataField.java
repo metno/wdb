@@ -29,7 +29,7 @@
 
 
 import java.sql.*;
-import org.postgresql.largeobject.*;
+import java.io.*;
 
 
 /**
@@ -93,8 +93,8 @@ public class wdbGetDataField {
     public static void main(String[] args)
     {
     	final String dbdriver="org.postgresql.Driver";
-    	final String dbconnect="jdbc:postgresql://prologdev1:5432/wdb";
-    	final String dbuser="guest2";
+    	final String dbconnect="jdbc:postgresql://localhost:5432/wdb";
+    	final String dbuser="wcitest";
     	final String dbpasswd="";
     	
     	Connection con = null;
@@ -111,36 +111,22 @@ public class wdbGetDataField {
     	}
     	
     	String wdbInit="SELECT wci.begin('"+dbuser+"')";
-    	String sql=" SELECT value, dataProviderName, placeName, placeGeometry," +   
-                   "        referencetime, " +
-                   "        validFrom, validTo, "+
-                   "        valueParameterName, valueParameterUnit, " +
-                   "        levelParameterName, levelUnitName, levelFrom, levelTo, " +
-                   "        dataVersion, confidenceCode, storetime, valueid, valuetype " + 
-                   " FROM wci.read( array['hirlam 10'], 'POINT( 10.0 59.0 )', " +
-                   "                ('2000-01-03 01:00:00', '2000-01-03 01:00:00', 'exact'), " + 
-                   "                NULL, " + 
-                   "                array['instant temperature of air'], " +  
-                   "                ( 2, 2, 'distance above ground', 'exact' ), " + 
-                   "                array[-1], " +
-                   "                NULL::wci.returnOid )";
+    	String sql=" SELECT * " + 
+        " FROM wci.read( array['test wci 5'], NULL, " +
+        "                '2009-11-13 00:00:00+00', " + 
+        "                NULL, " + 
+        "                array['air temperature', " +
+        "                      'air pressure'], " +  
+        "                NULL, " + 
+        "                array[-1], " +
+        "                NULL::wci.returngid )";
     	
-    	final String colNames[] = {"value", "dataProviderName", "placeName",     
-                                   "referencetime", "validFrom", "validTo", "valueParameterName",
-                                   "valueParameterUnit","levelParameterName", "levelUnitName", 
-                                   "levelFrom", "levelTo"};
+    	final String colNames[] = {"valueParameterName", "validTimeFrom"};
     	
     	ResultSet rs=null;
     	
     	try {
-    		//The large object API can only be used in a transaction.
-    		con.setAutoCommit( false );
-    		
     		statement.execute( wdbInit );
-    		
-    		//Get an handle to a PostgreSQL extension API for getting large
-    		//objects by OID.
-    		LargeObjectManager lobj = ((org.postgresql.PGConnection)con).getLargeObjectAPI();
     		
     		rs = statement.executeQuery(sql);
     		ResultSetMetaData rsMetaData=rs.getMetaData();
@@ -148,47 +134,56 @@ public class wdbGetDataField {
     		boolean first;
     		
     		while( rs.next() ){
+    			Statement getGridStatement = con.createStatement();
+    			
     			first = true;
+    		    			
+    			long gridId = rs.getLong( "value" );
+    			ResultSet blobResult = getGridStatement.executeQuery("SELECT * FROM wci.fetch(" + gridId + ", NULL::wci.grid)");
     			
-       			for( String name : colNames ) {
-    				data = rs.getString( name );
-    				
-    				if( first ){
-    					first=false;
-    				}else{
-    					System.out.print(", ");
-    				}
-    				
-    				if( data!=null )
-    					System.out.print( data );
-    				else
-    					System.out.print("\\N");
-    				
+    			// We only expect a single value here
+    			while ( blobResult.next() ) {
+	    			int size = blobResult.getInt("numberX") + blobResult.getInt("numberX");
+	    			
+	    		    // Do something with the data read here
+	    			InputStream blob = blobResult.getBinaryStream("grid");
+	    			DataInputStream blobReader = new DataInputStream(blob);
+	    			
+	    			int floatToRead = 42; // read the 42nd byte
+	    			blobReader.skip(floatToRead * 4);
+	    			float value = blobReader.readFloat();
+	    			
+	    			System.out.print(value + "\t");
+	    		
+	       			for( String name : colNames ) {
+	    				data = rs.getString( name );
+	    				
+	    				if( first ){
+	    					first=false;
+	    				}else{
+	    					System.out.print(", ");
+	    				}
+	    				
+	    				if( data!=null )
+	    					System.out.print( data );
+	    				else
+	    					System.out.print("\\N");
+	    				
+	    			}
+	    			
+	    			System.out.print("  (BLOB size: " + size + ")");
+	    			System.out.println();
+	    			
     			}
-    			
-    			long oid = rs.getLong( "value" );
-    		    LargeObject obj = lobj.open( oid, LargeObjectManager.READ );
-
-    		    // Read the data
-    		    byte buf[] = new byte[obj.size()];
-    		    obj.read(buf, 0, obj.size());
-    		    // Do something with the data read here
-
-    		    // Close the object
-    		    obj.close();
-    			
-    			System.out.print("  BLOB size: " + buf.length);
-    			System.out.println();
+    			blobResult.close();
     		}
-    		
-    		
-    	}catch(Exception ex)
+    	}
+    	catch(Exception ex)
     	{
     		System.out.println( "SELECT error: " + ex );
     	}
         finally{
         	try {
-        		con.commit();
         		if( rs != null ) 
         			rs.close();
         	} catch( SQLException ex ) {
