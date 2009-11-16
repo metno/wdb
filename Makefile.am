@@ -178,6 +178,7 @@ include src/callInterface/types/test/wdb.mk
 
 include examples/wdb.mk
 include examples/C++/wdb.mk
+include examples/sql/wdb.mk
 
 
 

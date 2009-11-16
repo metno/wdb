@@ -46,7 +46,8 @@ src_subdirs="			src/blob \
 						test/utility/testWrite \
 						test/unit \
 						examples \ 
-						examples/C++ "
+						examples/C++
+						examples/sql "
 
 # Build Directories
 # - All directories that building can occur in
@@ -80,7 +81,8 @@ build_subdirs="			doc \
 						test/utility/testWrite \
 						test/unit \
 						examples \
-						examples/C++ "
+						examples/C++
+						examples/sql "
 
 
 #-----------------------------------------------------------------------------
@@ -222,6 +224,7 @@ AC_CONFIG_FILES([Makefile
 		 		 test/unit/Makefile
 			     examples/Makefile
 		 		 examples/C++/Makefile
+		 		 examples/sql/Makefile
 		 		 doc/doxygen/Doxyfile
 		])
 AC_OUTPUT
