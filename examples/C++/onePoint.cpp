@@ -35,27 +35,34 @@
 #include <boost/shared_array.hpp>
 #include <string>
 #include <iostream>
+#include <limits>
 
 using namespace std;
 
+
 /**
  * This will fetch all fields generated at midnight UTC time,
- * from any proff fields, which have a validity instant at 12 the following
- * day. We only request air temperature at 2 meter above ground level.
+ * from any proff fields, which have a validity period inside the time range of
+ * midnight, and for 12 hours forward in time.
+ *
+ * If we had ommitted the 'inside' keyword in the valid time, we would only
+ * have gotten values which are valid for that specific time range, such as
+ * total precipitation for those twelve hours.
  *
  * The location to fetch data from is Blindern, Oslo (lat=59.9406,
  * lon=10.7231). Instead of fetching just the nearest point for which we have
  * data, we request a bilinear interpolation to get a (possibly) more correct
  * value.
+ *
  */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['proff'],"  // Data provider
+	"ARRAY['proff']," // Data provider
 	"'bilinear POINT(10.7231 59.9406)',"  // Location
 	"'2009-11-13 00:00:00+00'," // Reference time (data creation time)
-	"'2009-11-14 12:00:00+00',"// Valid time
-	"ARRAY['air temperature']," // Parameter
-	"NULL," // Level (NULL Means any)
-	"ARRAY[-1]," // Data version (-1 means last)
+	"'inside 2009-11-13 00:00:00+00 FOR 12 hours'," // Valid time
+	"NULL," // Parameter
+	"NULL," // Level
+	"NULL," // Data version
 	"NULL::wci.returnfloat )";
 
 
@@ -95,8 +102,12 @@ public:
 		// Fetch each BLOB, and store it in the return object
 		for (pqxx::result::const_iterator it = result.begin(); it != result.end(); ++it )
 		{
-			// Fetch the grid
-			float value = (*it)["value"].as<float>();
+			const pqxx::result::field & f = (*it)["value"];
+
+			// Fetch the grid, remember to check for NULL
+			float value = std::numeric_limits<float>::quiet_NaN();
+			if ( not f.is_null() )
+				value = f.as<float>();
 
 			// Store data:
 			const std::string identifier = (*it)["validtimeto"].as<std::string>() + " - " + (*it)["valueparametername"].as<std::string>();

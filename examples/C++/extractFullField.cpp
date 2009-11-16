@@ -40,21 +40,20 @@ using namespace std;
 
 /**
  * This will fetch all fields generated at midnight UTC time,
- * from any proff fields, which have a validity period inside the time range of
- * midnight, and for 12 hours forward in time.
+ * from any proff fields, which have a validity instant at 12 the following
+ * day. We only request air temperature at 2 meter above ground level.
  *
- * If we had ommitted the 'inside' keyword in the valid time, we would only
- * have gotten values which are valid for that specific time range, such as
- * total precipitation for those twelve hours.
+ * The return value is a grid specification, which we may call wci.fetch on to
+ * extract the complete grid.
  */
 const std::string myQuery = "SELECT * FROM wci.read("
-	"ARRAY['proff']," // Data provider
+	"ARRAY['proff'],"  // Data provider
 	"NULL," // Location (NULL means any)
 	"'2009-11-13 00:00:00+00'," // Reference time (data creation time)
-	"'inside 2009-11-13 00:00:00+00 FOR 12 hours'," // Valid time
-	"NULL," // Parameter
-	"NULL," // Level
-	"NULL," // Data version
+	"'2009-11-14 12:00:00+00',"// Valid time
+	"ARRAY['air temperature']," // Parameter
+	"NULL," // Level (NULL Means any)
+	"ARRAY[-1]," // Data version (-1 means last)
 	"NULL::wci.returngid )";
 
 
