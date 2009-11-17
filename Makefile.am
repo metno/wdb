@@ -275,7 +275,14 @@ update-makefiles:
 # Install Check Framework
 #-----------------------------------------------------------------------------
 
-installcheck-local: $(INSTALLTESTS)
+
+installcheck-local: run_installchecks installcheck_cleanup
+	
+# In case any tests are not well-behaved:
+installcheck_cleanup:
+	psql `./wdbConfiguration --psqlArgs` -c "SELECT cleanupdb()" >> /dev/null
+
+run_installchecks: $(INSTALLTESTS)
 	@failed=0; \
 	all=0; \
 	xfail=0; \

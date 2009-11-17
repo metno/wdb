@@ -29,9 +29,10 @@ Call Interface (wci)
 Options:
 --help             display this help and exit
 --version          output version information and exit
---xml,-x		   output tests results in JUnit XML
+--xml,-x           output tests results in JUnit XML
 --ouput=FILE, -o FILE
                    output test log to <FILE>
+--no-clean         do not clean up after test
 "
 
 export SCRIPT_VERSION=__WDB_VERSION__
@@ -62,6 +63,10 @@ while test -n "$1"; do
 	    LOGFILE=`echo $1`
 	    shift
 	    continue;;
+	--no-clean)
+		NO_CLEAN=true
+		shift
+		continue;;
 	*)
 		echo -n "Did not recognize the option "; echo $1
 		echo " "
@@ -88,7 +93,9 @@ if test "$?" -ne "0"; then
    	exit 1
 fi
 
-#source ${TEST_PATH}/tearDown.sh
+if [ x$NO_CLEAN != xtrue ]; then
+	${TEST_PATH}/tearDown.sh
+fi
 
 # Print Test Result    
 echo -e "#\n# callInterface Installation Tests done\n#"

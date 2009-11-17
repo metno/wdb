@@ -39,6 +39,8 @@ BEGIN
 			RAISE LOG 'GridValue: Deleting all data for data provider % from before %', provider.dataproviderid, oldest_allowed::date;
 			DELETE FROM __WDB_SCHEMA__.gridvalue 
 			WHERE dataproviderid = provider.dataproviderid AND referencetime < oldest_allowed;
+			DELETE FROM __WDB_SCHEMA__.floatvalue 
+			WHERE dataproviderid = provider.dataproviderid AND referencetime < oldest_allowed;
 		END;
 	END LOOP;
 

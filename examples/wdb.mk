@@ -12,6 +12,7 @@ test_examples: examples/setupExamples.sh examples
 	@echo "./examples/setupExamples.sh" >> $@.tmp
 	@for T in $(CPP_EXAMPLES); do echo "echo $$T && ./$$T >> /dev/null" >> $@.tmp; done
 	@for T in $(SQL_EXAMPLES); do echo "echo $$T && psql $(DATABASE_NAME) < $(top_srcdir)/$$T >> /dev/null" >> $@.tmp; done
+	@echo 'psql `./wdbConfiguration --psqlArgs` -c "SELECT cleanupdb()" >> /dev/null' >> $@.tmp
 	@mv $@.tmp $@
 	@chmod 774 $@
 
