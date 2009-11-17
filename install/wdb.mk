@@ -14,24 +14,11 @@ INSTALL_SQL 	= 		install/upgrade_database.in.sql \
 
 NOINSTALL_SOURCES = 	install/move_database.in.sh
 
-pkglib_SCRIPTS += 		$(INSTALL_SOURCES:.in.sh=)
+nodist_pkglib_SCRIPTS =	$(INSTALL_SOURCES:.in.sh=)
 
-nodist_pkglib_SCRIPTS = $(NOINSTALL_SOURCES:.in.sh=)
+nodist_pkglib_SCRIPTS += $(NOINSTALL_SOURCES:.in.sh=)
 
 sql_DATA += 			$(INSTALL_SQL:.in.sql=.sql)
-
-install_database:		install/install_database.in.sh
-						$(SH_COMPILE)
-
-uninstall_database:		install/uninstall_database.in.sh
-						$(SH_COMPILE)
-	
-upgrade_database:		install/upgrade_database.in.sh
-						$(SH_COMPILE)
-
-move_database:			install/move_database.in.sh
-						$(SH_COMPILE)
-
 
 EXTRA_DIST +=			$(INSTALL_SOURCES) \
 						$(NOINSTALL_SOURCES) \

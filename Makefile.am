@@ -275,13 +275,6 @@ update-makefiles:
 # Install Check Framework
 #-----------------------------------------------------------------------------
 
-is_local: $(INSTALLCHECK_PROGRAMS)
-	set -e
-	for P in $(INSTALLCHECK_PROGRAMS); do
-		. $(P)
-	done
-
-
 installcheck-local: $(INSTALLTESTS)
 	@failed=0; \
 	all=0; \
