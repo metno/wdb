@@ -88,7 +88,12 @@ FROM
 	__WDB_SCHEMA__.dataprovidercomment AS dc
 WHERE
 	dp.dataproviderid = dn.dataproviderid AND
-	dp.dataproviderid = dc.dataproviderid;
+	dp.dataproviderid = dc.dataproviderid AND
+	dc.dataprovidercommentstoretime = (
+		SELECT max(dataprovidercommentstoretime) 
+		FROM __WDB_SCHEMA__.dataprovidercomment c 
+		WHERE c.dataproviderid = dp.dataproviderid
+	);
 
 REVOKE ALL ON __WCI_SCHEMA__.dataprovider FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.dataprovider TO wdb_admin;
