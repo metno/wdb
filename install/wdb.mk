@@ -23,7 +23,6 @@ sql_DATA += 			$(INSTALL_SQL:.in.sql=.sql)
 EXTRA_DIST +=			$(INSTALL_SOURCES) \
 						$(NOINSTALL_SOURCES) \
 						$(INSTALL_SQL) \
-						install/wdb.mk \
 						install/Makefile.am \
 						install/Makefile.in
 
