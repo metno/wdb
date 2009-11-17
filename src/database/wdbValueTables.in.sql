@@ -115,10 +115,10 @@ GRANT ALL ON __WDB_SCHEMA__.valueadditionallevelinfo TO wdb_admin;
 -- WCI Tables
 --
 CREATE TABLE __WDB_SCHEMA__.defaultnamespace (
-	rolname 				NAME NOT NULL,
-	dataprovidernamespaceid integer NOT NULL,
-	placenamespaceid		integer NOT NULL,
-	parameternamespaceid	integer NOT NULL
+	rolname 				NAME NOT NULL PRIMARY KEY,
+	dataprovidernamespaceid integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid),
+	placenamespaceid		integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid),
+	parameternamespaceid	integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid)
 );
 
 REVOKE ALL ON __WDB_SCHEMA__.defaultnamespace FROM public;
