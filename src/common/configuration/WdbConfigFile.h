@@ -77,7 +77,7 @@ public:
      * @param	key		The key string
      * @returns			String data value corresponding to the key
      */
-    std::string operator []( std::string key );
+    std::string operator []( std::string key ) const;
 
     // OPERATIONS
     /** Open the config file
@@ -88,7 +88,7 @@ public:
      * @param	key		The key string
      * @returns			String data value corresponding to the key
      */
-    virtual std::string get( std::string key );
+    virtual std::string get( std::string key ) const;
 
 private:
 	/// Config Hash map

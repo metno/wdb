@@ -82,7 +82,7 @@ WdbConfigFile::~WdbConfigFile()
 // Operators
 //---------------------------------------------------------------------------
 
-std::string WdbConfigFile::operator[] ( std::string key )
+std::string WdbConfigFile::operator[] ( std::string key ) const
 {
 	return get( key );
 }
@@ -105,7 +105,7 @@ void WdbConfigFile::open( std::string fileName )
     file.close();
 }
 
-std::string WdbConfigFile::get( std::string key )
+std::string WdbConfigFile::get( std::string key ) const
 {
 	if ( configTable_.end() != configTable_.find( key ) ) {
 		return configTable_.find( key )->second;
