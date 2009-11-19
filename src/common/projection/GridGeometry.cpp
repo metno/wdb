@@ -78,12 +78,12 @@ GridGeometry::GridGeometry(const GridGeometry & cpy)
 
 GridGeometry::~GridGeometry()
 {
-	delete projDefinition_;
+	delete [] projDefinition_;
 }
 
 const GridGeometry & GridGeometry::operator = (const GridGeometry & cpy)
 {
-	delete projDefinition_;
+	delete [] projDefinition_;
 
 	orientation_ = cpy.orientation_;
 	xNumber_ = cpy.xNumber_;
