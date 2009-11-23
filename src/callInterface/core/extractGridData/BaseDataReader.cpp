@@ -28,7 +28,6 @@
 
 #include "BaseDataReader.h"
 
-
 namespace
 {
 
@@ -45,9 +44,7 @@ struct ComparePlaceSpecification
 		return 0 > strcmp(a.projDefinition_, b.projDefinition_);
 	}
 };
-
 }
-
 
 const BaseDataReader & BaseDataReader::getInstance(const PlaceSpecification & ps)
 {
@@ -57,9 +54,14 @@ const BaseDataReader & BaseDataReader::getInstance(const PlaceSpecification & ps
 
 	static ReaderCache readerCache;
 
-	ReaderPtr & reader = readerCache[ps];
-	if ( ! reader )
-		reader = ReaderPtr(new BaseDataReader(ps));
+	ReaderCache::iterator find = readerCache.find(ps);
+	if ( find != readerCache.end() )
+		return * find->second;
+
+	PlaceSpecification newPs = ps;
+	newPs.projDefinition_ = strdup(ps.projDefinition_); // remember to free this if you clear the cache
+	ReaderPtr reader = ReaderPtr(new BaseDataReader(ps));
+	readerCache.insert(std::make_pair(newPs, reader));
 
 	return * reader;
 }
@@ -74,7 +76,6 @@ BaseDataReader::BaseDataReader(const PlaceSpecification & ps) :
 
 BaseDataReader::~BaseDataReader()
 {
-	// NOOP
 }
 
 GEOSGeom BaseDataReader::getGeometry(double x, double y) const
@@ -97,7 +98,7 @@ GEOSGeom BaseDataReader::getGeometry(double x, double y) const
 		find = idxCache_.insert(idxCache_.begin(), toInsert);
 	}
 
-	return find->second.copy();
+	return find->second.copy(); // Memory leak here
 }
 
 lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
