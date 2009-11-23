@@ -51,7 +51,7 @@ class BaseDataReader : boost::noncopyable
 {
 public:
 	/**
-	 * The only way to instantiate an object of this class. All invications on
+	 * The only way to instantiate an object of this class. All invocations on
 	 * similar PlaceSpecification objects will return the same BaseDataReader
 	 * object.
 	 */
