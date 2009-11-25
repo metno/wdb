@@ -28,14 +28,14 @@
 
 #include "SinglePointReader.h"
 #include <WdbProjection.h>
-//#include <geos_c.h>
 #include <limits>
 #include <map>
 #include <cstring>
 #include <cmath>
 
-SinglePointReader::SinglePointReader(const PlaceSpecification & ps) :
-	reader_(BaseDataReader::getInstance(ps))
+
+SinglePointReader::SinglePointReader(const BaseDataReader & reader) :
+	reader_(reader)
 {
 }
 

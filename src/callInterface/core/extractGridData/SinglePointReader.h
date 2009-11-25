@@ -30,19 +30,16 @@
 #define SINGLEPOINTREADER_H_
 
 #include "BaseDataReader.h"
-#include <PlaceSpecification.h>
 #include <types/interpolationType.h>
 #include <boost/shared_ptr.hpp>
 
 class SinglePointReader
 {
 public:
-	explicit SinglePointReader(const PlaceSpecification & ps);
+	explicit SinglePointReader(const BaseDataReader & reader);
 	virtual ~SinglePointReader();
 
 	GridPointDataList * read(GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
-
-	void purgeCache() { reader_.purgeCache(); }
 
 private:
 	GridPointDataList * readExact_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;

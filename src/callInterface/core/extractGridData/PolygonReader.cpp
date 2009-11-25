@@ -33,15 +33,13 @@
 #include <WdbProjection.h>
 #include <sstream>
 
-PolygonReader::PolygonReader(const PlaceSpecification & ps) :
-	reader_(BaseDataReader::getInstance(ps))
+PolygonReader::PolygonReader(const BaseDataReader & reader) :
+	reader_(reader)
 {
-	// NOOP
 }
 
 PolygonReader::~PolygonReader()
 {
-	// NOOP
 }
 
 GridPointDataList * PolygonReader::read( GEOSGeom location, InterpolationType interpolation, FileId dataId ) const

@@ -31,20 +31,17 @@
 
 #include "BaseDataReader.h"
 #include <PolygonGridExtract.h>
-#include <PlaceSpecification.h>
 #include <interpolationType.h>
 #include <vector>
 
 class PolygonReader
 {
 public:
-	PolygonReader(const PlaceSpecification & ps);
+	PolygonReader(const BaseDataReader & reader);
 	~PolygonReader();
 
 	/// Execute the PolygonReader
 	GridPointDataList * read(GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
-
-	void purgeCache() { reader_.purgeCache(); }
 
 private:
 	/// The Base Data Reader, used to read the data from disk

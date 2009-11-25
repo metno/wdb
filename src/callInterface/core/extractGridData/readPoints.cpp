@@ -27,10 +27,10 @@
  */
 
 #include "readPoints.h"
+#include "BaseDataReader.h"
 #include "AllPointsReader.h"
 #include "SinglePointReader.h"
 #include "PolygonReader.h"
-//#include <geos_c.h>
 #include <boost/shared_ptr.hpp>
 #include <map>
 
@@ -64,14 +64,16 @@ struct GridPointDataListIterator * readPoints(
 		enum InterpolationType interpolation, FileId dataId,
 		int transactionId, int commandId)
 {
+	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
+	if ( isNewWciRead(transactionId, commandId) )
+		dataReader.purgeCache();
+
 	GridPointDataListIterator * ret = NULL;
 	try
 	{
 		if ( location == 0 )
 		{
-			AllPointsReader reader(* ps);
-			if ( isNewWciRead(transactionId, commandId) )
-				reader.purgeCache();
+			AllPointsReader reader(dataReader);
 			struct GridPointDataList * list = reader.read(dataId);
 			ret = GridPointDataListIteratorNew(list);
 		}
@@ -80,17 +82,13 @@ struct GridPointDataListIterator * readPoints(
 			int geometryType = GEOSGeomTypeId(location);
 			if (geometryType == GEOS_POINT)
 			{
-				SinglePointReader reader(* ps);
-				if ( isNewWciRead(transactionId, commandId) )
-					reader.purgeCache();
+				SinglePointReader reader(dataReader);
 				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if (geometryType == GEOS_POLYGON)
 			{
-				PolygonReader reader(* ps);
-				if ( isNewWciRead(transactionId, commandId) )
-					reader.purgeCache();
+				PolygonReader reader(dataReader);
 				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}

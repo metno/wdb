@@ -30,19 +30,16 @@
 #define ALLPOINTSREADER_H_
 
 #include "BaseDataReader.h"
-#include <PlaceSpecification.h>
 #include <types/interpolationType.h>
 
 
 class AllPointsReader
 {
 public:
-	explicit AllPointsReader(const PlaceSpecification & ps);
+	explicit AllPointsReader(const BaseDataReader & reader);
 	~AllPointsReader();
 
 	GridPointDataList * read(FileId dataId) const;
-
-	void purgeCache() { reader_.purgeCache(); }
 
 private:
 	const BaseDataReader & reader_;

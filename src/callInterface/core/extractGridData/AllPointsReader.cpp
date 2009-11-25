@@ -28,8 +28,8 @@
 
 #include "AllPointsReader.h"
 
-AllPointsReader::AllPointsReader(const PlaceSpecification & ps):
-	reader_(BaseDataReader::getInstance(ps))
+AllPointsReader::AllPointsReader(const BaseDataReader & reader):
+	reader_(reader)
 {
 }
 
