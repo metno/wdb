@@ -68,7 +68,7 @@ public:
 	 * todo: the return type is ambigous - it has nothing to do with lat/lon
 	 *       coordinates
 	 */
-	lonlat getExactIndex(GEOSGeom location) const;
+	lonlat getExactIndex(const GEOSGeomWrapper & location) const;
 
 	/**
 	 * Check if the given index is not within the PlaceSpecification

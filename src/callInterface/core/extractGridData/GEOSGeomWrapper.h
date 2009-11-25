@@ -30,7 +30,6 @@
 #define GEOSGEOMWRAPPER_H_
 
 #include <cstddef>
-//#include <geos_c.h>
 #include <functional>
 
 extern "C"

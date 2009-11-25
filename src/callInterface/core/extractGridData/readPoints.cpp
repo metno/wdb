@@ -86,13 +86,13 @@ struct GridPointDataListIterator * readPoints(
 			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(dataReader);
-				GridPointDataList * list = reader.read(loc.get(), interpolation, dataId);
+				GridPointDataList * list = reader.read(loc, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if (geometryType == GEOS_POLYGON)
 			{
 				PolygonReader reader(dataReader);
-				GridPointDataList * list = reader.read(loc.get(), interpolation, dataId);
+				GridPointDataList * list = reader.read(loc, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else

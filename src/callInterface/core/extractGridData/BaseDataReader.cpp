@@ -98,10 +98,9 @@ GEOSGeom BaseDataReader::getGeometry(double x, double y) const
 	return find->second.get();
 }
 
-lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
+lonlat BaseDataReader::getExactIndex(const GEOSGeomWrapper & location) const
 {
-	GEOSGeomWrapper loc = GEOSGeomWrapper::createFromCopyOf(location);
-	GeomCache::const_iterator find = geomCache_.find(GEOSGeomWrapper(loc));
+	GeomCache::const_iterator find = geomCache_.find(location);
 	if ( find == geomCache_.end() )
 	{
 		// KLUDGE: Support several versions of geos
@@ -111,14 +110,14 @@ lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
 		// In all cases there is a typedef GEOSCoordSequence(_t) * GEOSCoordSeq,
 		// but declaring a const GEOSCoordSeq equals a GEOSCoordSequence * const,
 		// and not a const GEOSCoordSequence *
-		GEOSCoordSeq sequence = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(location));
+		GEOSCoordSeq sequence = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(location.get()));
 
 		lonlat ll;
 		GEOSCoordSeq_getX(sequence, 0, & ll.lon);
 		GEOSCoordSeq_getY(sequence, 0, & ll.lat);
 		lonlat ret = rTransform( ll, & ps_ );
 
-		GeomCache::value_type toInsert(loc, ret);
+		GeomCache::value_type toInsert(location, ret);
 
 		find = geomCache_.insert(geomCache_.begin(), toInsert);
 	}

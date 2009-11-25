@@ -41,14 +41,14 @@ public:
 	~PolygonReader();
 
 	/// Execute the PolygonReader
-	GridPointDataList * read(GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
+	GridPointDataList * read(const GEOSGeomWrapper & location, InterpolationType interpolation, FileId dataId) const;
 
 private:
 	/// The Base Data Reader, used to read the data from disk
 	const BaseDataReader & reader_;
 
 	/// Extract the polygon (as GridPoints) from the GEOS geometry
-	void extractPolygon( std::vector<GridPointData> & polygon, GEOSGeom location, InterpolationType interpolation ) const;
+	void extractPolygon( std::vector<GridPointData> & polygon, const GEOSGeomWrapper & location, InterpolationType interpolation ) const;
 
 	/// Read the polygon from the data file
 	GridPointDataList * readPolygon( std::vector<GridPointData> & points, FileId dataId ) const;

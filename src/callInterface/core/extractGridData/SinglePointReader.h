@@ -39,13 +39,13 @@ public:
 	explicit SinglePointReader(const BaseDataReader & reader);
 	virtual ~SinglePointReader();
 
-	GridPointDataList * read(GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
+	GridPointDataList * read(const GEOSGeomWrapper & location, InterpolationType interpolation, FileId dataId) const;
 
 private:
-	GridPointDataList * readExact_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;
-	GridPointDataList * readNearest_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;
-	GridPointDataList * readSurround_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;
-	GridPointDataList * readBilinear_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;
+	GridPointDataList * readExact_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const;
+	GridPointDataList * readNearest_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const;
+	GridPointDataList * readSurround_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const;
+	GridPointDataList * readBilinear_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const;
 
 	const BaseDataReader & reader_;
 };

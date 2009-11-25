@@ -42,7 +42,7 @@ PolygonReader::~PolygonReader()
 {
 }
 
-GridPointDataList * PolygonReader::read( GEOSGeom location, InterpolationType interpolation, FileId dataId ) const
+GridPointDataList * PolygonReader::read( const GEOSGeomWrapper & location, InterpolationType interpolation, FileId dataId ) const
 {
 	GridPointDataList * list = 0;
 	std::vector <GridPointData> polygon;
@@ -60,9 +60,9 @@ GridPointDataList * PolygonReader::read( GEOSGeom location, InterpolationType in
 	return list;
 }
 
-void PolygonReader::extractPolygon( std::vector<GridPointData> & polygon, GEOSGeom location, InterpolationType interpolation ) const
+void PolygonReader::extractPolygon( std::vector<GridPointData> & polygon, const GEOSGeomWrapper & location, InterpolationType interpolation ) const
 {
-	GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( location ));
+	GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( location.get() ));
 	if ( outerRing == NULL )
 		throw std::runtime_error( "Outer ring of location is NULL" );
 
