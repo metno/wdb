@@ -39,12 +39,16 @@ public:
 
 	~GEOSGeomPtr()
 	{
-		GEOSGeom_destroy(geom);
+		if ( geom )
+			GEOSGeom_destroy(geom);
 	}
 
 	GEOSGeom copy() const
 	{
-		return GEOSGeom_clone(geom);
+		if ( geom )
+			return GEOSGeom_clone(geom);
+		else
+			return 0;
 	}
 
 	unsigned useCount;
@@ -91,6 +95,11 @@ GEOSGeom GEOSGeomWrapper::copy() const
 const GEOSGeom GEOSGeomWrapper::get() const
 {
 	return geom_->geom;
+}
+
+GEOSGeomWrapper::operator bool () const
+{
+	return geom_->geom != 0;
 }
 
 bool operator ==(const GEOSGeomWrapper & a, const GEOSGeomWrapper & b)

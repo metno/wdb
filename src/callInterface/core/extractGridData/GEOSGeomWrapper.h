@@ -71,6 +71,11 @@ public:
 	 */
 	const GEOSGeom get() const;
 
+	/**
+	 * True if the wrapped geos object is non-zero
+	 */
+	operator bool () const;
+
 private:
 	struct GEOSGeomPtr;
 	GEOSGeomPtr * geom_;

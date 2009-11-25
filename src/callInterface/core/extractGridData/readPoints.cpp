@@ -31,6 +31,7 @@
 #include "AllPointsReader.h"
 #include "SinglePointReader.h"
 #include "PolygonReader.h"
+#include "GEOSGeomWrapper.h"
 #include <boost/shared_ptr.hpp>
 #include <map>
 
@@ -64,6 +65,8 @@ struct GridPointDataListIterator * readPoints(
 		enum InterpolationType interpolation, FileId dataId,
 		int transactionId, int commandId)
 {
+	GEOSGeomWrapper loc(location);
+
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
 	if ( isNewWciRead(transactionId, commandId) )
 		dataReader.purgeCache();
@@ -71,7 +74,7 @@ struct GridPointDataListIterator * readPoints(
 	GridPointDataListIterator * ret = NULL;
 	try
 	{
-		if ( location == 0 )
+		if ( ! loc )
 		{
 			AllPointsReader reader(dataReader);
 			struct GridPointDataList * list = reader.read(dataId);
@@ -79,17 +82,17 @@ struct GridPointDataListIterator * readPoints(
 		}
 		else
 		{
-			int geometryType = GEOSGeomTypeId(location);
+			int geometryType = GEOSGeomTypeId(loc.get());
 			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(dataReader);
-				GridPointDataList * list = reader.read(location, interpolation, dataId);
+				GridPointDataList * list = reader.read(loc.get(), interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if (geometryType == GEOS_POLYGON)
 			{
 				PolygonReader reader(dataReader);
-				GridPointDataList * list = reader.read(location, interpolation, dataId);
+				GridPointDataList * list = reader.read(loc.get(), interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else
@@ -99,23 +102,17 @@ struct GridPointDataListIterator * readPoints(
 	catch (std::exception & e)
 	{
 		if ( ret )
-			GridPointDataListDelete(ret->list, true);
-		if ( location )
-			GEOSGeom_destroy(location);
+			GridPointDataListDelete(ret->list, false);
 		ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED), errmsg(e.what())));
 	}
 	catch (...)
 	{
 		// This should never happen, but just in case...
 		if ( ret )
-			GridPointDataListDelete(ret->list, true);
-		if ( location )
-			GEOSGeom_destroy(location);
+			GridPointDataListDelete(ret->list, false);
 		ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED), "Unknown error when fetching point data. Please tell someone about this"));
 	}
 
-	if ( location )
-		GEOSGeom_destroy(location);
 	return ret;
 }
 
