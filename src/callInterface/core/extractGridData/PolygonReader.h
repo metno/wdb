@@ -44,6 +44,8 @@ public:
 	/// Execute the PolygonReader
 	GridPointDataList * read(GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
 
+	void purgeCache() { reader_.purgeCache(); }
+
 private:
 	/// The Base Data Reader, used to read the data from disk
 	const BaseDataReader & reader_;

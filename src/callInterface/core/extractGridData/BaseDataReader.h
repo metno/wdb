@@ -91,6 +91,13 @@ public:
 
 	const PlaceSpecification & placeSpecification() const { return ps_; }
 
+
+	void purgeCache() const
+	{
+		geomCache_.clear();
+		idxCache_.clear();
+	}
+
 private:
 	BaseDataReader(); // undefined
 	explicit BaseDataReader(const PlaceSpecification & ps);

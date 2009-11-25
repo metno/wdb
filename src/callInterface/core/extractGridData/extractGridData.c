@@ -31,6 +31,7 @@
 #include <funcapi.h>
 #include <access/heapam.h>
 #include <utils/memutils.h>
+#include <access/xact.h>
 #include <types/interpolationType.h>
 #include <core/psqlTupleInterface.h>
 #include <fileblobimpl_psql.h>
@@ -65,8 +66,11 @@ struct GridPointDataListIterator * getExtractGridDataReturnValues(FunctionCallIn
     enum InterpolationType interpolation = (enum InterpolationType) PG_GETARG_INT32(2);
     FileId dataId = PG_GETARG_INT64(3);
 
+    TransactionId xid = GetTopTransactionId();
+    CommandId cid = GetCurrentCommandId(true); // Incremented for each function call in the same transaction
+
     // function takes ownership of location parameter
-    struct GridPointDataListIterator * ret = readPoints(& ps, location, interpolation, dataId);
+    struct GridPointDataListIterator * ret = readPoints(& ps, location, interpolation, dataId, xid, cid);
     return ret;
 }
 

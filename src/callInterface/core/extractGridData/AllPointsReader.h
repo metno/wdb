@@ -42,6 +42,8 @@ public:
 
 	GridPointDataList * read(FileId dataId) const;
 
+	void purgeCache() { reader_.purgeCache(); }
+
 private:
 	const BaseDataReader & reader_;
 };

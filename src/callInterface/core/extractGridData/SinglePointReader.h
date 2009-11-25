@@ -42,6 +42,8 @@ public:
 
 	GridPointDataList * read(GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
 
+	void purgeCache() { reader_.purgeCache(); }
+
 private:
 	GridPointDataList * readExact_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;
 	GridPointDataList * readNearest_(GEOSGeom location, double exactX, double exactY, FileId dataId) const;

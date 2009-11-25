@@ -166,7 +166,7 @@ GridPointDataList * SinglePointReader::readBilinear_(GEOSGeom location, double e
 	GridPointDataList * surroundingPoints = readSurround_(location, exactX, exactY, dataId);
 	if ( surroundingPoints->count < 4 )
 	{
-		GridPointDataListDelete(surroundingPoints);
+		GridPointDataListDelete(surroundingPoints, false);
 		return GridPointDataListNew(0);
 	}
 
@@ -177,7 +177,9 @@ GridPointDataList * SinglePointReader::readBilinear_(GEOSGeom location, double e
 	data.value = interpolate::bilinear(surroundingPoints, exactX, exactY);
 	data.location = GEOSGeom_clone(location);
 
-	GridPointDataListDelete(surroundingPoints);
+	// Delete intermediate data, but don't touch te stored geometry objects,
+	// since they are in the cache.
+	GridPointDataListDelete(surroundingPoints, false);
 
 	return list;
 }

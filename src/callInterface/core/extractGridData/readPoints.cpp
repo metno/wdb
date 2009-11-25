@@ -34,13 +34,35 @@
 #include <boost/shared_ptr.hpp>
 #include <map>
 
+#include <iostream>
+
+namespace
+{
+bool isNewWciRead(int transactionId, int commandId)
+{
+	static int lastTransactionId = -1;
+	static int lastCommandId = -1;
+
+	if ( transactionId == lastTransactionId and commandId == lastCommandId )
+		return false;
+
+	std::cout << "\n\nPURGE CACHE\n\n" << std::endl;
+
+	lastTransactionId = transactionId;
+	lastCommandId = commandId;
+
+	return true;
+}
+}
+
 extern "C"
 {
 #include <postgres.h>
 
 struct GridPointDataListIterator * readPoints(
 		const struct PlaceSpecification * ps, GEOSGeom location,
-		enum InterpolationType interpolation, FileId dataId)
+		enum InterpolationType interpolation, FileId dataId,
+		int transactionId, int commandId)
 {
 	GridPointDataListIterator * ret = NULL;
 	try
@@ -48,6 +70,8 @@ struct GridPointDataListIterator * readPoints(
 		if ( location == 0 )
 		{
 			AllPointsReader reader(* ps);
+			if ( isNewWciRead(transactionId, commandId) )
+				reader.purgeCache();
 			struct GridPointDataList * list = reader.read(dataId);
 			ret = GridPointDataListIteratorNew(list);
 		}
@@ -57,12 +81,16 @@ struct GridPointDataListIterator * readPoints(
 			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(* ps);
+				if ( isNewWciRead(transactionId, commandId) )
+					reader.purgeCache();
 				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if (geometryType == GEOS_POLYGON)
 			{
 				PolygonReader reader(* ps);
+				if ( isNewWciRead(transactionId, commandId) )
+					reader.purgeCache();
 				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
@@ -73,7 +101,7 @@ struct GridPointDataListIterator * readPoints(
 	catch (std::exception & e)
 	{
 		if ( ret )
-			GridPointDataListDelete(ret->list);
+			GridPointDataListDelete(ret->list, true);
 		if ( location )
 			GEOSGeom_destroy(location);
 		ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED), errmsg(e.what())));
@@ -82,7 +110,7 @@ struct GridPointDataListIterator * readPoints(
 	{
 		// This should never happen, but just in case...
 		if ( ret )
-			GridPointDataListDelete(ret->list);
+			GridPointDataListDelete(ret->list, true);
 		if ( location )
 			GEOSGeom_destroy(location);
 		ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED), "Unknown error when fetching point data. Please tell someone about this"));

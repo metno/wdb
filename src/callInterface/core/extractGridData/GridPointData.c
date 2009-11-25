@@ -46,11 +46,12 @@ struct GridPointDataList * GridPointDataListNew(size_t size)
 	return dl;
 }
 
-void GridPointDataListDelete(struct GridPointDataList * list)
+void GridPointDataListDelete(struct GridPointDataList * list, int alsoDestroyPoints)
 {
 	int i;
-	for ( i = 0; i < list->count; ++ i )
-		GridPointDataDestroy(list->data + i);
+	if ( alsoDestroyPoints )
+		for ( i = 0; i < list->count; ++ i )
+			GridPointDataDestroy(list->data + i);
 	if ( list->data != NULL )
 		pfree(list->data);
 	pfree(list);

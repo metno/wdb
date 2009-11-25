@@ -84,9 +84,6 @@ GEOSGeom BaseDataReader::getGeometry(double x, double y) const
 	IdxCache::const_iterator find = idxCache_.find(idx);
 	if ( find == idxCache_.end() )
 	{
-		if ( idxCache_.size() > 31 )
-			idxCache_.clear();
-
 		lonlat ret = wdbTransform(x, y, & ps_);
 		GEOSCoordSeq coordinate = GEOSCoordSeq_create(1, 2);
 		GEOSCoordSeq_setX(coordinate, 0, ret.lon);
@@ -98,7 +95,7 @@ GEOSGeom BaseDataReader::getGeometry(double x, double y) const
 		find = idxCache_.insert(idxCache_.begin(), toInsert);
 	}
 
-	return find->second.copy(); // Memory leak here
+	return find->second.get();
 }
 
 lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
@@ -107,9 +104,6 @@ lonlat BaseDataReader::getExactIndex(GEOSGeom location) const
 	GeomCache::const_iterator find = geomCache_.find(GEOSGeomWrapper(loc));
 	if ( find == geomCache_.end() )
 	{
-		if ( geomCache_.size() > 31 )
-			geomCache_.clear();
-
 		// KLUDGE: Support several versions of geos
 		//
 		// GEOSGeom_getCoordSeq returns a const GEOSCoordSequence_t *, or a

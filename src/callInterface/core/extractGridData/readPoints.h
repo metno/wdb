@@ -38,7 +38,11 @@ extern "C" {
 #include <fileblobimpl_psql.h>
 #include <types/interpolationType.h>
 
-struct GridPointDataListIterator * readPoints(const struct PlaceSpecification * ps, GEOSGeom location, enum InterpolationType interpolation, FileId dataId);
+struct GridPointDataListIterator * readPoints(
+		const struct PlaceSpecification * ps, GEOSGeom location,
+		enum InterpolationType interpolation,
+		FileId dataId,
+		int transactionId, int commandId);
 
 
 #ifdef __cplusplus

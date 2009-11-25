@@ -98,10 +98,14 @@ struct GridPointDataList
 struct GridPointDataList * GridPointDataListNew(size_t size);
 
 /**
- * Delete all memory pointed to by the given list. This includes calling
- * GridPointDataDestroy on all list elements before freeing them.
+ * Delete all memory pointed to by the given list. This optionally includes
+ * calling GridPointDataDestroy on all list elements before freeing them.
+ *
+ * @param list the data list do delete
+ * @param alsoDestroyPoints If value is non-zero: Also free the memory
+ *                          associated with geometry objects
  */
-void GridPointDataListDelete(struct GridPointDataList * list);
+void GridPointDataListDelete(struct GridPointDataList * list, int alsoDestroyPoints);
 
 /**
  * Iterates over a GridPointDataList. This iterator should normally be
