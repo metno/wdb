@@ -98,6 +98,8 @@ public:
 		idxCache_.clear();
 	}
 
+	static void purgeAllCaches();
+
 private:
 	BaseDataReader(); // undefined
 	explicit BaseDataReader(const PlaceSpecification & ps);

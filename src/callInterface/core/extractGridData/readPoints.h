@@ -38,11 +38,30 @@ extern "C" {
 #include <fileblobimpl_psql.h>
 #include <types/interpolationType.h>
 
+/**
+ * Read points according to the given specification.
+ *
+ * @param ps Specification for the grid type to read from
+ * @param location The geometry of the area or point to read
+ * @param interpolation How to interpolate the data.
+ * @param dataId id of the blob to read from
+ * @param transactionId postgresql's transaction id
+ * @param commandIf Id of the wci.read function being called. Along with
+ *                  transaction id, this must me unique in order to keep
+ *                  internal caches consistent and not overfilled.
+ *
+ * @return The list of values/geometries that were retrieved from the blob
+ */
 struct GridPointDataListIterator * readPoints(
 		const struct PlaceSpecification * ps, GEOSGeom location,
 		enum InterpolationType interpolation,
 		FileId dataId,
 		int transactionId, int commandId);
+
+/**
+ * Clear all caches related to reading data from blobs
+ */
+void purgeAllReadRelatedCaches();
 
 
 #ifdef __cplusplus

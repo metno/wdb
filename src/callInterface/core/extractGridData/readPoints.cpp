@@ -68,8 +68,9 @@ struct GridPointDataListIterator * readPoints(
 	GEOSGeomWrapper loc(location);
 
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
+
 	if ( isNewWciRead(transactionId, commandId) )
-		dataReader.purgeCache();
+		BaseDataReader::purgeAllCaches();
 
 	GridPointDataListIterator * ret = NULL;
 	try
@@ -115,5 +116,11 @@ struct GridPointDataListIterator * readPoints(
 
 	return ret;
 }
+
+void purgeAllReadRelatedCaches()
+{
+	BaseDataReader::purgeAllCaches();
+}
+
 
 }

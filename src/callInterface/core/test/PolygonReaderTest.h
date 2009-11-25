@@ -30,6 +30,7 @@
 #define POLYGONREADERTEST_H_
 
 #include <cppunit/extensions/HelperMacros.h>
+#include <BaseDataReader.h>
 #include <PlaceSpecification.h>
 
 class PolygonReaderTest : public CppUnit::TestFixture

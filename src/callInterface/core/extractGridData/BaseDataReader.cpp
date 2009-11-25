@@ -44,16 +44,17 @@ struct ComparePlaceSpecification
 		return 0 > strcmp(a.projDefinition_, b.projDefinition_);
 	}
 };
+
+
+typedef BaseDataReader * ReaderPtr;
+typedef std::map<PlaceSpecification, ReaderPtr, ComparePlaceSpecification> ReaderCache;
+
+static ReaderCache readerCache;
+
 }
 
 const BaseDataReader & BaseDataReader::getInstance(const PlaceSpecification & ps)
 {
-	//typedef boost::shared_ptr<BaseDataReader> ReaderPtr;
-	typedef BaseDataReader * ReaderPtr;
-	typedef std::map<PlaceSpecification, ReaderPtr, ComparePlaceSpecification> ReaderCache;
-
-	static ReaderCache readerCache;
-
 	ReaderCache::iterator find = readerCache.find(ps);
 	if ( find != readerCache.end() )
 		return * find->second;
@@ -64,6 +65,12 @@ const BaseDataReader & BaseDataReader::getInstance(const PlaceSpecification & ps
 	readerCache.insert(std::make_pair(newPs, reader));
 
 	return * reader;
+}
+
+void BaseDataReader::purgeAllCaches()
+{
+	for ( ReaderCache::iterator it = readerCache.begin(); it != readerCache.end(); ++ it )
+		it->second->purgeCache();
 }
 
 
