@@ -32,7 +32,6 @@
 #endif
 #include <wdbConfiguration.h>
 #include <pqxx/pqxx>
-#include <boost/shared_array.hpp>
 #include <string>
 #include <iostream>
 
@@ -70,7 +69,7 @@ class MyTransaction : public pqxx::transactor<pqxx::work>
 {
 public:
 	/// A simple mechanism for storing fields
-	typedef boost::shared_array<float> DataField;
+	typedef std::vector<float> DataField;
 	
 	/// Simple way of storing return values
 	typedef std::map<std::string, DataField> Param2Data;
@@ -99,10 +98,10 @@ public:
 		const pqxx::result::tuple & field = r[0];
 
 		unsigned size = field["numberX"].as<int>() * field["numberY"].as<int>();
-		DataField buffer( new float[ size ] );
+		DataField buffer(size);
 
 		const pqxx::binarystring res_data(field["grid"]);
-		std::copy(res_data.begin(), res_data.end(), reinterpret_cast<char *>(buffer.get()));
+		std::copy(res_data.begin(), res_data.end(), reinterpret_cast<char *>(& buffer[0]));
 
 		return buffer;
 	}
