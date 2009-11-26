@@ -1,23 +1,23 @@
 #!/bin/sh
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## 
-## wdb - weather and water data storage
-##
-## Copyright (C) 2007 met.no
-##
-##  Contact information:
-##  Norwegian Meteorological Institute
-##  Box 43 Blindern
-##  0313 OSLO
-##  NORWAY
-##  E-mail: wdb@met.no
-##
-##  This is free software; you can redistribute it and/or modify
-##  it under the terms of the GNU General Public License as published by
-##  the Free Software Foundation; either version 2 of the License, or
-##  (at your option) any later version.
-##
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 
+# wdb - weather and water data storage
+#
+# Copyright (C) 2007 met.no
+#
+#  Contact information:
+#  Norwegian Meteorological Institute
+#  Box 43 Blindern
+#  0313 OSLO
+#  NORWAY
+#  E-mail: wdb@met.no
+#
+#  This is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Setup environment
 export TESTCASE="F005"
 export TEST_DESCRIPTION="Deleting multiple rows of old data"
@@ -55,9 +55,9 @@ then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
-    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data was not inserted for test\">\n\t</failure>\n</testcase>"
+    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data was not inserted for test\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not inserted)"
+    	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not inserted)"
 	fi
     $TEST_PATH/tearDown.sh
     exit 1
@@ -76,9 +76,9 @@ then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
-    	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data does not appear to have been deleted\">\n\t</failure>\n</testcase>"
+    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data does not appear to have been deleted\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+    	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
     $TEST_PATH/tearDown.sh
     exit 1
@@ -89,7 +89,7 @@ $TEST_PATH/tearDown.sh
 endTime=`date +%s%N`
 totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 if test "$XML_OPT" = "-x"; then
-	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
+	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
 else
-	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	echo "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 fi
