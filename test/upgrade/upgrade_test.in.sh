@@ -35,6 +35,9 @@ help() {
 	echo "runs the upgrade algorithms, and performs some basic checks of"
 	echo "the upgraded database."
 	echo
+	echo "Note that the upgrade check has to be run from the build"
+	echo "directory of WDB"
+	echo
 	echo "OPTIONS:"
 	echo 
 	echo "--help       Show this help message"
@@ -58,43 +61,71 @@ while [ x`echo $1 | cut -b-2` = "x--" ]; do
 	shift
 done
 
-# Variables 
-
+# Variables
+WORK_DIR=`pwd | sed -e 's,^[^:\\/]:[\\/],/,'`
 UPGRADE_DIR=upgradecheck
-INSTALL_DIR=$(UPGRADE_DIR)/_inst
-OLDWDB_DIR=$(UPGRADE_DIR)/__OLD_VERSION__
-NEWWDB_DIR=$(UPGRADE_DIR)/__WDB_VERSION__
+INSTALL_DIR=$UPGRADE_DIR/_inst
+OLDWDB_DIR=$UPGRADE_DIR/__OLD_VERSION__
+NEWWDB_DIR=$UPGRADE_DIR/__WDB_VERSION__
 WDBSVN_DIR=https://svn.met.no/wdbSystem/
 TEST_DB=wdb_upgradecheck
+export PGDATABASE=$TEST_DB
+
+test_cleanup() {
+	rm -rf $UPGRADE_DIR
+	dropdb $TEST_DB
+}
 
 # Create directories
-mkdir $(UPGRADE_DIR)
-mkdir $(INSTALL_DIR)
+mkdir $UPGRADE_DIR
+mkdir $INSTALL_DIR
 
 # Create package
 make dist
 
 # Check out WDB
-svn co $(WDBSVN_DIR)/tags/__OLD_VERSION__/wdb $(OLDWDB_DIR)
+svn co $WDBSVN_DIR/tags/__OLD_VERSION__/wdb $OLDWDB_DIR
+if [ 0 != $? ]; then
+    echo "ERROR: Failed to check out the old version of WDB."
+	test_cleanup
+    exit 1
+fi
+
+cd $INSTALL_DIR
+PREFIX_DIR=`pwd | sed -e 's,^[^:\\/]:[\\/],/,'`
+cd $WORK_DIR
 
 # Make and install
-cd $(OLDWDB_DIR)
+cd $OLDWDB_DIR
+if [ 0 != $? ]; then
+    echo "ERROR: Could not locate the old version of WDB."
+	test_cleanup
+    exit 1
+fi
 ./autogen.sh
-./configure --srcdir=.. --prefix=$(INSTALL_DIR) --with-database-name=$(TEST_DB)
+./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
 make all install
-# -- Add some data to the database to port
-cd ../..
+# TODO: Add some data to the database to port
+cd $WORK_DIR
 
 # Upgrade database
-make dist
-mv __WDB_DISTDIR__.tar.gz $(UPGRADE_DIR)
-cd $(UPGRADE_DIR)
-gunzip -c __WDB_DISTDIR__.tar.gz | tar xvf
+mv __WDB_DISTDIR__.tar.gz $UPGRADE_DIR
+cd $UPGRADE_DIR
+tar xvf __WDB_DISTDIR__.tar.gz
 cd __WDB_DISTDIR__
-./autogen.sh
-./configure --srcdir=.. --prefix=$(INSTALL_DIR) --with-database-name=$(TEST_DB)
+./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
 make upgrade
 # -- Check the integrity of the database
-cd ../..
+make installcheck
+if [ 0 != $? ]; then
+    echo "ERROR: Installcheck of the upgraded database failed"
+	test_cleanup
+    exit 1
+fi
+
+# -- Exit
+cd $WORK_DIR
+
+test_cleanup
 
 echo "Upgrade worked correctly"

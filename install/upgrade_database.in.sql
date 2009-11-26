@@ -131,4 +131,4 @@ SELECT __WCI_SCHEMA__.migratedata( );
 DROP FUNCTION __WCI_SCHEMA__.migratedata( );
 
 -- Migrate fileblob
-INSERT INTO __WDB_SCHEMA__.fileblob SELECT * FROM __OLD_SCHEMA__.fileblob;
+INSERT INTO __WDB_SCHEMA__.file_blob SELECT * FROM __OLD_SCHEMA__.file_blob;

@@ -201,7 +201,7 @@ fi
 echo -n "checking for the presence of spatial_ref_sys.sql... "
 if test -f $POSTGIS_DIR/spatial_ref_sys.sql; then
     echo "yes"
-else 
+else
     echo "no"
     echo "Error: could not find spatial_ref_sys.sql. Postgis must be installed together with postgres. Installation assumes that spatial_ref_sys.sql is installed in <postgres>/share/contrib."
     exit 1

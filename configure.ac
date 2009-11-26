@@ -77,6 +77,7 @@ build_subdirs="			doc \
 						test/install/cleaningProgram \
 						test/performance/callInterface \
 						test/stability/callInterface \
+						test/upgrade \
 						test/utility/configuration \
 						test/utility/testWrite \
 						test/unit \
@@ -145,7 +146,6 @@ WDB_LOG4CPP_CHECK(0.3.5rc3)
 WDB_PROJ_CHECK
 
 # CppUnit
-WDB_DLLIB
 WDB_CPPUNIT
 
 AM_PATH_PYTHON(2.4,, [:])
@@ -219,6 +219,7 @@ AC_CONFIG_FILES([Makefile
 				 test/install/cleaningProgram/Makefile 
 				 test/performance/callInterface/Makefile
 				 test/stability/callInterface/Makefile
+				 test/upgrade/Makefile
 				 test/utility/configuration/Makefile
 				 test/utility/testWrite/Makefile
 		 		 test/unit/Makefile

@@ -41,6 +41,7 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 						| sed s:__WDB_SRID__:$(DEFAULT_SRID):g \
 						| sed s:__OLD_VERSION__:$(OLD_MAJOR_VERSION).$(OLD_MINOR_VERSION).$(OLD_MICRO_VERSION):g \
 						| sed s:__OLD_SCHEMA__:wdb_$(OLD_MAJOR_VERSION)_$(OLD_MINOR_VERSION)_$(OLD_MICRO_VERSION):g \
+						| sed s:__OLD_WCI_SCHEMA__:wci_$(OLD_MAJOR_VERSION)_$(OLD_MINOR_VERSION)_$(OLD_MICRO_VERSION):g \
 						| sed s:__WDB_DISTDIR__:$(PACKAGE)-$(VERSION):g \
 			 			> $@
 
@@ -168,6 +169,7 @@ include test/install/callInterface/wdb.mk
 include test/install/cleaningProgram/wdb.mk
 include test/performance/callInterface/wdb.mk
 include test/stability/callInterface/wdb.mk
+include test/upgrade/wdb.mk
 include test/utility/configuration/wdb.mk
 include test/utility/testWrite/wdb.mk
 
@@ -253,8 +255,7 @@ upgrade: all install-man install-sqlDATA install-wciapiDATA \
 	mkdir -p @builddir@/var/logs/
 	rm -f @builddir@/var/logs/*
 	@builddir@/install/upgrade_database -d $(DATABASE_NAME)
-
-
+	
 
 #-----------------------------------------------------------------------------
 # Makefile Maintenance
@@ -455,13 +456,7 @@ performancecheck:  $(PERFORMANCETESTS)
 UPGRADECHECK_DATABASE_NAME = wdb_upgradecheck
 UPGRADECHECK_CONFIGURE_FLAGS = --enable-database-install --with-database-name=$(UPGARDECHECK_DATABASE_NAME)
 
-upgradecheck: dist
-	mkdir $(distdir)/_build
-	mkdir $(distdir)/_upgd/etc/
-	echo "database = $(UPGRADECHECK_DATABASE_NAME)" > $(distdir)/_upgd/etc/wdb.conf
-	chmod a-w $(distdir)	
-	dc_install_base=`$(am__cd) $(distdir)/_upgd && pwd | sed -e 's,^[^:\\/]:[\\/],/,'` \
-	  && $(MAKE) $(AM_MAKEFLAGS)
-
+upgradecheck: all
+	@builddir@/test/upgrade/upgrade_test.sh
 
 include mk/debian.mk
