@@ -320,7 +320,8 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $POSTGIS_DIR/spatial_ref_sys.sql
 EOF
 if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
+	echo "ERROR"
+    echo "ERROR: PostGIS could not be installed. Check that the PostGIS files $POSTGIS_FILE and spatial_ref_sys.sql are located in $POSTGIS_DIR"; exit 1
 else
     echo "done"
 fi
@@ -381,7 +382,7 @@ else
     echo "done"
 fi
 
-# Install Metadata
+# Update Materialized View
 echo -n "updating materialized views... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -430,18 +431,46 @@ fi
 
 # Install wci
 echo -n "installing wci components... "
-cd __WDB_DATADIR__/sql/wci
-for FILE in `ls -1f types/*.sql core/*.sql api/*.sql | grep -v [.]in[.]sql`; do
-    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+WCI_DIR="__WDB_DATADIR__/sql/wci"
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
-\i $FILE
+-- WCI Types
+\i $WCI_DIR/types/extractGridDataType.sql
+\i $WCI_DIR/types/levelParameter.sql
+\i $WCI_DIR/types/location.sql
+\i $WCI_DIR/types/valueParameter.sql
+\i $WCI_DIR/types/verifyGeometry.sql
+\i $WCI_DIR/types/wciInterpolationSpec.sql
+\i $WCI_DIR/types/wciLevelSpec.sql
+\i $WCI_DIR/types/wciReadReturnType.sql
+\i $WCI_DIR/types/wciTimeSpec.sql
+-- WCI Core
+\i $WCI_DIR/core/getDataProvider.sql
+\i $WCI_DIR/core/readDataProvider.sql
+\i $WCI_DIR/core/readQuery.sql
+\i $WCI_DIR/core/readWhereClause.sql
+\i $WCI_DIR/core/wciExtractGridData.sql
+\i $WCI_DIR/core/wciInterpolation.sql
+\i $WCI_DIR/core/wciSession.sql
+\i $WCI_DIR/core/wciWriteInternals.sql
+-- WCI API
+\i $WCI_DIR/api/wciBegin.sql
+\i $WCI_DIR/api/wciBrowse.sql
+\i $WCI_DIR/api/wciCacheQuery.sql
+\i $WCI_DIR/api/wciEnd.sql
+\i $WCI_DIR/api/wciFetch.sql
+\i $WCI_DIR/api/wciMetaDataProvider.sql
+\i $WCI_DIR/api/wciMetaParameter.sql
+\i $WCI_DIR/api/wciMetaPlace.sql
+\i $WCI_DIR/api/wciRead.sql
+\i $WCI_DIR/api/wciVersion.sql
+\i $WCI_DIR/api/wciWrite.sql
 EOF
-    if [ 0 != $? ]; then
-	echo "ERROR when installing $FILE"; exit 1
-    fi
-done
-echo done
+if [ 0 != $? ]; then
+	echo "ERROR"; exit 1
+fi
+echo "done"
 
 
 echo "---- wdb database installation completed ----"

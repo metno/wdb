@@ -1,23 +1,23 @@
 #!/bin/sh
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## 
-## wdb - weather and water data storage
-##
-## Copyright (C) 2009 met.no
-##
-##  Contact information:
-##  Norwegian Meteorological Institute
-##  Box 43 Blindern
-##  0313 OSLO
-##  NORWAY
-##  E-mail: wdb@met.no
-##
-##  This is free software; you can redistribute it and/or modify
-##  it under the terms of the GNU General Public License as published by
-##  the Free Software Foundation; either version 2 of the License, or
-##  (at your option) any later version.
-##
-## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 
+# wdb - weather and water data storage
+#
+# Copyright (C) 2009 met.no
+#
+#  Contact information:
+#  Norwegian Meteorological Institute
+#  Box 43 Blindern
+#  0313 OSLO
+#  NORWAY
+#  E-mail: wdb@met.no
+#
+#  This is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Preamble
 
@@ -70,6 +70,8 @@ NEWWDB_DIR=$UPGRADE_DIR/__WDB_VERSION__
 WDBSVN_DIR=https://svn.met.no/wdbSystem/
 TEST_DB=wdb_upgradecheck
 export PGDATABASE=$TEST_DB
+export PSQL="psql -d $TEST_DB"
+TEST_WRITE="./testWrite"
 
 test_cleanup() {
 	rm -rf $UPGRADE_DIR
@@ -105,7 +107,55 @@ fi
 ./autogen.sh
 ./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
 make all install
-# TODO: Add some data to the database to port
+if [ 0 != $? ]; then
+    echo "ERROR: Install of old database failed"
+	test_cleanup
+    exit 1
+fi
+
+# Insert some test data
+echo -n "Inserting test data into the database... "
+days="01"
+hours="00 06 12 18"
+timesteps="0 6 12 18"
+for dd in $days
+  do
+  for hh in $hours 
+    do
+    for timestep in $timesteps
+	  do
+	  vh=`expr $timestep + $hh`
+	  if test $vh -ge 24; then
+		vh=`expr $vh - 24`
+	  fi		
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air pressure' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'snow depth distance' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+    done
+  done
+done
+echo "done"
+
+
+# -- Check for presence of test data 
+echo -n "Checking number of rows in gridvalue... "
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+then
+   	echo "failed"
+    exit 1
+else
+	echo "48"
+fi
+echo -n "Checking number of rows in fileblob... "
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+then
+   	echo "failed"
+    exit 1
+else
+	echo "48"
+fi
+
+# Return to build directory
 cd $WORK_DIR
 
 # Upgrade database
@@ -115,6 +165,25 @@ tar xvf __WDB_DISTDIR__.tar.gz
 cd __WDB_DISTDIR__
 ./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
 make upgrade
+
+# -- Check for presence of test data 
+echo -n "Checking number of rows in gridvalue... "
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+then
+   	echo "failed"
+    exit 1
+else
+	echo "48"
+fi
+echo -n "Checking number of rows in fileblob... "
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+then
+   	echo "failed"
+    exit 1
+else
+	echo "48"
+fi
+
 # -- Check the integrity of the database
 make installcheck
 if [ 0 != $? ]; then

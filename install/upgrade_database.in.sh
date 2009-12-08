@@ -163,7 +163,6 @@ echo "---- wdb database upgrade ----"
 WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
 WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
-echo $WDB_DATAMODEL_PATH
 
 
 if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
@@ -319,37 +318,49 @@ fi
 
 # Install wci
 echo -n "installing upgraded wci types... "
-cd __WDB_DATADIR__/sql/wci
-for FILE in `ls -1f types/*.sql | grep -v [.]in[.]sql`; do
-    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+WCI_DIR="__WDB_DATADIR__/sql/wci"
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
-\i $FILE
+-- WCI Types
+\i $WCI_DIR/types/extractGridDataType.sql
+\i $WCI_DIR/types/levelParameter.sql
+\i $WCI_DIR/types/location.sql
+\i $WCI_DIR/types/valueParameter.sql
+\i $WCI_DIR/types/verifyGeometry.sql
+\i $WCI_DIR/types/wciInterpolationSpec.sql
+\i $WCI_DIR/types/wciLevelSpec.sql
+--\i $WCI_DIR/types/wciReadReturnType.sql
+\i $WCI_DIR/types/wciTimeSpec.sql
 EOF
-	if [ 0 != $? ]; then
-	    echo "failed"
-		echo "ERROR: installing $FILE failed. See log for details."
-	    upgrade_rollback
-		exit 1
-    fi
-done
+if [ 0 != $? ]; then
+    echo "failed"
+	echo "ERROR: installing $FILE failed. See log for details."
+    upgrade_rollback
+	exit 1
+fi
 echo "done"
 
 echo -n "installing upgraded wci core... "
-cd __WDB_DATADIR__/sql/wci
-for FILE in `ls -1f core/*.sql | grep -v [.]in[.]sql`; do
-    psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
-\i $FILE
+-- WCI Core
+\i $WCI_DIR/core/getDataProvider.sql
+\i $WCI_DIR/core/readDataProvider.sql
+\i $WCI_DIR/core/readQuery.sql
+\i $WCI_DIR/core/readWhereClause.sql
+\i $WCI_DIR/core/wciExtractGridData.sql
+\i $WCI_DIR/core/wciInterpolation.sql
+\i $WCI_DIR/core/wciSession.sql
+\i $WCI_DIR/core/wciWriteInternals.sql
 EOF
-	if [ 0 != $? ]; then
-	    echo "failed"
-		echo "ERROR: installing $FILE failed. See log for details."
-	    upgrade_rollback
-		exit 1
-    fi
-done
+if [ 0 != $? ]; then
+    echo "failed"
+	echo "ERROR: installing $FILE failed. See log for details."
+    upgrade_rollback
+	exit 1
+fi
 echo "done"
 
 # Install cleanup script
@@ -482,26 +493,26 @@ echo "done"
 
 # Install wci
 echo -n "installing upgraded wci api... "
-cd __WDB_DATADIR__/sql/wci
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
-\i $WDB_DATAMODEL_PATH/wci/api/wciBegin.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciBrowse.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciCacheQuery.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciEnd.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciFetch.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciMetaDataProvider.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciMetaParameter.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciMetaPlace.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciRead.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciVersion.sql
-\i $WDB_DATAMODEL_PATH/wci/api/wciWrite.sql
+-- WCI API
+\i $WCI_DIR/api/wciBegin.sql
+\i $WCI_DIR/api/wciBrowse.sql
+\i $WCI_DIR/api/wciCacheQuery.sql
+\i $WCI_DIR/api/wciEnd.sql
+\i $WCI_DIR/api/wciFetch.sql
+\i $WCI_DIR/api/wciMetaDataProvider.sql
+\i $WCI_DIR/api/wciMetaParameter.sql
+\i $WCI_DIR/api/wciMetaPlace.sql
+\i $WCI_DIR/api/wciRead.sql
+\i $WCI_DIR/api/wciVersion.sql
+\i $WCI_DIR/api/wciWrite.sql
 EOF
 if [ 0 != $? ]; then
 	echo "failed"
-	echo "ERROR: installing $FILE failed. See log for details."
+	echo "ERROR: installing WCI API failed. See log for details."
 	echo "ERROR: The completion of the datamodel upgrade failed. See log for details."
 	echo "ERROR: No roll back possible. Restore database from backup."
 	exit 1
@@ -510,9 +521,9 @@ echo "done"
 
 # Clean out old schemas
 echo -n "dropping old schemas... "
-for SCHEMA in __OLD_WCI_SCHEMA__ __OLD_SCHEMA__; do
-	psql $PSQLARGS -c "SET CLIENT_MIN_MESSAGES TO "WARNING"; DROP SCHEMA $SCHEMA CASCADE" -o $LOGDIR/wdb_install_datamodel.log
-done
+#for SCHEMA in __OLD_WCI_SCHEMA__ __OLD_SCHEMA__; do
+#	psql $PSQLARGS -c "SET CLIENT_MIN_MESSAGES TO "WARNING"; DROP SCHEMA $SCHEMA CASCADE" -o $LOGDIR/wdb_install_datamodel.log
+#done
 echo "done" 
 
 echo "---- wdb database upgrade completed ----"

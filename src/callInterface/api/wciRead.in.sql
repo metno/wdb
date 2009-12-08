@@ -18,6 +18,53 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+CREATE TYPE wci.returnFloat AS (
+	value float,
+	dataprovidername varchar( 255 ),
+	placename text,
+	placegeometry GEOMETRY,
+	referencetime timestamp with time zone,
+	validtimefrom timestamp with time zone,
+	validtimeto timestamp with time zone,
+	validtimeindeterminatecode integer,
+	valueparametername varchar ( 255 ),
+	valueparameterunit varchar( 80 ),
+	levelparametername varchar( 255 ),
+	levelunitname varchar( 80 ),
+	levelfrom real,
+	levelto real,
+	levelindeterminatecode integer,
+	dataversion integer,
+	confidencecode integer,
+	storetime timestamp with time zone,
+	valueid bigint,
+	valuetype varchar( 80 )
+);
+
+CREATE TYPE wci.returnGid AS (
+	value bigint,
+	dataprovidername varchar( 255 ),
+	placename text,
+	placegeometry GEOMETRY,
+	referencetime timestamp with time zone,
+	validtimefrom timestamp with time zone,
+	validtimeto timestamp with time zone,
+	validtimeindeterminatecode integer,
+	valueparametername varchar ( 255 ),
+	valueparameterunit varchar( 80 ),
+	levelparametername varchar( 255 ),
+	levelunitname varchar( 80 ),
+	levelfrom real,
+	levelto real,
+	levelindeterminatecode integer,
+	dataversion integer,
+	confidencecode integer,
+	storetime timestamp with time zone,
+	valueid bigint,
+	valuetype varchar( 80 )
+);
+
+
 -- Output Large Objects
 CREATE OR REPLACE FUNCTION 
 wci.read( dataprovider 		text[],

@@ -25,9 +25,10 @@
 -- interface. It only utilizes the 0 namespace.
 CREATE OR REPLACE FUNCTION 
 __WCI_SCHEMA__.migratedata( )
-RETURNS void AS
+RETURNS int AS
 $BODY$
 DECLARE
+	ret						  int;
 	dataProviderId_ 		  bigint;
 	placeId_ 				  bigint;
 	valueParameterId_ 		  integer;
@@ -35,9 +36,7 @@ DECLARE
 	valGid					  wci.returngid;
 	valFlt					  wci.returnfloat;
 BEGIN
-	-- TODO: Check database version. If the database version of the old database
-	-- is too ancient, abort with an error message
-
+	ret := 0;
 	-- Transfer the GID Data Values
 	-- Read all raw data using wci.read
 	FOR valGid IN
@@ -66,6 +65,8 @@ BEGIN
 					valGid.confidenceCode,
 					valGid.value
 		);
+		-- Increment Count
+		ret := ret + 1;
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
@@ -105,6 +106,8 @@ BEGIN
 					valFlt.confidenceCode,
 					valFlt.value
 		);
+		-- Increment Count
+		ret := ret + 1;
 	END LOOP;
 	-- TODO: Error handling. If a value can not be inserted into the database
 	-- (e.g., because of missing metadata), the migrate operation should either
@@ -116,6 +119,7 @@ BEGIN
 	-- Also, there should be the possibility to run both pre- and post- operations
 	-- to the data migration.
 
+	RETURN ret;
 END 
 $BODY$
 LANGUAGE 'plpgsql';

@@ -7,7 +7,7 @@ libwciCoreNoPostgres_la_SOURCES =
 
 include src/callInterface/core/extractGridData/wdb.mk
 
-wdb_la_SOURCES +=	src/callInterface/core/psqlTupleInterface.h \
+wdb_la_SOURCES +=		src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/psqlTupleInterface.c \
 						src/callInterface/core/wciSession.h \
 						src/callInterface/core/wciSession.cpp \
