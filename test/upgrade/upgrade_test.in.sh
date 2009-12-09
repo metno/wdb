@@ -74,6 +74,7 @@ export PSQL="psql -d $TEST_DB"
 TEST_WRITE="./testWrite"
 
 test_cleanup() {
+	cd $WORK_DIR
 	rm -rf $UPGRADE_DIR
 	dropdb $TEST_DB
 }
@@ -142,6 +143,7 @@ echo -n "Checking number of rows in gridvalue... "
 if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
 then
    	echo "failed"
+	test_cleanup
     exit 1
 else
 	echo "48"
@@ -150,6 +152,7 @@ echo -n "Checking number of rows in fileblob... "
 if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
 then
    	echo "failed"
+	test_cleanup
     exit 1
 else
 	echo "48"
@@ -164,13 +167,24 @@ cd $UPGRADE_DIR
 tar xvf __WDB_DISTDIR__.tar.gz
 cd __WDB_DISTDIR__
 ./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
+if [ 0 != $? ]; then
+    echo "ERROR: Failed to run configure on the new database version"
+	test_cleanup
+    exit 1
+fi
 make upgrade
+if [ 0 != $? ]; then
+    echo "ERROR: Upgrading of the database failed"
+	test_cleanup
+    exit 1
+fi
 
 # -- Check for presence of test data 
 echo -n "Checking number of rows in gridvalue... "
 if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
 then
    	echo "failed"
+	test_cleanup
     exit 1
 else
 	echo "48"
@@ -179,6 +193,7 @@ echo -n "Checking number of rows in fileblob... "
 if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
 then
    	echo "failed"
+	test_cleanup
     exit 1
 else
 	echo "48"

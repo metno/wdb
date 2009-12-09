@@ -79,10 +79,10 @@ void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 		"NULL::wci.returngid)";
 	result r = t->exec(read);
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
-	long int value = r[0]["value"].as<int>();
+	long int valueid = r[0]["valueid"].as<int>();
 
 	ostringstream remove;
-	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << value;
+	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << valueid;
 	t->exec(remove.str());
 
 	r = t->exec(read);
@@ -103,6 +103,7 @@ void TransactionCorrectnessTest::testAbortedDelete()
 	result r = t->exec(read);
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
 	long int value = r[0]["value"].as<int>();
+	long int valueid = r[0]["valueid"].as<int>();
 	stringstream fetchS;
 	fetchS << "SELECT * FROM wci.fetch( " << value << ", NULL::wci.grid )";
 	const string fetch = fetchS.str();
@@ -111,7 +112,7 @@ void TransactionCorrectnessTest::testAbortedDelete()
 	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), data);
 
 	ostringstream remove;
-	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << value;
+	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << valueid;
 	//std::cout << remove.str() << endl;
 	t->exec(remove.str());
 
