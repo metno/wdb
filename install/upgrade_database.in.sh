@@ -22,9 +22,9 @@
 # upgrade - upgrade the wdb system
 #
 
-DEFAULT_DATABASE=`wdbConfiguration --database`@`wdbConfiguration --host`
-DEFAULT_USER=`wdbConfiguration --user`
-DEFAULT_PORT=`wdbConfiguration --port`
+DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`wdbConfiguration --host`
+DEFAULT_USER=`__WDB_BINDIR__/wdbConfiguration --user`
+DEFAULT_PORT=`__WDB_BINDIR__/wdbConfiguration --port`
 
 SCRIPT_VERSION=__WDB_VERSION__
 
