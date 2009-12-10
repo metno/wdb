@@ -21,7 +21,6 @@
 # install - install the wdb system
 
 # TODO: Add support for reading additional configuration files
-
 DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`__WDB_BINDIR__/wdbConfiguration --host`
 DEFAULT_USER=`__WDB_BINDIR__/wdbConfiguration --user`
 DEFAULT_PORT=`__WDB_BINDIR__/wdbConfiguration --port`
@@ -55,7 +54,7 @@ Options:
 -c FILE, --config=FILE
                    Read additional configuration from <FILE>
 
--f, --force-install   
+-f, --force-install
                    force installation over existing database
 
 --with-postgis=PATH
