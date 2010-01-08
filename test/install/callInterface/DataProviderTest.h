@@ -93,7 +93,8 @@ class DataProviderTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testD6_01_AddDataProvider );
 	CPPUNIT_TEST( testD6_02_SetDataProviderName );
 	CPPUNIT_TEST( testD6_03_SetDataProviderNameFail );
-	CPPUNIT_TEST( multipleAddDataProvider );
+	CPPUNIT_TEST( testD6_04_AddMultipleDataProvider );
+	CPPUNIT_TEST( testD6_05_AddDataProviderGroup );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -150,7 +151,8 @@ public:
 	void testD6_01_AddDataProvider();
 	void testD6_02_SetDataProviderName();
 	void testD6_03_SetDataProviderNameFail();
-	void multipleAddDataProvider();
+	void testD6_04_AddMultipleDataProvider();
+	void testD6_05_AddDataProviderGroup();
 
 private:
 	/// Statement to test wci.read with OIDs

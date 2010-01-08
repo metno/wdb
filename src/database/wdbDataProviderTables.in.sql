@@ -30,16 +30,17 @@ CREATE TABLE __WDB_SCHEMA__.dataprovider (
     dataproviderlife            interval NOT NULL,
     dataproviderstoretime 		timestamp with time zone NOT NULL,
     CONSTRAINT dataprovider_dataprovidertype_check 
-	CHECK (	((dataprovidertype)::text = 'Data Provider Group'::text) OR
-			((dataprovidertype)::text = 'WCI User'::text) OR 
-			((dataprovidertype)::text = 'Computer System'::text) OR 
+	CHECK (	((dataprovidertype)::text = 'Aeroplane'::text) OR 
+			((dataprovidertype)::text = 'Computer System'::text) OR
+			((dataprovidertype)::text = 'Data Provider Group'::text) OR
 			((dataprovidertype)::text = 'Named Observation Site'::text) OR
+			((dataprovidertype)::text = 'Person'::text) OR
 			((dataprovidertype)::text = 'Ship'::text) OR 
-			((dataprovidertype)::text = 'Aeroplane'::text) ),
+			((dataprovidertype)::text = 'WCI User'::text) ),
     CONSTRAINT dataprovider_spatialdomaindelivery_check 
 	CHECK (	((spatialdomaindelivery)::text = 'Any'::text) OR
-			((spatialdomaindelivery)::text = 'Point'::text) OR 
-			((spatialdomaindelivery)::text = 'Grid'::text) )
+			((spatialdomaindelivery)::text = 'Grid'::text) OR 
+			((spatialdomaindelivery)::text = 'Point'::text) )
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.dataprovider

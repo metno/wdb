@@ -317,9 +317,7 @@ BEGIN
 		__WCI_SCHEMA__.dataprovider_mv 
 	WHERE 
 		dataprovidername=(SELECT user) AND
-		dataproviderid >= (SELECT dataprovidernameleftset FROM __WCI_SCHEMA__.dataprovider_mv WHERE dataprovidername='wci') AND
-		dataproviderid <= (SELECT dataprovidernamerightset FROM __WCI_SCHEMA__.dataprovider_mv WHERE dataprovidername='wci');
-
+		dataprovidertype = 'WCI User';
 	IF myDataProviderId IS NULL THEN
 		RAISE EXCEPTION 'Cannot recognize % as a valid wci writer - will not proceed', (SELECT user);
 	END IF;

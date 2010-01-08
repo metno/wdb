@@ -33,12 +33,13 @@ RETURNS bigint AS
 $BODY$
 DECLARE
 	dpid_		bigint;
+	gpid_		bigint;
 	namespace_	int;
 BEGIN
 	-- Session
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Namespace
-	namespace_ := 0;	
+	namespace_ := 0;
 	-- Check 
 	SELECT dataproviderid INTO dpid_ 
 	FROM __WCI_SCHEMA__.dataprovider
@@ -54,11 +55,79 @@ BEGIN
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		( dpid_, dataProviderComment_, 'now' );
 	
+		SELECT max(dataprovidernamerightset) INTO gpid_ 
+		FROM   __WCI_SCHEMA__.dataprovider
+		WHERE  dataprovidernamespaceid = namespace_;
+			  
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-		( dpid_, namespace_, lower(dataProviderName_), 'today'::TIMESTAMP WITH TIME ZONE, 'infinity'::TIMESTAMP WITH TIME ZONE, dpid_, dpid_ );
+		( dpid_, namespace_, lower(dataProviderName_), 'today'::TIMESTAMP WITH TIME ZONE, 'infinity'::TIMESTAMP WITH TIME ZONE, gpid_ + 1, gpid_ + 2 );
 	ELSE
 		RAISE EXCEPTION 'Dataprovider already exists in WDB';
 	END IF;
+	-- Return dataproviderid
+	RETURN dpid_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+--
+-- add New Data Provider
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addDataProviderGroup
+(
+	dataProviderName_		text,
+	dataProviderGroup_ 		text
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	dpid_		bigint;
+	gpid_		bigint;
+	gplft_		bigint;
+	gprgt_		bigint;
+	namespace_	int;
+BEGIN
+	-- Get namespace
+	SELECT dataprovidernamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Get DataProvider
+	SELECT dataproviderid INTO dpid_
+	FROM __WCI_SCHEMA__.dataprovider
+	WHERE dataprovidername = lower(dataProviderName_) AND
+		  dataprovidernamespaceid = namespace_;
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Could not identify the dataprovider name in WDB';
+	END IF;
+	-- Get Group
+	SELECT dataproviderid, dataprovidernameleftset, dataprovidernamerightset INTO gpid_, gplft_, gprgt_ 
+	FROM __WCI_SCHEMA__.dataprovider
+	WHERE dataprovidername = lower(dataProviderGroup_) AND
+		  dataprovidernamespaceid = namespace_;
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Could not identify the dataprovider group in WDB';
+	END IF;
+	-- Update Sets to the right
+	UPDATE	__WDB_SCHEMA__.dataprovidername 
+	SET 	dataprovidernameleftset = dataprovidernameleftset + 2,
+			dataprovidernamerightset = dataprovidernamerightset + 2
+	WHERE	dataprovidernamespaceid = namespace_
+	  AND	dataprovidernamerightset > gprgt_;
+	-- Update Group
+	UPDATE	__WDB_SCHEMA__.dataprovidername 
+	SET 	dataprovidernamerightset = dataprovidernamerightset + 2
+	WHERE	dataprovidernamespaceid = namespace_
+	  AND	dataproviderid = gpid_;
+	-- Update Dataprovider
+	UPDATE	__WDB_SCHEMA__.dataprovidername 
+	SET 	dataprovidernameleftset = gprgt_
+	WHERE	dataprovidernamespaceid = namespace_
+	  AND	dataproviderid = dpid_;
+	UPDATE	__WDB_SCHEMA__.dataprovidername 
+	SET 	dataprovidernamerightset = gprgt_ + 1
+	WHERE	dataprovidernamespaceid = namespace_
+	  AND	dataproviderid = dpid_;
 	-- Return dataproviderid
 	RETURN dpid_;
 END;
@@ -78,6 +147,7 @@ $BODY$
 DECLARE
 	namespace_	int;
 	id 			bigint;
+	gpid_		bigint;
 BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
@@ -94,8 +164,13 @@ BEGIN
 		(id, 'WCI User', 'Any', '1 day', 'now');
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		(id, 'wci user', 'now');
+
+		SELECT max(dataprovidernamerightset) INTO gpid_ 
+		FROM   __WCI_SCHEMA__.dataprovider
+		WHERE  dataprovidernamespaceid = namespace_;
+
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-		(id, namespace_, newDataProviderName, 'today', '2999-12-31', id, id);
+		(id, namespace_, newDataProviderName, 'today', '2999-12-31', gpid_ + 1, gpid_ + 2 );
 	ELSE
 		RAISE INFO 'User was already defined as a dataprovider';
 	END IF;

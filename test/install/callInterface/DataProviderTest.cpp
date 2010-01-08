@@ -477,20 +477,48 @@ void DataProviderTest::testD6_03_SetDataProviderNameFail()
     CPPUNIT_ASSERT( rC2.size() == 0 );
 }
 
-void DataProviderTest::multipleAddDataProvider()
+void DataProviderTest::testD6_04_AddMultipleDataProvider()
 {
 	// Add Meta
-	result rId = t->exec("SELECT wci.addDataProvider(\'InstallTest 06-01\',"
+	result rId = t->exec("SELECT wci.addDataProvider(\'InstallTest 06-04\',"
 		"\'Computer System\',"
 		"\'Grid\',"
 		"\'Data Provider inserted by the WDB install tests\')");
 
 	CPPUNIT_ASSERT_THROW(
-		t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-01\',"
+		t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-04\',"
 				"\'Computer System\',"
 				"\'Grid\',"
 				"\'Another Data Provider inserted by the WDB install tests\')" ),
 		pqxx::sql_error );
+}
+
+void DataProviderTest::testD6_05_AddDataProviderGroup()
+{
+	// Set namespace to 1
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+	// Add Meta
+    result rIA = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05A\',"
+													  "\'Computer System\',"
+													  "\'Grid\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+    result rI0 = t->exec( "SELECT wci.addDataProvider(\'InstallTest Group\',"
+													  "\'Data Provider Group\',"
+													  "\'Any\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+    result rIB = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05B\',"
+													  "\'Computer System\',"
+													  "\'Grid\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+    result rIC = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05C\',"
+													  "\'Computer System\',"
+													  "\'Grid\',"
+													  "\'Data Provider inserted by the WDB install tests\')" );
+   // Add to Groups
+    result rG1 = t->exec( "SELECT * FROM wci.addDataProviderGroup( \'Installtest 06-05A\', \'Installtest Group\' )" );
+    result rG2 = t->exec( "SELECT * FROM wci.addDataProviderGroup( \'Installtest 06-05C\', \'Installtest Group\' )" );
+    // Return
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
 }
 
 // Support Functions
