@@ -40,6 +40,10 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Namespace
 	namespace_ := 0;
+	-- Filter out wci users
+	IF ( dataProviderType == 'WCI User' ) THEN
+		RAISE EXCEPTION 'Use wci.addwciuser to add WCI users as dataproviders';
+	END IF;	
 	-- Check 
 	SELECT dataproviderid INTO dpid_ 
 	FROM __WCI_SCHEMA__.dataprovider
@@ -75,7 +79,7 @@ LANGUAGE plpgsql VOLATILE;
 -- add New Data Provider
 -- 
 CREATE OR REPLACE FUNCTION
-wci.addDataProviderGroup
+wci.addDataProviderToGroup
 (
 	dataProviderName_		text,
 	dataProviderGroup_ 		text

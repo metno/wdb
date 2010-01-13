@@ -201,7 +201,7 @@ SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
 				namespace, the following wci.info function call could be used:</para>
 			
 			<programlisting>
-SELECT * FROM wci.info( NULL, NULL::wci.infodataprovider );
+SELECT * FROM wci.getDataProvider( NULL );
 		</programlisting>
 									
 		</sect1>
@@ -263,7 +263,7 @@ SELECT * FROM wci.browse( NULL::wci.browseplace );
 				the following WCI function call can be used:</para>
 			
 			<programlisting>
-SELECT * FROM wci.info( NULL, NULL::wci.infoplace );
+SELECT * FROM wci.getPlaceDefinition( NULL );
 		</programlisting>
 
 		</sect1>
@@ -421,7 +421,7 @@ SELECT * FROM wci.browse( NULL::wci.browsevalueparameter );
 			be used:</para>
 			
 			<programlisting>
-SELECT * FROM wci.info( NULL, NULL::wci.infovalueparameter );
+SELECT * FROM wci.getValueParameter( NULL );
 		</programlisting>
 
 		</sect1>
@@ -487,7 +487,7 @@ SELECT * FROM wci.browse( NULL::wci.browselevelparameter );
 			be used:</para>
 			
 			<programlisting>
-SELECT * FROM wci.info( NULL, NULL::wci.levelvalueparameter );
+SELECT * FROM wci.getLevelParameter( NULL );
 		</programlisting>
 
 		</sect1>
@@ -746,6 +746,136 @@ PQfinish(connection_);
 		
 		<para>The following sections provide a list of the functions available for usage
 			through the WDB Call Interface.</para>
+
+		<sect1 id="sec:wci.adddataprovider">
+			<title>wci.addDataProvider</title>
+			
+			<para>The function wci.addDataProvider allows an administrator to add a new 
+			Data Provider to the WDB system.</para>
+			
+			<sect2 id="sec:wci.adddataprovider.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.adddataprovider 
+(
+	dataProviderName		text,
+	dataProviderType 		text,
+	domainDelivery			text,
+	dataProviderComment		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addDataProvider parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProviderName</entry>
+								<entry>The canonical data provider name to be used (i.e., the data 
+								provider name set in the default name space. Ideally, this should be
+								a universally unique name or code.</entry>
+							</row>
+							<row>
+								<entry>dataProviderType</entry>
+								<entry>The type of the data provider. Currently, this may be one of the following:
+									<itemizedlist>
+										<listitem><para>Aeroplane</para></listitem>
+										<listitem><para>Computer System</para></listitem>
+										<listitem><para>Data Provider Group</para></listitem>
+										<listitem><para>Named Observation Site</para></listitem>
+										<listitem><para>Person</para></listitem>
+										<listitem><para>Ship</para></listitem>
+										<listitem><para>WCI User</para></listitem>
+									</itemizedlist>
+								</entry>
+							</row>
+							<row>
+								<entry>domainDelivery</entry>
+								<entry>The domain of the data delivered by the data provider. A precise
+								domain definition helps the database to optimize the queries. The options
+								are:
+									<itemizedlist>
+										<listitem><para>Any</para></listitem>
+										<listitem><para>Grid</para></listitem>
+										<listitem><para>Point</para></listitem>
+									</itemizedlist>
+								</entry>
+							</row>
+							<row>
+								<entry>dataprovidercomment</entry>
+								<entry>Supplementary information about the dataprovider.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider.result">
+				<title>Expected Result</title>
+				
+				<para>The DataProviderId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider.example">
+				<title>Example</title>
+				
+				<para>An example setting up the data provider "michael" who provides point data:</para>
+				
+				<programlisting>
+SELECT wci.adddataprovider ( 'michael', 'Person', 'Point', 'Editor of point forecasts' );
+</programlisting>
+								
+				<para>Adding a new model to the database:</para>
+
+				<programlisting>
+SELECT wci.adddataprovider( 'longyear', 'Computer System', 'Grid', 'Model generated from longyearbyen' ); 
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddataprovidertogroup</para></listitem>
+					<listitem><para>wci.addwciuser</para></listitem>
+					<listitem><para>wci.getdataprovider</para></listitem>
+					<listitem><para>wci.getdataprovidername</para></listitem>
+					<listitem><para>wci.setdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
 		
 		<sect1 id="sec:wci.begin">
 			<title>wci.begin</title>
@@ -1201,179 +1331,7 @@ SELECT wci.end ( );
 			</sect2>
 			
 		</sect1>
-	
-		<sect1 id="sect:wci.info">
-			<title>wci.info</title>
 			
-			<para>wci.info is the function utilized to retrieve the metadata in the
-				database; for example, it can be used to return a lists of all parameters
-				possible in the database, a list of the dataproviders registered, etc.
-				Where wci.browse returns information about the data stored in the
-				database, wci.info returns information about the data that is possible to
-				store in the database. The function usually takes as its input a string as its
-				search parameter. </para>
-			
-			<para>The function is overloaded, and exists in four different versions,
-				depending on the return type required. Calling the function with a NULL in
-				place of the search parameter will return the complete list of
-				parameters.</para>
-			
-			<sect2>
-				<title>Prerequisites</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>The user must have access to group role wdb_read</para>
-					</listitem>
-					<listitem>
-						<para>The user must have called wci.begin</para>
-					</listitem>
-				</itemizedlist>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Syntax</title>
-				
-				
-				<programlisting>
-wci.info
-(
-          dataProviderName	text,
-          returnType     	wci.infodataprovider
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.info
-(
-          placeName      text,
-          returnType     wci.infoplace
-)
-			</programlisting>
-				
-				<programlisting>
-wci.info
-(
-          placeName      text,
-          returnType     wci.inforegulargrid
-)
-			</programlisting>
-				
-				<programlisting>
-wci.info
-(
-          valueParameterName	text,
-          returnType     		wci.infovalueparameter
-)
-			</programlisting>
-				
-				
-				<programlisting>
-wci.info
-(
-          levelParameterName	text,
-          returnType     		wci.infolevelparameter
-)
-			</programlisting>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Parameters</title>
-				
-				<table frame="all">
-					<title>wci.info parameters</title>
-					<tgroup cols="2">
-						<colspec align="left"/>
-						<colspec align="left"/>
-						<thead>
-							<row>
-								<entry> Parameter </entry>
-								<entry> Description </entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>dataProviderName</entry>
-								<entry>A text string representing the data providers to
-									list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>placeName</entry>
-								<entry>A text string representing the place names to
-									list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>valueParameterName</entry>
-								<entry>A text string representing the value parameters
-									to list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>levelParameterName</entry>
-								<entry>A text string representing the level parameters
-									to list. Wild cards may be used in the string. NULL
-									represents all.</entry>
-							</row>
-							<row>
-								<entry>returnType</entry>
-								<entry>What type of data the user wants
-									returned</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
-				
-				<para>>Geospatial definitions are defined using well-known-text. Only
-					POINTs and POLYGONs are currently supported.</para>
-				
-			</sect2>
-			
-			<sect2>
-				<title>Expected Result</title>
-				
-				<para>Depending on the returnType specified:</para>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.infodataprovider</para>
-						<para>This return type gives detailed information on the data provider specified.</para>
-					</listitem>
-					<listitem>
-						<para>wci.infoplace</para>
-						<para>This return type provides detailed information about the place definition.</para>
-					</listitem>
-					<listitem>
-						<para>wci.infoplace</para>
-						<para>This return type provides detailed information about the place definitions in the database of the regular grid type.</para>
-					</listitem>
-					<listitem>
-						<para>wci.infovalueparameter</para>
-						<para>This return type provides detailed information about value parameter specified.</para>
-					</listitem>
-					<listitem>
-						<para>wci.infolevelparameter</para>
-						<para>This return type provides detailed information about level parameter specified.</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-			<sect2>
-				<title>See Also</title>
-				
-				<itemizedlist>
-					<listitem>
-						<para>wci.read</para>
-					</listitem>
-				</itemizedlist>
-			</sect2>
-			
-		</sect1>
-		
 		<sect1 id="sec:wci.fetch">
 			<title>wci.fetch</title>
 			
