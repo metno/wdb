@@ -41,7 +41,7 @@ BEGIN
 	-- Namespace
 	namespace_ := 0;
 	-- Filter out wci users
-	IF ( dataProviderType == 'WCI User' ) THEN
+	IF ( dataProviderType_ = 'WCI User'::text ) THEN
 		RAISE EXCEPTION 'Use wci.addwciuser to add WCI users as dataproviders';
 	END IF;	
 	-- Check 

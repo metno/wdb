@@ -515,8 +515,8 @@ void DataProviderTest::testD6_05_AddDataProviderGroup()
 													  "\'Grid\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
    // Add to Groups
-    result rG1 = t->exec( "SELECT * FROM wci.addDataProviderGroup( \'Installtest 06-05A\', \'Installtest Group\' )" );
-    result rG2 = t->exec( "SELECT * FROM wci.addDataProviderGroup( \'Installtest 06-05C\', \'Installtest Group\' )" );
+    result rG1 = t->exec( "SELECT * FROM wci.addDataProviderToGroup( \'Installtest 06-05A\', \'Installtest Group\' )" );
+    result rG2 = t->exec( "SELECT * FROM wci.addDataProviderToGroup( \'Installtest 06-05C\', \'Installtest Group\' )" );
     // Return
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
 }
