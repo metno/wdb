@@ -108,6 +108,7 @@ BEGIN
 	SELECT dataproviderid, dataprovidernameleftset, dataprovidernamerightset INTO gpid_, gplft_, gprgt_ 
 	FROM __WCI_SCHEMA__.dataprovider
 	WHERE dataprovidername = lower(dataProviderGroup_) AND
+		  dataprovidertype = 'Data Provider Group' AND
 		  dataprovidernamespaceid = namespace_;
 	IF NOT FOUND THEN
 		RAISE EXCEPTION 'Could not identify the dataprovider group in WDB';

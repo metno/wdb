@@ -875,6 +875,186 @@ SELECT wci.adddataprovider( 'longyear', 'Computer System', 'Grid', 'Model genera
 			
 		</sect1>
 
+		<sect1 id="sec:wci.adddataprovider2group">
+			<title>wci.addDataProviderToGroup</title>
+			
+			<para>The function wci.addDataProviderToGroup allows an administrator to add a 
+			specified data provider to a data provider group in WDB.</para>
+			
+			<sect2 id="sec:wci.adddataprovider2group.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider2group.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.adddataprovidertogroup
+(
+	dataProviderName		text,
+	dataProviderGroup		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider2group.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addDataProviderToGroup parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProviderName</entry>
+								<entry>The data provider name to be added to the specified group.</entry>
+							</row>
+							<row>
+								<entry>dataProviderGroup</entry>
+								<entry>The data provider group that you want to add this data provider name to.
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider2group.result">
+				<title>Expected Result</title>
+				
+				<para>The DataProviderId (key reference number) of the assigned data provider.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider2group.example">
+				<title>Example</title>
+				
+				<para>An example setting the data provider "michael" into group 'metno':</para>
+				
+				<programlisting>
+SELECT wci.adddataprovidertogroup ( 'michael', 'metno' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.adddataprovider2group.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddataprovider</para></listitem>
+					<listitem><para>wci.addwciuser</para></listitem>
+					<listitem><para>wci.getdataprovider</para></listitem>
+					<listitem><para>wci.getdataprovidername</para></listitem>
+					<listitem><para>wci.setdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		<sect1 id="sec:wci.addwciuser">
+			<title>wci.addWciUser</title>
+			
+			<para>The function wci.addWciuser allows an administrator to add a 
+			WCI user to the database as a data provider in WDB.</para>
+			
+			<sect2 id="sec:wci.addwciuser.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addwciuser.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addwciuser
+(
+	dataProviderName		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addwciuser.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addWciUser parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProviderName</entry>
+								<entry>The data provider name to be added to the database as a WCI user.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addwciuser.result">
+				<title>Expected Result</title>
+				
+				<para>The DataProviderId (key reference number) of the inserted data provider.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addwciuser.example">
+				<title>Example</title>
+				
+				<para>An example adding the wci user "michael" as a new data provider:</para>
+				
+				<programlisting>
+SELECT wci.addwciuser( 'michael' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.addwciuser.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddataprovider</para></listitem>
+					<listitem><para>wci.adddataprovidertogroup</para></listitem>
+					<listitem><para>wci.getdataprovider</para></listitem>
+					<listitem><para>wci.getdataprovidername</para></listitem>
+					<listitem><para>wci.setdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 
 		
 		<sect1 id="sec:wci.begin">
@@ -1447,6 +1627,155 @@ FROM wci.fetch ( 11702,
 			
 		</sect1>		
 		
+		<sect1 id="sec:wci.getdataprovider">
+			<title>wci.getDataProvider</title>
+			
+			<para>The function wci.getDataProvider returns information about the 
+			specified data provider to a user.</para>
+			
+			<sect2 id="sec:wci.getdataprovider.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovider.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getdataprovider
+(
+	dataProviderName		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovider.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getDataProvider parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProviderName</entry>
+								<entry>The data provider name to be added to be returned. 
+								NULL returns all data providers in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovider.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the Data Provider in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getDataProvider return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataproviderid</entry>
+								<entry>The internal data provider ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>dataprovidertype</entry>
+								<entry>The type classification of the data provider in WDB.</entry>
+							</row>
+							<row>
+								<entry>spatialdomaindelivery</entry>
+								<entry>The spatial domain of data delivered by this data provider;
+									either point data, gridded data, or both.</entry>
+							</row>
+							<row>
+								<entry>dataprovidernamespaceid</entry>
+								<entry>The currently selected data provider name space.</entry>
+							</row>
+							<row>
+								<entry>dataprovidername</entry>
+								<entry>The data provider name of the data provider in this namespace.</entry>
+							</row>
+							<row>
+								<entry>dataprovidernameleftset</entry>
+								<entry>An internal WDB code used for grouping.</entry>
+							</row>
+							<row>
+								<entry>dataprovidernamerightset</entry>
+								<entry>An internal WDB code used for grouping.</entry>
+							</row>
+							<row>
+								<entry>dataproviderstoretime</entry>
+								<entry>The store time of this data provider; i.e., when it 
+								was inserted into the database.</entry>
+							</row>
+							<row>
+								<entry>dataprovidercomment</entry>
+								<entry>Additional description or comment about the data 
+								provider.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovider.example">
+				<title>Example</title>
+				
+				<para>An example to get information about data provider "michael":</para>
+				
+				<programlisting>
+SELECT wci.getdataprovider ( 'michael' );
+</programlisting>
+
+				<para>To retrieve information about all data providers starting with "mich":</para>
+
+				<programlisting>
+SELECT wci.getdataprovider ( 'mich%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovider.example.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddataprovider</para></listitem>
+					<listitem><para>wci.adddataprovider2group</para></listitem>
+					<listitem><para>wci.addwciuser</para></listitem>
+					<listitem><para>wci.getdataprovidername</para></listitem>
+					<listitem><para>wci.setdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
 		<sect1 id="sec:wci.read">
 			<title>wci.read</title>
 			
@@ -1635,6 +1964,105 @@ FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
 			</sect2>
 			
 		</sect1>		
+
+		<sect1 id="sec:wci.setdataprovidername">
+			<title>wci.setDataProviderName</title>
+			
+			<para>The function wci.setDataProviderName allows an administrator to set
+			the data provider name of a data provider in the currently selected
+			namespace of WDB. If another data provider name has already been set
+			for the data provider in the nmespace, this function will overwrite
+			the old name.</para>
+			
+			<sect2 id="sec:wci.setdataprovidername.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.setdataprovidername.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.setdataprovidername
+(
+	canonicalName			text,
+	dataProviderName		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setdataprovidername.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.setDataProviderName parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>canonicalName</entry>
+								<entry>The name of the data provider in the canonical (0) namespace.
+									Note that it is not possible to change the canonical name of a 
+									data provider using this function.</entry>
+							</row>
+							<row>
+								<entry>dataProviderName</entry>
+								<entry>The data provider name to be set.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setdataprovidername.result">
+				<title>Expected Result</title>
+				
+				<para>No return.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setdataprovidername.example">
+				<title>Example</title>
+				
+				<para>To rename the data provider with the canonical name "michael" to "michel", 
+				we would use:</para>
+				
+				<programlisting>
+SELECT wci.setdataprovidername( 'michael', 'michel' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.setdataprovidername.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddataprovider</para></listitem>
+					<listitem><para>wci.adddataprovidertogroup</para></listitem>
+					<listitem><para>wci.addwciuser</para></listitem>
+					<listitem><para>wci.getdataprovider</para></listitem>
+					<listitem><para>wci.getdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 		
 		<sect1 id="sec:wci.version">
 			<title>wci.version</title>
