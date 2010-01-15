@@ -497,6 +497,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
 -- WCI API
+\i $WCI_DIR/types/wciReadReturnType.sql
 \i $WCI_DIR/api/wciBegin.sql
 \i $WCI_DIR/api/wciBrowse.sql
 \i $WCI_DIR/api/wciCacheQuery.sql
