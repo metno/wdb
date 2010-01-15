@@ -1093,6 +1093,7 @@ void PlaceGeometryTest::testG24_01_BilinearReturnsCorrectGeometry()
 
 	ostringstream pt;
 	pt << "bilinear POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+
 	result r = t->exec( statement_( pt.str(), 34 ) );
 
     CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );

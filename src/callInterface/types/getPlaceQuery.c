@@ -50,10 +50,14 @@ char * getPlaceQuery_( const char * pquery, int returnSize )
         TupleDesc tupdesc 		= SPI_tuptable->tupdesc;
         SPITupleTable *tuptable = SPI_tuptable;
         HeapTuple tuple = tuptable->vals[0];
-        result = SPI_getvalue( tuple, tupdesc, 1) ;
+
+        const char * tmp_result = SPI_getvalue( tuple, tupdesc, 1);
+        int resultLength = strlen(tmp_result) +1;
+        result = (char *) SPI_palloc(resultLength);
+        memcpy(result, tmp_result, resultLength);
     }
     else if ( proc == 0) {
-        result = ( char * ) palloc( 5 );
+        result = ( char * ) SPI_palloc( 5 );
         result[0] = '\0';
         strcat( result, "NULL" );
     }

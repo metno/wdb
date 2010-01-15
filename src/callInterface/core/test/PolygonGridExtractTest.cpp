@@ -27,7 +27,7 @@
  */
 
 #include "PolygonGridExtractTest.h"
-#include <PolygonGridExtract.h>
+#include <wciRead/extractGridData/PolygonGridExtract.h>
 #include <WdbProjection.h>
 //#include <vector>
 

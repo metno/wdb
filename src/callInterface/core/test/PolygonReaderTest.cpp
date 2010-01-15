@@ -27,7 +27,7 @@
  */
 
 #include "PolygonReaderTest.h"
-#include <PolygonReader.h>
+#include <wciRead/extractGridData/PolygonReader.h>
 #include <interpolationType.h>
 
 float readFloatFromFile(long long id, int position)

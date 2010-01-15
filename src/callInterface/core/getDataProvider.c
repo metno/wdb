@@ -50,7 +50,7 @@ char * getDataProvider_( const char * dquery )
         TupleDesc tupdesc 		= SPI_tuptable->tupdesc;
         SPITupleTable *tuptable = SPI_tuptable;
         size_t rSize = proc * maxQuerySize;
-        result = ( char * ) palloc( rSize );
+        result = ( char * ) SPI_palloc( rSize );
         result[0] = '\0';
         
         int i;
@@ -70,7 +70,7 @@ char * getDataProvider_( const char * dquery )
 
     }
     else if ( proc == 0) {
-        result = ( char * ) palloc( 10 );
+        result = ( char * ) SPI_palloc( 10 );
         result[0] = '\0';
         strcat( result, "(FALSE)" );
     }

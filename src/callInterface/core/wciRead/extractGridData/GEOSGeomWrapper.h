@@ -29,13 +29,8 @@
 #ifndef GEOSGEOMWRAPPER_H_
 #define GEOSGEOMWRAPPER_H_
 
-#include <cstddef>
 #include <functional>
-
-extern "C"
-{
-typedef struct GEOSGeom_t *GEOSGeom;
-}
+#include <wdb_geos.h>
 
 /**
  * Providing memory management for GEOSGeom objects
@@ -43,6 +38,8 @@ typedef struct GEOSGeom_t *GEOSGeom;
 class GEOSGeomWrapper
 {
 public:
+	GEOSGeomWrapper();
+
 	/**
 	 * Let GEOSGeomWrapper take ownership of the provided object
 	 */
@@ -82,9 +79,19 @@ private:
 
 bool operator == (const GEOSGeomWrapper & a, const GEOSGeomWrapper & b);
 
+struct GEOSGeomCmp : public std::binary_function<GEOSGeom,GEOSGeom,bool>
+{
+	bool operator () (const GEOSGeom ga, const GEOSGeom gb) const;
+};
+
 struct GEOSGeomWrapperCmp : public std::binary_function<GEOSGeomWrapper,GEOSGeomWrapper,bool>
 {
-	bool operator () (const GEOSGeomWrapper & a, const GEOSGeomWrapper & b) const;
+	bool operator () (const GEOSGeomWrapper & a, const GEOSGeomWrapper & b) const
+	{
+		return GEOSGeomCmp()(a.get(), b.get());
+	}
 };
+
+
 
 #endif /* GEOSGEOMWRAPPER_H_ */

@@ -108,10 +108,11 @@ void transform_( double * lon, double * lat, size_t elements, const struct Place
 	}
 
 	{
-		WdbProjection from( p.projDefinition_ );
-		WdbProjection to(getProjDefinition( "longlat", "+ellps=WGS84" ));
+		WdbProjectionPtr from = getWdbProjection(p.projDefinition_);
+		static const std::string toProjDefinition = getProjDefinition( "longlat", "+ellps=WGS84" );
+		WdbProjectionPtr to = getWdbProjection(toProjDefinition);
 
-		from.transform(to, elements, lon, lat);
+		from->transform(* to, elements, lon, lat);
 	}
 
 	for ( size_t i = 0; i < elements; ++ i )
@@ -170,10 +171,11 @@ struct lonlat rTransform( struct lonlat coords, const struct PlaceSpecification 
 	ret.lon *= DEG_TO_RAD;
 	ret.lat *= DEG_TO_RAD;
     {
-		WdbProjection from(getProjDefinition( "longlat", "+ellps=WGS84" ));
-		WdbProjection to(  p->projDefinition_ );
+		static const std::string fromProjDefinition = getProjDefinition( "longlat", "+ellps=WGS84" );
+		WdbProjectionPtr from = getWdbProjection(fromProjDefinition);
+		WdbProjectionPtr to = getWdbProjection(p->projDefinition_);
 
-		from.transform(to, 1, &ret.lon, &ret.lat);
+		from->transform(* to, 1, &ret.lon, &ret.lat);
 	}
 	if ( not isMetric( p->projDefinition_ ) ) {
 		ret.lon *= RAD_TO_DEG;

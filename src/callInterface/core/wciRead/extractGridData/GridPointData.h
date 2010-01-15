@@ -33,9 +33,7 @@
 extern "C" {
 #endif
 
-
-#include <stddef.h> // geos_c.h needs this one
-#include <geos_c.h>
+#include <wdb_geos.h>
 
 /**
  * @file Functions and structs for maintaining the results of wdb field

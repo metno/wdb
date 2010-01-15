@@ -45,6 +45,7 @@
 #include <wdbProjectionCInterface.h>
 #include <wdbException.h>
 #include <proj_api.h>
+#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <string>
 #include <vector>
@@ -140,8 +141,14 @@ private:
 	projPJ projDef_;
 	/// A string representation of the projection
 	std::string projText_;
-
 };
+
+typedef boost::shared_ptr<const WdbProjection> WdbProjectionPtr;
+
+/**
+ * Get a WdbProjection instance for the given proj definition, possibly from cache.
+ */
+WdbProjectionPtr getWdbProjection(const std::string & def);
 
 /**
  * @}

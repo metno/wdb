@@ -64,3 +64,8 @@ __WCI_SCHEMA__.setRole
 RETURNS VOID AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wciSession_setRole'
 LANGUAGE 'c' VOLATILE;
+
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.readCachePurge()
+RETURNS void AS
+'__WDB_LIBDIR__/__WCI_LIB__', 'wciReadCachePurge'
+LANGUAGE 'c' STABLE;

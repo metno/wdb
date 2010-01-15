@@ -253,7 +253,8 @@ void ValueParameterTest::testP4_03A_SomeParametersExist()
 
 void ValueParameterTest::testP4_03B_SomeParametersExist()
 {
-	result r = t->exec( statementFloat_( "'air pressure', 'air temperature', 'wind velocity', 'soil velocity', 'air surface density', 'soil pressure'" ) );
+	std::string query = statementFloat_( "'air pressure', 'air temperature', 'wind velocity', 'soil velocity', 'air surface density', 'soil pressure'" );
+	result r = t->exec( query );
 	CPPUNIT_ASSERT( not r.empty() );
 	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air pressure" ) );
 	CPPUNIT_ASSERT( count_val( r, "valueparametername", "air temperature" ) );

@@ -30,9 +30,17 @@
 #ifndef INTERPOLATIONTYPE_H_
 #define INTERPOLATIONTYPE_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum InterpolationType
 {
 	Exact, Nearest, Surround, Bilinear
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INTERPOLATIONTYPE_H_ */

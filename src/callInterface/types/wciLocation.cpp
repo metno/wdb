@@ -90,7 +90,7 @@ extern "C"
         try
         {
             const Location loc( p.get() );
-            str = loc.query( returnType );
+            str = loc.query( Location::QueryReturnType(returnType) );
         }
         catch ( std::logic_error & e )
         {

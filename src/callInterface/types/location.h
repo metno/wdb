@@ -58,6 +58,13 @@ public:
 	 */
 	bool isGeometry() const { return isGeometry_; }
 
+	enum QueryReturnType
+	{
+		RETURN_OID,
+		RETURN_FLOAT,
+		RETURN_OID_FLOAT
+	};
+
 	/**
 	 * Get an "x=y" part of an sql query selecting the correct tuple from
 	 * wci(internal).gridvalue
@@ -66,7 +73,7 @@ public:
 	 * the return type that is required by the wci_read query.
 	 * 0 = OID, and 1 = Float.
 	 */
-	std::string query( int returnType ) const;
+	std::string query( QueryReturnType returnType ) const;
 
 	/**
 	 * The error when a specification is syntactically incorrect

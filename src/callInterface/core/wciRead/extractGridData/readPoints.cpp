@@ -62,23 +62,23 @@ extern "C"
 
 struct GridPointDataListIterator * readPoints(
 		const struct PlaceSpecification * ps, GEOSGeom location,
-		enum InterpolationType interpolation, FileId dataId,
-		int transactionId, int commandId)
+		enum InterpolationType interpolation, FileId dataId)
 {
-	GEOSGeomWrapper loc(location);
+	// TODO: either remove wrapper, or make wrapper use smarter
+	GEOSGeomWrapper loc(location ? GEOSGeom_clone(location) : NULL);
 
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
-
-	if ( isNewWciRead(transactionId, commandId) )
-		BaseDataReader::purgeAllCaches();
 
 	GridPointDataListIterator * ret = NULL;
 	try
 	{
 		if ( ! loc )
 		{
-			AllPointsReader reader(dataReader);
-			struct GridPointDataList * list = reader.read(dataId);
+//			AllPointsReader reader(dataReader);
+//			struct GridPointDataList * list = reader.read(dataId);
+
+			// On NULL geometries we won't return anything
+			struct GridPointDataList * list = GridPointDataListNew(0);
 			ret = GridPointDataListIteratorNew(list);
 		}
 		else
@@ -87,6 +87,7 @@ struct GridPointDataListIterator * readPoints(
 			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(dataReader);
+
 				GridPointDataList * list = reader.read(loc, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
@@ -99,28 +100,24 @@ struct GridPointDataListIterator * readPoints(
 			else
 				throw std::runtime_error("This geometry type is not supported");
 		}
+		//elog(INFO, "%s:%d", __FILE__, __LINE__);
 	}
 	catch (std::exception & e)
 	{
 		if ( ret )
 			GridPointDataListDelete(ret->list, false);
-		ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED), errmsg(e.what())));
+		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(e.what())));
 	}
 	catch (...)
 	{
 		// This should never happen, but just in case...
 		if ( ret )
 			GridPointDataListDelete(ret->list, false);
-		ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED), "Unknown error when fetching point data. Please tell someone about this"));
+		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), "Unknown error when fetching point data. Please tell someone about this"));
 	}
 
+//	elog(INFO, "%s:%d", __FILE__, __LINE__);
 	return ret;
 }
-
-void purgeAllReadRelatedCaches()
-{
-	BaseDataReader::purgeAllCaches();
-}
-
 
 }

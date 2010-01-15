@@ -56,9 +56,11 @@ boost::filesystem::path PathGenerator::operator() (FileId id) const
 	using namespace std;
 
 	ostringstream fname;
+	fname << basePath_ << '/';
+
 	fname << setfill('0') << setw(16) << hex << id << ".dat";
 
-	return basePath_/fname.str();
+	return fname.str();//basePath_/fname.str();
 }
 
 FileId PathGenerator::reverse(const boost::filesystem::path & blobFileName) const

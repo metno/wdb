@@ -27,7 +27,6 @@
  */
 
 #include "GEOSGeomWrapper.h"
-#include <geos_c.h>
 
 struct GEOSGeomWrapper::GEOSGeomPtr
 {
@@ -54,6 +53,12 @@ public:
 	unsigned useCount;
 	GEOSGeom geom;
 };
+
+GEOSGeomWrapper::GEOSGeomWrapper() :
+	geom_(new GEOSGeomPtr(0))
+{
+}
+
 
 GEOSGeomWrapper::GEOSGeomWrapper(GEOSGeom geo) :
 	geom_(new GEOSGeomPtr(geo))
@@ -104,13 +109,19 @@ GEOSGeomWrapper::operator bool () const
 
 bool operator ==(const GEOSGeomWrapper & a, const GEOSGeomWrapper & b)
 {
+	if ( a.get() == 0 or b.get() == 0 )
+		return a.get() and b.get();
+
 	return GEOSEquals(a.get(), b.get());
 }
 
-bool GEOSGeomWrapperCmp::operator () (const GEOSGeomWrapper & wa, const GEOSGeomWrapper & wb) const
+bool GEOSGeomCmp::operator () (const GEOSGeom ga, const GEOSGeom gb) const
 {
-	const GEOSCoordSeq a = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(wa.get()));
-	const GEOSCoordSeq b = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(wb.get()));
+	if ( ga == 0 or gb == 0 )
+		return ga < gb; // true only if wa is NULL, but not wb
+
+	const GEOSCoordSeq a = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(ga));
+	const GEOSCoordSeq b = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(gb));
 
 	unsigned sizeA;
 	GEOSCoordSeq_getSize(a, & sizeA);

@@ -29,7 +29,6 @@
 #ifndef BASEDATAREADER_H_
 #define BASEDATAREADER_H_
 
-#include <string.h>
 #include <PlaceSpecification.h>
 #include "GridPointData.h"
 #include "GEOSGeomWrapper.h"
@@ -44,8 +43,7 @@
  * Provides basic functionality to the point reader classes.
  *
  * Instances are created by calling the static getInstance method of this
- * class. The singleton-like construction allows us to cache geometry
- * calculations.
+ * class.
  */
 class BaseDataReader : boost::noncopyable
 {
@@ -60,7 +58,7 @@ public:
 	/**
 	 * Convert the given file indexes to lat/lon coordinates
 	 */
-	GEOSGeom getGeometry(double x, double y) const;
+	const GEOSGeom getGeometry(double x, double y) const;
 
 	/**
 	 * Transform lat/lon coordinates to an exact file index, in x,y format.
@@ -91,15 +89,6 @@ public:
 
 	const PlaceSpecification & placeSpecification() const { return ps_; }
 
-
-	void purgeCache() const
-	{
-		geomCache_.clear();
-		idxCache_.clear();
-	}
-
-	static void purgeAllCaches();
-
 private:
 	BaseDataReader(); // undefined
 	explicit BaseDataReader(const PlaceSpecification & ps);
@@ -107,14 +96,6 @@ private:
 
 	PlaceSpecification ps_;
 	WdbProjection projection_;
-
-	// Caching x/y to lonlat calculations
-	typedef std::map<GEOSGeomWrapper, lonlat, GEOSGeomWrapperCmp> GeomCache;
-	mutable GeomCache geomCache_;
-
-	// Caching lonlat to x/y calculations
-	typedef std::map<std::pair<double,double>, GEOSGeomWrapper> IdxCache;
-	mutable IdxCache idxCache_;
 };
 
 

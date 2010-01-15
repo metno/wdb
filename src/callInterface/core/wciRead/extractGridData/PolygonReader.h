@@ -30,7 +30,7 @@
 #define POLYGONREADER_H_
 
 #include "BaseDataReader.h"
-#include <PolygonGridExtract.h>
+#include "PolygonGridExtract.h"
 #include <interpolationType.h>
 #include <vector>
 

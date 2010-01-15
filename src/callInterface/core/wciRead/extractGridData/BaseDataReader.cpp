@@ -27,6 +27,7 @@
  */
 
 #include "BaseDataReader.h"
+#include "readCache.h"
 
 namespace
 {
@@ -67,13 +68,6 @@ const BaseDataReader & BaseDataReader::getInstance(const PlaceSpecification & ps
 	return * reader;
 }
 
-void BaseDataReader::purgeAllCaches()
-{
-	for ( ReaderCache::iterator it = readerCache.begin(); it != readerCache.end(); ++ it )
-		it->second->purgeCache();
-}
-
-
 BaseDataReader::BaseDataReader(const PlaceSpecification & ps) :
 	ps_(ps), projection_(ps.projDefinition_)
 {
@@ -85,31 +79,30 @@ BaseDataReader::~BaseDataReader()
 {
 }
 
-GEOSGeom BaseDataReader::getGeometry(double x, double y) const
+const GEOSGeom BaseDataReader::getGeometry(double x, double y) const
 {
-	std::pair<double,double> idx(x,y);
-	IdxCache::const_iterator find = idxCache_.find(idx);
-	if ( find == idxCache_.end() )
+	GEOSGeom ret = getGeomFromCache(& ps_, x, y);
+	if ( ! ret )
 	{
-		lonlat ret = wdbTransform(x, y, & ps_);
+		lonlat ll = wdbTransform(x, y, & ps_);
 		GEOSCoordSeq coordinate = GEOSCoordSeq_create(1, 2);
-		GEOSCoordSeq_setX(coordinate, 0, ret.lon);
-		GEOSCoordSeq_setY(coordinate, 0, ret.lat);
-		GEOSGeom geo = GEOSGeom_createPoint(coordinate);
-
-		IdxCache::value_type toInsert(idx, GEOSGeomWrapper(geo));
-
-		find = idxCache_.insert(idxCache_.begin(), toInsert);
+		GEOSCoordSeq_setX(coordinate, 0, ll.lon);
+		GEOSCoordSeq_setY(coordinate, 0, ll.lat);
+		ret = GEOSGeom_createPoint(coordinate);
+		setGeomCache(& ps_, x, y, ret);
+		return ret;
 	}
-
-	return find->second.get();
+	return ret;
 }
 
 lonlat BaseDataReader::getExactIndex(const GEOSGeomWrapper & location) const
 {
-	GeomCache::const_iterator find = geomCache_.find(location);
-	if ( find == geomCache_.end() )
+	lonlat ret;
+
+	const LongitudeLatitude * cached = getLLFromCache(& ps_, location.get());
+	if ( ! cached )
 	{
+		lonlat ll;
 		// KLUDGE: Support several versions of geos
 		//
 		// GEOSGeom_getCoordSeq returns a const GEOSCoordSequence_t *, or a
@@ -118,18 +111,18 @@ lonlat BaseDataReader::getExactIndex(const GEOSGeomWrapper & location) const
 		// but declaring a const GEOSCoordSeq equals a GEOSCoordSequence * const,
 		// and not a const GEOSCoordSequence *
 		GEOSCoordSeq sequence = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(location.get()));
-
-		lonlat ll;
 		GEOSCoordSeq_getX(sequence, 0, & ll.lon);
 		GEOSCoordSeq_getY(sequence, 0, & ll.lat);
-		lonlat ret = rTransform( ll, & ps_ );
-
-		GeomCache::value_type toInsert(location, ret);
-
-		find = geomCache_.insert(geomCache_.begin(), toInsert);
+		ret = rTransform( ll, & ps_ );
+		setLLCache(& ps_, location.get(), ret.lon, ret.lat);
 	}
+	else
+	{
+		ret.lon = cached->lon;
+		ret.lat = cached->lat;
 
-	return find->second;
+	}
+	return ret;
 }
 
 bool BaseDataReader::indexRefersToPointOutsideFile(double x, double y) const

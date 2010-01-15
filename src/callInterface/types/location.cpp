@@ -40,10 +40,6 @@
 using namespace std;
 using namespace boost;
 
-const int RETURN_OID 	= 0;
-const int RETURN_FLOAT 	= 1;
-const int RETURN_OID_FLOAT 	= 2;
-
 namespace
 {
 /// A regular expression for floating points (including exponents)
@@ -98,7 +94,7 @@ Location::~Location()
 	// NOOP
 }
 
-string Location::query( int returnType ) const
+string Location::query( Location::QueryReturnType returnType ) const
 {
 	ostringstream q;
 	std::string myGeometry;
@@ -124,8 +120,7 @@ string Location::query( int returnType ) const
 		else
 		{
 			// This corresponds to an "exact" query - just much faster
-			std::string pquery = "SELECT placeid FROM " + std::string(WCI_SCHEMA) + ".placename WHERE placename = '" + location() + "'";
-			q << "placeid = " << getPlaceQuery_( pquery.c_str(), 60 );
+			q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << location() << "')";
 		}
 
 		break;
@@ -133,22 +128,16 @@ string Location::query( int returnType ) const
 		// When we want to return floating points, we always want to detect
 		// any overlap of the geometry with data
 		if ( ! isGeometry() )
-		{
-			// Get the geometry of the placeId
-			std::string pquery = "SELECT astext(placegeometry) FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "'";
-			myGeometry = getPlaceQuery_( pquery.c_str(), 5000 );
-		}
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
+		else
+			myGeometry = "geomfromtext('" + location() + "', 4030 )";
+		// Create query
+		if ( myGeometry == "NULL" )
+			q << "FALSE";
 		else
 		{
-			myGeometry = location();
-		}
-		// Create query
-		if ( myGeometry == "NULL" ) {
-			q << "FALSE";
-		}
-		else {
 			q 	<< WCI_SCHEMA << ".dwithin( "
-				<< "transform( geomfromtext( '" << myGeometry << "', 4030 ), v.originalsrid ), "
+				<< "transform( " << myGeometry << ", v.originalsrid ), "
 				<< "transform(v.placegeometry, v.originalsrid ),"
 				<< "25 )";
 			// The transformation to the original srid of the geometry (where the grid will be a "square" is required,
@@ -161,15 +150,17 @@ string Location::query( int returnType ) const
 	case RETURN_OID_FLOAT:
 		// When we want to return floating points for OIDs, we don't want to check for
 		// overlap of the geometry with data. That is done later
+
+		// NOT USED
+
 		if ( ! isGeometry() )
 		{
 			// Get the geometry of the placeId
-			std::string pquery = "SELECT astext(placegeometry) FROM " + std::string(WCI_SCHEMA) + ".placedefinition p," + std::string(WCI_SCHEMA) + ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "'";
-			myGeometry = getPlaceQuery_( pquery.c_str(), 5000 );
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p," + std::string(WCI_SCHEMA) + ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
 		}
 		else
 		{
-			myGeometry = location();
+			myGeometry = "geomfromtext('" + location() + "', 4030 )";
 		}
 		// Create query
 		if ( myGeometry == "NULL" ) {

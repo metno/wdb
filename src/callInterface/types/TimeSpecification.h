@@ -38,8 +38,13 @@ public:
 	~TimeSpecification();
 
 	std::string indeterminate() const;
+
+	/// will return an empty string if intervalInsteadOfTo() is false
 	std::string interval() const;
+
 	std::string from() const;
+
+	/// will return an empty string if intervalInsteadOfTo() is true
 	std::string to() const;
 
 	bool intervalInsteadOfTo() const;

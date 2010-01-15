@@ -29,6 +29,7 @@
 #include "LevelSpecification.h"
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 #include <stdexcept>
 
 #include <iostream>
@@ -47,7 +48,10 @@ LevelSpecification::LevelSpecification(const string & spec)
 	if ( not regex_match(spec, match, re) )
 		throw logic_error("Invalid level specification: " + spec);
 
+	using boost::algorithm::to_lower;
+
 	indeterminate_ = match[2];
+	to_lower(indeterminate_);
 	if ( indeterminate_.empty() )
 		indeterminate_ = "exact";
 	try
@@ -64,6 +68,7 @@ LevelSpecification::LevelSpecification(const string & spec)
 		throw logic_error("Unable to interpret level specification: " + spec);
 	}
 	parameter_ = match[6];
+	to_lower(parameter_);
 }
 
 LevelSpecification::~LevelSpecification()

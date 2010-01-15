@@ -3,9 +3,14 @@
 # WDB Call Interface Core Implementation
 #-----------------------------------------------------------------------------
 
-libwciCoreNoPostgres_la_SOURCES =
+libwciCoreNoPostgres_la_SOURCES = \
+						src/callInterface/core/wdb_geos.h \
+						src/callInterface/core/wdb_geos.c
 
-include src/callInterface/core/extractGridData/wdb.mk
+include src/callInterface/core/wciRead/wdb.mk
+
+foo:
+	@echo $(wdb_la_SOURCES)
 
 wdb_la_SOURCES +=		src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/psqlTupleInterface.c \
@@ -19,6 +24,7 @@ wdb_la_SOURCES +=		src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/readQuery.cpp \
 						$(libwciCoreNoPostgres_la_SOURCES)
 
+
 # This contains all files that may be (relatively) meaningfully used outside of a postgresql server
 check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 
@@ -26,8 +32,7 @@ libwciCoreNoPostgres_la_SOURCES +=\
 						src/callInterface/core/projTransform.h \
 						src/callInterface/core/projTransform.cpp
 						
-WCICORE_SOURCES =		src/callInterface/core/wciExtractGridData.in.sql \
-						src/callInterface/core/wciSession.in.sql \
+WCICORE_SOURCES =		src/callInterface/core/wciSession.in.sql \
 						src/callInterface/core/readQuery.in.sql \
 						src/callInterface/core/readWhereClause.in.sql \
 						src/callInterface/core/readDataProvider.in.sql \
