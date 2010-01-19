@@ -50,9 +50,20 @@ std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray *
 
 	q << "(";
 
-	q << "dataproviderid IN (SELECT * FROM "<< WCI_SCHEMA << ".getdataprovideridlist(" << quote(lower(dataProvider->data[0])) << ")) ";
+	q << "dataproviderid IN (";
+
+	q << "SELECT d.dataproviderid FROM ";
+	q << WCI_SCHEMA << ".dataprovider_mv d, ";
+	q << WCI_SCHEMA << ".dataprovider_mv source ";
+	q << "WHERE (";
+	q << "source.dataprovidername = " << quote(lower(dataProvider->data[0]));
 	for ( int i = 1; i < dataProvider->size; ++ i )
-		q << "OR dataproviderid IN (SELECT * FROM "<< WCI_SCHEMA << ".getdataprovideridlist(" << quote(lower(dataProvider->data[i])) << ")) ";
+		q << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
+	q << ") AND "
+			"source.dataprovidernameleftset <= d.dataprovidernameleftset AND "
+			"source.dataprovidernamerightset >= d.dataprovidernamerightset";
+
+	q << ")";
 
 	q << ") ";
 

@@ -39,28 +39,3 @@ $BODY$
 		( dataprovidername = $1 );
 $BODY$
 LANGUAGE 'sql' STABLE;
-
-
---
--- Get all dataproviderids and sub-dataproviderids from the given name
---
-CREATE OR REPLACE FUNCTION
-__WCI_SCHEMA__.getdataprovideridlist(dataprovidername_ text)
-RETURNS SETOF bigint AS
-$BODY$
-DECLARE
-	requestedDataProvder __WCI_SCHEMA__.dataprovider_mv;
-BEGIN
-	SELECT * INTO requestedDataProvder FROM wci_0_9_6.dataprovider_mv WHERE dataprovidername=dataprovidername_;
-
-	RETURN QUERY
-	SELECT 
-		dataproviderid 
-	FROM 
-		__WCI_SCHEMA__.dataprovider_mv d
-	WHERE 
-		requestedDataProvder.dataprovidernameleftset <= d.dataprovidernameleftset AND
-		requestedDataProvder.dataprovidernamerightset >= d.dataprovidernamerightset;
-END;
-$BODY$
-LANGUAGE plpgsql STRICT STABLE;
