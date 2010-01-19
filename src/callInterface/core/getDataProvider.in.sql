@@ -45,11 +45,11 @@ LANGUAGE 'sql' STABLE;
 -- Get all dataproviderids and sub-dataproviderids from the given name
 --
 CREATE OR REPLACE FUNCTION
-wci_0_9_6.getdataprovideridlist(dataprovidername_ text)
+__WCI_SCHEMA__.getdataprovideridlist(dataprovidername_ text)
 RETURNS SETOF bigint AS
 $BODY$
 DECLARE
-	requestedDataProvder wci_0_9_6.dataprovider_mv;
+	requestedDataProvder __WCI_SCHEMA__.dataprovider_mv;
 BEGIN
 	SELECT * INTO requestedDataProvder FROM wci_0_9_6.dataprovider_mv WHERE dataprovidername=dataprovidername_;
 
@@ -57,7 +57,7 @@ BEGIN
 	SELECT 
 		dataproviderid 
 	FROM 
-		wci_0_9_6.dataprovider_mv d
+		__WCI_SCHEMA__.dataprovider_mv d
 	WHERE 
 		requestedDataProvder.dataprovidernameleftset <= d.dataprovidernameleftset AND
 		requestedDataProvder.dataprovidernamerightset >= d.dataprovidernamerightset;
