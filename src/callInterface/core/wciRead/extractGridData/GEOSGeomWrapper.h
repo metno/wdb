@@ -33,6 +33,12 @@
 #include <wdb_geos.h>
 
 /**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
  * Providing memory management for GEOSGeom objects
  */
 class GEOSGeomWrapper
@@ -68,7 +74,7 @@ public:
 	const GEOSGeom get() const;
 
 	/**
-	 * True if the wrapped geos object is non-zero
+	 * True if the wrapped geos object is not NULL.
 	 */
 	operator bool () const;
 
@@ -92,6 +98,9 @@ struct GEOSGeomWrapperCmp : public std::binary_function<GEOSGeomWrapper,GEOSGeom
 	}
 };
 
+/**
+ * @}
+ */
 
 
 #endif /* GEOSGEOMWRAPPER_H_ */

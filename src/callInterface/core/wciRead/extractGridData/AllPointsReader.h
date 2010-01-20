@@ -32,7 +32,15 @@
 #include "BaseDataReader.h"
 #include <types/interpolationType.h>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
 
+
+/**
+ * Read all points from a grid.
+ */
 class AllPointsReader
 {
 public:
@@ -44,5 +52,9 @@ public:
 private:
 	const BaseDataReader & reader_;
 };
+
+/**
+ * @}
+ */
 
 #endif /* ALLPOINTSREADER_H_ */

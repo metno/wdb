@@ -34,6 +34,15 @@
 #include <vector>
 
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
+ * Finds out which points in a grid is inside a polygon
+ */
 class PolygonGridExtract
 {
 public:
@@ -84,5 +93,9 @@ private:
 							  const std::vector<GridPointData> & polygon );
 
 };
+
+/**
+ * @}
+ */
 
 #endif /* POLYGONGRIDEXTRACT_H_ */

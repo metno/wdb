@@ -34,6 +34,15 @@
 #include <interpolationType.h>
 #include <vector>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
+ * Read the data within a grid, which is inside a polygon.
+ */
 class PolygonReader
 {
 public:
@@ -55,5 +64,10 @@ private:
 
 	friend class PolygonReaderTest; // for testing
 };
+
+
+/**
+ * @}
+ */
 
 #endif /* POLYGONREADER_H_ */

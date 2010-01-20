@@ -36,6 +36,12 @@ extern "C" {
 #include <wdb_geos.h>
 
 /**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
  * @file Functions and structs for maintaining the results of wdb field
  * lookups. All heap allocations used inside this file is made using palloc,
  * This means that it is not strictly neccessary to deallocate the memory
@@ -45,6 +51,7 @@ extern "C" {
  * deallocated manually. You can do this automatically by calling on of the
  * functions GridPointDataDestroy or GridPointDataListDelete.
  */
+
 
 /**
  * A single point from a field.
@@ -66,11 +73,13 @@ struct GridPointData
 	double y;
 };
 
+
 /**
  * Delete all internal memory associated with the given GridPointData. Does
  * not free the memory pointed to by toDestry.
  */
 void GridPointDataDestroy(struct GridPointData * toDestroy);
+
 
 /**
  * A list of GridPointData elements. This should normally be allocated with
@@ -90,10 +99,12 @@ struct GridPointDataList
 	struct GridPointData * data;
 };
 
+
 /**
  * Allocate a new GridPointDataList with n elements.
  */
 struct GridPointDataList * GridPointDataListNew(size_t size);
+
 
 /**
  * Delete all memory pointed to by the given list. This optionally includes
@@ -105,6 +116,7 @@ struct GridPointDataList * GridPointDataListNew(size_t size);
  */
 void GridPointDataListDelete(struct GridPointDataList * list, int alsoDestroyPoints);
 
+
 /**
  * Iterates over a GridPointDataList. This iterator should normally be
  * created using GridPointDataListIteratorNew.
@@ -115,16 +127,19 @@ struct GridPointDataListIterator
 	unsigned currentPosition;
 };
 
+
 /**
  * Create a new GridPointDataListIterator, pointing to the first element of
  * the given list.
  */
 struct GridPointDataListIterator * GridPointDataListIteratorNew(struct GridPointDataList * list);
 
+
 /**
  * Delete the given GridPointDataListIterator, but not the list it points to
  */
 void GridPointDataListIteratorDelete(struct GridPointDataListIterator * iterator);
+
 
 /**
  * Get the next element from the given GridPointDataListIterator. Will return
@@ -132,12 +147,19 @@ void GridPointDataListIteratorDelete(struct GridPointDataListIterator * iterator
  */
 struct GridPointData * GridPointDataListIteratorNext(struct GridPointDataListIterator * iterator);
 
+
 /**
  * Does the given GridPointDataListIterator point at the end of its list?
  *
  * @return 0 if the iterator has more elements to give. Otherwise, any other value.
  */
 int GridPointDataListIteratorAtEnd(struct GridPointDataListIterator * iterator);
+
+
+/**
+ * @}
+ */
+
 
 #ifdef __cplusplus
 }

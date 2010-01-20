@@ -33,12 +33,31 @@
 #include <types/interpolationType.h>
 #include <boost/shared_ptr.hpp>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+/**
+ * Read data from a single point from a grid.
+ *
+ * @note That we use a single point to extract data does not mean that a
+ *       single invocation will return at most one value. This is because some
+ *       interpolation types are set to return several points (eg. surround)
+ */
 class SinglePointReader
 {
 public:
 	explicit SinglePointReader(const BaseDataReader & reader);
 	virtual ~SinglePointReader();
 
+	/**
+	 * Read data from the given grid.
+	 *
+	 * @param Location The point to read. This must be a point
+	 * @param Interpolation interpolation method
+	 * @param dataId The grid to read from.
+	 */
 	GridPointDataList * read(const GEOSGeomWrapper & location, InterpolationType interpolation, FileId dataId) const;
 
 private:

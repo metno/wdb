@@ -38,6 +38,11 @@
 #include <boost/noncopyable.hpp>
 #include <map>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
 
 /**
  * Provides basic functionality to the point reader classes.
@@ -98,5 +103,9 @@ private:
 	WdbProjection projection_;
 };
 
+
+/**
+ * @}
+ */
 
 #endif /* BASEDATAREADER_H_ */

@@ -40,6 +40,12 @@ extern "C" {
 #include <fileblobimpl_psql.h>
 
 /**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
  * Read points according to the given specification.
  *
  * @param ps Specification for the grid type to read from
@@ -54,6 +60,10 @@ struct GridPointDataListIterator * readPoints(
 		enum InterpolationType interpolation,
 		FileId dataId);
 
+
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

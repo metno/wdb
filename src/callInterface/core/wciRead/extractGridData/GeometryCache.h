@@ -35,6 +35,11 @@
 
 class PlaceSpecification;
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
 
 /**
  * Caching geometry calculations, based on PlaceSpecifications.
@@ -84,5 +89,9 @@ private:
 	friend void clearGeometryCaches();
 };
 
+
+/**
+ * @}
+ */
 
 #endif /* GEOMETRYCACHE_H_ */
