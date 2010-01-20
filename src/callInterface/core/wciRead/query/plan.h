@@ -38,6 +38,12 @@
 #include <fmgr.h>
 #include <executor/spi.h>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
 
 /**
  * Get a query plan for the given query, possibly from cache.
@@ -52,6 +58,9 @@ SPIPlanPtr getSpiPlan(const char * query);
  * Clear getSpiPlan internal cache. You should normally not need to do this.
  */
 void clearSpiPlanCache();
+
+
+/// @}
 
 
 #endif /* QUERYPLAN_H_ */

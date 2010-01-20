@@ -36,8 +36,23 @@
 #include "extractGridData/readCache.h"
 #include "getData.h"
 
+/**
+ * @addtogroup wci
+ * @{
+ */
 
 
+/**
+ * @file
+ * Entry point functionality for sql function wci.read(..., wci.returnfloat)
+ *
+ * @see wciReadFloat
+ */
+
+
+/**
+ * Create and run the basic query on the floatvalue table, for use by the wciReadFloat function
+ */
 static void runWciReadFloatQueryFloat(struct ReadStore * out, FunctionCallInfo fcinfo)
 {
 	struct WciReadParameterCollection p;
@@ -62,6 +77,9 @@ static void runWciReadFloatQueryFloat(struct ReadStore * out, FunctionCallInfo f
 	out->returnMode = ReturningFromFloatTable;
 }
 
+/**
+ * Create and run the basic query on the gridvalue table, for use by the wciReadFloat function
+ */
 static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * funcctx, FunctionCallInfo fcinfo)
 {
 	initializeGeos();
@@ -96,6 +114,11 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 }
 
 PG_FUNCTION_INFO_V1(wciReadCachePurge);
+/**
+ * Purge all caches related to wci.read function call.
+ *
+ * This is the entry point for the sql function wci_x_y.readCachePurge()
+ */
 Datum wciReadCachePurge(PG_FUNCTION_ARGS)
 {
 	purgeAllCaches();
@@ -104,6 +127,9 @@ Datum wciReadCachePurge(PG_FUNCTION_ARGS)
 }
 
 PG_FUNCTION_INFO_V1(wciReadFloat);
+/**
+ * Entry point for sql function wci.read(..., wci.returnfloat);
+ */
 Datum wciReadFloat(PG_FUNCTION_ARGS)
 {
 	FuncCallContext * funcctx;
@@ -180,3 +206,5 @@ Datum wciReadFloat(PG_FUNCTION_ARGS)
 	// Never reached
 	SRF_RETURN_DONE(funcctx);
 }
+
+/// @}

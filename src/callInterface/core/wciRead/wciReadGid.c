@@ -36,7 +36,22 @@
 #include "extractGridData/readCache.h"
 #include "getData.h"
 
+/**
+ * @addtogroup wci
+ * @{
+ */
 
+/**
+ * @file
+ * Entry point functionality for sql function wci.read(..., wci.returngid)
+ *
+ * @see wciReadGid
+ */
+
+
+/**
+ * Create and run the basic query on the gridvalue table, for use by the wciReadGid function
+ */
 static void runWciReadGidBaseQuery(struct ReadStore * out, FuncCallContext * funcctx, FunctionCallInfo fcinfo)
 {
 	struct WciReadParameterCollection p;
@@ -59,6 +74,9 @@ static void runWciReadGidBaseQuery(struct ReadStore * out, FuncCallContext * fun
 
 
 PG_FUNCTION_INFO_V1(wciReadGid);
+/**
+ * Entry point for sql function wci.read(..., wci.returngid)
+ */
 Datum wciReadGid(PG_FUNCTION_ARGS)
 {
 	FuncCallContext * funcctx;
@@ -116,3 +134,4 @@ Datum wciReadGid(PG_FUNCTION_ARGS)
 	}
 }
 
+/// @}

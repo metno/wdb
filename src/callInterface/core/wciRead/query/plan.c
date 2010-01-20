@@ -29,7 +29,7 @@
 #include "plan.h"
 #include <glib.h>
 
-// Max number of netries in plan cache
+// Max number of entries in plan cache
 #define MAX_CACHED_PLAN_SIZE 32
 
 
