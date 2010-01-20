@@ -41,6 +41,12 @@ extern "C" {
 struct PlaceSpecification;
 
 /**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
  * @file Caching geometries for wci.read
  *
  * This file contains functions for caching and retrieving geometry-related
@@ -178,7 +184,9 @@ void setLLCache(const struct PlaceSpecification * ps, const GEOSGeom geometryToI
  */
 const struct LongitudeLatitude * getLLFromCache(const struct PlaceSpecification * ps, const GEOSGeom geom);
 
-
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

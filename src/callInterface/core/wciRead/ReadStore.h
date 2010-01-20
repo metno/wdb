@@ -44,6 +44,11 @@ extern "C" {
 
 struct SPITupleTable;
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
 
 enum ReadStoreMode
 {
@@ -73,11 +78,30 @@ struct ReadStore
 	struct GridPointDataListIterator * pointData;
 };
 
+/**
+ * Initialize the given ReadStore with the given data
+ */
 void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char * location);
 
+/**
+ * Free all memory related to the given readStore, including the ReadStore
+ * itself.
+ *
+ * @warning This will fail miserably and probably crash the database if the
+ *          given store have not been allocated by using palloc or another
+ *          postgres memory allocation function.
+ */
 void ReadStoreDelete(struct ReadStore * store);
 
+/**
+ * Is the internal current tuple counter lower than the actual number of
+ * tuples?
+ */
 bool ReadStoreHasMoreTuples(const struct ReadStore * store);
+
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

@@ -41,6 +41,9 @@ struct PlaceSpecification;
  */
 struct PlaceSpecification * getPlaceSpecification(long long placeid);
 
+/**
+ * Get the WKT representation of he given location name
+ */
 char * getNamedGeometryAsWKT(const char * locationName);
 
 

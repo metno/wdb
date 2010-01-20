@@ -37,9 +37,24 @@ extern "C" {
 #include <postgres.h>
 #include "ReadStore.h"
 
+/**
+ * @addtogroup wci
+ * @{
+ */
 
+
+/**
+ * Extract the next float value from the the query, placing it into the given
+ * ReadStore.
+ *
+ * @return true if there were more data to return, otherwise false.
+ */
 bool getNextRowFromGridTable(struct ReadStore * store);
 
+
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }
