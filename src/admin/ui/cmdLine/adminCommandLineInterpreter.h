@@ -65,7 +65,7 @@ public:
 	/**
 	 * Run the input/dispatch loop with commands
 	 */
-	void run( const std::vector<std::string> & command );
+	bool run( const std::vector<std::string> & command );
 
 
 	// internal stuff which needs to be public

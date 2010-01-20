@@ -42,7 +42,7 @@ using namespace std;
  * An abstract command to wdbAdmin
  */
 class AdminCommandLineInterpreter::Command
-	: public std::binary_function<void, const std::vector<std::string>, AdminCommandLineOutput>
+	: public std::binary_function<bool, const std::vector<std::string>, AdminCommandLineOutput>
 {
 public:
 	virtual ~Command() {}
@@ -54,7 +54,7 @@ public:
 	 *              the name of the command, the others its arguments.
 	 * @param performer the outputter object for diplaying command results.
 	 */
-	virtual void operator () (const std::vector<std::string> & input, AdminCommandLineOutput & performer) = 0;
+	virtual bool operator () (const std::vector<std::string> & input, AdminCommandLineOutput & performer) = 0;
 
 	/**
 	 * Return a one-line help string for the given function.
@@ -113,14 +113,14 @@ void AdminCommandLineInterpreter::run()
 	}
 }
 
-void AdminCommandLineInterpreter::run( const vector<string> & command )
+bool AdminCommandLineInterpreter::run( const vector<string> & command )
 {
 	std::string baseCommand = command.front();
 	std::transform(baseCommand.begin(), baseCommand.end(), baseCommand.begin(), (int(*)(int)) tolower);
 	// Search the command list for a match, and then execute the given command:
 	AvailableCommands::iterator find = commands_.find(baseCommand);
 	if ( find != commands_.end() )
-		(*find->second)(command, output_);
+		return (*find->second)(command, output_);
 	else
 		output_.info( "Unrecognized command: " + baseCommand );
 
@@ -180,7 +180,7 @@ namespace
  */
 struct QuitCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		throw EndOfFileInput();
 	}
@@ -195,12 +195,12 @@ struct QuitCommand : AdminCommandLineInterpreter::Command
  */
 struct CreateUserCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() < 2)
 		{
 			performer.info("Usage: createuser username [admin] [write] [noread] ");
-			return;
+			return false;
 		}
 
 		string username = input[1];
@@ -224,10 +224,10 @@ struct CreateUserCommand : AdminCommandLineInterpreter::Command
 			else {
 				performer.info("Invalid option: " + input[i]);
 				performer.info("Usage: createuser username [admin] [write] [noread] ");
-				return;
+				return false;
 			}
 		}
-		performer.createUser( username, admin, read, write );
+		return performer.createUser( username, admin, read, write );
 	}
 
 	virtual string help() const
@@ -241,12 +241,12 @@ struct CreateUserCommand : AdminCommandLineInterpreter::Command
  */
 struct ChangeUserCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() < 2)
 		{
 			performer.info("Usage: changeuser username [admin] [write] [read] ");
-			return;
+			return false;
 		}
 
 		string username = input[1];
@@ -270,10 +270,10 @@ struct ChangeUserCommand : AdminCommandLineInterpreter::Command
 			else {
 				performer.info("Invalid option: " + input[i]);
 				performer.info("Usage: changeuser username [admin] [write] [read] ");
-				return;
+				return false;
 			}
 		}
-		performer.changeUser( username, admin, read, write );
+		return performer.changeUser( username, admin, read, write );
 	}
 
 	virtual string help() const
@@ -287,16 +287,16 @@ struct ChangeUserCommand : AdminCommandLineInterpreter::Command
  */
 struct DropUserCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() != 2)
 		{
 			performer.info("Usage: dropuser username ");
-			return;
+			return false;
 		}
 
 		string username = input[1];
-		performer.dropUser( username );
+		return performer.dropUser( username );
 	}
 
 	virtual string help() const
@@ -310,17 +310,17 @@ struct DropUserCommand : AdminCommandLineInterpreter::Command
  */
 struct StatsCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() != 2)
 		{
 			performer.info("Usage: stats <table|index|io>");
-			return;
+			return false;
 		}
 
 		string type = input[1];
 		std::transform(type.begin(), type.end(), type.begin(), (int(*)(int)) tolower);
-		performer.listStats( type );
+		return performer.listStats( type );
 	}
 
 	virtual string help() const
@@ -334,15 +334,15 @@ struct StatsCommand : AdminCommandLineInterpreter::Command
  */
 struct TestCleanCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() != 1)
 		{
 			performer.info("No arguments required for this command");
-			return;
+			return false;
 		}
 
-		performer.testClean( );
+		return performer.testClean( );
 	}
 
 	virtual string help() const
@@ -356,15 +356,15 @@ struct TestCleanCommand : AdminCommandLineInterpreter::Command
  */
 struct VacuumCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() != 1)
 		{
 			performer.info("No arguments required for this command");
-			return;
+			return false;
 		}
 
-		performer.vacuum( );
+		return performer.vacuum( );
 	}
 
 	virtual string help() const
@@ -390,7 +390,7 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 		return s;
 	}
 
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		static std::string help;
 		if ( help.empty())
@@ -412,6 +412,7 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 			help = h.str();
 		}
 		performer.info(help);
+		return true;
 	}
 
 	virtual string help() const
@@ -423,15 +424,15 @@ struct HelpCommand : AdminCommandLineInterpreter::Command
 
 struct CreateDatabaseCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() != 2)
 		{
 			performer.info("Usage: createdb NAME");
-			return;
+			return false;
 		}
 
-		performer.createDatabase(input[1]);
+		return performer.createDatabase(input[1]);
 	}
 
 	virtual string help() const
@@ -442,15 +443,15 @@ struct CreateDatabaseCommand : AdminCommandLineInterpreter::Command
 
 struct DropDatabaseCommand : AdminCommandLineInterpreter::Command
 {
-	virtual void operator () (const vector<string> & input, AdminCommandLineOutput & performer)
+	virtual bool operator () (const vector<string> & input, AdminCommandLineOutput & performer)
 	{
 		if (input.size() != 2)
 		{
 			performer.info("Usage: dropdb NAME");
-			return;
+			return false;
 		}
 
-		performer.dropDatabase(input[1]);
+		return performer.dropDatabase(input[1]);
 	}
 
 	virtual string help() const

@@ -90,7 +90,7 @@ int main(int argc, char ** argv)
 		if ( conf.input().commands.empty() )
 			interpreter.run( );
 		else
-			interpreter.run( conf.input().commands );
+			return not interpreter.run( conf.input().commands );
 	}
 	catch ( EndOfFileInput )
 	{

@@ -48,38 +48,42 @@ AdminCommandLineOutput::~AdminCommandLineOutput()
 }
 
 
-void
+bool
 AdminCommandLineOutput::createUser( const string user, bool admin, bool read, bool write )
 {
-	if ( performCreateUser(user, admin, read, write) ) {
+	bool ok = performCreateUser(user, admin, read, write);
+	if ( ok )
 		out_ << "User " << user << " created\n";
-	}
 	else
 		out_ << "Error when attempting to create user " << user << '\n';
+	return ok;
 }
 
-void
+bool
 AdminCommandLineOutput::changeUser( const string user, bool admin, bool read, bool write )
 {
-	if ( performChangeUser(user, admin, read, write) ) {
+	bool ok = performChangeUser(user, admin, read, write);
+	if ( ok )
 		out_ << "User " << user << " modified\n";
-	}
 	else
 		out_ << "Error when attempting to change user\n";
+	return ok;
 }
 
-void
+bool
 AdminCommandLineOutput::dropUser( const string user )
 {
-	if ( performDropUser(user) ) {
+	bool ok = performDropUser(user);
+	if ( ok )
 		out_ << "User " << user << " deleted\n";
-	}
 	else
 		out_ << "Unable to drop user " << user << '\n';
+
+	return ok;
 }
 
 
-void
+bool
 AdminCommandLineOutput::listStats( const string option )
 {
 	pqxx::result R;
@@ -96,7 +100,7 @@ AdminCommandLineOutput::listStats( const string option )
 	}
 	else {
 		out_ << "Usage: stats <table|index|io>" << endl;
-		return;
+		return false;
 	}
 	if ( printAdditionalInfo() )
 	{
@@ -107,7 +111,7 @@ AdminCommandLineOutput::listStats( const string option )
 		out_ << endl;
 		if (R.empty()) {
 			out_ << "<No data>"<< endl;
-			return;
+			return true;
 		}
 	}
 	for (pqxx::result::const_iterator it = R.begin(); it != R.end(); ++it ) {
@@ -117,9 +121,10 @@ AdminCommandLineOutput::listStats( const string option )
 		}
 		out_ << endl;
 	}
+	return true;
 }
 
-void AdminCommandLineOutput::listReferenceTimes()
+bool AdminCommandLineOutput::listReferenceTimes()
 {
 	AdminOperations::ReferenceTimeCount result;
 	getReferenceTimes(result);
@@ -132,24 +137,29 @@ void AdminCommandLineOutput::listReferenceTimes()
 	}
 	for (AdminOperations::ReferenceTimeCount::const_iterator it = result.begin(); it != result.end(); ++it )
 		out_ << it->first<< '\t'<< setw(5) << it->second<< endl;
+
+	return true;
 }
 
-void AdminCommandLineOutput::listKeys(const wdbTypes::TimeStamp & referenceTime)
+bool AdminCommandLineOutput::listKeys(const wdbTypes::TimeStamp & referenceTime)
 {
 	vector<WdbDataKey> out;
 	getKeys(out, referenceTime);
 
 	for ( vector<WdbDataKey>::const_iterator it = out.begin(); it != out.end(); ++ it )
 		out_ << * it << endl;
+
+	return true;
 }
 
-void AdminCommandLineOutput::testClean( )
+bool AdminCommandLineOutput::testClean( )
 {
 	int rows = performTestClean();
 	out_ << "Database cleaned. " << rows << " rows removed." << endl;
+	return true;
 }
 
-void AdminCommandLineOutput::vacuum( )
+bool AdminCommandLineOutput::vacuum( )
 {
 	if (printAdditionalInfo())
 		out_ << "Cleaning WDB system..." << endl;
@@ -162,9 +172,11 @@ void AdminCommandLineOutput::vacuum( )
 		if (printAdditionalInfo())
 			out_ << "Vacuum completed." << endl;
 	}
+
+	return true;
 }
 
-void AdminCommandLineOutput::createDatabase(const std::string & databaseName)
+bool AdminCommandLineOutput::createDatabase(const std::string & databaseName)
 {
 	try
 	{
@@ -176,10 +188,12 @@ void AdminCommandLineOutput::createDatabase(const std::string & databaseName)
 	catch( std::exception & e )
 	{
 		out_ << e.what() << endl;
+		return false;
 	}
+	return true;
 }
 
-void AdminCommandLineOutput::dropDatabase(const std::string & databaseName)
+bool AdminCommandLineOutput::dropDatabase(const std::string & databaseName)
 {
 	try
 	{
@@ -189,5 +203,7 @@ void AdminCommandLineOutput::dropDatabase(const std::string & databaseName)
 	catch( std::exception & e )
 	{
 		out_ << e.what() << endl;
+		return false;
 	}
+	return true;
 }

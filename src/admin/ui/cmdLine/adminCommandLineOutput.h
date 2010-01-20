@@ -68,7 +68,7 @@ public:
 	 * @param 	read	should the user be given reading rights?
 	 * @param	write	should the user be given write rights?
 	 */
-	void createUser( const std::string user, bool admin, bool read, bool write );
+	bool createUser( const std::string user, bool admin, bool read, bool write );
 
 	/**
 	 * Change the user grants as specified:
@@ -77,55 +77,55 @@ public:
 	 * @param 	read	should the user be given reading rights?
 	 * @param	write	should the user be given write rights?
 	 */
-	void changeUser( const std::string user, bool admin, bool read, bool write );
+	bool changeUser( const std::string user, bool admin, bool read, bool write );
 
 	/**
 	 * Delete a user with the given username
 	 * @param 	user	username of user to be deleted
 	 */
-	void dropUser( const std::string user );
+	bool dropUser( const std::string user );
 
 
 	/**
 	 * List stats for different elements
 	 * @param option	element to get stats for
 	 */
-	void listStats( const std::string option );
+	bool listStats( const std::string option );
 
 	/**
 	 * Print a list of all reference times in database, along with a count of
 	 * the number of fields for each reference time.
 	 */
-	void listReferenceTimes();
+	bool listReferenceTimes();
 
 	/**
 	 * Print database keys for the given reference time.
 	 */
-	void listKeys(const wdbTypes::TimeStamp & referenceTime);
+	bool listKeys(const wdbTypes::TimeStamp & referenceTime);
 
 	/**
 	 * Clean DB of all test data
 	 */
-	void testClean( );
+	bool testClean( );
 
 	/**
 	 * Clean DB and vacuum the database
 	 */
-	void vacuum( );
+	bool vacuum( );
 
 	/**
 	 * Install a new wdb database
 	 *
 	 * @param databaseName Name of the new wdb instance.
 	 */
-	void createDatabase(const std::string & databaseName);
+	bool createDatabase(const std::string & databaseName);
 
 	/**
 	 * Uninstall a wdb database
 	 *
 	 * @param databaseName Name of the database to be uninstalled.
 	 */
-	void dropDatabase(const std::string & databaseName);
+	bool dropDatabase(const std::string & databaseName);
 
 	/**
 	 * Toggle whether to print information beyond the result itself from a
