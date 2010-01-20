@@ -33,8 +33,9 @@
 #include <tsearch/ts_utils.h>
 #include <wdb_geos.h>
 #include "query/buildQuery.h"
-#include "extractGridData/readCache.h"
-#include "getData.h"
+#include "ReadStore.h"
+
+
 
 /**
  * @addtogroup wci
@@ -84,8 +85,6 @@ Datum wciReadGid(PG_FUNCTION_ARGS)
 	if ( SRF_IS_FIRSTCALL() )
 	{
 		funcctx = SRF_FIRSTCALL_INIT();
-
-		purgeAllCaches();
 
 		if (SPI_OK_CONNECT != SPI_connect())
 		{
