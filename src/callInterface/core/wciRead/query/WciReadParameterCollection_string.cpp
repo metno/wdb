@@ -30,11 +30,15 @@
 #include <string>
 
 #include "WciReadParameterCollection_string.h"
+
+#include "util.h"
+
 extern "C"
 {
 #include <postgres.h>
 #include <fmgr.h>
 #include <utils/palloc.h>
+
 
 const char * stringFromStringArray(const struct StringArray * sa)
 {
@@ -44,9 +48,9 @@ const char * stringFromStringArray(const struct StringArray * sa)
 		return "ARRAY[]";
 
 	std::ostringstream s;
-	s << "ARRAY['" << sa->data[0] << '\'';
+	s << "ARRAY[" << quote(sa->data[0]);
 	for ( int i = 1; i < sa->size; ++ i )
-		s << ", '" << sa->data[i] << '\'';
+		s << ", " << quote(sa->data[i]);
 	s << ']';
 
 	std::string arrayString = s.str();
@@ -75,9 +79,9 @@ const char * stringFromString(const char * s)
 {
 	if ( ! s )
 		return "NULL";
-	char * ret = (char *) palloc(strlen(s) + 3);
-	sprintf(ret, "'%s'", s);
-	return ret;
+
+	std::string ret = quote(s);
+	return pstrdup(ret.c_str());
 }
 
 

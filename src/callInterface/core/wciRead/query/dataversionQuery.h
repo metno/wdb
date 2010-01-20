@@ -34,6 +34,25 @@
 
 struct IntegerArray;
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+/**
+ * Create the part of a wci.read base query related to data version.
+ *
+ * @warning The resulting query will be invalid unless the first part of the
+ *          query if part of a WHERE clause.
+ *
+ * @param q the stream to add the query to
+ * @param dataVersions DataVersions to request, or NULL if you want all.
+ * @return the given stream.
+ */
 std::ostream & addDataVersionQuery(std::ostream & q, const struct IntegerArray * dataVersions);
+
+/**
+ * @}
+ */
 
 #endif /* DATAVERSIONQUERY_H_ */

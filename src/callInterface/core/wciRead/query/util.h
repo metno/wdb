@@ -30,7 +30,18 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
+#ifndef __cplusplus
+#error This is only includable from C++ source
+#endif
+
+
 #include <string>
+
+/**
+ * @addtogroup wci
+ * @{
+ */
+
 
 /**
  * Create a sql quoted string with special characters quoted, and all letters
@@ -43,5 +54,9 @@ std::string quote(const std::string & raw);
 
 /// Convert string to lowercase
 std::string lower(const std::string & raw);
+
+/**
+ * @}
+ */
 
 #endif /* UTIL_H_ */

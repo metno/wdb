@@ -35,7 +35,26 @@
 struct StringArray;
 
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+/**
+ * Create the part of a wci.read base query related to parameters.
+ *
+ * @warning The resulting query will be invalid unless the first part of the
+ *          query if part of a WHERE clause.
+ *
+ * @param q the stream to add the query to
+ * @param parameters Parameter specification, similar to the one given in
+ *                  wci.read function, or NULL if you want all.
+ * @return the given stream.
+ */
 std::ostream & addParameterQuery(std::ostream & q, const struct StringArray * parameters);
 
+/**
+ * @}
+ */
 
 #endif /* PARAMETERQUERY_H_ */

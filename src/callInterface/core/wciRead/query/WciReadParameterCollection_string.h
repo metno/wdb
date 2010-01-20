@@ -36,10 +36,33 @@
 extern "C" {
 #endif
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
+ * Convert a StringArray to a postgres ARRAY[] string.
+ */
 const char * stringFromStringArray(const struct StringArray * sa);
+
+
+/**
+ * Convert an IntegerArray to a postgres ARRAY[] string.
+ */
 const char * stringFromIntArray(const struct IntegerArray * ia);
+
+
+/**
+ * Convert a C string to a postgres quoted string, possibly giving it the
+ * value NULL.
+ */
 const char * stringFromString(const char * s);
 
+/**
+ * Reconstruct parameters to a wci.read call.
+ */
 const char * stringFromWciReadParameterCollection(const struct WciReadParameterCollection * collection);
 
 #ifdef __cplusplus

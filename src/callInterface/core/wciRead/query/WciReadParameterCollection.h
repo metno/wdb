@@ -38,18 +38,35 @@ extern "C" {
 #include <fmgr.h>
 
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
+ * An array of strings, with a length field
+ */
 struct StringArray
 {
 	int size;
 	char ** data;
 };
 
+
+/**
+ * An array of ints, with a length field
+ */
 struct IntegerArray
 {
 	int size;
 	int * data;
 };
 
+
+/**
+ * Internal representation of arguments to a wci.read call.
+ */
 struct WciReadParameterCollection
 {
 	struct StringArray * dataProvider;
@@ -61,8 +78,16 @@ struct WciReadParameterCollection
 	struct IntegerArray * dataVersion;
 };
 
+
+/**
+ * Transform postgres arguments into a WciReadParameterCollection.
+ */
 extern void parseReadParameters(struct WciReadParameterCollection * out, PG_FUNCTION_ARGS);
 
+
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

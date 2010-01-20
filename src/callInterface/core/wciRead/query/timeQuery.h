@@ -32,9 +32,40 @@
 
 #include <iosfwd>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+/**
+ * Create the part of a wci.read base query related to reference time.
+ *
+ * @warning The resulting query will be invalid unless the first part of the
+ *          query if part of a WHERE clause.
+ *
+ * @param q the stream to add the query to
+ * @param timeSpec specification of wanted reference time, or NULL if you want
+ *                 all.
+ * @return the given stream.
+ */
 std::ostream & addReferenceTimeQuery(std::ostream & q, const char * timeSpec);
 
+
+/**
+ * Create the part of a wci.read base query related to valid time.
+ *
+ * @warning The resulting query will be invalid unless the first part of the
+ *          query if part of a WHERE clause.
+ *
+ * @param q the stream to add the query to
+ * @param timeSpec Specification of wanted valid time, or NULL if you want
+ *                 all.
+ * @return the given stream.
+ */
 std::ostream & addValidTimeQuery(std::ostream & q, const char * timeSpec);
 
+/**
+ * @}
+ */
 
 #endif /* TIMEQUERY_H_ */

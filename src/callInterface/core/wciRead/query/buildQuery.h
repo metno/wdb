@@ -37,21 +37,71 @@ extern "C" {
 
 #include "WciReadParameterCollection.h"
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
+/**
+ * Specification of what table data comes from
+ */
 enum DataSource {
 	FloatTable, GridTable
 };
+
+/**
+ * Specification of wci.read output type
+ */
 enum OutputType {
 	OutputFloat, OutputGid
 };
 
 
+/**
+ * Create the wci.read base query.
+ *
+ * A call to wci.read will cause the result of this function to be run.
+ * Retrieval of point values happens afterwards.
+ *
+ * @see getNextRowFromGridTable, for getting point data from grids
+ *
+ * @param parameters specification of what to select
+ * @param dataSource What table to select from
+ * @param output wci.read output type (float or gid)
+ * @param selectWhat what values to retrieve from table.
+ *
+ * @return A complete select statement, allocated with palloc
+ */
 char * build_query(const struct WciReadParameterCollection * parameters,
 		enum DataSource dataSource, enum OutputType output,
 		const char * selectWhat);
 
+
+/**
+ * Create a query to get a the place specification for the regular grid
+ * referenced by the given placeid
+ *
+ * @param placeid placeid of the regular grid we want.
+ * @return A complete select statement, allocated with palloc
+ */
 char * build_placeSpecQuery(long long placeid);
 
+
+/**
+ * Create a query which returns the WKT representation of the given place
+ * name.
+ *
+ * @param placename Name of a place. (Which must have been predefined in the
+ *                  database.)
+ * @return A complete select statement, allocated with palloc
+ */
 char * build_placeNameQuery(const char * placeName);
+
+
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

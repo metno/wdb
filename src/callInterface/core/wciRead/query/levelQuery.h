@@ -32,7 +32,26 @@
 
 #include <iosfwd>
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+/**
+ * Create the part of a wci.read base query related to levels.
+ *
+ * @warning The resulting query will be invalid unless the first part of the
+ *          query if part of a WHERE clause.
+ *
+ * @param q the stream to add the query to
+ * @param levelSpec level specification, similar to the one given in wci.read
+ *                  function, or NULL if you want all.
+ * @return the given stream.
+ */
 std::ostream & addLevelQuery(std::ostream & q, const char * levelSpec);
 
+/**
+ * @}
+ */
 
 #endif /* LEVELQUERY_H_ */

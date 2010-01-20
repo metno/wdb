@@ -40,6 +40,23 @@ extern "C"
 #include <utils/palloc.h>
 }
 
+/**
+ * @addtogroup wci
+ * @{
+ */
+
+
+
+/**
+ * Create the part of a wci.read base query related to data provider. If no
+ * data provider have been specified, add a simple TRUE condition to the
+ * query.
+ *
+ * @param q the stream to add the query to
+ * @param dataProvider Data provider names to request, or NULL if you want
+ *                     all.
+ * @return the given stream.
+ */
 std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray * dataProvider)
 {
 	if ( ! dataProvider )
@@ -69,6 +86,21 @@ std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray *
 
 	return q;
 }
+
+
+/**
+ * Create the part of a wci.read base query related to location.
+ *
+ * @warning The resulting query will be invalid unless the first part of the
+ *          query if part of a WHERE clause.
+ *
+ * @param q the stream to add the query to
+ * @param location Where to get data from, either as WKT or as a place name.
+ *                 May also include a indeterminate code.
+ * @param sourceTable What table to select from. The resulting query will
+ *                    vary, depending on which table is chosen.
+ * @return the given stream.
+ */
 std::ostream & addLocationQuery(std::ostream & q, const char * location, DataSource sourceTable, enum OutputType output)
 {
 	if ( location )
@@ -166,3 +198,8 @@ char * build_placeNameQuery(const char * placeName)
 	std::string ret = query.str();
 	return pstrdup(ret.c_str());
 }
+
+
+/**
+ * @}
+ */
