@@ -122,8 +122,10 @@ bool AdminCommandLineInterpreter::run( const vector<string> & command )
 	if ( find != commands_.end() )
 		return (*find->second)(command, output_);
 	else
+	{
 		output_.info( "Unrecognized command: " + baseCommand );
-
+		return false;
+	}
 }
 
 /**
