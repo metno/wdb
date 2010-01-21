@@ -105,7 +105,7 @@ void PolygonReaderTest::testExtractPolygon()
 {
 	std::vector<GridPointData> polygon;
 
-	GEOSGeomWrapper location(GEOSGeomFromWKT("POLYGON(( 11.34 60.75, 11.34 62.75, 13.34 62.75, 11.34 60.75 ))"));
+	GEOSGeom location = GEOSGeomFromWKT("POLYGON(( 11.34 60.75, 11.34 62.75, 13.34 62.75, 11.34 60.75 ))");
 
 	PolygonReader reader(BaseDataReader::getInstance(ps));
 	reader.extractPolygon(polygon, location, Nearest);
@@ -125,7 +125,7 @@ void PolygonReaderTest::testExtractPolygonMetric()
 
 	std::vector<GridPointData> polygon;
 
-	GEOSGeomWrapper location(GEOSGeomFromWKT("POLYGON(( 11.34 60.75, 11.34 62.75, 13.34 62.75, 11.34 60.75 ))"));
+	GEOSGeom location = GEOSGeomFromWKT("POLYGON(( 11.34 60.75, 11.34 62.75, 13.34 62.75, 11.34 60.75 ))");
 
 	PolygonReader reader(BaseDataReader::getInstance(ps));
 	reader.extractPolygon(polygon, location, Nearest);
