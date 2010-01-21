@@ -61,7 +61,6 @@ static Datum getLocationString(const char * locationString, HeapTuple currentTup
 	}
 	else
 		return SPI_getbinval(currentTuple, tupdesc, 3, isNull); // text
-
 }
 
 static void getNextSetOfValues(struct ReadStore * store)

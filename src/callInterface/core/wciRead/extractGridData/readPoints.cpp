@@ -31,30 +31,8 @@
 #include "AllPointsReader.h"
 #include "SinglePointReader.h"
 #include "PolygonReader.h"
-#include "GEOSGeomWrapper.h"
 #include <boost/shared_ptr.hpp>
 #include <map>
-
-#include <iostream>
-
-namespace
-{
-bool isNewWciRead(int transactionId, int commandId)
-{
-	static int lastTransactionId = -1;
-	static int lastCommandId = -1;
-
-	if ( transactionId == lastTransactionId and commandId == lastCommandId )
-		return false;
-
-	std::cout << "\n\nPURGE CACHE\n\n" << std::endl;
-
-	lastTransactionId = transactionId;
-	lastCommandId = commandId;
-
-	return true;
-}
-}
 
 extern "C"
 {
@@ -64,18 +42,15 @@ struct GridPointDataListIterator * readPoints(
 		const struct PlaceSpecification * ps, GEOSGeom location,
 		enum InterpolationType interpolation, FileId dataId)
 {
-	// TODO: either remove wrapper, or make wrapper use smarter
-	GEOSGeomWrapper loc(location ? GEOSGeom_clone(location) : NULL);
-
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
 
 	GridPointDataListIterator * ret = NULL;
 	try
 	{
-		if ( ! loc )
+		if ( ! location )
 		{
-//			AllPointsReader reader(dataReader);
-//			struct GridPointDataList * list = reader.read(dataId);
+			//AllPointsReader reader(dataReader);
+			//struct GridPointDataList * list = reader.read(dataId);
 
 			// On NULL geometries we won't return anything
 			struct GridPointDataList * list = GridPointDataListNew(0);
@@ -83,24 +58,23 @@ struct GridPointDataListIterator * readPoints(
 		}
 		else
 		{
-			int geometryType = GEOSGeomTypeId(loc.get());
+			int geometryType = GEOSGeomTypeId(location);
 			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(dataReader);
 
-				GridPointDataList * list = reader.read(loc, interpolation, dataId);
+				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if (geometryType == GEOS_POLYGON)
 			{
 				PolygonReader reader(dataReader);
-				GridPointDataList * list = reader.read(loc, interpolation, dataId);
+				GridPointDataList * list = reader.read(location, interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else
 				throw std::runtime_error("This geometry type is not supported");
 		}
-		//elog(INFO, "%s:%d", __FILE__, __LINE__);
 	}
 	catch (std::exception & e)
 	{
@@ -116,7 +90,6 @@ struct GridPointDataListIterator * readPoints(
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), "Unknown error when fetching point data. Please tell someone about this"));
 	}
 
-//	elog(INFO, "%s:%d", __FILE__, __LINE__);
 	return ret;
 }
 

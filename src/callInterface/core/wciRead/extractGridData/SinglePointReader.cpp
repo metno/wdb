@@ -45,7 +45,7 @@ SinglePointReader::~SinglePointReader()
 
 
 
-GridPointDataList * SinglePointReader::read(const GEOSGeomWrapper & location,
+GridPointDataList * SinglePointReader::read(const GEOSGeom location,
 		InterpolationType interpolation, FileId dataId) const
 {
 	GridPointDataList * list = 0;
@@ -86,7 +86,7 @@ double distanceToNearestInteger(double a)
 
 }
 
-GridPointDataList * SinglePointReader::readExact_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const
+GridPointDataList * SinglePointReader::readExact_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
 
 	if ( math::distanceToNearestInteger(exactX) > 0.001 or math::distanceToNearestInteger(exactY) > 0.001 )
@@ -95,7 +95,7 @@ GridPointDataList * SinglePointReader::readExact_(const GEOSGeomWrapper & locati
 		return readNearest_(location, exactX, exactY, dataId);
 }
 
-GridPointDataList * SinglePointReader::readNearest_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const
+GridPointDataList * SinglePointReader::readNearest_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
 	// Check if the position we are about to return is inside the grid
 
@@ -111,7 +111,7 @@ GridPointDataList * SinglePointReader::readNearest_(const GEOSGeomWrapper & loca
 	return GridPointDataListNew(0);
 }
 
-GridPointDataList * SinglePointReader::readSurround_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const
+GridPointDataList * SinglePointReader::readSurround_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
 	// In case we ask for a position which is exactly on a grid line, we cheat
 	// to be able to return four points, by adding 0.5 to the value
@@ -159,7 +159,7 @@ float bilinear(const GridPointDataList * dl, double exactX, double exactY)
 }
 }
 
-GridPointDataList * SinglePointReader::readBilinear_(const GEOSGeomWrapper & location, double exactX, double exactY, FileId dataId) const
+GridPointDataList * SinglePointReader::readBilinear_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
 	GridPointDataList * surroundingPoints = readSurround_(location, exactX, exactY, dataId);
 	if ( surroundingPoints->count < 4 )
@@ -173,7 +173,7 @@ GridPointDataList * SinglePointReader::readBilinear_(const GEOSGeomWrapper & loc
 	data.x = exactX;
 	data.y = exactY;
 	data.value = interpolate::bilinear(surroundingPoints, exactX, exactY);
-	data.location = location.copy();
+	data.location = GEOSGeom_clone(location);
 
 	// Delete intermediate data, but don't touch te stored geometry objects,
 	// since they are in the cache.

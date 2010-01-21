@@ -95,11 +95,11 @@ const GEOSGeom BaseDataReader::getGeometry(double x, double y) const
 	return ret;
 }
 
-lonlat BaseDataReader::getExactIndex(const GEOSGeomWrapper & location) const
+lonlat BaseDataReader::getExactIndex(const GEOSGeom location) const
 {
 	lonlat ret;
 
-	const LongitudeLatitude * cached = getLLFromCache(& ps_, location.get());
+	const LongitudeLatitude * cached = getLLFromCache(& ps_, location);
 	if ( ! cached )
 	{
 		lonlat ll;
@@ -110,11 +110,11 @@ lonlat BaseDataReader::getExactIndex(const GEOSGeomWrapper & location) const
 		// In all cases there is a typedef GEOSCoordSequence(_t) * GEOSCoordSeq,
 		// but declaring a const GEOSCoordSeq equals a GEOSCoordSequence * const,
 		// and not a const GEOSCoordSequence *
-		GEOSCoordSeq sequence = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(location.get()));
+		GEOSCoordSeq sequence = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq(location));
 		GEOSCoordSeq_getX(sequence, 0, & ll.lon);
 		GEOSCoordSeq_getY(sequence, 0, & ll.lat);
 		ret = rTransform( ll, & ps_ );
-		setLLCache(& ps_, location.get(), ret.lon, ret.lat);
+		setLLCache(& ps_, location, ret.lon, ret.lat);
 	}
 	else
 	{
