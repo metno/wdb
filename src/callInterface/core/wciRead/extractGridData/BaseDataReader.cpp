@@ -120,7 +120,6 @@ lonlat BaseDataReader::getExactIndex(const GEOSGeom location) const
 	{
 		ret.lon = cached->lon;
 		ret.lat = cached->lat;
-
 	}
 	return ret;
 }

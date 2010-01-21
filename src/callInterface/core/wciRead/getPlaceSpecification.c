@@ -28,6 +28,7 @@
 
 #include <PlaceSpecification.h>
 #include "query/buildQuery.h"
+#include <glib.h>
 #include <postgres.h>
 #include <executor/spi.h>
 
@@ -63,24 +64,37 @@ struct PlaceSpecification * getPlaceSpecificationFromDatabase(long long placeid)
 	return ret;
 }
 
+
+static guint hash_int64(gconstpointer key)
+{
+	gint64 * val = (gint64 *) key;
+	return (guint) * val;
+}
+
+static gboolean eq_int64(gconstpointer a, gconstpointer b)
+{
+	gint64 * va = (gint64 *) a;
+	gint64 * vb = (gint64 *) b;
+	return (* va) == (* vb);
+}
+
 struct PlaceSpecification * getPlaceSpecification(long long placeid)
 {
-	static long long lastPlaceid = -1;
-	static struct PlaceSpecification * last = NULL;
+	static GHashTable * psList = NULL;
+	if ( ! psList )
+		psList = g_hash_table_new(hash_int64, eq_int64);
 
-	if ( placeid == lastPlaceid )
-		return last;
+	struct PlaceSpecification * ps = (struct PlaceSpecification *) g_hash_table_lookup(psList, (gconstpointer) & placeid);
 
-	lastPlaceid = -1;
-	if ( last )
+	if ( ! ps )
 	{
-		free(last->projDefinition_);
-		free(last);
+		ps = getPlaceSpecificationFromDatabase(placeid);
+		long long * key = (long long *) malloc(sizeof(long long));
+		* key = placeid;
+		g_hash_table_insert(psList, key, ps);
 	}
-	last = getPlaceSpecificationFromDatabase(placeid);
-	lastPlaceid = placeid;
 
-	return last;
+	return ps;
 }
 
 char * getNamedGeometryAsWKT(const char * locationName)
