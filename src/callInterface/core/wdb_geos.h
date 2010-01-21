@@ -40,7 +40,7 @@ extern "C" {
 
 /**
  * Initialize GEOS c interface. This function may be called as many times
- * as you wish wiht no ill effects
+ * as you wish with no ill effects
  */
 void initializeGeos(void);
 
