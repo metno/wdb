@@ -29,6 +29,7 @@
 
 
 #include "locationTest.h"
+#include <boost/scoped_ptr.hpp>
 
 CPPUNIT_TEST_SUITE_REGISTRATION( LocationTest ); 
 
@@ -145,7 +146,7 @@ void LocationTest::testFreeTextPlace()
 {
 	Location l("surround foo Bar");
 	
-	CPPUNIT_ASSERT_EQUAL(std::string("foo Bar"), l.location());
+	CPPUNIT_ASSERT_EQUAL(std::string("foo bar"), l.location());
 	CPPUNIT_ASSERT_EQUAL(std::string("surround"), l.interpolation());
 	CPPUNIT_ASSERT( ! l.isGeometry() );
 }
@@ -154,7 +155,19 @@ void LocationTest::testFreeTextPlaceImplicitInterpolation()
 {
 	Location l("foo Bar");
 	
-	CPPUNIT_ASSERT_EQUAL(std::string("foo Bar"), l.location());
+	CPPUNIT_ASSERT_EQUAL(std::string("foo bar"), l.location());
 	CPPUNIT_ASSERT(l.interpolation().empty());
 	CPPUNIT_ASSERT( ! l.isGeometry() );
+}
+
+void LocationTest::testSpaceInWkt()
+{
+	Location * l;
+	CPPUNIT_ASSERT_NO_THROW(l = new Location("POINT ( 15.4161    68.6931 )")); // postgis cannot handle space at start of string
+
+	boost::scoped_ptr<Location> loc(l);
+
+	CPPUNIT_ASSERT_EQUAL(std::string("POINT ( 15.4161    68.6931 )"), loc->location());
+	CPPUNIT_ASSERT(loc->interpolation().empty());
+	CPPUNIT_ASSERT( loc->isGeometry() );
 }

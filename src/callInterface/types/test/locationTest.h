@@ -48,6 +48,7 @@ class LocationTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testPolygonImplicitInterpolation );
 	CPPUNIT_TEST( testFreeTextPlace );
 	CPPUNIT_TEST( testFreeTextPlaceImplicitInterpolation );
+	CPPUNIT_TEST( testSpaceInWkt );
 	CPPUNIT_TEST_SUITE_END();
 	
 public:
@@ -70,6 +71,7 @@ public:
 	void testPolygonImplicitInterpolation();
 	void testFreeTextPlace();
 	void testFreeTextPlaceImplicitInterpolation();
+	void testSpaceInWkt();
 };
 
 #endif /*LOCATIONTEST_H_*/

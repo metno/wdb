@@ -67,7 +67,7 @@ namespace
 			std::string newLocation = loc.interpolation();
 			if ( not newLocation.empty() )
 				newLocation += " ";
-			newLocation += geometryFromLocation(locationName);
+			newLocation += geometryFromLocation(loc.location());
 			loc = Location(newLocation);
 		}
 		return loc;

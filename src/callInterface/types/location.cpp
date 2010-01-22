@@ -48,20 +48,18 @@ const string reFloat = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 
 Location::Location(const std::string & location)
 {
-	std::string loc = location;
-
     // match
     static regex re("^((exact|nearest|surround|bilinear)\\s+)?" // Interpolation
 					"((" // Plain geometries
-					"POINT\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
-					"POLYGON\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
+					"POINT\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
+					"POLYGON\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
 						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
 					")|"
 					"(\\w[\\w*\\s,]*))$"); // freetext location
 	smatch match;
-	if ( !regex_match(loc, match, re) ) {
+	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
-		msg += loc;
+		msg += location;
 		throw InvalidSpecification( msg.c_str() );
 	}
 
