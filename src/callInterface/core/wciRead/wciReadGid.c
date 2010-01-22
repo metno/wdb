@@ -59,6 +59,7 @@ static void runWciReadGidBaseQuery(struct ReadStore * out, FuncCallContext * fun
 	parseReadParameters(& p, fcinfo);
 	const char * whatToSelect = "value, dataprovidername, placename::text, astext(placegeometry), referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelfrom, levelto, levelindeterminatecode, dataversion, confidencecode, valuestoretime, valueid, valuetype";
 	const char * gridQuery = build_query(& p, GridTable, OutputGid, whatToSelect, NULL);
+	elog(DEBUG1, gridQuery);
 
 	// Perform primary query
 	if (SPI_OK_SELECT != SPI_execute(gridQuery, true, 0))
