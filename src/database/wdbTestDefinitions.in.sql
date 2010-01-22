@@ -155,7 +155,7 @@ $BODY$
 	VALUES (500, 2, 2, 0.1, 0.1, 0, 0, 50001);
 	INSERT INTO __WDB_SCHEMA__.placename
 	VALUES (
-		500,0,'test grid, rotated','2000-01-01','2999-01-01'
+		500,999,'test grid, rotated','2000-01-01','2999-01-01'
 	);
 $BODY$
 SECURITY DEFINER
