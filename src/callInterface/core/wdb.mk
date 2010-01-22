@@ -17,11 +17,7 @@ wdb_la_SOURCES +=		src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/wciSession.h \
 						src/callInterface/core/wciSession.cpp \
 						src/callInterface/core/wciSetup.cpp \
-						src/callInterface/core/getDataProvider.h \
-						src/callInterface/core/getDataProvider.c \
-						src/callInterface/core/readWhereClause.h \
-						src/callInterface/core/readWhereClause.cpp \
-						src/callInterface/core/readQuery.cpp \
+						src/callInterface/core/wciBrowse.c \
 						$(libwciCoreNoPostgres_la_SOURCES)
 
 
@@ -33,12 +29,9 @@ libwciCoreNoPostgres_la_SOURCES +=\
 						src/callInterface/core/projTransform.cpp
 						
 WCICORE_SOURCES =		src/callInterface/core/wciSession.in.sql \
-						src/callInterface/core/readQuery.in.sql \
-						src/callInterface/core/readWhereClause.in.sql \
-						src/callInterface/core/readDataProvider.in.sql \
 						src/callInterface/core/getDataProvider.in.sql \
-						src/callInterface/core/wciWriteInternals.in.sql \
-						src/callInterface/core/wciInterpolation.in.sql
+						src/callInterface/core/wciBrowseInternals.in.sql \
+						src/callInterface/core/wciWriteInternals.in.sql
 
 wcicoredir = 			$(wcidir)/core
 

@@ -1,7 +1,7 @@
 /*
-    wdb - weather and water data storage
+	wdb - weather and water data storage
 
-    Copyright (C) 2008 met.no
+    Copyright (C) 2009 met.no
 
     Contact information:
     Norwegian Meteorological Institute
@@ -9,7 +9,7 @@
     0313 OSLO
     NORWAY
     E-mail: wdb@met.no
-  
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,49 +22,33 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
 
-
-#ifndef GETDATAPROVIDER_H_
-#define GETDATAPROVIDER_H_
-
-
-/**
- * @addtogroup wci 
- * @{
- */
-
-/**
- * @file
- * The functions here need to be split into separate C files because Postgres
- * does not support C++ in the backend (i.e., it uses C++ reserved keywords)
- */ 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <postgres.h>
-#include <fmgr.h>
-	
-/**
- * Extract the dataprovider where clause (utilizing the set construction
- * information of the dataprovider), given the dataprovider name
- * 
- * @param dquery	The internal WCI query to run
- * 
- */
-char * getDataProvider_( const char * dquery );
+#include "GridPointDataPsql.h"
+#include <funcapi.h>
+#include <access/heapam.h>
 
 
-#ifdef __cplusplus
+Datum DatumFromGEOSGeom(GEOSGeom geo)
+{
+	size_t size;
+	unsigned char * data = GEOSGeomToWKB_buf(geo, & size);
+
+	bytea * ret = palloc(VARHDRSZ + size);
+	SET_VARSIZE(ret, size + VARHDRSZ);
+	memcpy(VARDATA(ret), data, size);
+	free(data);
+
+	return PointerGetDatum(ret);
 }
-#endif
 
-/**
- *  @}
- */
+void GridPointDataGetDatum(Datum * out, const struct GridPointData * d)
+{
+    out[0] = DatumFromGEOSGeom(d->location);
+    out[1] = Float4GetDatum(d->value);
+    out[2] = Int32GetDatum((int) d->x);
+    out[3] = Int32GetDatum((int) d->y);
+}
 
-#endif /*GETDATAPROVIDER_H_*/

@@ -74,6 +74,7 @@ export PSQL="psql -d $TEST_DB"
 TEST_WRITE="./testWrite"
 
 test_cleanup() {
+	echo "Cleaning up database"
 	cd $WORK_DIR
 	rm -rf $UPGRADE_DIR
 	dropdb $TEST_DB

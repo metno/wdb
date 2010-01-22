@@ -75,7 +75,7 @@ enum OutputType {
  */
 char * build_query(const struct WciReadParameterCollection * parameters,
 		enum DataSource dataSource, enum OutputType output,
-		const char * selectWhat);
+		const char * selectWhat, const char * ordering);
 
 
 /**

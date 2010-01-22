@@ -48,6 +48,7 @@ class WciBrowseTest : public AbstractWciTestFixture
 	CPPUNIT_TEST(testBrowseDataProvider);
 	CPPUNIT_TEST(testBrowsePlace);
 	CPPUNIT_TEST(testBrowseReferenceTime);
+	CPPUNIT_TEST(testBrowseValidTime);
 	CPPUNIT_TEST(testBrowseValueParameter);
 	CPPUNIT_TEST(testBrowseLevelParameter);
 	CPPUNIT_TEST_SUITE_END();
@@ -68,6 +69,8 @@ public:
 	void testBrowsePlace();
 	/// Test Info Return: Place
 	void testBrowseReferenceTime();
+	/// Test Info Return: Place
+	void testBrowseValidTime();
 	/// Test Info Return: Parameter
 	void testBrowseValueParameter();
 	/// Test Info Return: Level

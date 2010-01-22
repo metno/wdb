@@ -1,5 +1,7 @@
 wdb_la_SOURCES +=		src/callInterface/core/wciRead/extractGridData/GridPointData.h \
 						src/callInterface/core/wciRead/extractGridData/GridPointData.c \
+						src/callInterface/core/wciRead/extractGridData/GridPointDataPsql.h \
+						src/callInterface/core/wciRead/extractGridData/GridPointDataPsql.c \
 						src/callInterface/core/wciRead/extractGridData/readPoints.h \
 						src/callInterface/core/wciRead/extractGridData/readPoints.cpp \
 						src/callInterface/core/wciRead/extractGridData/SinglePointReader.h \

@@ -133,7 +133,7 @@ std::ostream & addLocationQuery(std::ostream & q, const char * location, DataSou
 
 char * build_query(const struct WciReadParameterCollection * parameters,
 		enum DataSource dataSource, enum OutputType output,
-		const char * selectWhat)
+		const char * selectWhat, const char * ordering)
 {
 	try
 	{
@@ -155,6 +155,10 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 			addParameterQuery(q, parameters->parameter);
 			addLevelQuery(q, parameters->level);
 			addDataVersionQuery(q, parameters->dataVersion);
+		}
+		if ( ordering )
+		{
+			q << ordering;
 		}
 
 		std::string ret = q.str();

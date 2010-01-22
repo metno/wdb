@@ -214,8 +214,30 @@ else
 		exit 0			
 	else
 	    echo "ERROR: Cannot upgrade WDB version $version_number to __WDB_VERSION__. This upgrade is only valid for WDB version $OLD_VERSION."
+	    exit 1
 	fi
 fi
+
+# For minor upgrades, only update metadata and then exit 
+if [ "__WDB_SCHEMA__" = "__OLD_SCHEMA__" ]; then
+	echo -n "installing upgraded metadata... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP off
+\o $LOGDIR/wdb_install_metadata.log
+\i $WDB_METADATA_PATH/wdbMetadata.sql
+EOF
+	if [ 0 != $? ]; then
+	    echo "failed"
+	    echo "ERROR: installing new metadata failed."
+	    upgrade_rollback
+	    exit 1
+	else
+	    echo "done"
+	fi
+	exit 0
+fi
+
 
 # Install Datamodel
 echo -n "installing upgraded datamodel (1/2)... "
@@ -347,10 +369,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 -- WCI Core
 \i $WCI_DIR/core/getDataProvider.sql
-\i $WCI_DIR/core/readDataProvider.sql
-\i $WCI_DIR/core/readQuery.sql
-\i $WCI_DIR/core/readWhereClause.sql
-\i $WCI_DIR/core/wciInterpolation.sql
+\i $WCI_DIR/core/wciBrowseInternals.sql
 \i $WCI_DIR/core/wciSession.sql
 \i $WCI_DIR/core/wciWriteInternals.sql
 EOF

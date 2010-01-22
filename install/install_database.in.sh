@@ -446,10 +446,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/types/wciTimeSpec.sql
 -- WCI Core
 \i $WCI_DIR/core/getDataProvider.sql
-\i $WCI_DIR/core/readDataProvider.sql
-\i $WCI_DIR/core/readQuery.sql
-\i $WCI_DIR/core/readWhereClause.sql
-\i $WCI_DIR/core/wciInterpolation.sql
+\i $WCI_DIR/core/wciBrowseInternals.sql
 \i $WCI_DIR/core/wciSession.sql
 \i $WCI_DIR/core/wciWriteInternals.sql
 -- WCI API

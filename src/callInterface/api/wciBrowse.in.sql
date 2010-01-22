@@ -63,12 +63,7 @@ CREATE TYPE wci.browselevelparameter AS
 	numberoftuples 		integer
 );
 
--- browse dataprovider info
--- returns wci.browsedataprovider
---   DataProviderName
---   min ReferenceTime
---   max ReferenceTime
---   count 
+
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
 		    location 			text,
@@ -78,32 +73,20 @@ wci.browse( dataprovider 		text[],
 		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsedataprovider
-)	
-RETURNS SETOF wci.browsedataprovider AS
+)
+RETURNS SETOF wci.browsedataprovider
+AS 
 $BODY$
 DECLARE
-	infoQuery 		text;
-	entry 			wci.browsedataprovider;
+	query text;
+	ret wci.browsedataprovider;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT dataprovidername, min(referencetime), max(referencetime), count(*) ' ||
-				  __WCI_SCHEMA__.readQuery( 0, 
-										    dataprovider,
-											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											__WCI_SCHEMA__.getTimeSpec(referencetime),
-											__WCI_SCHEMA__.getTimeSpec(validtime),
-											parameter,
-											__WCI_SCHEMA__.getLevelSpec(level),
-											dataversion ) ||
-                  ' group by dataprovidername';
-	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
+	query := __WCI_SCHEMA__.getBrowseDataProviderQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
 
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
@@ -118,7 +101,6 @@ $BODY$
 	FROM wci.browse( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.browsedataprovider );
 $BODY$
 LANGUAGE 'sql' STABLE;
-
 
 
 -- browse place info
@@ -136,32 +118,20 @@ wci.browse( dataprovider 		text[],
 		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browseplace
-)	
-RETURNS SETOF wci.browseplace AS
+)
+RETURNS SETOF wci.browseplace
+AS 
 $BODY$
 DECLARE
-	infoQuery 		text;
-	entry 			wci.browseplace;
+	query 	text;
+	ret 	wci.browseplace;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT placename, min(referencetime), max(referencetime), count(*) ' ||
-				  __WCI_SCHEMA__.readQuery( 0,
-										    dataprovider,
-											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											__WCI_SCHEMA__.getTimeSpec(referencetime),
-											__WCI_SCHEMA__.getTimeSpec(validtime),
-											parameter,
-											__WCI_SCHEMA__.getLevelSpec(level),
-											dataversion ) ||
-                  ' group by placename';
-	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
+	query := __WCI_SCHEMA__.getBrowsePlaceQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
 
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
@@ -194,32 +164,20 @@ wci.browse( dataprovider 		text[],
 		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsereferencetime
-)	
-RETURNS SETOF wci.browsereferencetime AS
+)
+RETURNS SETOF wci.browsereferencetime
+AS 
 $BODY$
 DECLARE
-	infoQuery 		text;
-	entry 			wci.browsereferencetime;
+	query 	text;
+	ret 	wci.browsereferencetime;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT referencetime, count(*) ' ||
-				  __WCI_SCHEMA__.readQuery( 0, 
-											dataprovider,
-											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											__WCI_SCHEMA__.getTimeSpec(referencetime),
-											__WCI_SCHEMA__.getTimeSpec(validtime),
-											parameter,
-											__WCI_SCHEMA__.getLevelSpec(level),
-											dataversion ) ||
-                  ' group by referencetime';
-	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
+	query := __WCI_SCHEMA__.getBrowseReferenceTimeQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
 
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
@@ -252,32 +210,20 @@ wci.browse( dataprovider 		text[],
 		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsevalidtime
-)	
-RETURNS SETOF wci.browsevalidtime AS
+)
+RETURNS SETOF wci.browsevalidtime
+AS 
 $BODY$
 DECLARE
-	infoQuery 		text;
-	entry 			wci.browsevalidtime;
+	query 	text;
+	ret 	wci.browsevalidtime;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT validtimefrom, validtimeto, count(*) ' ||
-				  __WCI_SCHEMA__.readQuery( 0,
-											dataprovider,
-											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											__WCI_SCHEMA__.getTimeSpec(referencetime),
-											__WCI_SCHEMA__.getTimeSpec(validtime),
-											parameter,
-											__WCI_SCHEMA__.getLevelSpec(level),
-											dataversion ) ||
-                  ' group by validtimefrom, validtimeto';
-	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
+	query := __WCI_SCHEMA__.getBrowseValidTimeQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
 
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
@@ -309,32 +255,20 @@ wci.browse( dataprovider 		text[],
 		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browsevalueparameter
-)	
-RETURNS SETOF wci.browsevalueparameter AS
+)
+RETURNS SETOF wci.browsevalueparameter
+AS 
 $BODY$
 DECLARE
-	infoQuery 		text;
-	entry 			wci.browsevalueparameter;
+	query 	text;
+	ret 	wci.browsevalueparameter;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT valueparametername, valueunitname, count(*) ' ||
-				  __WCI_SCHEMA__.readQuery( 0,
-											dataprovider,
-											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											__WCI_SCHEMA__.getTimeSpec(referencetime),
-											__WCI_SCHEMA__.getTimeSpec(validtime),
-											parameter,
-											__WCI_SCHEMA__.getLevelSpec(level),
-											dataversion ) ||
-                  ' group by valueparametername, valueunitname';
-	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
+	query := __WCI_SCHEMA__.getBrowseValueParameterQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
 
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
@@ -349,7 +283,6 @@ $BODY$
 	FROM wci.browse( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.browsevalueparameter );
 $BODY$
 LANGUAGE 'sql' STABLE;
-
 
 
 -- place info by name
@@ -368,32 +301,20 @@ wci.browse( dataprovider 		text[],
 		    level 				text,
 		    dataversion 		integer[],
 		    returntype 			wci.browselevelparameter
-)	
-RETURNS SETOF wci.browselevelparameter AS
+)
+RETURNS SETOF wci.browselevelparameter
+AS 
 $BODY$
 DECLARE
-	infoQuery 		text;
-	entry 			wci.browselevelparameter;
+	query 	text;
+	ret 	wci.browselevelparameter;
 BEGIN
-	-- Create Query to Run
-	infoQuery := 'SELECT levelparametername, levelunitname, min(levelfrom), max(levelto), count(*) ' ||
-				  __WCI_SCHEMA__.readQuery( 0,
-											dataprovider,
-											__WCI_SCHEMA__.getPlaceQuery(location, 0),
-											__WCI_SCHEMA__.getTimeSpec(referencetime),
-											__WCI_SCHEMA__.getTimeSpec(validtime),
-											parameter,
-											__WCI_SCHEMA__.getLevelSpec(level),
-											dataversion ) ||
-                  ' group by levelparametername, levelunitname';
-	RAISE DEBUG 'WCI.browse.Query: %', infoQuery;
+	query := __WCI_SCHEMA__.getBrowseLevelParameterQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
 
-	<<main_select>>
-	FOR entry IN
-		EXECUTE infoQuery
-	LOOP
-		RETURN NEXT entry;
-	END LOOP main_select;
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
@@ -408,5 +329,3 @@ $BODY$
 	FROM wci.browse( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.browselevelparameter );
 $BODY$
 LANGUAGE 'sql' STABLE;
-
-

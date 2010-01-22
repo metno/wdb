@@ -66,7 +66,7 @@ LANGUAGE plpgsql VOLATILE;
 
 
 --
--- add New Place Definition (Regular Grod=
+-- add New Place Definition (Regular Grid)
 -- 
 CREATE OR REPLACE FUNCTION
 wci.addPlaceRegularGrid(

@@ -130,6 +130,24 @@ void WciBrowseTest::testBrowseReferenceTime()
 
 }
 
+void WciBrowseTest::testBrowseValidTime()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test group'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalidtime )";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+
+}
+
 void WciBrowseTest::testBrowseValueParameter()
 {
 	const string select0 = "SELECT * "

@@ -659,7 +659,7 @@ FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
 			<para>The above call returns all precipitation parameters valid for the 10 days following the 
 				given referencetime measured at the nearest point to oslo. Oslo, in this case, is a place name
 				usually defined as a geographical point within the database. Prefixing the place name is the 
-				interpolation that we wish to use when retrieving points; we could also have used any of the
+	µ			interpolation that we wish to use when retrieving points; we could also have used any of the
 				alternatives defined in the reference manual below. Note the use of SQL wildcard characters in the
 				value parameter; although these slow down queries (since wildcard searching is not as efficient
 				as a straight comparison), it is possible to use the wci.read call in this way. Note also that names 
@@ -967,6 +967,243 @@ SELECT wci.adddataprovidertogroup ( 'michael', 'metno' );
 			</sect2>
 			
 		</sect1>
+
+		<sect1 id="sec:wci.addplacepoint">
+			<title>wci.addPlacePoint</title>
+			
+			<para>The function wci.addPlacePoint allows an administrator to add a new 
+			place definition for a point to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addplacepoint.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have write privileges on the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepoint.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addplacepoint
+(
+	placeName				text,
+	placeGeometry 			text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepoint.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addPlacePoint parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeName</entry>
+								<entry>The name (in the defined namespace) of the Point to be insered into the database. 
+								Note that the placeName will be replaced by a canonical placeName if the currently selected
+								place name space is the zero (WDB core) name space.</entry>
+							</row>
+							<row>
+								<entry>placeGeometry</entry>
+								<entry>The point geometry to be inserted into the place definition tables.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepoint.result">
+				<title>Expected Result</title>
+				
+				<para>The PlaceId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepoint.example">
+				<title>Example</title>
+				
+				<para>An example setting up the place point "karasjok":</para>
+				
+				<programlisting>
+SELECT wci.addplacepoint ( 'karasjok', geomfromtext('POINT( 25.51 69.47 )') );
+</programlisting>
+	
+				<para>Adding this point to the database while logged into a place 
+				name space other than zero, will add a point with the place name
+				of 'karasjok' to the database and a canonical name in the zero
+				name space. If the user was logged into the zero name space, 
+				only the canonical name would be added to the database.  
+				</para>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepoint.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.getsridfromproj</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		<sect1 id="sec:wci.addplaceregulargrid">
+			<title>wci.addPlacerRegularGrid</title>
+			
+			<para>The function wci.addPlaceRegularGrid allows an administrator to add a new 
+			place definition for a regular grid to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addplaceregulargrid.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have write privileges on the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addplaceregulargrid.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addplaceregulargrid
+(
+	placeName	 	text,
+	numX	 		int,
+	numY	 		int,
+	incX	 		float,
+	incY	 		float,
+	startX		 	float,
+	startY		 	float,
+	projection		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplaceregulargrid.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addPlaceRegularGrid parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeName</entry>
+								<entry>The name (in the defined namespace) of the grid to be insered into the database. 
+								Note that the placeName will be replaced by a canonical placeName if the currently selected
+								place name space is the zero (WDB core) name space.</entry>
+							</row>
+							<row>
+								<entry>numX</entry>
+								<entry>The number of points along the X axis of the grid.</entry>
+							</row>
+							<row>
+								<entry>numY</entry>
+								<entry>The number of points along the Y axis of the grid.</entry>
+							</row>
+							<row>
+								<entry>incX</entry>
+								<entry>The distance between any two points on the X axis of the grid. The unit of measure is given by the projection.</entry>
+							</row>
+							<row>
+								<entry>incY</entry>
+								<entry>The distance between any two points on the Y axis of the grid. The unit of measure is given by the projection.</entry>
+							</row>
+							<row>
+								<entry>startX</entry>
+								<entry>The origin X point (lower left corner) of the grid in the specified projection.</entry>
+							</row>
+							<row>
+								<entry>startY</entry>
+								<entry>The origin Y point (lower left corner) of the grid in the specified projection.</entry>
+							</row>
+							<row>
+								<entry>projection</entry>
+								<entry>The original projection of the grid, which also corresponds to the form it is stored as in the database..</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplaceregulargrid.result">
+				<title>Expected Result</title>
+				
+				<para>The PlaceId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplaceregulargrid.example">
+				<title>Example</title>
+				
+				<para>An example setting up the hirlam 10km grid:</para>
+				
+				<programlisting>
+SELECT wci.addplaceregulargrid ( 'hirlam 10km grid', 248, 400, 0.100, 0.100, 5.75, -13.25, '+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs' );
+</programlisting>
+	
+				<para>Adding this grid to the database while logged into a place 
+				name space other than zero, will add a grid with the place name
+				of 'hirlam 10km grid' to the database and a canonical name in the zero
+				name space. If the user was logged into the zero name space, 
+				only the canonical name would be added to the database.  
+				</para>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.addplaceregulargrid.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.getsridfromproj</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 
 		<sect1 id="sec:wci.addwciuser">
 			<title>wci.addWciUser</title>
@@ -1626,7 +1863,7 @@ FROM wci.fetch ( 11702,
 			</sect2>
 			
 		</sect1>		
-		
+
 		<sect1 id="sec:wci.getdataprovider">
 			<title>wci.getDataProvider</title>
 			
@@ -1775,6 +2012,127 @@ SELECT wci.getdataprovider ( 'mich%' );
 			
 		</sect1>
 
+		
+		<sect1 id="sec:wci.getdataprovidername">
+			<title>wci.getDataProviderName</title>
+			
+			<para>The function wci.getDataProviderName lists the data provider names in the namespace
+			that match the search criteria.</para>
+			
+			<sect2 id="sec:wci.getdataprovidername.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovidername.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getdataprovidername
+(
+	dataprovidername		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovidername.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getDataProviderName parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataProviderName</entry>
+								<entry>The data provider name for which information is requested. 
+								NULL returns all data providers in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovidername.result">
+				<title>Expected Result</title>
+				
+				<para>The list of data provider names.</para>
+
+				<table frame="all">
+					<title>wci.getDataProviderName return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>dataproviderid</entry>
+								<entry>The internal data provider ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>dataprovidernamespaceid</entry>
+								<entry>The currently selected data provider name space.</entry>
+							</row>
+							<row>
+								<entry>dataprovidername</entry>
+								<entry>The data provider name of the data provider in this namespace.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovidername.example">
+				<title>Example</title>
+				
+				<para>An example to list the data provider matching the name "michael":</para>
+				
+				<programlisting>
+SELECT wci.getdataprovidername ( 'michael' );
+</programlisting>
+
+				<para>List all data providers starting on "mich" in the name space:</para>
+
+				<programlisting>
+SELECT wci.getdataprovidername ( 'mich%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getdataprovidername.example.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddataprovider</para></listitem>
+					<listitem><para>wci.adddataprovider2group</para></listitem>
+					<listitem><para>wci.addwciuser</para></listitem>
+					<listitem><para>wci.getdataprovider</para></listitem>
+					<listitem><para>wci.setdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
 
 		<sect1 id="sec:wci.read">
 			<title>wci.read</title>
