@@ -1,5 +1,5 @@
 partyid|Software Name|Software VersionCode|Software Description
-10000|WDB|1.0.0|Baseline version of the WDB core.
+10000|WDB|__WDB_VERSION__|Baseline version of the WDB core.
 10001|Hirlam Process|1|Hirlam Data Generating Process at met.no
 10010|GribWriter|0.2|WeatherDB GribWriter 
 10024|GribWriter Test|0.2|Test instance of the WDB GribWriter

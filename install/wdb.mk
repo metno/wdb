@@ -4,31 +4,21 @@
 #-----------------------------------------------------------------------------
 
 INSTALL_SOURCES =		install/install_database.in.sh \
-						install/uninstall_database.in.sh \
-						install/upgrade_database.in.sh
-						
-						
-INSTALL_SQL 	= 		install/upgrade_database.in.sql \
-						install/upgrade_test.in.sql	\
-						install/upgrade_metadata.in.sql					
-
+						install/uninstall_database.in.sh
+					
 NOINSTALL_SOURCES = 	install/move_database.in.sh
 
 nodist_pkglib_SCRIPTS =	$(INSTALL_SOURCES:.in.sh=)
 
 nodist_pkglib_SCRIPTS += $(NOINSTALL_SOURCES:.in.sh=)
 
-sql_DATA += 			$(INSTALL_SQL:.in.sql=.sql)
-
 EXTRA_DIST +=			$(INSTALL_SOURCES) \
 						$(NOINSTALL_SOURCES) \
-						$(INSTALL_SQL) \
 						install/Makefile.am \
 						install/Makefile.in
 
 CLEANFILES += 			$(INSTALL_SOURCES:.in.sh=) \
-						$(NOINSTALL_SOURCES:.in.sh=) \
-						$(INSTALL_SQL:.in.sql=.sql) 
+						$(NOINSTALL_SOURCES:.in.sh=)
 
 DISTCLEANFILES +=		install/Makefile
 
