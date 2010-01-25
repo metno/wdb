@@ -26,9 +26,19 @@ DECLARE
 	version text;
 	ret  text;
 BEGIN
-	SELECT c.version INTO version FROM __WCI_SCHEMA__.configuration c;
+	SELECT 	c.softwareversion INTO version 
+	FROM 	__WCI_SCHEMA__.configuration c
+	WHERE 	c.name = 'WDB';
 	ret := 'WDB ' || version;
 	RETURN ret;
 END;
 $BODY$
 LANGUAGE 'plpgsql' STRICT STABLE;
+
+CREATE OR REPLACE FUNCTION
+wci.configuration( )
+RETURNS SETOF __WCI_SCHEMA__.configuration AS
+$BODY$
+	SELECT * FROM __WCI_SCHEMA__.configuration;
+$BODY$
+LANGUAGE 'SQL' STRICT STABLE;

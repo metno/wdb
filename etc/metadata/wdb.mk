@@ -11,7 +11,7 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_softwareversion.in.csv \
 						etc/metadata/wdb_namespace.in.csv \
 						etc/metadata/wdb_measure.in.csv \
-						etc/metadata/wdb_currentconfiguration.in.csv \
+						etc/metadata/wdb_configuration.in.csv \
 						etc/metadata/wdb_defaultnamespace.in.csv \
 						etc/metadata/wdb_placeindeterminatetype.in.csv \
 						etc/metadata/wdb_levelindeterminatetype.in.csv \

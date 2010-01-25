@@ -34,14 +34,13 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(VERSION)/g $<\
 			 			| sed s:__WDB_BINDIR__:@bindir@:g \
 						| sed s:__POSTGIS_DIR__:@postgis_SQL@:g \
 						| sed s:__WDB_DBNAME__:$(DATABASE_NAME):g \
-						| sed s:__WDB_SCHEMA__:wdb_$(DATABASE_SCHEMA):g \
-						| sed s:__WDB_LIB__:wdb-$(VERSION).so:g \
-						| sed s:__WCI_SCHEMA__:wci_$(DATABASE_SCHEMA):g \
-						| sed s:__WCI_LIB__:wdb-$(VERSION).so:g \
+						| sed s:__WDB_LIB__:wdb.so:g \
+						| sed s:__WDB_SCHEMA__:wdb_int:g \
+						| sed s:__WCI_SCHEMA__:wci_int:g \
+						| sed s:__WCI_LIB__:wdb.so:g \
 						| sed s:__WDB_SRID__:$(DEFAULT_SRID):g \
+						| sed s:__SCHEMA_VERSION__:$(SCHEMA_VERSION):g \
 						| sed s:__OLD_VERSION__:$(OLD_MAJOR_VERSION).$(OLD_MINOR_VERSION).$(OLD_MICRO_VERSION):g \
-						| sed s:__OLD_SCHEMA__:wdb_$(OLD_MAJOR_VERSION)_$(OLD_MINOR_VERSION)_$(OLD_MICRO_VERSION):g \
-						| sed s:__OLD_WCI_SCHEMA__:wci_$(OLD_MAJOR_VERSION)_$(OLD_MINOR_VERSION)_$(OLD_MICRO_VERSION):g \
 						| sed s:__WDB_DISTDIR__:$(PACKAGE)-$(VERSION):g \
 			 			> $@
 
@@ -242,20 +241,6 @@ distcheck-hook:
 	mkdir $(distdir)/_inst/etc/
 	echo "database = $(DISTCHECK_DATABASE_NAME)" > $(distdir)/_inst/etc/wdb.conf
 
-
-upgrade: all install-man install-sqlDATA install-wciapiDATA \
-	install-wcicoreDATA install-wcitypesDATA install-wdbdataDATA \
-	install-exec
-# turn off pg 
-# install-exec
-#	@$(NORMAL_INSTALL)
-#	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
-# turn on pg
-# run upgrade-database
-	mkdir -p @builddir@/var/logs/
-	rm -f @builddir@/var/logs/*
-	@builddir@/install/upgrade_database -d $(DATABASE_NAME)
-	
 
 #-----------------------------------------------------------------------------
 # Makefile Maintenance

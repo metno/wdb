@@ -29,14 +29,17 @@ GRANT USAGE ON SCHEMA __WCI_SCHEMA__ TO wdb_read;
 
 
 CREATE VIEW __WCI_SCHEMA__.configuration AS
-SELECT 
-	sw.softwareversioncode AS version,
-	conf.productionstatus
+SELECT
+	sw.softwarename AS name,
+	sw.softwareversioncode AS softwareversion,
+	cf.packageversion AS packageversion,
+	sw.softwaredescription AS description,
+	cf.installtime AS installtime
 FROM
-	__WDB_SCHEMA__.currentconfiguration conf,
+	__WDB_SCHEMA__.configuration cf,
 	__WDB_SCHEMA__.softwareversion sw
 WHERE
-	conf.softwareversionpartyid = sw.partyid;
+	cf.softwareversionpartyid = sw.partyid;
 REVOKE ALL ON __WCI_SCHEMA__.configuration FROM public;
 GRANT ALL ON __WCI_SCHEMA__.configuration TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.configuration TO wdb_read, wdb_write;

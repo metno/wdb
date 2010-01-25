@@ -18,9 +18,10 @@
 #  (at your option) any later version.
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# install - install the wdb system
+# install - install the wdb database
 
-# TODO: Add support for reading additional configuration files
+version_number=__SCHEMA_VERSION__
+
 DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`__WDB_BINDIR__/wdbConfiguration --host`
 DEFAULT_USER=`__WDB_BINDIR__/wdbConfiguration --user`
 DEFAULT_PORT=`__WDB_BINDIR__/wdbConfiguration --port`
@@ -29,16 +30,17 @@ SCRIPT_VERSION=__WDB_VERSION__
 
 SCRIPT_USAGE="Usage: $0 [OPTION]
 
-The script installs the WDB system in the database specified by
-the PG environment variables, unless overriden on the command line or
-in the configuration files.
+The script installs the WDB system in the database specified by the
+PG environment variables, unless overriden on the command line or in
+the configuration files.
 
 PGDATABASE        (default: $DEFAULT_DATABASE)
 PGUSER            (default: $DEFAULT_USER)
 PGPORT            (default: $DEFAULT_PORT)
 
 If the named database does not exist, the install script creates the
-database.
+database. If the database exists, the install script will upgrade the
+database, if necessary.
 
 Options:
 
@@ -55,7 +57,10 @@ Options:
                    Read additional configuration from <FILE>
 
 -f, --force-install
-                   force installation over existing database
+                   force installation over existing database. This
+                   will delete the existing database if it exists and
+                   overwrite it with a new installation. WARNING: All
+                   data in the existing database will be lost.
 
 --with-postgis=PATH
                    Specify the contrib directory of postgres if this
@@ -120,7 +125,6 @@ while test -n "$1"; do
     esac
 done
 
-
 # Set defaults variables
 # DATABASE_NAME
 if test -z "$WDB_INSTALL_DATABASE"; then
@@ -145,17 +149,19 @@ export LOGDIR=/tmp/$USER/wdb/var/logs/
 mkdir -p $LOGDIR
 
 # checking if we can find the sql source files
+echo -n "checking for the presence of wdb database files... "
 WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
 WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
-
 if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
+	echo "no"
     echo "Error: Could not locate database installation files."
 	echo "Checking: $WDB_DATAMODEL_PATH"
 	echo "Unable to install wdb."
     echo "Error: Could not locate database installation files. Unable to install wdb."
     exit 1
 fi
+echo "done"
 
 # If WDB_POSTGIS_CONTRIB set...
 if test -n "$WDB_POSTGIS_CONTRIB"; then
@@ -165,7 +171,7 @@ else
 fi
 
 # Check for Postgis file lw_postgis.sql
-echo -n "checking for the presence of postgis.sql... "
+echo -n "checking for the presence of postgis.sql file... "
 POSTGIS_FILE=lwpostgis.sql
 if test -f $POSTGIS_DIR/lwpostgis.sql; then
 	POSTGIS_FILE=lwpostgis.sql
@@ -197,7 +203,7 @@ fi
 
 
 # Check for Postgis file spatial_ref_sys.sql
-echo -n "checking for the presence of spatial_ref_sys.sql... "
+echo -n "checking for the presence of spatial_ref_sys.sql file... "
 if test -f $POSTGIS_DIR/spatial_ref_sys.sql; then
     echo "yes"
 else
@@ -229,8 +235,8 @@ echo -n "checking that database $WDB_NAME exists... "
 DB_CHECK=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
 # Test whether database exists
 # Note: as the list above only grabs the first tablename matching 
-# the WDB_NAME pattern this may fail if there is a database with a similar 
-# name present in the DB
+# the WDB_NAME pattern this may fail if there is a database with a
+# similar name present in the DB
 if test "$DB_CHECK" = "$WDB_NAME"; then 
     echo "yes"
     DATABASE_EXISTS="yes"
@@ -307,41 +313,56 @@ for VAL in $TEST_VALUES; do
     fi
 done
 
-# Install PostGIS
-echo -n "installing postgis... "
-# Setup plpgsql
-createlang -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT plpgsql $WDB_NAME
-# Install Postgis objects
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+# Get current version of database schema
+if test "$DATABASE_EXISTS" = "yes"; then
+	echo -n "current schema version of WDB... "
+	current_version=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -l -c "select max(packageversion) from wci.configuration() where name ='WDB';" -q | sed -e '1,2d' | sed -e '2,$d' | sed 's/^[ ]//g'`
+	echo $current_version
+	if [ "x$version_number" = "x$current_version" ]; then
+		echo "EXIT: No upgrade of the database schema is required." 
+		echo "---- wdb database upgrade completed ----"
+		exit 0			
+	fi
+else
+	#
+	# Install Baseline Version
+	#
+	current_version=0
+	# Install PostGIS
+	echo -n "installing postgis... "
+	# Setup plpgsql
+	createlang -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT plpgsql $WDB_NAME
+	# Install Postgis objects
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i $POSTGIS_DIR/$POSTGIS_FILE
 \i $POSTGIS_DIR/spatial_ref_sys.sql
 EOF
-if [ 0 != $? ]; then
-	echo "ERROR"
-    echo "ERROR: PostGIS could not be installed. Check that the PostGIS files $POSTGIS_FILE and spatial_ref_sys.sql are located in $POSTGIS_DIR"; exit 1
-else
-    echo "done"
-fi
-
-
-# Set up roles/users
-echo -n "setting up roles... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+	if [ 0 != $? ]; then
+		echo "ERROR"
+	    echo "ERROR: PostGIS could not be installed. Check that the PostGIS files $POSTGIS_FILE and spatial_ref_sys.sql are located in $POSTGIS_DIR"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	
+	# Set up roles/users
+	echo -n "setting up roles... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "FATAL";
 --\set ON_ERROR_STOP
 \i $WDB_DATAMODEL_PATH/wdbUserDefinitions.sql
 EOF
-if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
-else
-    echo "done"
-fi
-
-# Install Datamodel
-echo -n "installing datamodel... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	# Install Datamodel
+	echo -n "installing baseline datamodel... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
@@ -360,30 +381,30 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
 EOF
-if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
-else
-    echo "done"
-fi
-
-
-# Install Metadata
-echo -n "installing metadata... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	
+	# Install Metadata
+	echo -n "installing baseline metadata... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_metadata.log
 \i $WDB_METADATA_PATH/wdbMetadata.sql 
 EOF
-if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
-else
-    echo "done"
-fi
-
-# Update Materialized View
-echo -n "updating materialized views... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	# Update Materialized View
+	echo -n "updating materialized view base... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_matview.log
@@ -392,46 +413,46 @@ SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.valueparameter_mv');
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.levelparameter_mv'); 
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv'); 
 EOF
-if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
-else
-    echo "done"
-fi
-
-# Install Indexes
-echo -n "installing indexes... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	# Install Indexes
+	echo -n "installing index base... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
 \i $WDB_DATAMODEL_PATH/wdbIndexDefinitions.sql
 EOF
-if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
-else
-    echo "done"
-fi
-
-
-# Install cleanup script
-echo -n "installing cleaner... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	
+	# Install cleanup script
+	echo -n "installing wdb cleaner base... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_cleanDb.log
 \i $WDB_CLEANUP_PATH/cleanDb.sql
 EOF
-if [ 0 != $? ]; then
-    echo "ERROR"; exit 1
-else
-    echo "done"
-fi
-
-
-# Install wci
-echo -n "installing wci components... "
-WCI_DIR="__WDB_DATADIR__/sql/wci"
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR: Installation of WDB cleanup script failed"; exit 1
+	else
+	    echo "done"
+	fi
+	
+	
+	# Install wci
+	echo -n "installing wci components base... "
+	WCI_DIR="__WDB_DATADIR__/sql/wci"
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 -- WCI Types
@@ -462,11 +483,29 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciVersion.sql
 \i $WCI_DIR/api/wciWrite.sql
 EOF
-if [ 0 != $? ]; then
-	echo "ERROR"; exit 1
+	if [ 0 != $? ]; then
+		echo "ERROR: Installation of WDB Call Interface failed"; exit 1
+	fi
+	echo "done"
 fi
-echo "done"
 
+while [ $current_version -lt $version_number ]
+do
+	current_version=`expr $current_version + 1`
+	echo -n "installing WDB schema package $current_version... "
+	vn=$(printf "%.4d" "$current_version")
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_upgrade_datamodel.log
+\i $WDB_DATAMODEL_PATH/wdbUpgrade$vn.sql
+EOF
+	if [ 0 != $? ]; then
+		echo "ERROR: Installation of wdbUpgrade$vn.sql failed"
+		exit 1
+	fi
+	echo "done"
+done
 
 echo "---- wdb database installation completed ----"
 exit 0

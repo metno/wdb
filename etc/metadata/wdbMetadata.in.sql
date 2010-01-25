@@ -35,7 +35,7 @@ COPY __WDB_SCHEMA__.namespace FROM '__WDB_DATADIR__/sql/wdb_namespace.csv' CSV H
 COPY __WDB_SCHEMA__.defaultnamespace FROM '__WDB_DATADIR__/sql/wdb_defaultnamespace.csv' CSV HEADER DELIMITER '|';
 
 -- Configuration
-COPY __WDB_SCHEMA__.currentconfiguration FROM '__WDB_DATADIR__/sql/wdb_currentconfiguration.csv' CSV HEADER DELIMITER '|';
+COPY __WDB_SCHEMA__.configuration FROM '__WDB_DATADIR__/sql/wdb_configuration.csv' CSV HEADER DELIMITER '|';
 
 -- Indeterminate Types
 COPY __WDB_SCHEMA__.placeindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_placeindeterminatetype.csv' CSV HEADER DELIMITER '|';

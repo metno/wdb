@@ -21,12 +21,18 @@ DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
 						src/database/wciViewDefinitions.in.sql \
 						src/database/wdbAdminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
+						
+UPGRADE_SOURCES =		
+# Example: src/database/wdbUpgrade0001.in.sql src/database/wdbUpgrade0002.in.sql  					
 
-sql_DATA += 			$(DATABASE_SOURCES:.in.sql=.sql)
+sql_DATA += 			$(DATABASE_SOURCES:.in.sql=.sql) \
+						$(UPGRADE_SOURCES:.in.sql=.sql)
 
-CLEANFILES +=			$(DATABASE_SOURCES:.in.sql=.sql)
+CLEANFILES +=			$(DATABASE_SOURCES:.in.sql=.sql) \
+						$(UPGRADE_SOURCES:.in.sql=.sql)
 
 EXTRA_DIST += 			$(DATABASE_SOURCES) \
+						$(UPGRADE_SOURCES) \
 						src/database/wdb.mk \
 						src/database/Makefile.am \
 						src/database/Makefile.in
