@@ -57,10 +57,10 @@ Options:
                    Read additional configuration from <FILE>
 
 -f, --force-install
-                   force installation over existing database. This
-                   will delete the existing database if it exists and
-                   overwrite it with a new installation. WARNING: All
-                   data in the existing database will be lost.
+                   force a clean installation over existing database. 
+                   This will delete the existing database if it exists 
+                   and overwrite it with a new installation. WARNING: 
+                   All data in the existing database will be lost.
 
 --with-postgis=PATH
                    Specify the contrib directory of postgres if this
@@ -275,25 +275,33 @@ if test "$DATABASE_EXISTS" = "no"; then
 # Clean out  database if it exists
 else
     echo -n "checking that database is clean... "
-    WDB_ENTITIES=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d postgres -c "select relname from pg_class" | sed -n '/wdb_/p'`
-    if test -n "$WDB_ENTITIES"; then
-	echo "no"
-	# If database is not clean, don't install
-	if test -z "$WDB_OVERWRITE_DATABASE"; then
-	    echo "Error: database contains entities that may have been left behind by an earlier installation of WDB. Either clean up the database manually or run install using the option --force-install to attempt to drop the database."
-	    exit 1
-	# Unless --force-install was set 
-	else
-	    echo -n "dropping database $WDB_NAME... "
-	    dropdb -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -q
-	    echo "done"
-	    echo -n "creating database $WDB_NAME... "
-	    createdb -ELATIN1 -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -O wdb_admin -q
-	    echo "done"
-	fi
-    else
-	echo "yes"
+    WCI_SCHEMA=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -c "\dn wci" | sed -n '/wci/p'`
+    WCIINT_SCHEMA=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -c "\dn __WCI_SCHEMA__" | sed -n '/__WCI_SCHEMA__/p'`
+    WDBINT_SCHEMA=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -c "\dn __WDB_SCHEMA__" | sed -n '/__WDB_SCHEMA__/p'`
+    DATABASE_CLEAN="yes"
+    if test -n "$WCI_SCHEMA"; then
+    	DATABASE_CLEAN="no"
     fi
+    if test -n "$WCIINT_SCHEMA"; then
+    	DATABASE_CLEAN="no"
+    fi
+    if test -n "$WDBINT_SCHEMA"; then
+    	DATABASE_CLEAN="no"
+    fi
+	echo $DATABASE_CLEAN
+	# If the database is not clean and force install is on
+	if test "$DATABASE_CLEAN" = "no"; then
+		# If database is not clean; we should drop and recreate on a force install
+		if test -n "$WDB_OVERWRITE_DATABASE"; then
+		    echo -n "dropping database $WDB_NAME... "
+		    dropdb -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -q
+		    echo "done"
+		    echo -n "creating database $WDB_NAME... "
+		    createdb -ELATIN1 -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -O wdb_admin -q
+		    echo "done"
+		    DATABASE_CLEAN="yes"
+		fi
+	fi
 fi
 
 # Check if autovacuum is on
@@ -314,7 +322,7 @@ for VAL in $TEST_VALUES; do
 done
 
 # Get current version of database schema
-if test "$DATABASE_EXISTS" = "yes"; then
+if test "$DATABASE_CLEAN" = "no"; then
 	echo -n "current schema version of WDB... "
 	current_version=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -l -c "select max(packageversion) from wci.configuration() where name ='WDB';" -q | sed -e '1,2d' | sed -e '2,$d' | sed 's/^[ ]//g'`
 	echo $current_version
