@@ -55,7 +55,7 @@ Location::Location(const std::string & location)
 					"POLYGON\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
 						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
 					")|"
-					"(\\w[\\w*\\s,]*))$"); // freetext location
+					"(\\w[\\w\\d\\s,.]*))$"); // freetext location
 	smatch match;
 	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
