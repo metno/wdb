@@ -46,8 +46,11 @@ static void clearPlanTableEntry(gpointer key, gpointer value, gpointer user_data
 
 void clearSpiPlanCache()
 {
-	g_hash_table_foreach(planList, clearPlanTableEntry, NULL);
-	g_hash_table_remove_all(planList);
+	if ( planList )
+	{
+		g_hash_table_foreach(planList, clearPlanTableEntry, NULL);
+		g_hash_table_remove_all(planList);
+	}
 }
 
 
