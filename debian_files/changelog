@@ -1,3 +1,9 @@
+wdb (0.9.6-4) hardy; urgency=low
+
+  * final build
+
+ -- Vegard B�nes <vegardb@development9>  Fri, 05 Feb 2010 14:14:35 +0000
+
 wdb (0.9.6-1) hardy; urgency=low
 
   * new version
