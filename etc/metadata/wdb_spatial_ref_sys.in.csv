@@ -6,3 +6,4 @@ SRID|Name|x|x|Type
 50004|MetNo Polar Stereographic|||+proj=stere +lat_0=90 +lon_0=58 +lat_ts=60 +a=6371000 +units=m +no_defs
 50005|Oslo Polar Stereographic|||+proj=stere +lat_0=90 +lon_0=24 +lat_ts=60 +a=6371000 +units=m +no_defs
 50006|SeNorge UTM|||+proj=utm +lon_0=15 +datum=WGS84 +units=m +no_defs
+50007|metno latlon|||+proj=longlat +a=6367470.0 +no_defs
