@@ -622,7 +622,7 @@ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION
 wci.addLevelParameterUsage(
     levelparameterusage 	varchar(80),
-    description 			varchar(255)
+    leveldescription 		varchar(255)
 )
 RETURNS void AS
 $BODY$

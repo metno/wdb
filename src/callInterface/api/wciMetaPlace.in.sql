@@ -216,8 +216,8 @@ LANGUAGE sql STABLE;
 -- Add SRID
 CREATE OR REPLACE FUNCTION
 wci.addSrid(
-	name_		text,
-	projection_	text
+	authname_		text,
+	projection_		text
 )
 RETURNS int AS
 $BODY$
@@ -232,7 +232,7 @@ BEGIN
 	-- Insert Data
 	INSERT INTO spatial_ref_sys
 	VALUES ( srid_,
-			 name_,
+			 authname_,
 			 NULL,
 			 NULL,
 			 btrim(projection_) );			 
@@ -249,7 +249,7 @@ LANGUAGE plpgsql VOLATILE;
 -- Get SRID
 CREATE OR REPLACE FUNCTION 
 wci.getSrid(
-	name_	text
+	projstr_	text
 )
 RETURNS SETOF public.spatial_ref_sys AS
 $BODY$
@@ -259,26 +259,11 @@ $BODY$
 			srtext,
 			btrim(proj4text)        
 	FROM 	public.spatial_ref_sys
-	WHERE 	auth_name ILIKE $1
+	WHERE 	( $1 IS NULL OR btrim(proj4text) ILIKE btrim($1) )
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql;
 
-
-
--- Get SRID
-CREATE OR REPLACE FUNCTION 
-wci.getSridFromProj(
-	proj_	text
-)
-RETURNS integer AS
-$BODY$
-	SELECT 	srid
-	FROM 	public.spatial_ref_sys
-	WHERE 	btrim(proj4text) LIKE btrim($1)
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql;
 
 
 --
@@ -354,17 +339,17 @@ LANGUAGE sql VOLATILE;
 --  
 CREATE OR REPLACE FUNCTION
 wci.getPlaceName(
-	numX_ int,
-	numY_ int,
-	incX_ float,
-	incY_ float,
-	startX_ float,
-	startY_ float,
-	projection_ text
+	numberX_ 		int,
+	numberY_ 		int,
+	incrementX_ 	float,
+	incrementY_ 	float,
+	startX_ 		float,
+	startY_ 		float,
+	projdefinition_ text
 )
-RETURNS text AS
+RETURNS __WCI_SCHEMA__.placename_v AS
 $BODY$
-	SELECT placename
+	SELECT placeid, grd.placenamespaceid, placename
 	FROM __WCI_SCHEMA__.placeregulargrid_mv grd, __WCI_SCHEMA__.getSessionData() s
 	WHERE numberX = $1
 	AND   numberY = $2

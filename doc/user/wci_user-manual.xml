@@ -747,6 +747,198 @@ PQfinish(connection_);
 		<para>The following sections provide a list of the functions available for usage
 			through the WDB Call Interface.</para>
 
+		<sect1 id="sec:wci.addcodelevelparameter">
+			<title>wci.addCodeLevelParameter</title>
+			
+			<para>The function wci.addCodeLevelParameter allows an administrator to add new 
+			Level Parameters representing code tables to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addcodelevelparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodelevelparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addcodelevelparameter 
+(
+	parameterName			text,
+	parameterReference 		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodelevelparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addCodeLevelParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterName</entry>
+								<entry>The canonical parameter name to be used 
+								for the code table (i.e., the parameter
+								name set in the default name space. Ideally, 
+								this should be a universally unique name or code.</entry>
+							</row>
+							<row>
+								<entry>parameterReference</entry>
+								<entry>Reference information for the code table.								
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodelevelparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The ParameterId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodelevelparameter.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'hybrid level' code parameter from WMO:</para>
+				
+				<programlisting>
+SELECT wci.addcodelevelparameter ( 'hybrid level', 'WMO Code Table 3, WMO publication no. 306 - Manual on Code' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodelevelparamater.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addmeasurelevelparameter</para></listitem>
+					<listitem><para>wci.getcodelevelparameter</para></listitem>
+					<listitem><para>wci.getlevelparameter</para></listitem>
+					<listitem><para>wci.getmeasurelevelparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addcodevalueparameter">
+			<title>wci.addCodeValueParameter</title>
+			
+			<para>The function wci.addCodeValueParameter allows an administrator to add new 
+			Value Parameters representing code tables to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addcodevalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodevalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addcodevalueparameter 
+(
+	parameterName			text,
+	parameterReference 		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodevalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addCodeValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterName</entry>
+								<entry>The canonical parameter name to be used 
+								for the code table (i.e., the parameter
+								name set in the default name space. Ideally, 
+								this should be a universally unique name or code.</entry>
+							</row>
+							<row>
+								<entry>parameterReference</entry>
+								<entry>Reference information for the code table.								
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodevalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The ParameterId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodevalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'yr weather symbol' code parameter from www.yr.no:</para>
+				
+				<programlisting>
+SELECT wci.addcodevalueparameter ( 'yr weather symbol', 'http://www.yr.no' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addcodevalueparamater.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addparameterfunctiontype</para></listitem>
+					<listitem><para>wci.getcodevalueparameter</para></listitem>
+					<listitem><para>wci.getvalueparameter</para></listitem>
+					<listitem><para>wci.getparameterfunctiontype</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
 		<sect1 id="sec:wci.adddataprovider">
 			<title>wci.addDataProvider</title>
 			
@@ -875,6 +1067,7 @@ SELECT wci.adddataprovider( 'longyear', 'Computer System', 'Grid', 'Model genera
 			
 		</sect1>
 
+
 		<sect1 id="sec:wci.adddataprovider2group">
 			<title>wci.addDataProviderToGroup</title>
 			
@@ -967,6 +1160,706 @@ SELECT wci.adddataprovidertogroup ( 'michael', 'metno' );
 			</sect2>
 			
 		</sect1>
+
+
+		<sect1 id="sec:wci.adddimvalueparameter">
+			<title>wci.addDimensionlessValueParameter</title>
+			
+			<para>The function wci.addDimensionlessValueParameter allows an administrator to add new 
+			Value Parameters without a physical dimension to the WDB system.</para>
+			
+			<sect2 id="sec:wci.adddimvalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.adddimvalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.adddimensionlessvalueparameter 
+(
+	parameterName			text,
+	parameterDescription	text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddimvalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addDimensionlessValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterName</entry>
+								<entry>The canonical parameter name to be used 
+								for the measure table (i.e., the parameter
+								name set in the default name space. Ideally, 
+								this should be a universally unique name or measure.</entry>
+							</row>
+							<row>
+								<entry>parameterDescription</entry>
+								<entry>A description of the value parameter.								
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddimvalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The ParameterId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.adddimvalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'land cover' value parameter from WMO:</para>
+				
+				<programlisting>
+SELECT wci.adddimensionlessvalueparameter ( 'land cover', 'Proportion of grid cell covered by land (WMO)' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.adddimvalueparamater.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getvalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addfunctionvalueparameter">
+			<title>wci.addFunctionValueParameter</title>
+			
+			<para>The function wci.addFunctionValueParameter allows an administrator to add new 
+			function value parameters to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addfunctionvalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addfunctionvalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addfunctionvalueparameter
+(
+	parameterUsage			text,
+	parameterUnit			text,
+	parameterFunction		text,
+	parameterQuantity		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addfunctionvalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addFunctionValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterUsage</entry>
+								<entry>The usage dimension of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameterUnit</entry>
+								<entry>The SI unit of the value parameter. The unit is
+								used to determine the physical dimension of the function
+								value parameter.		
+								</entry>
+							</row>
+							<row>
+								<entry>parameterFunction</entry>
+								<entry>The function of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameterQuantity</entry>
+								<entry>The quantity type of the value parameter; either
+								scalar or vector.								
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addfunctionvalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The ParameterId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addfunctionvalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'mean wind waves duration' value parameter 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addfunctionvalueparameter ( 'wind waves', 's', 'mean', 'scalar' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addfunctionvalueparamater.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getvalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addlevelparameterusage">
+			<title>wci.addLevelParameterUsage</title>
+			
+			<para>The function wci.addLevelParameterUsage allows an administrator to add new 
+			Level Parameter usages to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addlevelparameterusage.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addlevelparameterusage.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addlevelparameterusage
+(
+	levelParameterUsage		text,
+	levelDescription		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addlevelparameterusage.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addLevelParameterUsage parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>levelParameterUsage</entry>
+								<entry>A usage dimension for a level parameter.</entry>
+							</row>
+							<row>
+								<entry>levelDescription</entry>
+								<entry>A description of the usage dimensions.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addlevelparameterusage.result">
+				<title>Expected Result</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addlevelparameterusage.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'height above ground' level usage 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addlevelparameterusage ( 'height above ground', 
+			'Denotes the height above ground level of the value-' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addlevelparameterusage.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getlevelparameterusage</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addmeasure">
+			<title>wci.addMeasure</title>
+			
+			<para>The function wci.addMeasure allows an administrator to add new 
+			measures (e.g., physical dimensions) to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addmeasure.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasure.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addmeasure
+(
+	measure 				character varying,
+	distancepower 			integer,
+	masspower 				integer,
+	timepower 				integer,
+	luminositypower 		integer, 
+	electriccurrentpower 	integer,
+	temperaturepower 		integer,
+	substanceamountpower 	integer,
+	anglepower 				integer
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasure.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addmeasure parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>measure</entry>
+								<entry>The measure being described.</entry>
+							</row>
+							<row>
+								<entry>distancepower</entry>
+								<entry>The distance dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>masspower</entry>
+								<entry>The mass dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>timepower</entry>
+								<entry>The time dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>luminositypower</entry>
+								<entry>The luminosity dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>electriccurrentpower</entry>
+								<entry>The electric current dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>temperaturepower</entry>
+								<entry>The temperature dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>substancepower</entry>
+								<entry>The substance dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>anglepower</entry>
+								<entry>The angular dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasure.result">
+				<title>Expected Result</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasure.example">
+				<title>Example</title>
+				
+				<para>An example adding 'acceleration' measure 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addmeasure ( 'acceleration', 1, 0, -2, 0, 0, 0, 0, 0 );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasure.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getmeasure</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addmeasurelevelparameter">
+			<title>wci.addMeasureLevelParameter</title>
+			
+			<para>The function wci.addMeasureLevelParameter allows an administrator to add new 
+			level parameters based on measures to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addmeasurelevelparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurelevelparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addmeasurelevelparameter
+(
+	parameterUsage			text,
+	parameterUnit			text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurelevelparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addMeasureLevelParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterUsage</entry>
+								<entry>The usage dimension of the level parameter.</entry>
+							</row>
+							<row>
+								<entry>parameterUnit</entry>
+								<entry>The SI unit of the level parameter. The unit is
+								used to determine the physical dimension of the measure
+								value parameter.		
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurelevelparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The ParameterId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurelevelparameter.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'isobaric surface pressure' level parameter 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addmeasurelevelparameter ( 'isobaric surface', 'Pa' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurelevelparamater.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getlevelparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addmeasurevalueparameter">
+			<title>wci.addMeasureValueParameter</title>
+			
+			<para>The function wci.addMeasureValueParameter allows an administrator to add new 
+			value parameters based on measures to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addmeasurevalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurevalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addmeasurevalueparameter
+(
+	parameterUsage			text,
+	parameterUnit			text,
+	parameterQuantity		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurevalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addMeasureValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterUsage</entry>
+								<entry>The usage dimension of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameterUnit</entry>
+								<entry>The SI unit of the value parameter. The unit is
+								used to determine the physical dimension of the measure
+								value parameter.		
+								</entry>
+							</row>
+							<row>
+								<entry>parameterQuantity</entry>
+								<entry>The quantity type of the value parameter.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurevalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The ParameterId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurevalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'air temperature' value parameter 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addmeasurevalueparameter ( 'air', 'K', 'scalar' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addmeasurevalueparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addmeasure</para></listitem>
+					<listitem><para>wci.getmeasurevalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+	
+	
+		<sect1 id="sec:wci.addparameterfunctiontype">
+			<title>wci.addParameterFunctionType</title>
+			
+			<para>The function wci.addParameterFunctionType allows an administrator to add new 
+			function types to be used with value parameters to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addparameterfunctiontype.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addparameterfunctiontype.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addparameterfunctiontype
+(
+	parameterFunctionType			text,
+	parameterFunctionDescription	text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addparameterfunctiontype.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addParameterFunctionType parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterFunctionType</entry>
+								<entry>The name of the function type being defined for
+								value parameters.</entry>
+							</row>
+							<row>
+								<entry>parameterFunctionDescription</entry>
+								<entry>A description of the parameter function.		
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addparameterfunctiontype.result">
+				<title>Expected Result</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addparameterfunctiontype.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'max' function type 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addparameterfunctiontype ( 'max',
+	'Maximum value for the period specified by the valid time interval' );
+</programlisting>
+																
+			</sect2>
+			
+			<sect2 id="sec:wci.addparameterfunctiontype.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getfunctionvalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 
 		<sect1 id="sec:wci.addplacepoint">
 			<title>wci.addPlacePoint</title>
@@ -1064,7 +1957,6 @@ SELECT wci.addplacepoint ( 'karasjok', geomfromtext('POINT( 25.51 69.47 )') );
 					<listitem><para>wci.getplacepoint</para></listitem>
 					<listitem><para>wci.getplaceregulargrid</para></listitem>
 					<listitem><para>wci.getsrid</para></listitem>
-					<listitem><para>wci.getsridfromproj</para></listitem>
 					<listitem><para>wci.setplacename</para></listitem>
 				</itemizedlist>
 			</sect2>
@@ -1197,13 +2089,325 @@ SELECT wci.addplaceregulargrid ( 'hirlam 10km grid', 248, 400, 0.100, 0.100, 5.7
 					<listitem><para>wci.getplacepoint</para></listitem>
 					<listitem><para>wci.getplaceregulargrid</para></listitem>
 					<listitem><para>wci.getsrid</para></listitem>
-					<listitem><para>wci.getsridfromproj</para></listitem>
 					<listitem><para>wci.setplacename</para></listitem>
 				</itemizedlist>
 			</sect2>
 			
 		</sect1>
 
+
+		<sect1 id="sec:wci.addsrid">
+			<title>wci.addSrid</title>
+			
+			<para>The function wci.addSrid allows an administrator to add a new 
+			SRID definition to WDB.</para>
+			
+			<sect2 id="sec:wci.addsrid.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have write privileges on the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addsrid.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addsrid
+(
+	name				text,
+	projection			text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addsrid.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addSrid parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>name</entry>
+								<entry>A descriptive name for the projection.</entry>
+							</row>
+							<row>
+								<entry>projection</entry>
+								<entry>The Proj.4 definition of the projection. To avoid
+								duplicates, the Proj.4 definition should avoid unnecessary
+								spacing and be ended with +no_defs. It is advised to manually
+								check the spatial_ref_sys table (using wci.getSrid) before
+								adding new entries.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addsrid.result">
+				<title>Expected Result</title>
+				
+				<para>The SRID (spatial reference id).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addsrid.example">
+				<title>Example</title>
+				
+				<para>An example setting up the SRID of the Hirlam 10 grid (a rotated,
+					longitude/latitude projection:</para>
+				
+				<programlisting>
+SELECT wci.addsrid ( 'Hirlam 10 SRID',
+	'+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs');
+</programlisting>
+	
+			</sect2>
+			
+			<sect2 id="sec:wci.addsrid.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		
+		<sect1 id="sec:wci.addunit">
+			<title>wci.addUnit</title>
+			
+			<para>The function wci.addUnit allows an administrator to add a 
+			new unit to WDB.</para>
+			
+			<sect2 id="sec:wci.addunit.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addunit.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addunit
+(
+	unitname					character varying,
+	unittype					character varying,
+	measure						character varying,
+	description					character varying,
+	siunitconversioncoefficient	double,
+	siunitconversionterm		double
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addunit.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addUnit parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>unitName</entry>
+								<entry>The UCUM designation of the unit.</entry>
+							</row>
+							<row>
+								<entry>unitType</entry>
+								<entry>The type of the unit. Permitted types are: 
+								'SI Unit', 'Base Unit', and 'Conventional Unit'. Most
+								units should be defined as the latter. 
+								</entry>
+							</row>
+							<row>
+								<entry>measure</entry>
+								<entry>The associated measure of the unit.</entry>
+							</row>
+							<row>
+								<entry>description</entry>
+								<entry>A description of the unit. For most units, this
+								will simply be the unabbreviated (i.e., full) form of 
+								the unit name.</entry>
+							</row>
+							<row>
+								<entry>siunitconversioncoefficient</entry>
+								<entry>The coefficient to multiply the value with in order
+								to get the SI unit. The SI unit conversion is: 
+								(value * coefficient) + term</entry>
+							</row>
+							<row>
+								<entry>siunitconversionterm</entry>
+								<entry>The term to add to the value in order to get the
+								SI unit. The SI unit conversion is: (value * coefficient) + term</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addunit.result">
+				<title>Expected Result</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addunit.example">
+				<title>Example</title>
+				
+				<para>An example adding the degree Fahrenheit to the database:</para>
+				
+				<programlisting>
+SELECT wci.addunit( '[degF]', 'Conventional Unit', 'temperature', 'degree Fahrenheit', 0.555556, 459.67 );
+</programlisting>
+								
+				
+				<para>An example adding the Kelvin to the database:</para>
+				
+				<programlisting>
+SELECT wci.addunit( 'K', 'SI Unit', 'temperature', 'Kelvin', 1, 0 );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.addunit.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addmeasure</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.addvalueparameterusage">
+			<title>wci.addValueParameterUsage</title>
+			
+			<para>The function wci.addValueParameterUsage allows an administrator to add new 
+			Value Parameter usages to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addvalueparameterusage.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addvalueparameterusage.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addvalueparameterusage
+(
+	valueParameterUsage		text,
+	valueDescription		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addvalueparameterusage.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addLevelParameterUsage parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>valueParameterUsage</entry>
+								<entry>A usage dimension for a value parameter.</entry>
+							</row>
+							<row>
+								<entry>valueDescription</entry>
+								<entry>A description of the usage dimension.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addvalueparameterusage.result">
+				<title>Expected Result</title>
+				
+				<para>None.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addvalueparameterusage.example">
+				<title>Example</title>
+				
+				<para>An example adding the 'mean sea level' value usage 
+				to the database:</para>
+				
+				<programlisting>
+SELECT wci.addvalueparameterusage ( 'mean sea level', 
+			'Value reduced to sea level assuming an isothermal layer at the measuring point's temperature.' );
+</programlisting>
+			
+			</sect2>
+			<sect2 id="sec:wci.addvalueparameterusage.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.getvalueparameterusage</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
 
 		<sect1 id="sec:wci.addwciuser">
 			<title>wci.addWciUser</title>
@@ -1689,7 +2893,108 @@ SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], NULL,
 			</sect2>
 			
 		</sect1>				
+
+
+		<sect1 id="sec:wci.configuration">
+			<title>wci.configuration</title>
+			
+			<para>The wci.configuration function returns all configuration
+			information (i.e., the complete list of all versions installed)
+			for the WDB database.</para>
+			
+			<sect2 id="sec:wci.configuration.prereq">
+				<title>Prerequisites</title>
 				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.configuration.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.configuration
+(
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.configuration.parameters">
+				<title>Parameters</title>
+
+				<para>None.</para>				
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.configuration.result">
+				<title>Expected Result</title>
+				
+				<para>Configuration information.</para>
+
+				<table frame="all">
+					<title>wci.configuration return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>name</entry>
+								<entry>The name of the software package.</entry>
+							</row>
+							<row>
+								<entry>softwareversion</entry>
+								<entry>The version of the software.</entry>
+							</row>
+							<row>
+								<entry>packageversion</entry>
+								<entry>The version of the package; this is a sequential
+									number independent of the software version.</entry>
+							</row>
+							<row>
+								<entry>description</entry>
+								<entry>A description of the software package.</entry>
+							</row>
+							<row>
+								<entry>installtime</entry>
+								<entry>The time when this version of WDB was installed.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.configuration.example">
+				<title>Example</title>
+				
+				<para>An example to extract the configuration of the database:</para>
+				
+				<programlisting>
+SELECT wci.configuration ( ); 
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.configuration.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.version</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
 		<sect1 id="sec:wci.end">
 			<title>wci.end</title>
 			
@@ -1864,6 +3169,263 @@ FROM wci.fetch ( 11702,
 			
 		</sect1>		
 
+
+		<sect1 id="sec:wci.getcodelevelparameter">
+			<title>wci.getCodeLevelParameter</title>
+			
+			<para>The function wci.getCodeLevelParameter returns information about the 
+			specified level parameter of the code type to the user.</para>
+			
+			<sect2 id="sec:wci.getcodelevelparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodelevelparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getcodelevelparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodelevelparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getCodeLevelParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all level parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodelevelparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the level parameter in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getCodeLevelParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>levelparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>levelcodeparametername</entry>
+								<entry>The canonical name of the level parameter.</entry>
+							</row>
+							<row>
+								<entry>codeparameterreference</entry>
+								<entry>The reference information for the level code.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>levelparametername</entry>
+								<entry>The name of the level parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical level parameter name.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodelevelparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about code "hybrid level":</para>
+				
+				<programlisting>
+SELECT wci.getcodelevelparameter ( 'hybrid level' );
+</programlisting>
+
+				<para>To retrieve information about all code level parameters starting with "hybrid":</para>
+
+				<programlisting>
+SELECT wci.getcodelevelparameter ( 'hybrid%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodelevelparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addcodelevelparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getcodevalueparameter">
+			<title>wci.getCodeValueParameter</title>
+			
+			<para>The function wci.getCodeValueParameter returns information about the 
+			specified value parameter of the code type to the user.</para>
+			
+			<sect2 id="sec:wci.getcodevalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodevalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getcodevalueparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodevalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getCodeValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all value parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodevalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the value parameter in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getCodeValueParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>valueparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>valuecodeparametername</entry>
+								<entry>The canonical name of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>codeparameterreference</entry>
+								<entry>The reference information for the value code.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>valueparametername</entry>
+								<entry>The name of the value parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical value parameter name.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodevalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about code "ice presence":</para>
+				
+				<programlisting>
+SELECT wci.getcodevalueparameter ( 'ice presence' );
+</programlisting>
+
+				<para>To retrieve information about all code value parameters starting with "ice":</para>
+
+				<programlisting>
+SELECT wci.getcodevalueparameter ( 'ice%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getcodevalueparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addcodevalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
 		<sect1 id="sec:wci.getdataprovider">
 			<title>wci.getDataProvider</title>
 			
@@ -1998,7 +3560,7 @@ SELECT wci.getdataprovider ( 'mich%' );
 								
 			</sect2>
 			
-			<sect2 id="sec:wci.getdataprovider.example.see">
+			<sect2 id="sec:wci.getdataprovider.see">
 				<title>See Also</title>
 				
 				<itemizedlist>
@@ -2012,7 +3574,7 @@ SELECT wci.getdataprovider ( 'mich%' );
 			
 		</sect1>
 
-		
+
 		<sect1 id="sec:wci.getdataprovidername">
 			<title>wci.getDataProviderName</title>
 			
@@ -2120,7 +3682,7 @@ SELECT wci.getdataprovidername ( 'mich%' );
 								
 			</sect2>
 			
-			<sect2 id="sec:wci.getdataprovidername.example.see">
+			<sect2 id="sec:wci.getdataprovidername.see">
 				<title>See Also</title>
 				
 				<itemizedlist>
@@ -2133,6 +3695,2057 @@ SELECT wci.getdataprovidername ( 'mich%' );
 			</sect2>
 			
 		</sect1>
+
+
+		<sect1 id="sec:wci.getdimensionlessvalueparameter">
+			<title>wci.getDimensionlessValueParameter</title>
+			
+			<para>The function wci.getDimensionlessValueParameter returns information about the 
+			specified value parameter of the dimensionless type to the user.</para>
+			
+			<sect2 id="sec:wci.getdimensionlessvalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getdimensionlessvalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getdimensionlessvalueparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdimensionlessvalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getDimensionlessValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all value parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdimensionlessvalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the value parameter in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getDimensionlessValueParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>valueparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>valuedimensionlessparametername</entry>
+								<entry>The canonical name of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>valueparameterdescription</entry>
+								<entry>A description of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>valueunitname</entry>
+								<entry>The unit of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>valueparametername</entry>
+								<entry>The name of the value parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical value parameter name.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getdimensionlessvalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the parameter "land albedo":</para>
+				
+				<programlisting>
+SELECT wci.getdimensionlessvalueparameter ( 'land albedo' );
+</programlisting>
+
+				<para>To retrieve information about all code value parameters starting with "land":</para>
+
+				<programlisting>
+SELECT wci.getdimensionlessvalueparameter ( 'land%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getdimensionlessvalueparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.adddimensionlessvalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getfunctionvalueparameter">
+			<title>wci.getFunctionValueParameter</title>
+			
+			<para>The function wci.getFunctionValueParameter returns information about the 
+			specified value parameter of the function type to the user.</para>
+			
+			<sect2 id="sec:wci.getfunctionvalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getfunctionvalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getfunctionvalueparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getfunctionvalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getFunctionValueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all value parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getfunctionvalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the value parameter in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getfunctionValueParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>valueparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>parameterfunctiontype</entry>
+								<entry>The parameter function.</entry>
+							</row>
+							<row>
+								<entry>valueparameterusage</entry>
+								<entry>The value parameter usage.</entry>
+							</row>
+							<row>
+								<entry>parameterquantitytype</entry>
+								<entry>The quantity type of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>measure</entry>
+								<entry>The measure of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>valueunitname</entry>
+								<entry>The unit name used for the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>valueparametername</entry>
+								<entry>The name of the value parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical value parameter name.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getfunctionvalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the parameter "peak wave duration":</para>
+				
+				<programlisting>
+SELECT wci.getfunctionvalueparameter ( 'peak wave duration' );
+</programlisting>
+
+				<para>To retrieve information about all value parameters starting with "peak":</para>
+
+				<programlisting>
+SELECT wci.getfunctionvalueparameter ( 'peak%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getfunctionvalueparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addfunctionvalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getlevelparameter">
+			<title>wci.getLevelParameter</title>
+			
+			<para>The function wci.getLevelParameter returns information about the 
+			specified level parameter of the function type to the user.</para>
+			
+			<sect2 id="sec:wci.getlevelparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getlevelparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getLevelParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all value parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the level parameters in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getlevelParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>levelparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>levelparametername</entry>
+								<entry>The name of the level parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical value parameter name.</entry>
+							</row>
+							<row>
+								<entry>levelunitname</entry>
+								<entry>The unit of the level parameter.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the level parameter "hybrid level":</para>
+				
+				<programlisting>
+SELECT wci.getlevelparameter ( 'hybrid level' );
+</programlisting>
+
+				<para>To retrieve information about all level parameters with "hybrid":</para>
+
+				<programlisting>
+SELECT wci.getlevelparameter ( '%hybrid%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addcodelevelparameter</para></listitem>
+					<listitem><para>wci.addmeasurelevelparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getlevelparameterusage">
+			<title>wci.getlevelparameterusage</title>
+			
+			<para>The function wci.getlevelparameterusage returns information about the 
+			specified level parameter usage to the user.</para>
+			
+			<sect2 id="sec:wci.getlevelparameterusage.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameterusage.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getlevelparameterusage
+(
+	usage		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameterusage.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getlevelparameterusage parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>usage</entry>
+								<entry>The name of the parameter usage to be returned. 
+								NULL returns all parameter usages. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameterusage.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the level parameter usages.</para>
+
+				<table frame="all">
+					<title>wci.getlevelparameterusage return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>levelparameterusage</entry>
+								<entry>The level parameter usage descriptor.</entry>
+							</row>
+							<row>
+								<entry>levelparameterusagedescription</entry>
+								<entry>A description of the level parameter usage.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameterusage.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the level usage "sea surface":</para>
+				
+				<programlisting>
+SELECT wci.getlevelparameterusage ( 'sea surface' );
+</programlisting>
+
+				<para>To retrieve information about all level usages with "sea":</para>
+
+				<programlisting>
+SELECT wci.getlevelparameterusage ( '%sea%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getlevelparameterusage.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addlevelparameterusage</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getmeasure">
+			<title>wci.getMeasure</title>
+			
+			<para>The function wci.getMeasure returns information about the 
+			specified measure to the user.</para>
+			
+			<sect2 id="sec:wci.getmeasure.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasure.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getmeasure
+(
+	measure		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasure.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getmeasure parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>measure</entry>
+								<entry>The name of the measure to be returned. 
+								NULL returns all measures. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasure.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the measure.</para>
+
+				<table frame="all">
+					<title>wci.getmeasure return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>measure</entry>
+								<entry>The measure being described.</entry>
+							</row>
+							<row>
+								<entry>distancepower</entry>
+								<entry>The distance dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>masspower</entry>
+								<entry>The mass dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>timepower</entry>
+								<entry>The time dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>luminositypower</entry>
+								<entry>The luminosity dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>electriccurrentpower</entry>
+								<entry>The electric current dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>temperaturepower</entry>
+								<entry>The temperature dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>substancepower</entry>
+								<entry>The substance dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+							<row>
+								<entry>anglepower</entry>
+								<entry>The angular dimension of the measure. Use 0 to denote none.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasure.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the measure "distance":</para>
+				
+				<programlisting>
+SELECT wci.getmeasure ( 'distance' );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasure.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addmeasure</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getmeasurelevelparameter">
+			<title>wci.getMeasureLevelParameter</title>
+			
+			<para>The function wci.getmeasurelevelParameter returns information about the 
+			specified level parameter of the function type to the user.</para>
+			
+			<sect2 id="sec:wci.getmeasurelevelparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurelevelparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getmeasurelevelparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurelevelparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getMeasureLevelParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all level parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurelevelparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the level parameters in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getmeasurelevelParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>levelparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>levelparameterusage</entry>
+								<entry>The usage of the level parameter.</entry>
+							</row>
+							<row>
+								<entry>measure</entry>
+								<entry>The measure of the level parameter.</entry>
+							</row>
+							<row>
+								<entry>levelunitname</entry>
+								<entry>The unit of the level parameter.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>levelparametername</entry>
+								<entry>The name of the level parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical value parameter name.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurelevelparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the level parameter "sea surface pressure":</para>
+				
+				<programlisting>
+SELECT wci.getmeasurelevelparameter ( 'sea surface pressure' );
+</programlisting>
+
+				<para>To retrieve information about all level parameters with "sea":</para>
+
+				<programlisting>
+SELECT wci.getmeasurelevelparameter ( '%sea%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurelevelparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addmeasurelevelparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		<sect1 id="sec:wci.getmeasurevalueparameter">
+			<title>wci.getMeasureValueParameter</title>
+			
+			<para>The function wci.getmeasurevalueParameter returns information about the 
+			specified value parameter of the function type to the user.</para>
+			
+			<sect2 id="sec:wci.getmeasurevalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurevalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getmeasurevalueparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurevalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getMeasurevalueParameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the parameter to be returned. 
+								NULL returns all value parameters in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurevalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the value parameters in the namespace.</para>
+
+				<table frame="all">
+					<title>wci.getMeasurevalueParameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>valueparameterid</entry>
+								<entry>The internal parameter ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>valueparameterusage</entry>
+								<entry>The usage of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameterquantitytype</entry>
+								<entry>The quantity type of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>measure</entry>
+								<entry>The measure of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>valueunitname</entry>
+								<entry>The unit of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The parameter name space ID of the query.</entry>
+							</row>
+							<row>
+								<entry>valueparametername</entry>
+								<entry>The name of the value parameter in the current namespace.
+									If the query is in the 0 (canonical) namespace, this will
+									be the canonical value parameter name.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurevalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the value parameter "air temperature":</para>
+				
+				<programlisting>
+SELECT wci.getmeasurevalueparameter ( 'air temperature' );
+</programlisting>
+
+				<para>To retrieve information about all temperature parameters:</para>
+
+				<programlisting>
+SELECT wci.getmeasurevalueparameter ( '%temperature%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getmeasurevalueparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addmeasurevalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getparameterfunctiontype">
+			<title>wci.getParameterFunctionType</title>
+			
+			<para>The function wci.getparameterfunctiontype returns information about the 
+			specified parameterfunctiontype to the user.</para>
+			
+			<sect2 id="sec:wci.getparameterfunctiontype.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getparameterfunctiontype.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getparameterfunctiontype
+(
+	type		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getparameterfunctiontype.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getparameterfunctiontype parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>type</entry>
+								<entry>The name of the parameterfunctiontype to be returned. 
+								NULL returns all types. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getparameterfunctiontype.result">
+				<title>Expected Result</title>
+				
+				<para>A row of data describing the parameterfunctiontype.</para>
+
+				<table frame="all">
+					<title>wci.getparameterfunctiontype return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameterfunctiontype</entry>
+								<entry>The parameterfunctiontype being described.</entry>
+							</row>
+							<row>
+								<entry>parameterfunctiondescription</entry>
+								<entry>A description of the parameter function type.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getparameterfunctiontype.example">
+				<title>Example</title>
+				
+				<para>An example to get information about the parameterfunctiontype "accumulated":</para>
+				
+				<programlisting>
+SELECT wci.getparameterfunctiontype ( 'accumulated' );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.getparameterfunctiontype.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addparameterfunctiontype</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getplacedefinition">
+			<title>wci.getPlaceDefinition</title>
+			
+			<para>The function wci.getPlaceDefinition lists the place 
+			definitions defined in the database that match the search 
+			criteria and are available in the namespace.</para>
+			
+			<sect2 id="sec:wci.getplacedefinition.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacedefinition.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getplacedefinition
+(
+	placename		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacedefinition.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getPlaceDefinition parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placename</entry>
+								<entry>The placename that you require information for.  
+								NULL returns all place definitions in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacedefinition.result">
+				<title>Expected Result</title>
+				
+				<para>The list of place definitions.</para>
+
+				<table frame="all">
+					<title>wci.getPlaceDefinition return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeid</entry>
+								<entry>The internal place ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>placegeometrytype</entry>
+								<entry>The place geometry of the place definition. Currently points and grids
+									are supported</entry>
+							</row>
+							<row>
+								<entry>placegeometry</entry>
+								<entry>The geometry of the place definition in the default SRID. Note that
+									for regular grids, only a polygon of the four corner points is stored
+									in this field.</entry>
+							</row>
+							<row>
+								<entry>placeindeterminatecode</entry>
+								<entry>The indeterminate code for the place definition.</entry>
+							</row>
+							<row>
+								<entry>placenamespaceid</entry>
+								<entry>The name space of the query.</entry>
+							</row>
+							<row>
+								<entry>placename</entry>
+								<entry>The place name of the place definition.</entry>
+							</row>
+							<row>
+								<entry>originalsrid</entry>
+								<entry>The original SRID of the place definition. This is particularly
+									important to keep track of for grids.</entry>
+							</row>
+							<row>
+								<entry>placestoretime</entry>
+								<entry>The storetime of the place definition.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacedefinition.example">
+				<title>Example</title>
+				
+				<para>An example to list the place definitions matching the name "oslo":</para>
+				
+				<programlisting>
+SELECT wci.getplacedefinition ( 'oslo' );
+</programlisting>
+
+				<para>List all place definitions starting on "os" in the name space:</para>
+
+				<programlisting>
+SELECT wci.getplacedefinition ( 'os%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacedefinition.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		<sect1 id="sec:wci.getplacename">
+			<title>wci.getPlaceName</title>
+			
+			<para>The function wci.getPlaceName lists the place 
+			names defined in the database that match the search 
+			criteria and are available in the namespace.</para>
+			
+			<sect2 id="sec:wci.getplacename.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacename.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getplacename
+(
+	placename		text
+)
+</programlisting>
+
+				<programlisting>
+wci.getplacename
+(
+	numberX 			int,
+	numberY 			int,
+	incrementX 			float,
+	incrementY 			float,
+	startX	 			float,
+	startY	 			float,
+	projdefinition	 	text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacename.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getPlaceName parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placename</entry>
+								<entry>The placename that you require information for.  
+								NULL returns all place names in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+							<row>
+								<entry>numberx</entry>
+								<entry>The number of points along the x axis in the regular
+									grid.</entry>
+							</row>
+							<row>
+								<entry>numbery</entry>
+								<entry>The number of points along the y axis in the regular
+									grid.</entry>
+							</row>
+							<row>
+								<entry>incrementx</entry>
+								<entry>The increment distance on the x axis; i.e., the distance
+									between two adjacent points on the x axis. The unit of the
+									attribute is given by the Proj.4, which means that it is
+									usually either degrees (the default) or meters.</entry>
+							</row>
+							<row>
+								<entry>incrementy</entry>
+								<entry>The increment distance on the y axis.</entry>
+							</row>
+							<row>
+								<entry>startx</entry>
+								<entry>The starting point of the grid on the x axis of the 
+								original Proj.4 projection.</entry>
+							</row>
+							<row>
+								<entry>starty</entry>
+								<entry>The starting point of the grid on the y axis of the
+								original Proj.4 projection.</entry>
+							</row>
+							<row>
+								<entry>projdefinition</entry>
+								<entry>The original PROJ.4 projection of the place definition.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacename.result">
+				<title>Expected Result</title>
+				
+				<para>The list of place grids.</para>
+
+				<table frame="all">
+					<title>wci.getPlaceName return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeid</entry>
+								<entry>The internal place ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>placenamespaceid</entry>
+								<entry>The name space of the query.</entry>
+							</row>
+							<row>
+								<entry>placename</entry>
+								<entry>The place name of the place definition.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacename.example">
+				<title>Example</title>
+				
+				<para>An example to list the placenames matching "osl":</para>
+				
+				<programlisting>
+SELECT wci.getplacename ( 'osl%' );
+</programlisting>
+
+				<para>List the place grid matching a set of attributes:</para>
+
+				<programlisting>
+SELECT wci.getplacename ( 248, 
+						  400,
+						  0.5,
+						  0.5,
+						  35.6,
+						  -25.4,
+						  "+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs" );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacename.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+		
+		<sect1 id="sec:wci.getplacepoint">
+			<title>wci.getPlacePoint</title>
+			
+			<para>The function wci.getPlacePoint lists all the place 
+			points defined in the database that match the search 
+			criteria and are available in the namespace.</para>
+			
+			<sect2 id="sec:wci.getplacepoint.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacepoint.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getplacepoint
+(
+	placename		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacepoint.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getPlacePoint parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placename</entry>
+								<entry>The placename that you require information for.  
+								NULL returns all place points in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacepoint.result">
+				<title>Expected Result</title>
+				
+				<para>The list of place points.</para>
+
+				<table frame="all">
+					<title>wci.getPlacePoint return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeid</entry>
+								<entry>The internal place ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>placegeometrytype</entry>
+								<entry>The place geometry of the place point. Currently points and grids
+									are supported</entry>
+							</row>
+							<row>
+								<entry>placegeometry</entry>
+								<entry>The geometry of the place point.</entry>
+							</row>
+							<row>
+								<entry>placeindeterminatecode</entry>
+								<entry>The indeterminate code for the place point.</entry>
+							</row>
+							<row>
+								<entry>placenamespaceid</entry>
+								<entry>The name space of the query.</entry>
+							</row>
+							<row>
+								<entry>placename</entry>
+								<entry>The place name of the place point.</entry>
+							</row>
+							<row>
+								<entry>originalsrid</entry>
+								<entry>The original SRID of the place point.</entry>
+							</row>
+							<row>
+								<entry>placestoretime</entry>
+								<entry>The storetime of the place point.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacepoint.example">
+				<title>Example</title>
+				
+				<para>An example to list the place points matching the name "oslo":</para>
+				
+				<programlisting>
+SELECT wci.getplacepoint ( 'oslo' );
+</programlisting>
+
+				<para>List all place points starting on "os" in the name space:</para>
+
+				<programlisting>
+SELECT wci.getplacepoint ( 'os%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getplacepoint.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		<sect1 id="sec:wci.getplaceregulargrid">
+			<title>wci.getPlaceRegularGrid</title>
+			
+			<para>The function wci.getPlaceRegularGrid lists the place 
+			grids defined in the database that match the search 
+			criteria and are available in the namespace.</para>
+			
+			<sect2 id="sec:wci.getplaceregulargrid.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplaceregulargrid.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getplaceregulargrid
+(
+	placename		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplaceregulargrid.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getPlaceRegularGrid parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placename</entry>
+								<entry>The placename that you require information for.  
+								NULL returns all place grids in the namespace. PostgreSQL
+								wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getplaceregulargrid.result">
+				<title>Expected Result</title>
+				
+				<para>The list of place grids.</para>
+
+				<table frame="all">
+					<title>wci.getPlaceDefinition return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeid</entry>
+								<entry>The internal place ID used in WDB.</entry>
+							</row>
+							<row>
+								<entry>placegeometrytype</entry>
+								<entry>The place geometry of the place definition. Currently points and grids
+									are supported</entry>
+							</row>
+							<row>
+								<entry>placegeometry</entry>
+								<entry>The geometry of the place definition.</entry>
+							</row>
+							<row>
+								<entry>placeindeterminatecode</entry>
+								<entry>The indeterminate code for the place definition.</entry>
+							</row>
+							<row>
+								<entry>placenamespaceid</entry>
+								<entry>The name space of the query.</entry>
+							</row>
+							<row>
+								<entry>placename</entry>
+								<entry>The place name of the place definition.</entry>
+							</row>
+							<row>
+								<entry>numberx</entry>
+								<entry>The number of points along the x axis in the regular
+									grid.</entry>
+							</row>
+							<row>
+								<entry>numbery</entry>
+								<entry>The number of points along the y axis in the regular
+									grid.</entry>
+							</row>
+							<row>
+								<entry>incrementx</entry>
+								<entry>The increment distance on the x axis; i.e., the distance
+									between two adjacent points on the x axis. The unit of the
+									attribute is given by the Proj.4, which means that it is
+									usually either degrees (the default) or meters.</entry>
+							</row>
+							<row>
+								<entry>incrementy</entry>
+								<entry>The increment distance on the y axis.</entry>
+							</row>
+							<row>
+								<entry>startx</entry>
+								<entry>The starting point of the grid on the x axis of the 
+								original Proj.4 projection.</entry>
+							</row>
+							<row>
+								<entry>starty</entry>
+								<entry>The starting point of the grid on the y axis of the
+								original Proj.4 projection.</entry>
+							</row>
+							<row>
+								<entry>originalsrid</entry>
+								<entry>The original SRID of the place definition. This is particularly
+									important to keep track of for grids.</entry>
+							</row>
+							<row>
+								<entry>projdefinition</entry>
+								<entry>The original PROJ.4 projection of the place definition.</entry>
+							</row>
+							<row>
+								<entry>placestoretime</entry>
+								<entry>The storage time of the place definition.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getplaceregulargrid.example">
+				<title>Example</title>
+				
+				<para>An example to list the place grid matching the name "hirlam 10 grid":</para>
+				
+				<programlisting>
+SELECT wci.getplaceregulargrid ( 'hirlam 10 grid' );
+</programlisting>
+
+				<para>List all place grid starting on "hirlam" in the name space:</para>
+
+				<programlisting>
+SELECT wci.getplaceregulargrid ( 'hirlam%' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.getplaceregulargrid.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+		<sect1 id="sec:wci.getsrid">
+			<title>wci.getSrid</title>
+			
+			<para>The function wci.getSrid lists all the spatial
+			reference ID's defined in the database that match the search 
+			criteria and are available in the namespace.</para>
+			
+			<sect2 id="sec:wci.getsrid.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getsrid.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getsrid
+(
+	projstr			text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getsrid.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getSrid parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>projstr</entry>
+								<entry>The Proj.4 string that matches the SRID you want to retrieve.
+								NULL returns all SRIDs in the spatial reference system table.
+								PostgreSQL wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getsrid.result">
+				<title>Expected Result</title>
+				
+				<para>The list of SRIDs.</para>
+
+				<table frame="all">
+					<title>wci.getSrid return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>srid</entry>
+								<entry>The spatial reference ID. An integer value that 
+									uniquely identifies the Spatial Referencing System 
+									(SRS) within the database.</entry>
+							</row>
+							<row>
+								<entry>auth_name</entry>
+								<entry>The name of the standard or standards body that 
+								is being cited for this reference system. For example, 
+								"EPSG" would be a valid auth_name.</entry>
+							</row>
+							<row>
+								<entry>auth_srid</entry>
+								<entry>he ID of the Spatial Reference System as defined 
+									by the Authority cited in the auth_name. For EPSG data, 
+									for example, this is the EPSD id number.</entry>
+							</row>
+							<row>
+								<entry>srtext</entry>
+								<entry>The Well-Known Text representation of the Spatial 
+									Reference System. WDB ignores this column and always
+									inserts NULL.</entry>
+							</row>
+							<row>
+								<entry>proj4text</entry>
+								<entry>This is the Proj.4 coordinate definition string
+									for a particular SRID.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getsrid.example">
+				<title>Example</title>
+				
+				<para>An example to list the SRID's with longitude/latitude projections:</para>
+				
+				<programlisting>
+SELECT wci.getsrid ( '%+proj=longlat%' );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.getsrid.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getunit">
+			<title>wci.getunit</title>
+			
+			<para>The function wci.getunit lists all the units defined in 
+			the database that match the search criteria.</para>
+			
+			<sect2 id="sec:wci.getunit.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getunit.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getunit
+(
+	unit		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getunit.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getunit parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>unit</entry>
+								<entry>The UCUM designation of the unit.
+								NULL returns all units in the database.
+								PostgreSQL wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getunit.result">
+				<title>Expected Result</title>
+				
+				<para>The list of units.</para>
+
+				<table frame="all">
+					<title>wci.getunit return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>unitname</entry>
+								<entry>The name (context-sensitive UCUM designation) of the unit.</entry>
+							</row>
+							<row>
+								<entry>unittype</entry>
+								<entry>The type of the unit.</entry>
+							</row>
+							<row>
+								<entry>measure</entry>
+								<entry>The measure of the unit, if any.</entry>
+							</row>
+							<row>
+								<entry>description</entry>
+								<entry>A description of the unit.</entry>
+							</row>
+							<row>
+								<entry>siunitconversioncoefficient</entry>
+								<entry>The coefficient to multiply the value with to get the SI unit (if any).
+								The formula is (value * coefficient) + term</entry>
+							</row>
+							<row>
+								<entry>siunitconversionterm</entry>
+								<entry>The term to add to the value to get the SI unit (if any).
+								The formula is (value * coefficient) + term</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getunit.example">
+				<title>Example</title>
+				
+				<para>An example to list all units with pressure (Pascal):</para>
+				
+				<programlisting>
+SELECT wci.getunit ( '%Pa%' );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.getunit.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addunit</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.getvalueparameter">
+			<title>wci.getValueParameter</title>
+			
+			<para>The function wci.getValueParameter lists all the value parameters defined in 
+			the database that match the search criteria.</para>
+			
+			<sect2 id="sec:wci.getvalueparameter.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have read access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.getvalueparameter.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.getvalueparameter
+(
+	parameter		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getvalueparameter.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.getvalueparameter parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>parameter</entry>
+								<entry>The name of the value parameter in the name space.
+								NULL returns all value parameters in the name space.
+								PostgreSQL wild cards (used in LIKE statements) may be used.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.getvalueparameter.result">
+				<title>Expected Result</title>
+				
+				<para>The list of valueparameters.</para>
+
+				<table frame="all">
+					<title>wci.getvalueparameter return row</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Attribute</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>valueparameterid</entry>
+								<entry>The internal parameter ID of the value parameter.</entry>
+							</row>
+							<row>
+								<entry>parameternamespaceid</entry>
+								<entry>The currently selected parameter name space.</entry>
+							</row>
+							<row>
+								<entry>valueparametername</entry>
+								<entry>The name of the valueparameter in the name space.</entry>
+							</row>
+							<row>
+								<entry>valueparameterunit</entry>
+								<entry>The unit of measure of the value parameter.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</sect2>
+			
+			<sect2 id="sec:wci.getvalueparameter.example">
+				<title>Example</title>
+				
+				<para>An example to list all value parameters based on temperature:</para>
+				
+				<programlisting>
+SELECT wci.getvalueparameter ( '%temperature%' );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.getvalueparameter.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addvalueparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 
 		<sect1 id="sec:wci.read">
 			<title>wci.read</title>
@@ -2329,7 +5942,7 @@ FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
 			<para>The function wci.setDataProviderName allows an administrator to set
 			the data provider name of a data provider in the currently selected
 			namespace of WDB. If another data provider name has already been set
-			for the data provider in the nmespace, this function will overwrite
+			for the data provider in the namespace, this function will overwrite
 			the old name.</para>
 			
 			<sect2 id="sec:wci.setdataprovidername.prereq">
@@ -2416,6 +6029,298 @@ SELECT wci.setdataprovidername( 'michael', 'michel' );
 					<listitem><para>wci.addwciuser</para></listitem>
 					<listitem><para>wci.getdataprovider</para></listitem>
 					<listitem><para>wci.getdataprovidername</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.setlevelparametername">
+			<title>wci.setLevelParameterName</title>
+			
+			<para>The function wci.setLevelParameterName allows an administrator to set
+			the name of a level parameter in the currently selected
+			namespace of WDB. If another level parameter name has already been set
+			in the namespace, this function will overwrite
+			the old name.</para>
+			
+			<sect2 id="sec:wci.setlevelparametername.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.setlevelparametername.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.setlevelparametername
+(
+	canonicalName			text,
+	levelParameterName		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setlevelparametername.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.setLevelParameterName parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>canonicalName</entry>
+								<entry>The name of the level parameter in the canonical (0) namespace.
+									Note that it is not possible to change the canonical name of a 
+									parameter using this function.</entry>
+							</row>
+							<row>
+								<entry>levelParameterName</entry>
+								<entry>The level parameter name to be set.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setlevelparametername.result">
+				<title>Expected Result</title>
+				
+				<para>No return.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setlevelparametername.example">
+				<title>Example</title>
+				
+				<para>To rename the parameter with the canonical name "hybrid level" to "HL", 
+				we would use:</para>
+				
+				<programlisting>
+SELECT wci.setlevelparametername( 'hybrid level', 'HL' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.setlevelparametername.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addcodelevelparameter</para></listitem>
+					<listitem><para>wci.addmeasurelevelparameter</para></listitem>
+					<listitem><para>wci.getlevelparameter</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
+
+		<sect1 id="sec:wci.setplacename">
+			<title>wci.setPlaceName</title>
+			
+			<para>The function wci.setPlaceName allows an administrator to set
+			the place name of a place definition in the currently selected
+			namespace of WDB. If another place name has already been set
+			for the place definition in the namespace, this function will overwrite
+			the old name.</para>
+			
+			<sect2 id="sec:wci.setplacename.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative access to the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.setplacename.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.setPlaceName
+(
+	canonicalName		text,
+	placeName			text	
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setplacename.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.setPlaceName parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>canonicalName</entry>
+								<entry>The canonical name of the place definition that
+									you wish to change the place name for.</entry>
+							</row>
+							<row>
+								<entry>placeName</entry>
+								<entry>The new place name of the place definition.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setplacename.result">
+				<title>Expected Result</title>
+				
+				<para>None.</para>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.setplacename.example">
+				<title>Example</title>
+				
+				<para>An example to set the name of the Hirlam 10 grid in the database:</para>
+				
+				<programlisting>
+SELECT wci.setplacename ( 'grid(5.75 -13.25, 0.1 0.1, 248 400, 50001)', 'hirlam 10km grid' );
+</programlisting>
+
+			</sect2>
+			
+			<sect2 id="sec:wci.setplacename.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+				</itemizedlist>
+			</sect2>
+		</sect1>
+
+
+		<sect1 id="sec:wci.setvalueparametername">
+			<title>wci.setValueParameterName</title>
+			
+			<para>The function wci.setValueParameterName allows an administrator to set
+			the name of a value parameter in the currently selected
+			namespace of WDB. If another value parameter name has already been set
+			in the namespace, this function will overwrite
+			the old name.</para>
+			
+			<sect2 id="sec:wci.setvalueparametername.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have administrative rights to the database; i.e., 
+						either be the system administrator or a member of the WDB_ADMIN user
+						group.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.setvalueparametername.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.setvalueparametername
+(
+	canonicalName			text,
+	valueParameterName		text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setvalueparametername.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.setValueParameterName parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>canonicalName</entry>
+								<entry>The name of the value parameter in the canonical (0) namespace.
+									Note that it is not possible to change the canonical name of a 
+									parameter using this function.</entry>
+							</row>
+							<row>
+								<entry>valueParameterName</entry>
+								<entry>The value parameter name to be set.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setvalueparametername.result">
+				<title>Expected Result</title>
+				
+				<para>No return.</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.setvalueparametername.example">
+				<title>Example</title>
+				
+				<para>To rename the parameter with the canonical name "air temperature"
+				to "2TM", we would use:</para>
+				
+				<programlisting>
+SELECT wci.setvalueparametername( 'air temperature', '2TM' );
+</programlisting>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.setvalueparametername.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addcodevalueparameter</para></listitem>
+					<listitem><para>wci.adddimensionlessvalueparameter</para></listitem>
+					<listitem><para>wci.addfunctionvalueparameter</para></listitem>
+					<listitem><para>wci.addmeasurevalueparameter</para></listitem>
+					<listitem><para>wci.getvalueparameter</para></listitem>
 				</itemizedlist>
 			</sect2>
 			
