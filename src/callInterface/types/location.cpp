@@ -48,8 +48,8 @@ const string reFloat = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 
 Location::Location(const std::string & location)
 {
-    // match
-    static regex re("^((exact|nearest|surround|bilinear)\\s+)?" // Interpolation
+    // match surround\\s*(\\s*[0-9]+\\s*)|
+    static regex re("^((exact|nearest|surround|surround\\s*\\(\\s*[1-9]\\s*\\)|bilinear)\\s+)?" // Interpolation
 					"((" // Plain geometries
 					"POINT\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
 					"POLYGON\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"

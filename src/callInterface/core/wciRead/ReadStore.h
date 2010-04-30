@@ -69,6 +69,7 @@ struct ReadStore
 	enum ReadStoreMode returnMode;
 
 	enum InterpolationType interpolation;
+	int interpolationParameter;
 	const char * locationString;
 	GEOSGeom location;
 

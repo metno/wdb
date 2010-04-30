@@ -146,6 +146,12 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-29
 # TransactionCorrectnessTest 
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '1975-04-21 06:00:00+00' --validtimefrom='1975-04-21 06:00:00+00' --validtimeto='1975-04-21 06:00:00+00' --levelparameter 'height above ground distance' --levelfrom 0 --levelto 0
 
+# Surround Interpolation
+# G01 Test
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'wind velocity (u vector)' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'wind velocity (v vector)' -P 119,99=2 -P 119,100=2 -P 119,101=2 -P 119,102=2 -P 120,99=2 -P 120,100=2 -P 120,101=2 -P 120,102=2 -P 121,99=2 -P 121,100=2 -P 121,101=2 -P 121,102=2 -P 122,99=2 -P 122,100=2 -P 122,101=2 -P 122,102=2
+
+
 #wciOutputTest
 $TEST_WRITE  --reftime '2008-04-21 06:00:00+00' -P0,0=NaN
 

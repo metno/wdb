@@ -58,12 +58,12 @@ public:
 	 * @param Interpolation interpolation method
 	 * @param dataId The grid to read from.
 	 */
-	GridPointDataList * read(const GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
+	GridPointDataList * read(const GEOSGeom location, InterpolationType interpolation, int interpolationParam, FileId dataId) const;
 
 private:
 	GridPointDataList * readExact_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const;
 	GridPointDataList * readNearest_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const;
-	GridPointDataList * readSurround_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const;
+	GridPointDataList * readSurround_(const GEOSGeom location, double exactX, double exactY, int interpolationParam, FileId dataId) const;
 	GridPointDataList * readBilinear_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const;
 
 	const BaseDataReader & reader_;

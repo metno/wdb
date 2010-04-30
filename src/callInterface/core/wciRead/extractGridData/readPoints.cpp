@@ -40,7 +40,7 @@ extern "C"
 
 struct GridPointDataListIterator * readPoints(
 		const struct PlaceSpecification * ps, GEOSGeom location,
-		enum InterpolationType interpolation, FileId dataId)
+		enum InterpolationType interpolation, int interpolationParam, FileId dataId)
 {
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
 
@@ -63,7 +63,7 @@ struct GridPointDataListIterator * readPoints(
 			{
 				SinglePointReader reader(dataReader);
 
-				GridPointDataList * list = reader.read(location, interpolation, dataId);
+				GridPointDataList * list = reader.read(location, interpolation, interpolationParam, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if (geometryType == GEOS_POLYGON)

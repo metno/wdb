@@ -46,7 +46,7 @@ SinglePointReader::~SinglePointReader()
 
 
 GridPointDataList * SinglePointReader::read(const GEOSGeom location,
-		InterpolationType interpolation, FileId dataId) const
+		InterpolationType interpolation, int interpolationParam, FileId dataId) const
 {
 	GridPointDataList * list = 0;
 
@@ -61,7 +61,7 @@ GridPointDataList * SinglePointReader::read(const GEOSGeom location,
 		list = readNearest_(location, exactIndex.lon, exactIndex.lat, dataId);
 		break;
 	case Surround:
-		list = readSurround_(location, exactIndex.lon, exactIndex.lat, dataId);
+		list = readSurround_(location, exactIndex.lon, exactIndex.lat, interpolationParam, dataId);
 		break;
 	case Bilinear:
 		list = readBilinear_(location, exactIndex.lon, exactIndex.lat, dataId);
@@ -111,7 +111,7 @@ GridPointDataList * SinglePointReader::readNearest_(const GEOSGeom location, dou
 	return GridPointDataListNew(0);
 }
 
-GridPointDataList * SinglePointReader::readSurround_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const
+GridPointDataList * SinglePointReader::readSurround_(const GEOSGeom location, double exactX, double exactY, int interpolationParam, FileId dataId) const
 {
 	// In case we ask for a position which is exactly on a grid line, we cheat
 	// to be able to return four points, by adding 0.5 to the value
@@ -120,16 +120,20 @@ GridPointDataList * SinglePointReader::readSurround_(const GEOSGeom location, do
 	if ( exactY == int(exactY) )
 		exactY += 0.5;
 
-	GridPointData out[4];
+	int sizeRet = (interpolationParam * 2) * ( interpolationParam * 2);
+	GridPointData out[sizeRet];
+	int startX = std::floor(exactX) - (interpolationParam - 1);
+	int endX =  std::ceil(exactX) + (interpolationParam - 1);
+	int startY = std::floor(exactY) - (interpolationParam - 1);
+	int endY =  std::ceil(exactY) + (interpolationParam - 1);
+
 	int count = 0;
-	if ( reader_.readPoint(out[count],std::floor(exactX), std::floor(exactY), dataId) )
-		++ count;
-	if ( reader_.readPoint(out[count],std::ceil(exactX), std::floor(exactY), dataId) )
-		++ count;
-	if ( reader_.readPoint(out[count],std::floor(exactX), std::ceil(exactY), dataId) )
-		++ count;
-	if ( reader_.readPoint(out[count],std::ceil(exactX), std::ceil(exactY), dataId) )
-		++ count;
+	for ( int y = startY; y<=endY; y++ ) {
+		for ( int x = startX; x<= endX; x++ ) {
+			if ( reader_.readPoint(out[count], x, y, dataId) )
+				++ count;
+		}
+	}
 
 	GridPointDataList * list = GridPointDataListNew(count);
 	memcpy(list->data, out, sizeof(GridPointData) * count);
@@ -161,7 +165,7 @@ float bilinear(const GridPointDataList * dl, double exactX, double exactY)
 
 GridPointDataList * SinglePointReader::readBilinear_(const GEOSGeom location, double exactX, double exactY, FileId dataId) const
 {
-	GridPointDataList * surroundingPoints = readSurround_(location, exactX, exactY, dataId);
+	GridPointDataList * surroundingPoints = readSurround_(location, exactX, exactY, 1, dataId);
 	if ( surroundingPoints->count < 4 )
 	{
 		GridPointDataListDelete(surroundingPoints, false);

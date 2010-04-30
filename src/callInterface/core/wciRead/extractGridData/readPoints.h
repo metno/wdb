@@ -58,6 +58,7 @@ extern "C" {
 struct GridPointDataListIterator * readPoints(
 		const struct PlaceSpecification * ps, GEOSGeom location,
 		enum InterpolationType interpolation,
+		int interpolationParam,
 		FileId dataId);
 
 

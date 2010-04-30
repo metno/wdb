@@ -41,7 +41,8 @@ static struct GridPointDataListIterator * getValues(long long placeid, long long
     // The code below is developed independently of the rest, and uses SPI for
     // its own purposes. Therefore push and pop.
     SPI_push();
-    struct GridPointDataListIterator * ret = readPoints(ps, store->location, store->interpolation, dataid);
+    struct GridPointDataListIterator * ret = readPoints(ps, store->location, store->interpolation,
+														store->interpolationParameter, dataid);
     SPI_pop();
 
     return ret;

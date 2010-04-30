@@ -30,6 +30,8 @@
 #include "getPlaceSpecification.h"
 #include <types/location.h>
 #include <boost/assign/list_of.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 #include <stdexcept>
 #include <map>
 
@@ -87,14 +89,25 @@ void setReadStoreGeometry(struct ReadStore * out, SPITupleTable * tuples, const 
 			Location loc = getGeometry(location);
 
 			out->location = GEOSGeomFromWKT(loc.location().c_str());
-
+			out->interpolationParameter = 1;
 			typedef std::map<std::string, InterpolationType> InterpolationNameList;
 			static const std::map<std::string, InterpolationType> interpolations =
 					boost::assign::map_list_of("exact", Exact)("nearest", Nearest)("surround", Surround)("bilinear", Bilinear);
 
 			InterpolationNameList::const_iterator find = interpolations.find(loc.interpolation());
-			if ( find == interpolations.end() )
+			if ( find == interpolations.end() ) {
 				out->interpolation = Nearest;
+				if ( loc.interpolation().size() > 0 ) {
+					size_t spos = loc.interpolation().find( '(' );
+					size_t epos = loc.interpolation().find( ')' );
+					if (( spos != std::string::npos )&&( epos != std::string::npos )) {
+						std::string iStr = loc.interpolation().substr( spos + 1, (epos - spos)-1 );
+						boost::trim( iStr );
+						out->interpolationParameter = boost::lexical_cast<int>( iStr );
+						out->interpolation = Surround;
+					}
+				}
+			}
 			else
 				out->interpolation = find->second;
 
