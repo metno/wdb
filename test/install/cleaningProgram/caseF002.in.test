@@ -41,7 +41,7 @@ esac
 # Timing
 startTime=`date +%s%N`
 # Calculate Test time
-TESTTIME=$(date +%FT%R:%S --date "2 days ago")
+TESTTIME=$(date +%FT%R:%S --date "1 days ago")
 
 # Clean out database
 $TEST_PATH/tearDown.sh
@@ -60,7 +60,7 @@ then
     $TEST_PATH/tearDown.sh
     exit 1
 fi
-
+ 
 # Run Cleaner
 $PSQL -q <<EOF
 \o __WDB_LOGDIR__/$TESTCASE_FILE.tmp
