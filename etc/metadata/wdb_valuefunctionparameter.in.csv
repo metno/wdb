@@ -28,6 +28,9 @@ ParameterId|ParameterFunction|Value Domain|Unit|QuantityType
 712|50th percentile accumulated|precipitation|kg/m2|scalar
 713|75th percentile accumulated|precipitation|kg/m2|scalar
 714|90th percentile accumulated|precipitation|kg/m2|scalar
+715|local 20th percentile accumulated|precipitation|kg/m2|scalar
+716|local 50th percentile accumulated|precipitation|kg/m2|scalar
+717|local 80th percentile accumulated|precipitation|kg/m2|scalar
 10201|peak|wave|s|scalar
 10202|significant|wave|s|scalar
 10203|peak|wave|rad|scalar

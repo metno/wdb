@@ -21,6 +21,7 @@ ParameterId|Parameter Name|Value Parameter Description
 107|primary waves direction|NA
 109|secondary waves direction|NA
 184|sea albedo|NA
+719|probability of precipitation|Probability of precipitation
 720|probability of precipitation >0.1mm|Probability of precipitation exceeding 0.1 mm
 721|probability of precipitation >0.2mm|Probability of precipitation exceeding 0.2 mm
 722|probability of precipitation >0.5mm|Probability of precipitation exceeding 0.5 mm
