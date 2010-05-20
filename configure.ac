@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.9.6, [wdb@met.no])
+AC_INIT(wdb, 0.9.7, [wdb@met.no])
 AC_SUBST( [SCHEMA_VERSION],["0"] )
 # A previous schema version
 # - This is used for test purposes; e.g., the upgrade test
