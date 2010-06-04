@@ -1,8 +1,26 @@
+wdb (0.9.6-7) hardy; urgency=low
+
+  * debian updates (again)
+
+ -- Vegard B�nes <vegardb@met.no>  Wed, 24 Feb 2010 13:25:38 +0000
+
+wdb (0.9.6-6) hardy; urgency=low
+
+  * debian updates (again)
+
+ -- Vegard B�nes <vegardb@met.no>  Tue, 23 Feb 2010 11:44:42 +0000
+
+wdb (0.9.6-5) hardy; urgency=low
+
+  * debian updates
+
+ -- Vegard B�nes <vegardb@met.no>  Mon, 22 Feb 2010 16:30:29 +0000
+
 wdb (0.9.6-4) hardy; urgency=low
 
   * final build
 
- -- Vegard B�nes <vegardb@development9>  Fri, 05 Feb 2010 14:14:35 +0000
+ -- Vegard B�nes <vegardb@met.no>  Fri, 05 Feb 2010 14:14:35 +0000
 
 wdb (0.9.6-1) hardy; urgency=low
 

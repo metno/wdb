@@ -2,12 +2,14 @@ Source: wdb
 Section: devel
 Priority: extra
 Maintainer: Vegard Bones <vegard.bones@met.no>
-Build-Depends: debhelper (>= 5), debconf, dbconfig-common, devscripts,
+Build-Depends: debhelper (>= 5), debconf, dbconfig-common, po-debconf,
+  devscripts,
   liblog4cpp5-dev (>=1.0), 
-  pkg-config (>=0.22-1),
-  autotools-dev,  autoconf (>=2.61),
-  xmlto, libcppunit-dev, libpqxx-dev (>= 2.6.8-1), 
+  pkg-config (>=0.22),
+  autotools-dev,  autoconf (>=2.61), automake,
+  xmlto, libcppunit-dev, libpqxx-dev (>= 2.6.8), 
   proj (>=4.6.0), 
+  libglib2.0-dev, libgeos-dev
   libboost-filesystem-dev (>=1.33.1), 
   libboost-program-options-dev (>=1.33.1), 
   libboost-regex-dev (>=1.33.1), 
@@ -15,8 +17,7 @@ Build-Depends: debhelper (>= 5), debconf, dbconfig-common, devscripts,
   libboost-thread-dev (>=1.33.1),
   libreadline5-dev (>=5.2),
   postgresql-8.3-postgis, postgresql-server-dev-8.3,
-  g++, make
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 
 Package: wdb
 Architecture: any

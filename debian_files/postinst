@@ -30,7 +30,7 @@ case "$1" in
         #Create wdb admin user
 		#echo $$ adduser --gecos 0 --disabled-password $DB_USER >> /dev/null
 		
-		if ! grep -q "^$DB_USER:" /etc/passwd ; then
+		if ! id -u $DB_USER > /dev/null 2>&1; then
 		    adduser --gecos 0 --disabled-password $DB_USER
 		    # Remove any old crontab entries if this account have had any before
 		    su $DB_USER -c "crontab -r" 2> /dev/null || true
