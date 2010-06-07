@@ -1,7 +1,7 @@
 Source: wdb
 Section: devel
 Priority: extra
-Maintainer: Vegard Bones <vegard.bones@met.no>
+Maintainer: Vegard B�nes <vegard.bones@met.no>
 Build-Depends: debhelper (>= 5), debconf, dbconfig-common, po-debconf,
   devscripts,
   liblog4cpp5-dev (>=1.0), 
