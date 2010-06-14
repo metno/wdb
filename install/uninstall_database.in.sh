@@ -140,7 +140,7 @@ psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "SELECT __WDB_SCHEMA
 
 # Drop the wdb database
 echo -n "dropping database... "
-if ! dropdb -p $WDB_INSTALL_PORT $WDB_NAME -q; then
+if ! dropdb -p $WDB_INSTALL_PORT $WDB_NAME; then
     echo "No database found - skipping database uninstall"
     exit 1
 fi
