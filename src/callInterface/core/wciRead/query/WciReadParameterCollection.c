@@ -33,6 +33,8 @@
 #include <utils/array.h>
 #include <utils/builtins.h>
 #include <tsearch/ts_utils.h>
+#include "pconversion.h"
+
 
 struct StringArray * stringArrayFromDatum(Datum d)
 {

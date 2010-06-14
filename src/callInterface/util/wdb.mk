@@ -5,6 +5,7 @@
 
 wdb_la_SOURCES += 	src/callInterface/util/conversion.h \
 						src/callInterface/util/conversion.c \
+						src/callInterface/util/pconversion.h \
 						src/callInterface/util/tuple.h \
 						src/callInterface/util/tuple.c
 	

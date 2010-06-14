@@ -42,9 +42,6 @@
  * header files contain C++ reserved keywords, and therefore may not be used
  * directly from C++.
  */
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {

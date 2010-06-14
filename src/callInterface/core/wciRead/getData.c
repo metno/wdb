@@ -26,6 +26,10 @@
     MA  02110-1301, USA
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+#include <postgres.h>
 #include <executor/spi.h>
 #include <utils/builtins.h>
 #include "getData.h"

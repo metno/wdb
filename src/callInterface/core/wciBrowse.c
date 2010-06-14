@@ -29,9 +29,7 @@
 #include "wciRead/query/buildQuery.h"
 #include <tsearch/ts_utils.h>
 #include <funcapi.h>
-
-extern Datum textin(PG_FUNCTION_ARGS);
-
+#include "pconversion.h"
 
 PG_FUNCTION_INFO_V1(getWciBrowseDataProviderQuery);
 Datum getWciBrowseDataProviderQuery(PG_FUNCTION_ARGS)

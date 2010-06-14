@@ -26,7 +26,9 @@
     MA  02110-1301, USA
 */
 
-
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 #include <psqlTupleInterface.h>
 #include <PlaceSpecification.h>
 #include <wdbProjectionCInterface.h>
@@ -34,6 +36,7 @@
 #include <funcapi.h>
 #include <executor/spi.h>
 #include <executor/executor.h>
+#include <utils/builtins.h>
 #include <string.h>
 #include <stdio.h>
 

@@ -30,6 +30,7 @@
 #include <funcapi.h>
 #include <tsearch/ts_utils.h>
 #include <wdb_geos.h>
+#include "pconversion.h"
 #include "query/buildQuery.h"
 #include "query/WciReadParameterCollection.h"
 #include "query/WciReadParameterCollection_string.h"
