@@ -58,11 +58,17 @@ public:
 	 */
 	bool isGeometry() const { return isGeometry_; }
 
+	enum GeomType
+	{
+		GEOM_UNKNOWN,
+		GEOM_POINT,
+		GEOM_POLYGON
+	};
+
 	enum QueryReturnType
 	{
 		RETURN_OID,
-		RETURN_FLOAT,
-		RETURN_OID_FLOAT
+		RETURN_FLOAT
 	};
 
 	/**
@@ -85,8 +91,10 @@ public:
 
 private:
 	std::string interpolation_;
+	int interpolationParameter_;
 	std::string location_;
 	bool isGeometry_;
+	GeomType geomType_;
 };
 
 #endif /*LOCATION_H_*/

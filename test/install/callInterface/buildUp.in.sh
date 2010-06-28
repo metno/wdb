@@ -18,11 +18,8 @@
 ##
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
-WDB_TMP_DIR=__WDB_BUILDDIR__/var/tmp
-XML_FILE1=$WDB_TMP_DIR/wciInstallTest1.xml
-XML_FILE2=$WDB_TMP_DIR/wciInstallTest2.xml
-XML_FILE3=$WDB_TMP_DIR/wciInstallTest3.xml
-mkdir -p $WDB_TMP_DIR
+#WDB_TMP_DIR=__WDB_BUILDDIR__/var/tmp
+#mkdir -p $WDB_TMP_DIR
 TEST_WRITE=./testWrite
 LOAD_XML_FILE=./xmlLoad
 
@@ -30,16 +27,10 @@ LOAD_XML_FILE=./xmlLoad
 # Copy across test data
 # (clean up first)
 #rm -f $GRIB_FILE
-rm -f $XML_FILE1
-rm -f $XML_FILE2
-rm -f $XML_FILE3
 #rm -f $CHECK_FILE
 #cp __WDB_SRCDIR__/test/install/callInterface/wciInstallTest.grib $GRIB_FILE
 #cp __WDB_SRCDIR__/test/install/callInterface/wciInstallTest.grib $CHECK_FILE
-cp __WDB_SRCDIR__/test/install/callInterface/wciInstallTest1.xml $XML_FILE1
-cp __WDB_SRCDIR__/test/install/callInterface/wciInstallTest2.xml $XML_FILE2
-cp __WDB_SRCDIR__/test/install/callInterface/wciInstallTest3.xml $XML_FILE3
-chmod 666 $WDB_TMP_DIR/*
+#chmod 666 $WDB_TMP_DIR/*
 
 # Check if we have write permission on destination directory/file:
 #if ! touch $GRIB_FILE; then
@@ -59,6 +50,10 @@ $TEST_WRITE --dataprovider 'test wci 2' --placename 'test grid, rotated' --refti
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-25 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-25 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20' --reftime '2004-12-25 06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 7' --placename 'test point 1' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 
 # PlaceGeos
 # G1-G4, G7, G8, G17, G31 Test
@@ -79,8 +74,17 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity (u vector)' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
 # G23, G24 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind velocity (v vector)' -P 175,0=2 -P 175,1=2 -P 176,0=3 -P 176,1=3
+# G25 Test
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 7' --placename 'test point 2' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 3' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 4' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 5' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 6' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 7' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 # G30 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snow depth distance' --initCoord
+
 
 # ReferenceTime
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2007-01-11 06:00:00+00' --validtimefrom '2007-01-11 06:00:00+00' --validtimeto '2007-01-12 06:00:00+00'
@@ -156,17 +160,12 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '
 $TEST_WRITE  --reftime '2008-04-21 06:00:00+00' -P0,0=NaN
 
 
-# Load Test Data
-#$LOAD_GRIB_FILE --loadPlaceDefinition $GRIB_FILE
-#$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE1
-#$LOAD_XML_FILE --dataprovider "test wci 4" $XML_FILE2
-#$LOAD_XML_FILE --dataprovider "test xml"   $XML_FILE3
 
 # Clean up Test File
 #rm -f $GRIB_FILE
-rm -f $XML_FILE1
-rm -f $XML_FILE2
-rm -f $XML_FILE3
+#rm -f $XML_FILE1
+#rm -f $XML_FILE2
+#rm -f $XML_FILE3
 
 # Exit
 echo -e "# Generated test data..."

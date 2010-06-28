@@ -1103,6 +1103,50 @@ void PlaceGeometryTest::testG24_01_BilinearReturnsCorrectGeometry()
     CPPUNIT_ASSERT_EQUAL( pnt.str(), r.front()["geometry_as_text"].as<string>() );
 }
 
+void PlaceGeometryTest::testG25_01_PointSource_ExactHit()
+{
+	result r =  t->exec( statementFloat_( "exact POINT(15.2 55.75)", 11 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 3" ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
+}
+
+void PlaceGeometryTest::testG25_02_PointSource_ExactMiss()
+{
+	result r =  t->exec( statementFloat_( "exact POINT(15.2 55.74)", 11 ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type( 0 ), r.size() );
+}
+
+void PlaceGeometryTest::testG25_03_PointSource_Nearest() {
+	result r =  t->exec( statementFloat_( "nearest POINT(15.21 55.72)", 11 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 3" ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
+}
+
+void PlaceGeometryTest::testG25_04_PointSource_Bilinear() {
+	// TODO: Correct Test
+	/*
+	result r =  t->exec( statementFloat_( "bilinear POINT(15.21 55.72)", 11 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 3" ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
+	*/
+}
+
+void PlaceGeometryTest::testG25_05_PointSource_Surround() {
+	/*
+	result r =  t->exec( statementFloat_( "surround POINT(15.21 55.72)", 11 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 3" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 4" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 5" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 6" ) );
+	CPPUNIT_ASSERT_EQUAL( result::size_type( 4 ), r.size() );
+	*/
+}
+
+void PlaceGeometryTest::testG25_06_PointSource_Polygon() {
+	//result r =  t->exec( statement_( "exact POINT(-25 5.6)", 11 ) );
+	//CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
+}
+
 void PlaceGeometryTest::testG30_02_AllPointsCorrectlyLocatedRotated()
 {
 	double lon, lat;
@@ -1254,6 +1298,22 @@ std::string PlaceGeometryTest::statement_( const std::string & geo, int paramid 
 {
     ostringstream st;
     st << "SELECT *, astext(placegeometry) AS geometry_as_text FROM wci.read( ARRAY['test group'], ";
+    if ( "NULL" == geo ) {
+        st << "NULL";
+    }
+    else {
+        st << "'" << geo << "'";
+    }
+    st << ", '2004-12-26 06:00:00+00', ";
+    st << "NULL, '{\"" << specFromParamNumber_.find( paramid )->second << "\"}', NULL, NULL, NULL::wci.returnfloat )";
+
+    return st.str();
+}
+
+std::string PlaceGeometryTest::statementFloat_( const std::string & geo, int paramid ) const
+{
+    ostringstream st;
+    st << "SELECT *, astext(placegeometry) AS geometry_as_text FROM wci.read( ARRAY['test wci 6', 'test wci 7'], ";
     if ( "NULL" == geo ) {
         st << "NULL";
     }

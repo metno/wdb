@@ -74,10 +74,6 @@ wciInstallTester_LDADD =	-lwdbProj -lwdbExcept -lwdbMath
 WCIINSTALLTEST_SUPPORT =	test/install/callInterface/buildUp.in.sh \
 							test/install/callInterface/tearDown.in.sh
 							
-WCIINSTALLTEST_XML = 		test/install/callInterface/wciInstallTest1.xml \
-							test/install/callInterface/wciInstallTest2.xml \
-							test/install/callInterface/wciInstallTest3.xml
-
 if HAS_CPPUNIT
 
 INSTALLTESTS += 			wciInstallTest.sh
@@ -94,7 +90,6 @@ CLEANFILES += 				wciInstallTest.sh \
 
 EXTRA_DIST +=				test/install/callInterface/wciInstallTest.in.sh \
 							$(WCIINSTALLTEST_SUPPORT) \
-							$(WCIINSTALLTEST_XML) \
 							test/install/callInterface/wdb.mk \
 							test/install/callInterface/Makefile.am \
 							test/install/callInterface/Makefile.in

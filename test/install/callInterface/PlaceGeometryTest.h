@@ -182,6 +182,13 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG23_04_BilinearFarOutsideGrid );
 	CPPUNIT_TEST( testG24_01_BilinearReturnsCorrectGeometry );
 
+	CPPUNIT_TEST( testG25_01_PointSource_ExactHit );
+	CPPUNIT_TEST( testG25_02_PointSource_ExactMiss );
+	CPPUNIT_TEST( testG25_03_PointSource_Nearest );
+	CPPUNIT_TEST( testG25_04_PointSource_Bilinear );
+	CPPUNIT_TEST( testG25_05_PointSource_Surround );
+	CPPUNIT_TEST( testG25_06_PointSource_Polygon );
+
 	CPPUNIT_TEST( testG30_02_AllPointsCorrectlyLocatedRotated );
 
 	CPPUNIT_TEST( testG31_01_ReturnAllRows );
@@ -347,6 +354,13 @@ public:
 	// Bilinear interpolation (correct return)
 	void testG24_01_BilinearReturnsCorrectGeometry();
 
+	// Points
+	void testG25_01_PointSource_ExactHit();
+	void testG25_02_PointSource_ExactMiss();
+	void testG25_03_PointSource_Nearest();
+	void testG25_04_PointSource_Bilinear();
+	void testG25_05_PointSource_Surround();
+	void testG25_06_PointSource_Polygon();
 
 	// Correctness
 	void testG30_02_AllPointsCorrectlyLocatedRotated();
@@ -385,6 +399,15 @@ private:
 	 * @warning behavior is undefined if paramid does not exist in specFromParamNumber_.
 	 */
 	std::string statement_( const std::string & geo, int paramid = 1 ) const;
+	/**
+	 * We use paramid to separate different sets of test data. ParamId is
+	 * essentially the GRIB/internal parameter id; setting this incorrectly
+	 * will result in undefined behaviour. Check the parameter mapping before
+	 * using.
+	 *
+	 * @warning behavior is undefined if paramid does not exist in specFromParamNumber_.
+	 */
+	std::string statementFloat_( const std::string & geo, int paramid = 1 ) const;
 
 	/**
 	 * The paramId to parameter name map

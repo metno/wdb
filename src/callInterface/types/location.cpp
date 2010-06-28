@@ -48,14 +48,16 @@ const string reFloat = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 
 Location::Location(const std::string & location)
 {
+	geomType_ = GEOM_UNKNOWN;
+	interpolationParameter_ = 0;
     // match surround\\s*(\\s*[0-9]+\\s*)|
     static regex re("^((exact|nearest|surround|surround\\s*\\(\\s*[1-9]\\s*\\)|bilinear)\\s+)?" // Interpolation
 					"((" // Plain geometries
-					"POINT\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
-					"POLYGON\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
+					"(POINT)\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
+					"(POLYGON)\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
 						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
 					")|"
-					"(\\w[\\w\\d\\s,.]*))$"); // freetext location
+					"([\\wזרוהצ][\\w\\d\\s,._זרוהצ]*))$"); // freetext location
 	smatch match;
 	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
@@ -71,11 +73,15 @@ Location::Location(const std::string & location)
 	{
 		location_ = match[4];
 		isGeometry_ = true;
+		if ( !match[5].str().empty())
+			geomType_ = GEOM_POINT;
+		if ( !match[8].str().empty())
+			geomType_ = GEOM_POLYGON;
 	}
 	// Extract location (if name)
-	else if ( !match[12].str().empty() )
+	else if ( !match[14].str().empty() )
 	{
-		location_ = match[12];
+		location_ = match[14];
 		isGeometry_ = false;
 		// lower case the string
 	    typedef int ( *f_lower ) ( int );
@@ -111,66 +117,112 @@ string Location::query( Location::QueryReturnType returnType ) const
 				q 	<< WCI_SCHEMA << ".dwithin( "
 					<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
 					<< "transform( v.placegeometry, v.originalsrid ), "
-					<< "25 )";
+					<< "1 )";
 				// See notes on transform below
 			}
+			//throw InvalidSpecification("The return type specified for the location query is unsupported");
 		}
 		else
 		{
 			// This corresponds to an "exact" query - just much faster
 			q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << location() << "')";
 		}
-
 		break;
 	case RETURN_FLOAT:
-		// When we want to return floating points, we always want to detect
-		// any overlap of the geometry with data
-		if ( ! isGeometry() )
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
+		// This code is only relevant for retrieving point-value data from a point-valued table.
+		if (( interpolation_.length() == 0)||( interpolation_ == "exact" ))
+		{
+			if ( isGeometry() )
+			{
+				if ( geomType_ == GEOM_POINT ) {
+					q << "equals( geomfromtext('" << location() << "', 4030 ), v.placegeometry )";
+				}
+				else if ( geomType_ == GEOM_POLYGON ) {
+					q 	<< WCI_SCHEMA << ".dwithin( "
+						<< "transform( v.placegeometry, v.originalsrid ), "
+						<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+						<< "1 )";
+				}
+			}
+			else {
+				q << "v.placename = '" << location() << "'";
+			}
+		}
+		else if ( interpolation_ == "nearest" )
+		{
+			if ( isGeometry() )
+				myGeometry = "geomfromtext('" + location() + "', 4030 )";
+			else
+				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
+			// Create query
+			q 	<<  "v.valueid IN "
+				<<	"(SELECT nn_gid FROM "
+				<< WCI_SCHEMA << ".nearestneighbor( "
+				<< myGeometry << ", "   // geometry
+				<< "1, "				// distance to nearest
+				<< "1, "				// number of points
+				<< "180, "				// iterations
+				<< "'" << WCI_SCHEMA << ".floatvalue', "
+				<< "'true', "
+				<< "'valueid', "
+				<< "'placegeometry' ))";
+		}
+		else if ( interpolation_ == "surround" )
+		{
+			if ( isGeometry() )
+				myGeometry = "geomfromtext('" + location() + "', 4030 )";
+			else
+				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
+			// Create query
+			q 	<<  "v.valueid IN "
+				<<	"(SELECT nn_gid FROM "
+				<< WCI_SCHEMA << ".nearestneighbor( "
+				<< myGeometry << ", "   // geometry
+				<< "1, "				// distance to nearest
+				<< "1, "				// number of points
+				<< "180, "				// iterations
+				<< "'" << WCI_SCHEMA << ".floatvalue', "
+				<< "'true', "
+				<< "'valueid', "
+				<< "'placegeometry' ))";
+		}
 		else
-			myGeometry = "geomfromtext('" + location() + "', 4030 )";
-		// Create query
-		if ( myGeometry == "NULL" )
 			q << "FALSE";
-		else
-		{
-			q 	<< WCI_SCHEMA << ".dwithin( "
-				<< "transform( " << myGeometry << ", v.originalsrid ), "
-				<< "transform(v.placegeometry, v.originalsrid ),"
-				<< "25 )";
-			// The transformation to the original srid of the geometry (where the grid will be a "square" is required,
-			// because otherwise the overlaps query may not function correctly (PostGIS is only spatial, not geodetic)
-			// wci(internal).dwithin (really ST_DWITHIN from Postgis version > 1.2.1) is used instead of overlaps (or
-			// something similar), because the precision as we transform back and forth between the various srids will
-			// get messed up.
-		}
-		break;
-	case RETURN_OID_FLOAT:
-		// When we want to return floating points for OIDs, we don't want to check for
-		// overlap of the geometry with data. That is done later
-
-		// NOT USED
-
-		if ( ! isGeometry() )
-		{
-			// Get the geometry of the placeId
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p," + std::string(WCI_SCHEMA) + ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
-		}
-		else
-		{
-			myGeometry = "geomfromtext('" + location() + "', 4030 )";
-		}
-		// Create query
-		if ( myGeometry == "NULL" ) {
-			q << "FALSE";
-		}
-		else {
-			q 	<< "TRUE";
-			// As long as the geometry exists, we just ignore it
-		}
 		break;
 	default:
 		throw InvalidSpecification("The return type specified for the location query is unsupported");
 	}
 	return q.str();
 }
+
+/*
+ * CODE
+InterpolationType Location::interpolationType( ) const
+{
+	Location loc = getGeometry(location);
+
+	out->location = GEOSGeomFromWKT(loc.location().c_str());
+	out->interpolationParameter = 1;
+	typedef std::map<std::string, InterpolationType> InterpolationNameList;
+	static const std::map<std::string, InterpolationType> interpolations =
+			boost::assign::map_list_of("exact", Exact)("nearest", Nearest)("surround", Surround)("bilinear", Bilinear);
+
+	InterpolationNameList::const_iterator find = interpolations.find(loc.interpolation());
+	if ( find == interpolations.end() ) {
+		out->interpolation = Nearest;
+		if ( loc.interpolation().size() > 0 ) {
+			size_t spos = loc.interpolation().find( '(' );
+			size_t epos = loc.interpolation().find( ')' );
+			if (( spos != std::string::npos )&&( epos != std::string::npos )) {
+				std::string iStr = loc.interpolation().substr( spos + 1, (epos - spos)-1 );
+				boost::trim( iStr );
+				out->interpolationParameter = boost::lexical_cast<int>( iStr );
+				out->interpolation = Surround;
+			}
+		}
+	}
+	else
+		out->interpolation = find->second;
+
+	return;
+*/

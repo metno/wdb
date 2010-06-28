@@ -230,6 +230,34 @@ void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
 }
 
 
+void PlaceNameTest::testL5_01_PointDataByName_Mixed()
+{
+    result r = t->exec( statementFloat_( "oslo" ) );
+
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo" ) );
+}
+
+void PlaceNameTest::testL5_02_PointDataByName_GridOnly()
+{
+    result r = t->exec( statementFloat_( "sortland" ) );
+
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "sortland hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "sortland hirlam 20" ) );
+}
+
+void PlaceNameTest::testL5_03_PointDataByName_FloatOnly()
+{
+    result r = t->exec( statementFloatOnly_( "test point 1" ) );
+
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), count_val( r, "placename", "test point 1" ) );
+}
+
+
 std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 {
 	ostringstream st;
@@ -249,6 +277,21 @@ std::string PlaceNameTest::statementFloat_( const std::string & placeDef ) const
 {
 	ostringstream st;
 	st << "SELECT placename FROM wci.read( ARRAY['test group'], ";
+	if ( "NULL" == placeDef )
+		st << "NULL";
+	else
+		st << "'" << placeDef << "'";
+	st << ", '2004-12-25 06:00:00+00', NULL, ";
+	st << "'{\"" << defaultParameter << "\"}', ";
+	st << "NULL, NULL, NULL::wci.returnfloat )";
+
+	return st.str();
+}
+
+std::string PlaceNameTest::statementFloatOnly_( const std::string & placeDef ) const
+{
+	ostringstream st;
+	st << "SELECT placename FROM wci.read( ARRAY['test wci 6', 'test wci 7'], ";
 	if ( "NULL" == placeDef )
 		st << "NULL";
 	else

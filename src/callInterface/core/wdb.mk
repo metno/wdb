@@ -20,7 +20,6 @@ wdb_la_SOURCES +=		src/callInterface/core/psqlTupleInterface.h \
 						src/callInterface/core/wciBrowse.c \
 						$(libwciCoreNoPostgres_la_SOURCES)
 
-
 # This contains all files that may be (relatively) meaningfully used outside of a postgresql server
 check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 
@@ -31,7 +30,8 @@ libwciCoreNoPostgres_la_SOURCES +=\
 WCICORE_SOURCES =		src/callInterface/core/wciSession.in.sql \
 						src/callInterface/core/getDataProvider.in.sql \
 						src/callInterface/core/wciBrowseInternals.in.sql \
-						src/callInterface/core/wciWriteInternals.in.sql
+						src/callInterface/core/wciWriteInternals.in.sql \
+						src/callInterface/core/nearestNeighbor.in.sql
 
 wcicoredir = 			$(wcidir)/core
 

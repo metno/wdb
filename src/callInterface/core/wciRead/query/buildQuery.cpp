@@ -109,8 +109,8 @@ std::ostream & addLocationQuery(std::ostream & q, const char * location, DataSou
 		{
 			if ( sourceTable == FloatTable )
 			{
-//				Location loc(location);
-//				q << "AND " << loc.query(Location::RETURN_FLOAT) << " ";
+				Location loc(location);
+				q << "AND " << loc.query(Location::RETURN_FLOAT) << " ";
 			}
 			else if ( sourceTable == GridTable )
 			{
@@ -147,7 +147,6 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 		if ( parameters )
 		{
 			q << "WHERE ";
-
 			addDataProviderQuery(q, parameters->dataProvider);
 			addLocationQuery(q, parameters->location, dataSource, output);
 			addReferenceTimeQuery(q, parameters->referenceTime);
