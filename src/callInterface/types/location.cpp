@@ -33,6 +33,8 @@
 #include <getPlaceQuery.h>
 #include <boost/regex.hpp>
 #include <boost/assign/list_of.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -90,12 +92,40 @@ Location::Location(const std::string & location)
 	}
 	else
 		throw InvalidSpecification("Unable to extract a valid location");
-
+	determineInterpolation();
 }
 
 Location::~Location()
 {
 	// NOOP
+}
+
+void Location::determineInterpolation() {
+	// Set Defaults
+	interpolationType_ = Exact;
+	interpolationParameter_ = 1;
+	// Search
+	typedef std::map<std::string, InterpolationType> InterpolationNameList;
+	static const std::map<std::string, InterpolationType> interpolations =
+			boost::assign::map_list_of("exact", Exact)("nearest", Nearest)
+				("surround", Surround)("bilinear", Bilinear);
+	// Find
+	InterpolationNameList::const_iterator find = interpolations.find(interpolation());
+	if ( find == interpolations.end() ) {
+		// Did not find - check for surround(x)
+		if ( interpolation_.size() > 0 ) {
+			size_t spos = interpolation_.find( '(' );
+			size_t epos = interpolation_.find( ')' );
+			if (( spos != std::string::npos )&&( epos != std::string::npos )) {
+				std::string iStr = interpolation_.substr( spos + 1, (epos - spos)-1 );
+				boost::trim( iStr );
+				interpolationParameter_ = boost::lexical_cast<int>( iStr );
+				interpolationType_ = Surround;
+			}
+		}
+	}
+	else
+		interpolationType_ = find->second;
 }
 
 string Location::query( Location::QueryReturnType returnType ) const
@@ -108,17 +138,17 @@ string Location::query( Location::QueryReturnType returnType ) const
 	case RETURN_OID:
 		if ( isGeometry() )
 		{
-			if ( interpolation_ == "exact" )
-			{
+			switch (interpolationType_) {
+			case Exact:
 				q << "( equals ( geomfromtext( '" << location() << "', 4030 ), v.placegeometry ) )";
-			}
-			else
-			{
+				break;
+			default:
 				q 	<< WCI_SCHEMA << ".dwithin( "
 					<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
 					<< "transform( v.placegeometry, v.originalsrid ), "
 					<< "1 )";
 				// See notes on transform below
+				break;
 			}
 			//throw InvalidSpecification("The return type specified for the location query is unsupported");
 		}
@@ -130,8 +160,8 @@ string Location::query( Location::QueryReturnType returnType ) const
 		break;
 	case RETURN_FLOAT:
 		// This code is only relevant for retrieving point-value data from a point-valued table.
-		if (( interpolation_.length() == 0)||( interpolation_ == "exact" ))
-		{
+		switch (interpolationType_) {
+		case Exact:
 			if ( isGeometry() )
 			{
 				if ( geomType_ == GEOM_POINT ) {
@@ -147,9 +177,8 @@ string Location::query( Location::QueryReturnType returnType ) const
 			else {
 				q << "v.placename = '" << location() << "'";
 			}
-		}
-		else if ( interpolation_ == "nearest" )
-		{
+			break;
+		case Nearest:
 			if ( isGeometry() )
 				myGeometry = "geomfromtext('" + location() + "', 4030 )";
 			else
@@ -166,9 +195,8 @@ string Location::query( Location::QueryReturnType returnType ) const
 				<< "'true', "
 				<< "'valueid', "
 				<< "'placegeometry' ))";
-		}
-		else if ( interpolation_ == "surround" )
-		{
+			break;
+		case Surround:
 			if ( isGeometry() )
 				myGeometry = "geomfromtext('" + location() + "', 4030 )";
 			else
@@ -179,50 +207,21 @@ string Location::query( Location::QueryReturnType returnType ) const
 				<< WCI_SCHEMA << ".nearestneighbor( "
 				<< myGeometry << ", "   // geometry
 				<< "1, "				// distance to nearest
-				<< "1, "				// number of points
+				<< interpolationParameter_ << ", "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "
 				<< "'true', "
 				<< "'valueid', "
 				<< "'placegeometry' ))";
-		}
-		else
+			break;
+		case Bilinear:
+		default:
 			q << "FALSE";
+			break;
+		}
 		break;
 	default:
 		throw InvalidSpecification("The return type specified for the location query is unsupported");
 	}
 	return q.str();
 }
-
-/*
- * CODE
-InterpolationType Location::interpolationType( ) const
-{
-	Location loc = getGeometry(location);
-
-	out->location = GEOSGeomFromWKT(loc.location().c_str());
-	out->interpolationParameter = 1;
-	typedef std::map<std::string, InterpolationType> InterpolationNameList;
-	static const std::map<std::string, InterpolationType> interpolations =
-			boost::assign::map_list_of("exact", Exact)("nearest", Nearest)("surround", Surround)("bilinear", Bilinear);
-
-	InterpolationNameList::const_iterator find = interpolations.find(loc.interpolation());
-	if ( find == interpolations.end() ) {
-		out->interpolation = Nearest;
-		if ( loc.interpolation().size() > 0 ) {
-			size_t spos = loc.interpolation().find( '(' );
-			size_t epos = loc.interpolation().find( ')' );
-			if (( spos != std::string::npos )&&( epos != std::string::npos )) {
-				std::string iStr = loc.interpolation().substr( spos + 1, (epos - spos)-1 );
-				boost::trim( iStr );
-				out->interpolationParameter = boost::lexical_cast<int>( iStr );
-				out->interpolation = Surround;
-			}
-		}
-	}
-	else
-		out->interpolation = find->second;
-
-	return;
-*/

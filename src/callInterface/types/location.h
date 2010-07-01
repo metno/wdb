@@ -33,6 +33,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <interpolationType.h>
 
 class Location
 {
@@ -44,6 +45,14 @@ public:
 	 * Get the type of interpolation
 	 */
 	const std::string & interpolation() const { return interpolation_; }
+	/**
+	 * Get the type of interpolation
+	 */
+	const InterpolationType interpolationType() const { return interpolationType_; }
+	/**
+	 * Get the type of interpolation
+	 */
+	const int interpolationParameter() const { return interpolationParameter_; }
 
 	/**
 	 * Get the WKT or name of the location
@@ -91,10 +100,13 @@ public:
 
 private:
 	std::string interpolation_;
+	InterpolationType interpolationType_;
 	int interpolationParameter_;
 	std::string location_;
 	bool isGeometry_;
 	GeomType geomType_;
+
+	void determineInterpolation();
 };
 
 #endif /*LOCATION_H_*/
