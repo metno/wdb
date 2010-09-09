@@ -42,7 +42,8 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_qualityprocess.in.csv \
 						etc/metadata/wdb_spatial_ref_sys.in.csv
 
-METADATA_SOURCES =		etc/metadata/wdbMetadata.in.sql
+METADATA_SOURCES =		etc/metadata/wdb_spatial_ref_sys.in.sql \
+						etc/metadata/wdbMetadata.in.sql
 
 sql_DATA +=		 		$(METADATA_SOURCES:.in.sql=.sql) \
 						$(CORE_METADATA:.in.csv=.csv)

@@ -19,8 +19,9 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
--- SRIDs
-COPY spatial_ref_sys FROM '__WDB_DATADIR__/sql/wdb_spatial_ref_sys.csv' CSV HEADER DELIMITER '|';
+-- SRIDs (wci.addSrid, wci.getSrid)
+\i __WDB_DATADIR__/sql/wdb_spatial_ref_sys.sql
+--COPY spatial_ref_sys FROM '__WDB_DATADIR__/sql/wdb_spatial_ref_sys.csv' CSV HEADER DELIMITER '|';
 
 -- Party (Organizations and People)
 COPY __WDB_SCHEMA__.party FROM '__WDB_DATADIR__/sql/wdb_party.csv' CSV HEADER DELIMITER '|';
@@ -30,11 +31,11 @@ COPY __WDB_SCHEMA__.organizationalias FROM '__WDB_DATADIR__/sql/wdb_organization
 COPY __WDB_SCHEMA__.person FROM '__WDB_DATADIR__/sql/wdb_person.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.softwareversion FROM '__WDB_DATADIR__/sql/wdb_softwareversion.csv' CSV HEADER DELIMITER '|';
 
--- Namespace
+-- Namespace (wci.addNameSpace, wci.getNameSpace, wci.begin, wci.setDefaultNameSpace )
 COPY __WDB_SCHEMA__.namespace FROM '__WDB_DATADIR__/sql/wdb_namespace.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.defaultnamespace FROM '__WDB_DATADIR__/sql/wdb_defaultnamespace.csv' CSV HEADER DELIMITER '|';
 
--- Configuration
+-- Configuration (wci.version)
 COPY __WDB_SCHEMA__.configuration FROM '__WDB_DATADIR__/sql/wdb_configuration.csv' CSV HEADER DELIMITER '|';
 
 -- Indeterminate Types
@@ -42,18 +43,18 @@ COPY __WDB_SCHEMA__.placeindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_placein
 COPY __WDB_SCHEMA__.levelindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_levelindeterminatetype.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.timeindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_timeindeterminatetype.csv' CSV HEADER DELIMITER '|';
 
--- DataProvider
+-- DataProvider (wci.adddataprovider, adddataprovidertogroup, addwciuser)
 COPY __WDB_SCHEMA__.dataprovider FROM '__WDB_DATADIR__/sql/wdb_dataprovider.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.dataprovidercomment FROM '__WDB_DATADIR__/sql/wdb_dataprovidercomment.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.dataprovidername FROM '__WDB_DATADIR__/sql/wdb_dataprovidername.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.wciuserdataprovider FROM '__WDB_DATADIR__/sql/wdb_wciuserdataprovider.csv' CSV HEADER DELIMITER '|';
 
--- PlaceId
+-- PlaceId (wci.addplace...)
 COPY __WDB_SCHEMA__.placedefinition FROM '__WDB_DATADIR__/sql/wdb_placedefinition.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.placeregulargrid FROM '__WDB_DATADIR__/sql/wdb_placeregulargrid.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.placename FROM '__WDB_DATADIR__/sql/wdb_placename.csv' CSV HEADER DELIMITER '|';
 
--- Parameters & Units
+-- Parameters & Units (wci.addparamater...)
 COPY __WDB_SCHEMA__.measure FROM '__WDB_DATADIR__/sql/wdb_measure.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.unit FROM '__WDB_DATADIR__/sql/wdb_unit.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.siunitconversion FROM '__WDB_DATADIR__/sql/wdb_siunitconversion.csv' CSV HEADER DELIMITER '|';

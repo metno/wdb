@@ -227,6 +227,15 @@ BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Get SRID
+	SELECT srid INTO srid_
+	FROM spatial_ref_sys
+	WHERE btrim(proj4text) = btrim(projection_);
+	-- If SRID not found...
+	IF srid_ IS NOT NULL THEN
+		RAISE EXCEPTION 'The SRID is already in the database. Aborting.';
+		-- RENAME?
+	END IF;
+	-- Get SRID
 	SELECT max(srid) + 1 INTO srid_
 	FROM spatial_ref_sys;	
 	-- Insert Data

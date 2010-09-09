@@ -1,0 +1,39 @@
+Spatial Reference ID (SRID)
+
+The Spatial Reference ID in the database is used for conversion 
+between the different projections that we encounter data in. The
+database is set up to use the "standard" WGS84 longitude-latitude
+projection as its base projection.
+
+
+
+		<sect1 id="sec:place">
+			<title>Place (Geographic Location)</title>
+			
+			<para>The place (geographic location) of a data item is the position of the item
+				on the earth in a 2D space. In WDB, the geographic location is by default
+				specified using longitude and latitude in a WGS84 coordinate system
+				(though this can be changed when the database is set up; consult your system
+				administrator). The geographic dimension is specified using a geometry
+				object and can be either a point or a polygon.</para>
+			
+			<para>In addition to using geometry objects to retrieve data, the user can also
+				use a PlaceName - a pre-specified name that defines a geometry object in the
+				database - to specify location. PlaceNames exist within a place namespace that can be defined
+				by the WDB administrator. The default namespace of WDB is the PlaceNameSpaceId 0; defined
+				in international english.</para>
+				
+			<para>PlaceNames are essentially a short-hand for the user; each PlaceName uniquely
+				identifies one geographical object (referred to as  a Place definition) in the 
+				database (note that multiple PlaceNames may identify the same object).</para>
+
+
+			Adding a Place Definition
+				Point
+				Grid
+				Spatial Reference ID
+				
+			Setting a Place Name
+				PlaceName	
+						 				 
+

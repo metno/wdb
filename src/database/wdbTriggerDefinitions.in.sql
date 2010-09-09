@@ -18,7 +18,6 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 -- Updating of placedefinition when inserting a regular grid
 create or replace function __WDB_SCHEMA__.createGeometryText(
 	xNum 		integer, 

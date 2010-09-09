@@ -394,6 +394,49 @@ EOF
 	else
 	    echo "done"
 	fi
+
+
+	# Install wci
+	echo -n "installing wci components base... "
+	WCI_DIR="__WDB_DATADIR__/sql/wci"
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+-- WCI Types
+\i $WCI_DIR/types/extractGridDataType.sql
+\i $WCI_DIR/types/levelParameter.sql
+\i $WCI_DIR/types/location.sql
+\i $WCI_DIR/types/valueParameter.sql
+\i $WCI_DIR/types/verifyGeometry.sql
+\i $WCI_DIR/types/wciInterpolationSpec.sql
+\i $WCI_DIR/types/wciLevelSpec.sql
+\i $WCI_DIR/types/wciReadReturnType.sql
+\i $WCI_DIR/types/wciTimeSpec.sql
+-- WCI Core
+\i $WCI_DIR/core/nearestNeighbor.sql
+\i $WCI_DIR/core/getDataProvider.sql
+\i $WCI_DIR/core/wciBrowseInternals.sql
+\i $WCI_DIR/core/wciSession.sql
+\i $WCI_DIR/core/wciWriteInternals.sql
+-- WCI API
+\i $WCI_DIR/api/wciBegin.sql
+\i $WCI_DIR/api/wciBrowse.sql
+\i $WCI_DIR/api/wciCacheQuery.sql
+\i $WCI_DIR/api/wciEnd.sql
+\i $WCI_DIR/api/wciFetch.sql
+\i $WCI_DIR/api/wciMetaDataProvider.sql
+\i $WCI_DIR/api/wciMetaParameter.sql
+\i $WCI_DIR/api/wciMetaPlace.sql
+\i $WCI_DIR/api/wciRead.sql
+\i $WCI_DIR/api/wciVersion.sql
+\i $WCI_DIR/api/wciWrite.sql
+EOF
+	if [ 0 != $? ]; then
+		echo "ERROR: Installation of WDB Call Interface failed"; exit 1
+	fi
+	echo "done"
+fi
+
 	
 	
 	# Install Metadata
@@ -457,47 +500,6 @@ EOF
 	fi
 	
 	
-	# Install wci
-	echo -n "installing wci components base... "
-	WCI_DIR="__WDB_DATADIR__/sql/wci"
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP
--- WCI Types
-\i $WCI_DIR/types/extractGridDataType.sql
-\i $WCI_DIR/types/levelParameter.sql
-\i $WCI_DIR/types/location.sql
-\i $WCI_DIR/types/valueParameter.sql
-\i $WCI_DIR/types/verifyGeometry.sql
-\i $WCI_DIR/types/wciInterpolationSpec.sql
-\i $WCI_DIR/types/wciLevelSpec.sql
-\i $WCI_DIR/types/wciReadReturnType.sql
-\i $WCI_DIR/types/wciTimeSpec.sql
--- WCI Core
-\i $WCI_DIR/core/nearestNeighbor.sql
-\i $WCI_DIR/core/getDataProvider.sql
-\i $WCI_DIR/core/wciBrowseInternals.sql
-\i $WCI_DIR/core/wciSession.sql
-\i $WCI_DIR/core/wciWriteInternals.sql
--- WCI API
-\i $WCI_DIR/api/wciBegin.sql
-\i $WCI_DIR/api/wciBrowse.sql
-\i $WCI_DIR/api/wciCacheQuery.sql
-\i $WCI_DIR/api/wciEnd.sql
-\i $WCI_DIR/api/wciFetch.sql
-\i $WCI_DIR/api/wciMetaDataProvider.sql
-\i $WCI_DIR/api/wciMetaParameter.sql
-\i $WCI_DIR/api/wciMetaPlace.sql
-\i $WCI_DIR/api/wciRead.sql
-\i $WCI_DIR/api/wciVersion.sql
-\i $WCI_DIR/api/wciWrite.sql
-EOF
-	if [ 0 != $? ]; then
-		echo "ERROR: Installation of WDB Call Interface failed"; exit 1
-	fi
-	echo "done"
-fi
-
 while [ $current_version -lt $version_number ]
 do
 	current_version=`expr $current_version + 1`
