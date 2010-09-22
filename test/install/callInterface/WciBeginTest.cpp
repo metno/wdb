@@ -99,7 +99,7 @@ void wciBeginTest::testB1_03_EmptyUser()
 
 void wciBeginTest::testB2_01_AutomaticNamespaceSelection()
 {
-	t->exec( statement_( "wcitest" ) );
+	t->exec( statementAuto_( "wcitest" ) );
 	result r = t->exec( "SELECT * FROM " + std::string(WCI_SCHEMA) + ".getSessionData()" );
 	CPPUNIT_ASSERT_EQUAL( 0, r.front()[ 0 ].as<int>() );
 	CPPUNIT_ASSERT_EQUAL( 0, r.front()[ 1 ].as<int>() );
@@ -221,7 +221,7 @@ void wciBeginTest::testU2_03_NullUser()
 string wciBeginTest::statement_( const std::string & user ) const
 {
 	ostringstream ss;
-	ss << "SELECT wci.begin( '" << user << "' )";
+	ss << "SELECT wci.begin( '" << user << "', 999, 999, 0 )";
 	return ss.str();
 }
 
@@ -229,5 +229,12 @@ std::string wciBeginTest::statement_( const std::string & user, int cs1, int cs2
 {
 	ostringstream ss;
 	ss << "SELECT wci.begin( '" << user << "', " << cs1 << ", " << cs2 << ", " << cs3 << " )";
+	return ss.str();
+}
+
+string wciBeginTest::statementAuto_( const std::string & user ) const
+{
+	ostringstream ss;
+	ss << "SELECT wci.begin( '" << user << "', 0, 0, 0 )";
 	return ss.str();
 }

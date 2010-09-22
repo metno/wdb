@@ -79,7 +79,7 @@ source ${TEST_PATH}/tearDown.sh
 source ${TEST_PATH}/buildUp.sh
 
 # Create the writer for the wci write tests:
-__WDB_BINDIR__/wdb createuser wcitestwriter write
+#__WDB_BINDIR__/wdb createuser wcitestwriter write
 # This is now actually done in the installation. 
 # Should test before doing this to avoid errors/warnings
 

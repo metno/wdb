@@ -93,7 +93,7 @@ public:
 
 		// WCI Begin
 		std::ostringstream beginQuery;
-		beginQuery << "SELECT wci.begin( 'writetest', 0, 999, 0 );";
+		beginQuery << "SELECT wci.begin( 'writetest', 999, 999, 0 );";
 		T.exec( beginQuery.str() );
 
 		// Write to database

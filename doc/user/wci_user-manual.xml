@@ -5963,7 +5963,8 @@ FROM wci.READ ( ARRAY['Hirlam norway'], -- Data provider name
 				<programlisting>
 wci.setdataprovidername
 (
-	canonicalName			text,
+	fromNameSpaceId			int,
+	fromName				text,
 	dataProviderName		text
 )
 </programlisting>
@@ -5986,10 +5987,13 @@ wci.setdataprovidername
 						</thead>
 						<tbody>
 							<row>
-								<entry>canonicalName</entry>
-								<entry>The name of the data provider in the canonical (0) namespace.
-									Note that it is not possible to change the canonical name of a 
-									data provider using this function.</entry>
+								<entry>fromNameSpaceId</entry>
+								<entry>The nameSpace Id of the fromName.</entry>
+							</row>
+							<row>
+								<entry>fromName</entry>
+								<entry>The name of the data provider to insert a name for. The name
+									is taken from the fromNameSpaceId.</entry>
 							</row>
 							<row>
 								<entry>dataProviderName</entry>

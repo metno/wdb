@@ -52,7 +52,7 @@ BEGIN
 	IF NOT FOUND THEN
 		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
-		( placeId_, indCode_, 'Point', 'now', placeGeometry_ );
+		( placeId_, indCode_, 'point', 'now', placeGeometry_ );
 	END IF;
 	IF namespace_ <> 0 THEN
 		INSERT INTO __WDB_SCHEMA__.placename VALUES
@@ -178,7 +178,7 @@ $BODY$
 			__WCI_SCHEMA__.getSessionData() s
 	WHERE	p.placenamespaceid = s.placenamespaceid
 	  AND	( $1 IS NULL OR placename LIKE lower($1) )
-	  AND	p.placegeometrytype = 'Point';
+	  AND	p.placegeometrytype = 'point';
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;

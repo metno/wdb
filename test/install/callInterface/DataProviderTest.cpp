@@ -439,7 +439,7 @@ void DataProviderTest::testD6_01_AddDataProvider()
 void DataProviderTest::testD6_02_SetDataProviderName()
 {
 	// Set namespace to 1
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
 	// Add Meta
     result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-02\',"
 													  "\'Computer System\',"
@@ -449,16 +449,16 @@ void DataProviderTest::testD6_02_SetDataProviderName()
     result rC = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-02\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
 	// Set namespace to 1
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     // Set Name
-    result rN = t->exec( "SELECT wci.SetDataProviderName(\'InstallTest 06-02\',\'InstallationsTest 06-02\')" );
+    result rN = t->exec( "SELECT wci.SetDataProviderName(999,\'InstallTest 06-02\',\'InstallationsTest 06-02\')" );
     // Check for meta
     result rC1 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-02\' )" );
     CPPUNIT_ASSERT( rC1.size() == 0 );
     result rC2 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installationstest 06-02\' )" );
     CPPUNIT_ASSERT( rC2.size() > 0 );
     // Return
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
 }
 
 void DataProviderTest::testD6_03_SetDataProviderNameFail()
@@ -469,12 +469,12 @@ void DataProviderTest::testD6_03_SetDataProviderNameFail()
 													  "\'Grid\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     // Set Name
-    result rN = t->exec( "SELECT wci.setDataProviderName(\'InstallTest 06-03\',\'InstallationsTest 06-03\')" );
+    result rN = t->exec( "SELECT wci.setDataProviderName(999, \'InstallTest 06-03\', \'InstallationsTest 06-03\')" );
     // Check for meta
     result rC1 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-03\' )" );
-    CPPUNIT_ASSERT( rC1.size() > 0 );
+    CPPUNIT_ASSERT( rC1.size() == 0 );
     result rC2 = t->exec( "SELECT * FROM wci.getDataProvider( \'Installationstest 06-03\' )" );
-    CPPUNIT_ASSERT( rC2.size() == 0 );
+    CPPUNIT_ASSERT( rC2.size() > 0 );
 }
 
 void DataProviderTest::testD6_04_AddMultipleDataProvider()
@@ -496,7 +496,7 @@ void DataProviderTest::testD6_04_AddMultipleDataProvider()
 void DataProviderTest::testD6_05_AddDataProviderGroup()
 {
 	// Set namespace to 1
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
 	// Add Meta
     result rIA = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05A\',"
 													  "\'Computer System\',"
@@ -518,7 +518,7 @@ void DataProviderTest::testD6_05_AddDataProviderGroup()
     result rG1 = t->exec( "SELECT * FROM wci.addDataProviderToGroup( \'Installtest 06-05A\', \'Installtest Group\' )" );
     result rG2 = t->exec( "SELECT * FROM wci.addDataProviderToGroup( \'Installtest 06-05C\', \'Installtest Group\' )" );
     // Return
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
 }
 
 // Support Functions
@@ -547,7 +547,7 @@ std::string DataProviderTest::statementFloat_( const std::string & provider ) co
     	st << "NULL";
 	else
 		st << provider;
-    st << ", 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, ";
+    st << ", 'nearest POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
     st << "NULL, NULL, NULL::wci.returnfloat )";
 

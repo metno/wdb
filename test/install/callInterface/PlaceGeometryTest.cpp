@@ -346,7 +346,7 @@ void PlaceGeometryTest::testG6_03_0Meridian()
 	lon = 0.1;
 
 	ostringstream pt;
-	pt << "POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	pt << "nearest POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
 	result r = t->exec( statement_( pt.str(), 10 ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
@@ -362,7 +362,7 @@ void PlaceGeometryTest::testG6_04_180EMeridian()
 	lon = 179.9;
 
 	ostringstream pt;
-	pt << "POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	pt << "nearest POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
 	result r = t->exec( statement_( pt.str(), 10 ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
@@ -378,7 +378,7 @@ void PlaceGeometryTest::testG6_05_180WMeridian()
 	lon = -179.9;
 
 	ostringstream pt;
-	pt << "POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	pt << "nearest POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
 	result r = t->exec( statement_( pt.str(), 10 ) );
 
 	CPPUNIT_ASSERT_EQUAL( result::size_type( 1 ), r.size() );
@@ -419,7 +419,7 @@ void PlaceGeometryTest::testG7_01_OnePoint()
 {
     // This is a valid point.
 	// If type is incorrect, we expect an excecption
-    result r = t->exec( statement_( "POINT( 11.34 60.75 )" ) );
+    result r = t->exec( statement_( "nearest POINT( 11.34 60.75 )" ) );
 	CPPUNIT_ASSERT( r.size() );
 }
 

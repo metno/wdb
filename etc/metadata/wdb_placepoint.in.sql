@@ -1,0 +1,11 @@
+select wci.begin('wdb', 999, 999, 0 );
+select wci.addplacepoint('oslo', geomfromtext('POINT(10.7464 59.9111)',4030) );
+select wci.addplacepoint('sortland',geomfromtext('POINT(15.4161 68.6931)',4030));
+select wci.addplacepoint('test point 0',geomfromtext('POINT(-40 68.1332)',4030));
+select wci.addplacepoint('test point 1',geomfromtext('POINT(-25 5.6)',4030));
+select wci.addplacepoint('test point 2',geomfromtext('POINT(-7.1 -11.3)',4030));
+select wci.addplacepoint('test point 3',geomfromtext('POINT(15.2 55.75)',4030));
+select wci.addplacepoint('test point 4',geomfromtext('POINT(15.2 55.41)',4030));
+select wci.addplacepoint('test point 5',geomfromtext('POINT(15 56)',4030));
+select wci.addplacepoint('test point 6',geomfromtext('POINT(17 55.97)',4030));
+select wci.addplacepoint('test point 7',geomfromtext('POINT(5 56)',4030));

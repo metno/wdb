@@ -1,6 +1,6 @@
 -- Get pressure between 0 and 0 metre above ground level
 
-SELECT wci.begin('wcitest');
+SELECT wci.begin('wcitest', 999, 999, 0);
 
 -- Get the oid for a specific field
 SELECT * FROM wci.read(

@@ -94,6 +94,8 @@ private:
 	std::string statement_( const std::string & user ) const;
 	/// Default test statement with namespaces given
 	std::string statement_( const std::string & user, int cs1, int cs2, int cs3 ) const;
+	/// Default test statement (no namespaces given)
+	std::string statementAuto_( const std::string & user ) const;
 };
 
 

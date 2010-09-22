@@ -1,4 +1,4 @@
-SELECT wci.begin('wcitest');
+SELECT wci.begin('wcitest', 999, 999, 0 );
 
 -- Get all data in database, as fields
 SELECT * FROM wci.read(

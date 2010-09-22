@@ -1,6 +1,6 @@
 -- Various parameter specifications:
 
-SELECT wci.begin('wcitest');
+SELECT wci.begin('wcitest',999,999,0);
 
 -- Get all parameters related to pressure (ie. the name contains the word pressure)
 SELECT * FROM wci.read(

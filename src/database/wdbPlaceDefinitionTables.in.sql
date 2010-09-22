@@ -43,9 +43,9 @@ CREATE TABLE __WDB_SCHEMA__.placedefinition (
     placegeometrytype 			character varying(80) NOT NULL,
     placestoretime				timestamp with time zone NOT NULL,
     CONSTRAINT placedefinition_placegeometrytype_check 
-	CHECK (	((placegeometrytype)::text = 'Grid'::text) OR
-			((placegeometrytype)::text = 'Line'::text) OR
-			((placegeometrytype)::text = 'Point'::text) )
+	CHECK (	((placegeometrytype)::text = 'grid'::text) OR
+			((placegeometrytype)::text = 'line'::text) OR
+			((placegeometrytype)::text = 'point'::text) )
 );
 SELECT AddGeometryColumn('__WDB_SCHEMA__', 'placedefinition', 'placegeometry', 4030, 'GEOMETRY', 2);
 ALTER SEQUENCE __WDB_SCHEMA__.placedefinition_placeid_seq RESTART WITH 100000;

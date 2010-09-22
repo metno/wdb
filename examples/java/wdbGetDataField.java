@@ -110,7 +110,7 @@ public class wdbGetDataField {
     		System.exit(1);
     	}
     	
-    	String wdbInit="SELECT wci.begin('"+dbuser+"')";
+    	String wdbInit="SELECT wci.begin('"+dbuser+"', 999, 999, 999 )";
     	String sql=" SELECT * " + 
         " FROM wci.read( array['test wci 5'], NULL, " +
         "                '2009-11-13 00:00:00+00', " + 

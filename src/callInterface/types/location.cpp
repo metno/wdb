@@ -53,7 +53,7 @@ Location::Location(const std::string & location)
 	geomType_ = GEOM_UNKNOWN;
 	interpolationParameter_ = 0;
     // match surround\\s*(\\s*[0-9]+\\s*)|
-    static regex re("^((exact|nearest|surround|surround\\s*\\(\\s*[1-9]\\s*\\)|bilinear)\\s+)?" // Interpolation
+    static regex re("^(((?i)exact|nearest|surround|surround\\s*\\(\\s*[1-9]\\s*\\)|bilinear)\\s+)?" // Interpolation
 					"((" // Plain geometries
 					"(POINT)\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
 					"(POLYGON)\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
@@ -67,8 +67,13 @@ Location::Location(const std::string & location)
 		throw InvalidSpecification( msg.c_str() );
 	}
 
+	// lower case the string
+    typedef int ( *f_lower ) ( int );
+    f_lower lower = tolower;
+
 	// Extract Interpolation
 	interpolation_ = match[2];
+    transform( interpolation_.begin(), interpolation_.end(), interpolation_.begin(), lower );
 
 	// Extract location (if geometry)
 	if ( !match[4].str().empty() )
@@ -85,9 +90,6 @@ Location::Location(const std::string & location)
 	{
 		location_ = match[14];
 		isGeometry_ = false;
-		// lower case the string
-	    typedef int ( *f_lower ) ( int );
-	    f_lower lower = tolower;
 	    transform( location_.begin(), location_.end(), location_.begin(), lower );
 	}
 	else
@@ -184,7 +186,7 @@ string Location::query( Location::QueryReturnType returnType ) const
 			else
 				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
 			// Create query
-			q 	<<  "v.valueid IN "
+			q 	<<  "v.placeid IN "
 				<<	"(SELECT nn_gid FROM "
 				<< WCI_SCHEMA << ".nearestneighbor( "
 				<< myGeometry << ", "   // geometry
@@ -193,7 +195,7 @@ string Location::query( Location::QueryReturnType returnType ) const
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "
 				<< "'true', "
-				<< "'valueid', "
+				<< "'placeid', "
 				<< "'placegeometry' ))";
 			break;
 		case Surround:

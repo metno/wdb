@@ -110,7 +110,7 @@ public:
 	void operator ()(pqxx::work & t)
 	{
 		// Setup wci:
-		t.exec("SELECT wci.begin( 'wcitest' )");
+		t.exec("SELECT wci.begin( 'wcitest', 999, 999, 0 )");
 
 		// Request BLOB oid:
 		const pqxx::result result = t.exec(myQuery);

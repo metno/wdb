@@ -77,10 +77,10 @@ void PlaceNameTest::testL1_02A_OnePlaceName()
 
 void PlaceNameTest::testL1_02B_OnePlaceName()
 {
-    result r = t->exec( statementFloat_( "test point" ) );
+    result r = t->exec( statementFloat_( "nearest test point 0" ) );
 
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point test grid, rotated" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 test grid, rotated" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20" ) );
 }
 
 void PlaceNameTest::testL1_03A_NullPlaceName()
@@ -100,13 +100,13 @@ void PlaceNameTest::testL1_03B_NullPlaceName()
 {
     result r = t->exec( statementFloat_( "NULL" ) );
 
-    CPPUNIT_ASSERT( count_val( r, "placename", "test point" ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "test point 0" ) );
     CPPUNIT_ASSERT( count_val( r, "placename", "oslo" ) );
     CPPUNIT_ASSERT( count_val( r, "placename", "sortland" ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point" ) +
+    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point 0" ) +
                           count_val( r, "placename", "oslo" ) +
                           count_val( r, "placename", "sortland" ) +
-                          size_t(276108),
+                          size_t( 276108 ),
                           size_t( r.size() ) );
 }
 
@@ -118,7 +118,7 @@ void PlaceNameTest::testL2_01A_PlaceNamesExist()
 
 void PlaceNameTest::testL2_01B_PlaceNamesExist()
 {
-	result r = t->exec( statementFloat_( "test point" ) );
+	result r = t->exec( statementFloat_( "nearest test point 0" ) );
 	CPPUNIT_ASSERT( ! r.empty() );
 }
 
@@ -144,10 +144,10 @@ void PlaceNameTest::testL3_01A_LowerCase()
 
 void PlaceNameTest::testL3_01B_LowerCase()
 {
-    result r = t->exec( statementFloat_( "test point" ) );
+    result r = t->exec( statementFloat_( "nearest test point 0" ) );
 
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point test grid, rotated" ), size_t( 1 ) );
-    CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "test point hirlam 20" ), size_t( 1 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 test grid, rotated" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20" ) );
 }
 
 void PlaceNameTest::testL3_02A_UpperCase()
@@ -155,37 +155,42 @@ void PlaceNameTest::testL3_02A_UpperCase()
     result r = t->exec( statementOid_( "HIRLAM 10 GRID" ) );
     result v = t->exec( statementOid_( "hirlam 10 grid" ) );
 
+    CPPUNIT_ASSERT( size_t( v.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL3_02B_UpperCase()
 {
-    result r = t->exec( statementFloat_( "TEST POINT" ) );
-    result v = t->exec( statementFloat_( "test point" ) );
+    result r = t->exec( statementFloat_( "NEAREST TEST POINT 0" ) );
+    result v = t->exec( statementFloat_( "nearest test point 0" ) );
 
+    CPPUNIT_ASSERT( size_t( v.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL3_03A_MixedCase()
 {
-    result r = t->exec( statementFloat_( "HirlaM 10 gRiD" ) );
-    result v = t->exec( statementFloat_( "hirlam 10 grid" ) );
+    result r = t->exec( statementOid_( "HirlaM 10 gRiD" ) );
+    result v = t->exec( statementOid_( "hirlam 10 grid" ) );
 
+    CPPUNIT_ASSERT( size_t( v.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }
 
 void PlaceNameTest::testL3_03B_MixedCase()
 {
-    result r = t->exec( statementOid_( "tESt PoINt" ) );
-    result v = t->exec( statementOid_( "test point" ) );
+    result r = t->exec( statementFloat_( "NearEST tESt PoINt 0" ) );
+    result v = t->exec( statementFloat_( "nearest test point 0" ) );
 
+    CPPUNIT_ASSERT( size_t( v.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
 }
+
 
  void PlaceNameTest::testL4_01_SetPlacePointName()
 {
 	// Set namespace to 0
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     // Insert
 	ostringstream q;
 	q << "SELECT wci.addPlacePoint( \'InstallTest Point Name\',"
@@ -196,9 +201,9 @@ void PlaceNameTest::testL3_03B_MixedCase()
     CPPUNIT_ASSERT( rId.size() > 0 );
     // Check for meta
     result rC = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'InstallTest Point Name\' )" );
-    CPPUNIT_ASSERT( rC.size() == 0 );
+    CPPUNIT_ASSERT( rC.size() > 0 );
     // Insert name
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     result rN = t->exec( "SELECT wci.setPlaceName( 'point(16 69)', 'InstallTest Point Name' )" );
     CPPUNIT_ASSERT( rN.size() > 0 );
     // Check for meta
@@ -210,7 +215,7 @@ void PlaceNameTest::testL3_03B_MixedCase()
 void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
 {
 	// Set namespace to 0
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     // Insert
 	ostringstream q;
 	q << "SELECT wci.addPlaceRegularGrid( \'InstallTest Grid Name\',"
@@ -219,9 +224,9 @@ void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
     CPPUNIT_ASSERT( rId.size() > 0 );
     // Check for meta
     result rC = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'InstallTest Grid Name\' )" );
-    CPPUNIT_ASSERT( rC.size() == 0 );
+    CPPUNIT_ASSERT( rC.size() > 0 );
     // Insert name
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 999, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     result rN = t->exec( "SELECT wci.setPlaceName( 'grid(0.5 0.5, 0.2 0.2, 4 4, 50000)', 'InstallTest Grid Name' )" );
     CPPUNIT_ASSERT( rN.size() > 0 );
     // Check for meta
@@ -232,23 +237,22 @@ void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
 
 void PlaceNameTest::testL5_01_PointDataByName_Mixed()
 {
-    result r = t->exec( statementFloat_( "oslo" ) );
+    result r = t->exec( statementFloat_( "nearest oslo" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo hirlam 10 grid" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 20" ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo" ) );
 }
 
 void PlaceNameTest::testL5_02_PointDataByName_GridOnly()
 {
-    result r = t->exec( statementFloat_( "sortland" ) );
+    result r = t->exec( statementFloat_( "nearest sortland" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "sortland hirlam 10 grid" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "sortland hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 20" ) );
 }
-
 void PlaceNameTest::testL5_03_PointDataByName_FloatOnly()
 {
     result r = t->exec( statementFloatOnly_( "test point 1" ) );

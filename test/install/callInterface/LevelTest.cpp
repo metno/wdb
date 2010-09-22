@@ -410,14 +410,14 @@ void LevelTest::testL8_02_AddCodeParameter()
 void LevelTest::testL9_01_SetParameterName()
 {
 	// Set namespace to 0
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     // Insert
     result uId = t->exec( "SELECT wci.addLevelParameterUsage( 'instaLL0901', 'Test usage' )" );
     result rId = t->exec( "SELECT wci.addMeasureLevelParameter( 'inSTall0901', 'hPa' )" );
     result rGet = t->exec( "SELECT * FROM wci.getLevelParameter( '%install0901%' )" );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
     // Insert name
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 999 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 999 )" );
     result rN = t->exec( "SELECT wci.setLevelParameterName( 'install0901 pressure', 'l901' )" );
     // Check for meta
     result rM = t->exec( "SELECT * FROM wci.getLevelParameter( 'L901' )" );
@@ -442,7 +442,7 @@ string LevelTest::statementOid_( const std::string & levelSpec ) const
 string LevelTest::statementFloat_( const std::string & levelSpec ) const
 {
 	ostringstream st;
-	st << "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-28 06:00:00+00', NULL, ";
+	st << "SELECT * FROM wci.read( ARRAY['test group'], 'nearest POINT(-40 68.1332)', '2004-12-28 06:00:00+00', NULL, ";
 	st << "'{\"" << defaultParameter << "\"}', ";
 	st << "'" << levelSpec << "'";
 	st << ", NULL, NULL::wci.returngid )";

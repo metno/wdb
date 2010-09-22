@@ -94,19 +94,19 @@ public:
 		std::ostringstream testQuery;
 		testQuery << "SELECT spatialdomaindelivery FROM test.dataprovider WHERE dataprovidername = "
 				  << "'" << conf_.dataDefinitions().dataProvider << "'"
-				  << " AND dataprovidernamespaceid = 0";
+				  << " AND dataprovidernamespaceid = 999";
 		pqxx::result R = T.exec( testQuery.str() );
 		if (R.size() == 0)
 			throw std::runtime_error("Unable to find dataprovider: " + conf_.dataDefinitions().dataProvider);
 		std::string dataType;
 		R.at(0).at(0).to( dataType );
-		if (dataType == "Grid")
+		if (dataType == "grid")
 			isGrid_ = true;
 		else
-		if (dataType == "Point")
+		if (dataType == "point")
 			isGrid_ = false;
 		else
-			throw std::runtime_error("Unable to determine data type to load (based on dataprovider)");
+			throw std::runtime_error("Unable to determine data type to load (based on dataprovider " + conf_.dataDefinitions().dataProvider + " )");
 
 		// Todo: This should be improved so that it takes into consideration the placeId.
 	}

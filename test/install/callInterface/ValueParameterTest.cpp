@@ -146,7 +146,7 @@ void ValueParameterTest::testP2_04B_MoreThan255Parameters()
 void
 ValueParameterTest::testP2_05A_NullParameter()
 {
-	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
+	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'nearest POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 
 	CPPUNIT_ASSERT( not r.empty() );
 }
@@ -154,7 +154,7 @@ ValueParameterTest::testP2_05A_NullParameter()
 void
 ValueParameterTest::testP2_05B_NullParameter()
 {
-	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
+	result r = t->exec( "SELECT * FROM wci.read( ARRAY['test group'], 'nearest POINT(-40 68.1332)', '2004-12-24 06:00:00+00', NULL, NULL, NULL, NULL, NULL::wci.returngid )" );
 
 	CPPUNIT_ASSERT( not r.empty() );
 }
@@ -441,7 +441,7 @@ void ValueParameterTest::testP8_04_AddDimensionlessParameter()
 void ValueParameterTest::testP9_01_SetParameterName()
 {
 	// Set namespace to 0
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 0 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
     // Insert
     // Insert
     result uId = t->exec( "SELECT wci.addValueParameterUsage( 'iNStall0901', 'Test usage' )" );
@@ -449,7 +449,7 @@ void ValueParameterTest::testP9_01_SetParameterName()
     result rGet = t->exec( "SELECT * FROM wci.getvalueparameter( '%inSTAll0901%' )" );
 	CPPUNIT_ASSERT_EQUAL( result::size_type(1), rGet.size() );
     // Insert name
-    t->exec( "SELECT wci.begin('" + currentUser_ + "', 0, 0, 999 )" );
+    t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 999 )" );
     result rN = t->exec( "SELECT wci.setValueParameterName( 'instALL0901 temperature', 'i901' )" );
     // Check for meta
     result rM = t->exec( "SELECT * FROM wci.getvalueparameter( 'I901' )" );
@@ -471,7 +471,7 @@ string ValueParameterTest::statementOid_( const std::string & paramSpec ) const
 string ValueParameterTest::statementFloat_( const std::string & paramSpec ) const
 {
 	ostringstream st;
-	st << "SELECT * FROM wci.read( ARRAY['test group'], 'POINT(-40 68.1332)', '2004-12-27 06:00:00+00', NULL, ";
+	st << "SELECT * FROM wci.read( ARRAY['test group'], 'nearest POINT(-40 68.1332)', '2004-12-27 06:00:00+00', NULL, ";
 	st << "ARRAY[" << paramSpec << "], NULL, NULL, NULL::wci.returnFloat )";
 
 	return st.str();

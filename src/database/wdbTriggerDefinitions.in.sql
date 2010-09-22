@@ -72,7 +72,7 @@ DECLARE
 BEGIN
 	geo := __WDB_SCHEMA__.getGeometry(NEW);
 
-	insert into __WDB_SCHEMA__.placedefinition values (NEW.placeid, 0, 'Grid', 'now', geo);
+	insert into __WDB_SCHEMA__.placedefinition values (NEW.placeid, 0, 'grid', 'now', geo);
 
 	return NEW;
 END 

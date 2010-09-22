@@ -223,7 +223,7 @@ FROM
 	__WDB_SCHEMA__.placename pn
 WHERE
 	pd.placeid = pn.placeid
-	AND pd.placegeometrytype <> 'Grid' 
+	AND pd.placegeometrytype <> 'grid' 
 UNION ALL
 SELECT  
 	pd.placeid,
@@ -252,7 +252,7 @@ SELECT
 FROM 	
 	__WDB_SCHEMA__.placedefinition pd
 WHERE
-	pd.placegeometrytype != 'Grid';
+	pd.placegeometrytype != 'grid';
 		
 REVOKE ALL ON __WCI_SCHEMA__.placedefinition FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.placedefinition TO wdb_admin;

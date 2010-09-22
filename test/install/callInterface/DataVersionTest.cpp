@@ -86,7 +86,7 @@ void
 DataVersionTest::testV1_02B_OneDataVersion()
 {
     result rF = t->exec( statementFloat_( "ARRAY[1]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(2), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(3), rF.size() );
 }
 
 void
@@ -100,7 +100,7 @@ void
 DataVersionTest::testV1_03B_MultipleDataVersion()
 {
     result rF = t->exec( statementFloat_( "ARRAY[0, 2, 3]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(4), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(7), rF.size() );
 }
 
 void
@@ -130,7 +130,7 @@ DataVersionTest::testV1_04B_MoreThan255DataVersion()
     ss << " 259]";
 
     result rF = t->exec( statementFloat_( ss.str() ) );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(7), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(12), rF.size() );
 }
 
 void
@@ -146,7 +146,7 @@ DataVersionTest::testV1_05B_NullDataVersion()
 {
     result rO = t->exec( statementFloat_( "NULL") );
     CPPUNIT_ASSERT( ! rO.empty() );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(7), rO.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(12), rO.size() );
 }
 
 void
@@ -160,7 +160,7 @@ void
 DataVersionTest::testV2_01B_PositiveInteger()
 {
     result rO = t->exec( statementFloat_( "ARRAY[1, 4]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(3), rO.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(5), rO.size() );
 }
 
 void
@@ -174,7 +174,7 @@ void
 DataVersionTest::testV2_02B_NegativeInteger()
 {
     result rO = t->exec( statementFloat_( "ARRAY[-1, -3]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(3), rO.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(5), rO.size() );
 }
 
 void
@@ -200,7 +200,7 @@ void
 DataVersionTest::testV3_01B_AllExist()
 {
     result rO = t->exec( statementFloat_( "ARRAY[0, 1, 4, -3]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(6), rO.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(10), rO.size() );
 }
 
 void
@@ -228,7 +228,7 @@ void
 DataVersionTest::testV3_03B_SomeExist()
 {
     result rO = t->exec( statementFloat_( "ARRAY[-350, 1, 4, 299]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(3), rO.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(5), rO.size() );
 }
 
 void
@@ -254,7 +254,7 @@ void
 DataVersionTest::testV4_02B_DataVersionSizeInt()
 {
 	result rF = t->exec( statementFloat_( "ARRAY[2, 4, -1]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(3), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(5), rF.size() );
 }
 
 void
@@ -280,7 +280,7 @@ void
 DataVersionTest::testV5_01B_NoDuplicates()
 {
     result rF = t->exec( statementFloat_( "ARRAY[1, 2, 3]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(4), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(7), rF.size() );
 }
 
 void
@@ -294,7 +294,7 @@ void
 DataVersionTest::testV5_02B_OneDuplicate()
 {
 	result rF = t->exec( statementFloat_( "ARRAY[1, 2, 3, 2]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(4), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(7), rF.size() );
 }
 
 void
@@ -308,7 +308,7 @@ void
 DataVersionTest::testV5_03B_ManyDuplicates()
 {
     result rF = t->exec( statementFloat_( "ARRAY[0, 2, 2, 2, -1, 6, 6, 6, 6]") );
-    CPPUNIT_ASSERT_EQUAL( result::size_type(5), rF.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type(8), rF.size() );
 }
 
 void DataVersionTest::testV6_01A_GetNewestNoEntries()
@@ -435,8 +435,8 @@ string DataVersionTest::statementOid_( const string & dataVersion, int paramid )
 string DataVersionTest::statementFloat_( const string & dataVersion, int paramid ) const
 {
     ostringstream st;
-    st << "SELECT dataversion FROM wci.read( ARRAY['test wci 0','test wci 4'], "
-	   << "'oslo', "
+    st << "SELECT dataversion FROM wci.read( ARRAY['test wci 1', 'test wci 4'], "
+	   << "'nearest test point 0', "
        << "'2004-12-29 06:00:00', NULL, "
        << "ARRAY['" << specFromParamNumber_.find( paramid )->second << "'], "
        << "NULL, "

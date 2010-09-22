@@ -36,12 +36,11 @@ DECLARE
 	gpid_		bigint;
 	namespace_	int;
 BEGIN
-	-- Session
-	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Namespace
-	namespace_ := 0;
+	-- Get namespace
+	SELECT dataprovidernamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
 	-- Filter out wci users
-	IF ( dataProviderType_ = 'WCI User'::text ) THEN
+	IF ( dataProviderType_ = 'wci user'::text ) THEN
 		RAISE EXCEPTION 'Use wci.addwciuser to add WCI users as dataproviders';
 	END IF;	
 	-- Check 
@@ -54,19 +53,46 @@ BEGIN
 		dpid_ := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
 		
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
-		( dpid_, dataProviderType_, domainDelivery_, '1 day', 'now' );
+		( dpid_, lower(dataProviderType_), lower(domainDelivery_), '1 day', 'now' );
 	
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		( dpid_, dataProviderComment_, 'now' );
 	
+		-- TODO: Need to verify that this is in fact secure (serial)
 		SELECT max(dataprovidernamerightset) INTO gpid_ 
 		FROM   __WCI_SCHEMA__.dataprovider
 		WHERE  dataprovidernamespaceid = namespace_;
+
+		IF ( gpid_ IS NULL ) THEN
+			gpid_ := 0;
+		END IF;	
 			  
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-		( dpid_, namespace_, lower(dataProviderName_), 'today'::TIMESTAMP WITH TIME ZONE, 'infinity'::TIMESTAMP WITH TIME ZONE, gpid_ + 1, gpid_ + 2 );
+			( dpid_, namespace_, lower(dataProviderName_), 
+			  'today'::TIMESTAMP WITH TIME ZONE, 
+			  'infinity'::TIMESTAMP WITH TIME ZONE, 
+			  gpid_ + 1, gpid_ + 2 );
 	ELSE
-		RAISE EXCEPTION 'Dataprovider already exists in WDB';
+		UPDATE __WDB_SCHEMA__.dataprovider AS d SET
+				d.dataprovidertype = lower(dataProviderType_),
+				d.domaindelivery = lower(domainDelivery_),
+				d.dataproviderstoretime = 'now'
+		WHERE d.dataproviderid = dpid_;
+	
+		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
+		( dpid_, dataProviderComment_, 'now' );
+	
+		-- TODO: Need to verify that this is in fact secure (serial)
+		SELECT max(dataprovidernamerightset) INTO gpid_ 
+		FROM   __WCI_SCHEMA__.dataprovider
+		WHERE  dataprovidernamespaceid = namespace_;
+
+		IF ( gpid_ IS NULL ) THEN
+			gpid_ := 0;
+		END IF;	
+			  
+		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
+			( dpid_, namespace_, lower(dataProviderName_), 'today'::TIMESTAMP WITH TIME ZONE, 'infinity'::TIMESTAMP WITH TIME ZONE, gpid_ + 1, gpid_ + 2 );
 	END IF;
 	-- Return dataproviderid
 	RETURN dpid_;
@@ -108,7 +134,7 @@ BEGIN
 	SELECT dataproviderid, dataprovidernameleftset, dataprovidernamerightset INTO gpid_, gplft_, gprgt_ 
 	FROM __WCI_SCHEMA__.dataprovider
 	WHERE dataprovidername = lower(dataProviderGroup_) AND
-		  dataprovidertype = 'Data Provider Group' AND
+		  dataprovidertype = 'data provider group' AND
 		  dataprovidernamespaceid = namespace_;
 	IF NOT FOUND THEN
 		RAISE EXCEPTION 'Could not identify the dataprovider group in WDB';
@@ -160,13 +186,13 @@ BEGIN
 	SELECT dataproviderid INTO id 
 	FROM __WCI_SCHEMA__.dataprovider
 	WHERE dataprovidername = newDataProviderName AND
-		dataprovidertype = 'WCI User';
+		dataprovidertype = 'wci user';
 	IF NOT FOUND THEN
 		id := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
 		namespace_ = 0;
 		-- Insert into tables
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
-		(id, 'WCI User', 'Any', '1 day', 'now');
+		(id, 'WCI User', 'any', '1 day', 'now');
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		(id, 'wci user', 'now');
 
@@ -175,7 +201,7 @@ BEGIN
 		WHERE  dataprovidernamespaceid = namespace_;
 
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-		(id, namespace_, newDataProviderName, 'today', '2999-12-31', gpid_ + 1, gpid_ + 2 );
+		(id, namespace_, lower(newDataProviderName), 'today', '2999-12-31', gpid_ + 1, gpid_ + 2 );
 	ELSE
 		RAISE INFO 'User was already defined as a dataprovider';
 	END IF;
@@ -220,7 +246,8 @@ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION
 wci.setDataProviderName
 (
-	canonicalName_		text,
+	fromNameSpaceId_	int,
+	fromName_			text,
 	dataProviderName_ 	text
 )
 RETURNS void AS
@@ -232,14 +259,11 @@ BEGIN
 	-- Get namespace
 	SELECT dataprovidernamespaceid INTO namespace_
 	FROM __WCI_SCHEMA__.getSessionData();
-	IF ( namespace_ = 0 ) THEN
-		RETURN;
-	END IF;	
-	-- Get parameterid
+	-- Get dataproviderid
 	SELECT dataproviderid INTO dataProviderId_
 	FROM __WCI_SCHEMA__.dataprovider
-	WHERE dataprovidername = lower(canonicalName_) AND
-		  dataprovidernamespaceid = 0;
+	WHERE dataprovidername = lower(fromName_) AND
+		  dataprovidernamespaceid = fromNameSpaceId_;
 	-- Delete old name if any exist
 	DELETE FROM __WDB_SCHEMA__.dataprovidername
 	WHERE dataprovidernamespaceid = namespace_ AND
@@ -278,7 +302,7 @@ $BODY$
 		    FROM   __WCI_SCHEMA__.dataprovidername_v d,
 		    	   __WCI_SCHEMA__.getSessionData() s
 		    WHERE  d.dataprovidernamespaceid = s.dataprovidernamespaceid
-		      AND  ( d.dataprovidername = $1 OR $1 IS NULL ) );
+		      AND  ( d.dataprovidername = lower($1) OR $1 IS NULL ) );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;

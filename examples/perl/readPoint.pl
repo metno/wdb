@@ -97,7 +97,7 @@ our $dbh = DBI->connect("dbi:Pg:dbname=$dbname;port=$dbport;host=$dbhost",
 
 
 #initialize wdb. 
-$dbh->do( "SELECT wci.begin(\'$dbuser\')" );
+$dbh->do( "SELECT wci.begin(\'$dbuser\', 999, 999, 0 )" );
 
 # Variables used to fetch data from a row.  
 my ($value, 
