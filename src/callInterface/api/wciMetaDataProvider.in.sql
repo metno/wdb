@@ -181,7 +181,9 @@ DECLARE
 	gpid_		bigint;
 BEGIN
 	-- WCI User Check
-	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Get namespace
+	SELECT dataprovidernamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
 	-- Check for existing name
 	SELECT dataproviderid INTO id 
 	FROM __WCI_SCHEMA__.dataprovider
@@ -189,12 +191,11 @@ BEGIN
 		dataprovidertype = 'wci user';
 	IF NOT FOUND THEN
 		id := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
-		namespace_ = 0;
 		-- Insert into tables
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
-		(id, 'WCI User', 'any', '1 day', 'now');
+		(id, 'wci user', 'any', '1 day', 'now');
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
-		(id, 'wci user', 'now');
+		(id, 'WCI User', 'now');
 
 		SELECT max(dataprovidernamerightset) INTO gpid_ 
 		FROM   __WCI_SCHEMA__.dataprovider
@@ -264,6 +265,10 @@ BEGIN
 	FROM __WCI_SCHEMA__.dataprovider
 	WHERE dataprovidername = lower(fromName_) AND
 		  dataprovidernamespaceid = fromNameSpaceId_;
+	-- Failed to find dpid
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Could not identify the dataprovider in the specified namespace';
+	END IF;
 	-- Delete old name if any exist
 	DELETE FROM __WDB_SCHEMA__.dataprovidername
 	WHERE dataprovidernamespaceid = namespace_ AND

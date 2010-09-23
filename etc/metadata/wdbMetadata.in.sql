@@ -44,11 +44,11 @@ COPY __WDB_SCHEMA__.levelindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_levelin
 COPY __WDB_SCHEMA__.timeindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_timeindeterminatetype.csv' CSV HEADER DELIMITER '|';
 
 -- DataProvider (wci.adddataprovider, adddataprovidertogroup, addwciuser)
---\i __WDB_DATADIR__/sql/wdb_dataprovider.sql
-COPY __WDB_SCHEMA__.dataprovider FROM '__WDB_DATADIR__/sql/wdb_dataprovider.csv' CSV HEADER DELIMITER '|';
-COPY __WDB_SCHEMA__.dataprovidercomment FROM '__WDB_DATADIR__/sql/wdb_dataprovidercomment.csv' CSV HEADER DELIMITER '|';
-COPY __WDB_SCHEMA__.dataprovidername FROM '__WDB_DATADIR__/sql/wdb_dataprovidername.csv' CSV HEADER DELIMITER '|';
-COPY __WDB_SCHEMA__.wciuserdataprovider FROM '__WDB_DATADIR__/sql/wdb_wciuserdataprovider.csv' CSV HEADER DELIMITER '|';
+\i __WDB_DATADIR__/sql/wdb_dataprovider.sql
+--COPY __WDB_SCHEMA__.dataprovider FROM '__WDB_DATADIR__/sql/wdb_dataprovider.csv' CSV HEADER DELIMITER '|';
+--COPY __WDB_SCHEMA__.dataprovidercomment FROM '__WDB_DATADIR__/sql/wdb_dataprovidercomment.csv' CSV HEADER DELIMITER '|';
+--COPY __WDB_SCHEMA__.dataprovidername FROM '__WDB_DATADIR__/sql/wdb_dataprovidername.csv' CSV HEADER DELIMITER '|';
+--COPY __WDB_SCHEMA__.wciuserdataprovider FROM '__WDB_DATADIR__/sql/wdb_wciuserdataprovider.csv' CSV HEADER DELIMITER '|';
 
 -- PlaceId (wci.addplace...)
 --\i __WDB_DATADIR__/sql/wdb_placepoint.sql

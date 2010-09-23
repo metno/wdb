@@ -135,12 +135,13 @@ void wciWriteTest::testCanInsert3()
 
 	const string write = "SELECT wci.write("
 						 "E'aaaa'::bytea, "
-					     "13, "
-						 "1000, "
+					     "'test wci 3', "
+						 "'hirlam 10 grid', "
 						 "'2006-04-21 07:00:00+00', "
-						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
-		 				 "12, "
-						 "3, 0, 100, 0, 0, 0 )";
+						 "'2006-04-01 06:00:00+00', "
+						 "'2006-04-01 06:00:00+00', "
+		 				 "'virtual air temperature', "
+						 "'height above ground distance', 0, 100, 0, 0 )";
 	t->exec(write);
 
 	r = t->exec(select);
@@ -183,7 +184,7 @@ void wciWriteTest::testCanInsert4()
 	CPPUNIT_ASSERT_EQUAL(rowsBefore + 1, rowsAfter);
 }
 
-void wciWriteTest::testMultipleInserts1()
+void wciWriteTest::testMultipleInserts()
 {
 	result r = t->exec(controlStatement_());
 	const result::size_type before = r.size();
@@ -192,43 +193,6 @@ void wciWriteTest::testMultipleInserts1()
 		t->exec(statement_());
 
 	r = t->exec(controlStatement_());
-	const result::size_type after = r.size();
-
-	CPPUNIT_ASSERT_EQUAL(before + 5, after);
-}
-
-void wciWriteTest::testMultipleInserts2()
-{
-	const string select = "SELECT * FROM wci.read("
-						  "ARRAY['test wci 3'],"
-						  "'hirlam 10 grid'::text,"
-						  "'2006-04-21 07:00:00+00',"
-						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['air pressure change'], "
-						  "'0 TO 100 height above ground distance', "
-						  "NULL, "
-						  "NULL::wci.returngid)";
-
-	result r = t->exec(select);
-	const result::size_type before = r.size();
-
-	ostringstream ostr;
-	for (int i = 0; i < 5; ++i) {
-		ostr.str("");
-		ostr.clear();
-		ostr << "SELECT wci.write("
-			 << "E'aaaa'::bytea, "
-			 << "13, "
-			 << "1000, "
-			 << "'2006-04-21 07:00:00+00', "
-			 << "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
-			 << "3, "
-			 << "3, 0, 100, 0, "
-			 << i << ", 0 )";
-		t->exec(ostr.str());
-	}
-
-	r = t->exec(select);
 	const result::size_type after = r.size();
 
 	CPPUNIT_ASSERT_EQUAL(before + 5, after);
@@ -273,7 +237,7 @@ void wciWriteTest::testAutoIncrementVersion()
 }
 
 
-void wciWriteTest::testNullDataProviderThrows1()
+void wciWriteTest::testNullDataProviderThrows()
 {
 	const string write = "SELECT wci.write("
 						"E'aaaa'::bytea, "
@@ -287,17 +251,17 @@ void wciWriteTest::testNullDataProviderThrows1()
 	t->exec(write);
 }
 
-void wciWriteTest::testNullDataProviderThrows2()
+void wciWriteTest::testNullPlaceDefinitionThrows()
 {
 	const string write = "SELECT wci.write("
-						 "E'aaaa'::bytea, "
-						 "NULL, "
-						 "1000, "
-						 "'2006-04-21 07:00:00+00', "
-						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00', 0, "
-						 "17, "
-						 "3, 0, 100, 0, 0, 0 )";
-	t->exec(write);
+						"E'aaaa'::bytea, "
+						"NULL,"
+						"'hirlam 10 grid',"
+						"'2006-04-21 07:00:00+00',"
+						"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
+						"'dew point temperature',"
+						"'height above ground distance',0,100,"
+						"0,0)";	t->exec(write);
 }
 
 

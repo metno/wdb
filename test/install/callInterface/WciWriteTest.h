@@ -50,12 +50,11 @@ class wciWriteTest : public AbstractWciTestFixture
 	CPPUNIT_TEST(testCanInsert2); 			// Natural Language - grid
 	CPPUNIT_TEST(testCanInsert3);			// Codes - grid
 	CPPUNIT_TEST(testCanInsert3);			// returnGid
-	CPPUNIT_TEST(testMultipleInserts1);
-	CPPUNIT_TEST(testMultipleInserts2);
+	CPPUNIT_TEST(testMultipleInserts);
 	CPPUNIT_TEST(testVersionZeroOnNewData);
 	CPPUNIT_TEST(testAutoIncrementVersion);
-	CPPUNIT_TEST_EXCEPTION(testNullDataProviderThrows1, pqxx::sql_error);
-	CPPUNIT_TEST_EXCEPTION(testNullDataProviderThrows2, pqxx::sql_error);
+	CPPUNIT_TEST_EXCEPTION(testNullDataProviderThrows, pqxx::sql_error);
+	CPPUNIT_TEST_EXCEPTION(testNullPlaceDefinitionThrows, pqxx::sql_error);
 	CPPUNIT_TEST_EXCEPTION(testNullDataVersionThrows, pqxx::sql_error);
 	CPPUNIT_TEST_EXCEPTION(testNullParameterThrows, pqxx::sql_error);
 	// This test should not really fail, but we believe this is a test bug,
@@ -85,12 +84,11 @@ public:
 	void testCanInsert2();
 	void testCanInsert3();
 	void testCanInsert4();
-	void testMultipleInserts1();
-	void testMultipleInserts2();
+	void testMultipleInserts();
 	void testVersionZeroOnNewData();
 	void testAutoIncrementVersion();
-	void testNullDataProviderThrows1();
-	void testNullDataProviderThrows2();
+	void testNullDataProviderThrows();
+	void testNullPlaceDefinitionThrows();
 	void testNullDataVersionThrows();
 	void testNullParameterThrows();
 	void testIncompatibleUnitAndParamterThrows();

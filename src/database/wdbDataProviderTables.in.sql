@@ -49,7 +49,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.dataprovider
 REVOKE ALL ON __WDB_SCHEMA__.dataprovider FROM public;
 GRANT ALL ON __WDB_SCHEMA__.dataprovider TO wdb_admin;
 -- This sets startvalue to match that of a wci writer:
-SELECT setval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass, 1000000);
+-- SELECT setval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass, 1000000);
 
 
 

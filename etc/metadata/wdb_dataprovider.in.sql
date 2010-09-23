@@ -97,3 +97,7 @@ select wci.adddataprovider( 'yr corrected', 'Computer System', 'grid', 'Local no
 ---10300|0|proff.forecaster|2000-01-01T00:00:00Z|2000-01-01T00:00:00Z|10300|10301
 ---88150|0|proff eps|2000-01-01T00:00:00Z|2000-01-01T00:00:00Z|88150|88151
 ---88960|0|wam|2000-01-01T00:00:00Z|2000-01-01T00:00:00Z|88960|88961
+
+--- WCI users
+select wci.begin( 'wdb', 999, 999, 999 );
+select wci.addwciuser('wcitestwriter');

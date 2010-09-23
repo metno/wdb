@@ -380,7 +380,7 @@ LANGUAGE 'plpgsql';
 -- Write GRID Value
 -- All parameter specified
 CREATE FUNCTION 
-wci.write(
+wci.writed(
 	data bytea,
 	dataproviderid_ bigint,
 	placeid_ bigint,
@@ -797,7 +797,7 @@ LANGUAGE 'plpgsql';
 -- Explicit data specification
 --
 CREATE FUNCTION 
-wci.write(
+wci.writed(
 	value_ 			float,
 	dataproviderid_ bigint,
 	placeid_ 		bigint,
