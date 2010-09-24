@@ -237,7 +237,11 @@ BEGIN
 	END IF;
 	-- Get SRID
 	SELECT max(srid) + 1 INTO srid_
-	FROM spatial_ref_sys;	
+	FROM spatial_ref_sys;
+	-- Minimum new SRID = 50000
+	IF srid_ < 50000 THEN
+		srid_ := 50000;
+	END IF;		
 	-- Insert Data
 	INSERT INTO spatial_ref_sys
 	VALUES ( srid_,

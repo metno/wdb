@@ -225,9 +225,13 @@ void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
     // Check for meta
     result rC = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'InstallTest Grid Name\' )" );
     CPPUNIT_ASSERT( rC.size() > 0 );
+    // Get SRID
+    result rS = t->exec( "SELECT srid FROM wci.getSrid('+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs\')");
+    string srid;
+    rS.at(0).at(0).to(srid);
     // Insert name
     t->exec( "SELECT wci.begin('" + currentUser_ + "', 999, 999, 0 )" );
-    result rN = t->exec( "SELECT wci.setPlaceName( 'grid(0.5 0.5, 0.2 0.2, 4 4, 50000)', 'InstallTest Grid Name' )" );
+    result rN = t->exec( "SELECT wci.setPlaceName( 'grid(0.5 0.5, 0.2 0.2, 4 4, " + srid + ")', 'InstallTest Grid Name' )" );
     CPPUNIT_ASSERT( rN.size() > 0 );
     // Check for meta
     result rM = t->exec( "SELECT * FROM wci.getPlaceDefinition( \'insTallTest GRID name\' )" );

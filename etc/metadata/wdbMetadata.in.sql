@@ -20,8 +20,8 @@
 
 
 -- SRIDs (wci.addSrid, wci.getSrid)
---\i __WDB_DATADIR__/sql/wdb_spatial_ref_sys.sql
-COPY spatial_ref_sys FROM '__WDB_DATADIR__/sql/wdb_spatial_ref_sys.csv' CSV HEADER DELIMITER '|';
+\i __WDB_DATADIR__/sql/wdb_spatial_ref_sys.sql
+--COPY spatial_ref_sys FROM '__WDB_DATADIR__/sql/wdb_spatial_ref_sys.csv' CSV HEADER DELIMITER '|';
 
 -- Party (Organizations and People)
 COPY __WDB_SCHEMA__.party FROM '__WDB_DATADIR__/sql/wdb_party.csv' CSV HEADER DELIMITER '|';
@@ -51,11 +51,11 @@ COPY __WDB_SCHEMA__.timeindeterminatetype FROM '__WDB_DATADIR__/sql/wdb_timeinde
 --COPY __WDB_SCHEMA__.wciuserdataprovider FROM '__WDB_DATADIR__/sql/wdb_wciuserdataprovider.csv' CSV HEADER DELIMITER '|';
 
 -- PlaceId (wci.addplace...)
---\i __WDB_DATADIR__/sql/wdb_placepoint.sql
---\i __WDB_DATADIR__/sql/wdb_placeregulargrid.sql
- COPY __WDB_SCHEMA__.placedefinition FROM '__WDB_DATADIR__/sql/wdb_placedefinition.csv' CSV HEADER DELIMITER '|';
- COPY __WDB_SCHEMA__.placeregulargrid FROM '__WDB_DATADIR__/sql/wdb_placeregulargrid.csv' CSV HEADER DELIMITER '|';
- COPY __WDB_SCHEMA__.placename FROM '__WDB_DATADIR__/sql/wdb_placename.csv' CSV HEADER DELIMITER '|';
+\i __WDB_DATADIR__/sql/wdb_placepoint.sql
+\i __WDB_DATADIR__/sql/wdb_placeregulargrid.sql
+--COPY __WDB_SCHEMA__.placedefinition FROM '__WDB_DATADIR__/sql/wdb_placedefinition.csv' CSV HEADER DELIMITER '|';
+--COPY __WDB_SCHEMA__.placeregulargrid FROM '__WDB_DATADIR__/sql/wdb_placeregulargrid.csv' CSV HEADER DELIMITER '|';
+--COPY __WDB_SCHEMA__.placename FROM '__WDB_DATADIR__/sql/wdb_placename.csv' CSV HEADER DELIMITER '|';
 
 -- Parameters & Units (wci.addparamater...)
 COPY __WDB_SCHEMA__.measure FROM '__WDB_DATADIR__/sql/wdb_measure.csv' CSV HEADER DELIMITER '|';

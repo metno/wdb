@@ -25,7 +25,16 @@ projection as its base projection.
 				
 			<para>PlaceNames are essentially a short-hand for the user; each PlaceName uniquely
 				identifies one geographical object (referred to as  a Place definition) in the 
-				database (note that multiple PlaceNames may identify the same object).</para>
+				database (note that multiple PlaceNames may identify the same object), allowing the
+				use of "aliases".</para>
+				
+			<sect2 id="sec:place:addplacedef">
+				<title>Adding a Place Definition</title>
+				
+				<para>
+				</para>
+				
+			</sect2>
 
 
 			Adding a Place Definition
@@ -36,4 +45,5 @@ projection as its base projection.
 			Setting a Place Name
 				PlaceName	
 						 				 
+
 
