@@ -68,10 +68,10 @@ DECLARE
         ret integer;
 BEGIN
     session := __WCI_SCHEMA__.getsessiondata();
-	SELECT levelparameterid INTO ret
-	FROM __WCI_SCHEMA__.levelparameter_mv
+	SELECT parameterid INTO ret
+	FROM __WCI_SCHEMA__.parameter_mv
 	WHERE
-		levelparametername = parameter AND
+		parametername = parameter AND
 		parameternamespaceid = session.parameterNameSpaceId;
 
 	IF NOT FOUND THEN
@@ -83,71 +83,6 @@ END;
 $BODY$
 LANGUAGE 'plpgsql';
 
-
-CREATE OR REPLACE FUNCTION
-__WCI_SCHEMA__.getLevelParameterId(
-        parameter text,
-        unit text
-)
-RETURNS int AS
-$BODY$
-DECLARE
-        session __WCI_SCHEMA__.sessionData;
-        lparameter __WCI_SCHEMA__.levelparameter;
-BEGIN
-    session := __WCI_SCHEMA__.getsessiondata();
-
-	SELECT * INTO lparameter FROM __WCI_SCHEMA__.levelparameter
-	WHERE
-		levelparametername = parameter AND
-		levelunitname = unit AND
-		levelparametercodespaceid = session.parameterNameSpaceId;
-
-	IF NOT FOUND THEN
-		DECLARE
-			paramid int := nextval('__WDB_SCHEMA__.levelparameter_levelparameterid_seq');
-			explodedParameter __WCI_SCHEMA__.levelParameterTuple;
-		BEGIN
-			RAISE DEBUG 'Inserting new level parameter into database: %', parameter;
-
-			SELECT * INTO explodedParameter FROM __WCI_SCHEMA__.getLevelParameter(parameter);
-
-			PERFORM __WCI_SCHEMA__.assertUnitIsPhenomenon(unit, explodedParameter.physicalPhenomena);
-
-			BEGIN
-				INSERT INTO __WDB_SCHEMA__.levelparameter 
-					(levelparameterid, levelparametercodespaceid, levelparametertype) 
-				VALUES 
-					(paramid, session.parameternameSpaceId,'standard parameter');
-	
-				INSERT INTO __WDB_SCHEMA__.levelstandardparameter 
-					(levelparameterid, levelparametercodespaceid, levelparametertype, levelparameterunitname, levelparameterusage)
-				VALUES
-					(paramid,session.parameternameSpaceId,'standard parameter', unit, explodedParameter.levelDomain);
-	
-				RAISE DEBUG 'Level parameter <%> got internal value %.', parameter, paramid;
-
-			EXCEPTION WHEN unique_violation THEN
-				RAISE DEBUG 'Insertion failed. This is probably because a concurrent process has added the same parameter. Attempting to read level parameter again.';
-            	SELECT levelparameterid INTO paramid FROM __WCI_SCHEMA__.levelparameter
-				WHERE
-					levelparametername = parameter AND
-					levelunitname = unit AND
-					levelparametercodespaceid = session.parameterNameSpaceId;
-
-				IF NOT FOUND THEN
-					RAISE EXCEPTION 'Unable to allocate internal value for level parameter <%>', parameter;
-				END IF;
-	        END;
-
-			RETURN paramid;
-		END;
-	END IF;
-
-	RETURN lparameter.levelparameterid;
-END;
-$BODY$
-LANGUAGE 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.lp_matches( val __WCI_SCHEMA__.gridvalue, param text[] )

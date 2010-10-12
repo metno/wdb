@@ -21,7 +21,7 @@ SELECT * FROM wci.read(
 	NULL,--'hirlam 10 grid',		-- location
 	'2009-11-13 00:00:00+00',		-- reference time
 	'inside 2009-11-13 00:00:00+00 FOR 18 hours',	-- valid time
-	'{"accumulated %"}',			-- parameter
+	'{"precipitation %"}',			-- parameter
 	NULL,					-- level, in meter
 	ARRAY[-1],				-- data version (-1 is latest)
 	NULL::wci.returngid			-- return type

@@ -93,7 +93,7 @@ public:
 
 		// WCI Begin
 		std::ostringstream beginQuery;
-		beginQuery << "SELECT wci.begin( 'writetest', 999, 999, 0 );";
+		beginQuery << "SELECT wci.begin( 'writetest', 999, 999, 999 );";
 		T.exec( beginQuery.str() );
 
 		// Write to database
@@ -114,7 +114,7 @@ public:
 				  << "NULL, "
 				  << conf_.dataDefinitions().levelFrom << ","
 				  << conf_.dataDefinitions().levelTo << ","
-				  << "0, NULL, NULL, CURRENT_TIMESTAMP, NULL, 'float')::wci.returnFloat"
+				  << "0, NULL, NULL, CURRENT_TIMESTAMP, NULL, 1)::wci.returnFloat"
 				  << " )";
 		log.infoStream() << "Writing: " << writeQuery.str();
 		T.exec( writeQuery.str() );

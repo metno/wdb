@@ -64,7 +64,7 @@ void wciWriteTest::testCanInsert1()
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air pressure'],"
-		"'0 TO 100 height above ground distance',"
+		"'0 TO 100 height above ground',"
 		"NULL,"
 		"NULL::wci.returngid)";
 
@@ -77,7 +77,7 @@ void wciWriteTest::testCanInsert1()
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 		"'air pressure',"
-		"'height above ground distance',0,100)";
+		"'height above ground',0,100)";
 	t->exec(write);
 
 	r = t->exec(select);
@@ -94,7 +94,7 @@ void wciWriteTest::testCanInsert2()
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air temperature'],"
-		"'0 TO 100 height above ground distance',"
+		"'0 TO 100 height above ground',"
 		"NULL,"
 		"NULL::wci.returngid)";
 
@@ -108,7 +108,7 @@ void wciWriteTest::testCanInsert2()
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 		"'air temperature',"
-		"'height above ground distance',0,100,"
+		"'height above ground',0,100,"
 		"0,0)";
 	t->exec(write);
 
@@ -125,8 +125,8 @@ void wciWriteTest::testCanInsert3()
 						  "'hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['virtual air temperature'], "
-						  "'0 TO 100 height above ground distance', "
+						  "ARRAY['virtual temperature'], "
+						  "'0 TO 100 height above ground', "
 						  "NULL,"
 						  "NULL::wci.returngid)";
 
@@ -140,8 +140,8 @@ void wciWriteTest::testCanInsert3()
 						 "'2006-04-21 07:00:00+00', "
 						 "'2006-04-01 06:00:00+00', "
 						 "'2006-04-01 06:00:00+00', "
-		 				 "'virtual air temperature', "
-						 "'height above ground distance', 0, 100, 0, 0 )";
+		 				 "'virtual temperature', "
+						 "'height above ground', 0, 100, 0, 0 )";
 	t->exec(write);
 
 	r = t->exec(select);
@@ -157,8 +157,8 @@ void wciWriteTest::testCanInsert4()
 						  "'hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['potential air temperature'], "
-						  "'0 TO 100 height above ground distance', "
+						  "ARRAY['air potential temperature'], "
+						  "'0 TO 100 height above ground', "
 						  "NULL,"
 						  "NULL::wci.returngid)";
 
@@ -172,8 +172,8 @@ void wciWriteTest::testCanInsert4()
 						 "'',"
 						 "'2006-04-21 07:00:00+00',"
 						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
-						 "'potential air temperature', 'K',"
-						 "'height above ground distance','m', 0,100,"
+						 "'air potential temperature', 'K',"
+						 "'height above ground','m', 0,100,"
 						 "0,0,"
 						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
 	t->exec(write);
@@ -246,7 +246,7 @@ void wciWriteTest::testNullDataProviderThrows()
 						"'2006-04-21 07:00:00+00',"
 						"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 						"'dew point temperature',"
-						"'height above ground distance',0,100,"
+						"'height above ground',0,100,"
 						"0,0)";
 	t->exec(write);
 }
@@ -260,7 +260,7 @@ void wciWriteTest::testNullPlaceDefinitionThrows()
 						"'2006-04-21 07:00:00+00',"
 						"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 						"'dew point temperature',"
-						"'height above ground distance',0,100,"
+						"'height above ground',0,100,"
 						"0,0)";	t->exec(write);
 }
 
@@ -302,7 +302,7 @@ void wciWriteTest::testIncompatibleUnitAndParamterThrows()
 						 "'2006-04-21 07:00:00+00',"
 						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 						 "'air pressure', 'm',"
-						 "'height above ground distance','m', 0,100,"
+						 "'height above ground','m', 0,100,"
 						 "0,0,"
 						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
 	t->exec(write);
@@ -318,7 +318,7 @@ void wciWriteTest::testIncompatibleLevelUnitAndParameterThrows()
 						 "'2006-04-21 07:00:00+00',"
 						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 						 "'air pressure change', 'hP/s',"
-						 "'height above ground distance','K', 0, 100,"
+						 "'height above ground','K', 0, 100,"
 						 "0,0,"
 						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
 	t->exec(write);
@@ -452,7 +452,7 @@ string wciWriteTest::statement_(const string & referenceTime) const
 		<< "'"<< referenceTime << "', "
 		<< "'today', 'today', "
 		<< "'air temperature', "
-		<< "'height above mean sea level distance', 0.0, 0.0 ) ";
+		<< "'height above reference ellipsoid', 0.0, 0.0 ) ";
 
 	return ret.str();
 }
@@ -466,7 +466,7 @@ std::string wciWriteTest::statementWithParameter_(const std::string parameter) c
 		<< "'2004-12-24 07:00:00+00', "
 		<< "'today', 'today', "
 		<< "'" << parameter << "', "
-		<< "'height above mean sea level distance', 0.0, 0.0 )";
+		<< "'height above reference ellipsoid', 0.0, 0.0 )";
 
 	return ret.str();
 
@@ -486,7 +486,7 @@ string wciWriteTest::controlStatement_(const std::string & resultSet,
 	   << "'" << referenceTime << "', "
 	   << "'today', "
 	   << "'{\"air temperature\"}', "
-	   << "'0 height above mean sea level distance', "
+	   << "'0 height above reference ellipsoid', "
 	   << "NULL, "
 	   << "NULL::wci.returngid )";
 	return st.str();
@@ -502,7 +502,7 @@ std::string wciWriteTest::controlStatementWithParameter_(const std::string param
 	   << "'2004-12-24 07:00:00+00', "
 	   << "'today', "
        << "ARRAY['" << parameter << "'], "
-	   << "'0 height above mean sea level distance', "
+	   << "'0 height above reference ellipsoid', "
 	   << "NULL, "
 	   << "NULL::wci.returngid )";
 

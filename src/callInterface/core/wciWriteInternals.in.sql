@@ -120,7 +120,7 @@ BEGIN
 		valuestoretime
 	)
 	VALUES (
-		'Float', 
+		1, 
 		dataproviderid_, 
 		placeid_, 
 		referencetime_,
@@ -245,7 +245,7 @@ BEGIN
 		valuestoretime
 	)
 	VALUES (
-		'Float', 
+		1, 
 		dataproviderid_, 
 		placeid_, 
 		referencetime_,

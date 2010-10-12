@@ -23,5 +23,5 @@ mkdir -p __WDB_LOGDIR__
 # Remove Test Data
 $PSQL -q <<EOF
 \o __WDB_LOGDIR__/wdb_test_cleanDb.tmp
-DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
+SELECT test.cleanTestData();
 EOF

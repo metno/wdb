@@ -70,7 +70,7 @@ void WciFetchTest::testFetchBinaryData()
 		<< "'2006-04-01 06:00:00+00', "
 		<< "'2006-04-01 06:00:00+00', "
 		<< "'air pressure', "
-		<< "'height above ground distance', "
+		<< "'height above ground', "
 		<< "0, "
 		<< "100)";
 	const string write = wrQ.str();
@@ -85,7 +85,7 @@ void WciFetchTest::testFetchBinaryData()
 		"'2006-04-23 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air pressure'],"
-		"'0 TO 100 height above ground distance',"
+		"'0 TO 100 height above ground',"
 		"NULL,"
 		"NULL::wci.returngid)";
 	result r = t->exec(read);
@@ -122,7 +122,7 @@ void WciFetchTest::testFetchFloatGrid()
 		<< "'2006-04-01 06:00:00+00', "
 		<< "'2006-04-01 06:00:00+00', "
 		<< "'air pressure', "
-		<< "'height above ground distance', "
+		<< "'height above ground', "
 		<< "0, "
 		<< "100)";
 	const string write = wrQ.str();
@@ -137,7 +137,7 @@ void WciFetchTest::testFetchFloatGrid()
 		"'2006-04-23 08:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air pressure'],"
-		"'0 TO 100 height above ground distance',"
+		"'0 TO 100 height above ground',"
 		"NULL,"
 		"NULL::wci.returngid)";
 	result r = t->exec(read);

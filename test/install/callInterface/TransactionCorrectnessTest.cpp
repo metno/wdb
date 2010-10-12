@@ -65,7 +65,7 @@ void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
 		"'air pressure',"
-		"'height above ground distance',0,100)";
+		"'height above ground',0,100)";
 	t->exec(write);
 
 	const string read = "SELECT valueid, value FROM wci.read("
@@ -74,7 +74,7 @@ void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00',"
 		"ARRAY['air pressure'],"
-		"'0 TO 100 height above ground distance',"
+		"'0 TO 100 height above ground',"
 		"NULL,"
 		"NULL::wci.returngid)";
 	result r = t->exec(read);
@@ -97,7 +97,7 @@ void TransactionCorrectnessTest::testAbortedDelete()
 			"'1975-04-21 06:00:00+00', "
 			"'1975-04-21 06:00:00+00', "
 			"ARRAY['air pressure'], "
-			"'0 height above ground distance', "
+			"'0 height above ground', "
 			"NULL, "
 			"NULL::wci.returngid)";
 	result r = t->exec(read);

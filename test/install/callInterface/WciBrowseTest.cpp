@@ -185,6 +185,6 @@ void WciBrowseTest::testBrowseLevelParameter()
 	// There is at least one browse row
 	CPPUNIT_ASSERT( rS.size() );
 	// Check base valparam
-    CPPUNIT_ASSERT( count_val( rS, "levelparametername", "height above mean sea level distance" ) );
+    CPPUNIT_ASSERT( count_val( rS, "levelparametername", "height above reference ellipsoid" ) );
 }
 

@@ -58,10 +58,8 @@
 #           location      text,           - 'nearest POINT( 10.0 59.0 )'  
 #           referencetime wci.timeSpec,   - ('2008-03-06 12:00:00', '2008-03-06 12:00:00', 'exact')
 #           validtime     wci.timeSpec,   - ('2008-03-06 12:00:00', '2008-03-06 18:00:00', 'inside')
-#           parameter     text[],         - array['instant pressure of air',
-#                                                 'instant temperature of air',
-#                                                 'instant velocity of air (u vector)',
-#                                                 'instant velocity of air (v vector)' ]
+#           parameter     text[],         - array['air pressure',
+#                                                 'air temperature' ]
 #           level         wci.levelSpec,  - ( 2, 2, 'above ground', 'exact' )
 #           dataversion   integer[],      - array[-1] 
 #           returntype    wci.returnFloat - NULL::wci.returnFloat

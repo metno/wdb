@@ -69,18 +69,6 @@ CREATE UNIQUE INDEX XAK1Wdb_Organization ON __WDB_SCHEMA__.Organization
 );
 
 
-CREATE UNIQUE INDEX XAK1wdb_measure ON __WDB_SCHEMA__.measure
-(
-    distancepower,
-	masspower,
-	timepower,
-	luminositypower,
-	electriccurrentpower,
-	temperaturepower,
-	substanceamountpower,
-	anglepower
-);
-
 CREATE UNIQUE INDEX XAK1Wdb_PlaceIndeterminateType ON __WDB_SCHEMA__.PlaceIndeterminateType
 (
        PlaceIndeterminateType
@@ -128,18 +116,6 @@ CREATE INDEX XIE4Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
 );
 
 
-CREATE UNIQUE INDEX XAK1Wdb_ValueStandardParameter ON __WDB_SCHEMA__.valuemeasureparameter
-(
-    valueparameterunitname,
-	valueparameterusage,
-	parameterquantitytype
-);
-
-CREATE UNIQUE INDEX XAK1Wdb_LevelStandardParameter ON __WDB_SCHEMA__.levelmeasureparameter
-(
-    levelparameterunitname,
-	levelparameterusage
-);
 
 CREATE INDEX XIE0Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
@@ -218,18 +194,4 @@ CREATE INDEX XIE1Wdb_DataProvider_Mv ON __WCI_SCHEMA__.dataprovider_mv
        DataProviderId,
 	   DataProviderNamespaceId,
 	   DataProviderName
-);
-
-CREATE INDEX XIE1Wdb_ValueParameter_Mv ON __WCI_SCHEMA__.valueparameter_mv
-(
-    ValueParameterId,
-	ParameterNameSpaceId,
-	ValueParameterName
-);
-
-CREATE INDEX XIE1Wdb_LevelParameter_Mv ON __WCI_SCHEMA__.levelparameter_mv
-(
-    LevelParameterId,
-	ParameterNameSpaceId,
-	LevelParameterName
 );

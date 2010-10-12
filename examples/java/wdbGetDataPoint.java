@@ -113,7 +113,7 @@ public class wdbGetDataPoint {
     		System.exit(1);
     	}
     	
-    	String wdbInit="SELECT wci.begin('"+dbuser+"', 999, 999, 0 )";
+    	String wdbInit="SELECT wci.begin('"+dbuser+"', 999, 999, 999 )";
     	String sql=" SELECT * " + 
                    " FROM wci.read( array['test wci 5'], 'POINT( 10.0 59.0 )', " +
                    "                '2009-11-13 00:00:00+00', " + 

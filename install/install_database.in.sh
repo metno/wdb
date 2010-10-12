@@ -460,9 +460,8 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_matview.log
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv'); 
-SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.valueparameter_mv');
-SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.levelparameter_mv'); 
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv'); 
+SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.parameter_mv');
 EOF
 	if [ 0 != $? ]; then
 	    echo "ERROR"; exit 1

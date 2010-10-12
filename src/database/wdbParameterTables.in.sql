@@ -19,99 +19,118 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
-
--- Measures (physical + angles)
-CREATE TABLE __WDB_SCHEMA__.measure (
-    measure						character varying(80) NOT NULL,
-    distancepower				integer NOT NULL,
-    masspower					integer NOT NULL,
-    timepower					integer NOT NULL,
-    luminositypower				integer NOT NULL,
-    electriccurrentpower		integer NOT NULL,
-    temperaturepower			integer NOT NULL,
-    substanceamountpower		integer NOT NULL,
-	anglepower					integer NOT NULL
+-- Surface
+CREATE TABLE __WDB_SCHEMA__.cfsurface (
+    cfsurface					character varying(255) NOT NULL,
+	cfsurfacecomment			character varying(255)
 );
 
-ALTER TABLE ONLY __WDB_SCHEMA__.measure
-    ADD CONSTRAINT measure_pkey PRIMARY KEY (measure);
+-- Component
+CREATE TABLE __WDB_SCHEMA__.cfcomponent (
+    cfcomponent					character varying(255) NOT NULL,
+	cfcomponentcomment			character varying(255)
+);
 
-REVOKE ALL ON __WDB_SCHEMA__.measure FROM public;
-GRANT ALL ON __WDB_SCHEMA__.measure TO wdb_admin;
+-- Medium
+CREATE TABLE __WDB_SCHEMA__.cfmedium (
+    cfmedium					character varying(255) NOT NULL,
+	cfmediumcomment				character varying(255)
+);
 
+-- Process
+CREATE TABLE __WDB_SCHEMA__.cfprocess (
+    cfprocess					character varying(255) NOT NULL,
+	cfprocesscomment			character varying(255)
+);
 
+-- Condition
+CREATE TABLE __WDB_SCHEMA__.cfcondition (
+    cfcondition					character varying(255) NOT NULL,
+	cfconditioncomment			character varying(255)
+);	
+
+-- Surface
+CREATE TABLE __WDB_SCHEMA__.cfmethods (
+    cfmethods				character varying(255) NOT NULL,
+	cfmethodscomment		character varying(255),
+    cfmethodsname			character varying(255) NOT NULL
+);
 
 CREATE TABLE __WDB_SCHEMA__.unit (
     unitname					character varying(80) NOT NULL,
     unittype					character varying(80) NOT NULL,
-    measure						character varying(80) NOT NULL,
 	description					character varying(255) NOT NULL
     CONSTRAINT unit_unittype_check
-	CHECK (	((unittype)::text = 'SI Unit'::text) OR
-			((unittype)::text = 'Conventional Unit'::text) OR
-			((unittype)::text = 'Base Unit'::text))
+	CHECK (	((unittype)::text = 'derived unit'::text) OR
+			((unittype)::text = 'base unit'::text))
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.unit
     ADD CONSTRAINT unit_pkey PRIMARY KEY (unitname);
 
-ALTER TABLE __WDB_SCHEMA__.unit
-	ADD FOREIGN KEY (measure)
-					REFERENCES __WDB_SCHEMA__.measure
-					ON DELETE RESTRICT
-					ON UPDATE CASCADE;
-
 REVOKE ALL ON __WDB_SCHEMA__.unit FROM public;
 GRANT ALL ON __WDB_SCHEMA__.unit TO wdb_admin;
 
 
-
 -- Conversion tables
-CREATE TABLE __WDB_SCHEMA__.siunitconversion (
+CREATE TABLE __WDB_SCHEMA__.baseunitconversion (
     unitname						character varying(80) NOT NULL,
-    siunitconversioncoefficient		float NOT NULL,
-    siunitconversionterm			float NOT NULL
+    baseunitname					character varying(80) NOT NULL,
+    baseunitconversioncoefficient	float NOT NULL,
+    baseunitconversionterm			float NOT NULL
 );
 
-ALTER TABLE ONLY __WDB_SCHEMA__.siunitconversion
-    ADD CONSTRAINT siunitconversion_pkey PRIMARY KEY (unitname);
+ALTER TABLE ONLY __WDB_SCHEMA__.baseunitconversion
+    ADD CONSTRAINT baseunitconversion_pkey PRIMARY KEY (unitname);
 
-ALTER TABLE __WDB_SCHEMA__.siunitconversion
+ALTER TABLE __WDB_SCHEMA__.baseunitconversion
 	ADD FOREIGN KEY (unitname)
 					REFERENCES __WDB_SCHEMA__.unit
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
-REVOKE ALL ON __WDB_SCHEMA__.siunitconversion FROM public;
-GRANT ALL ON __WDB_SCHEMA__.siunitconversion TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.baseunitconversion FROM public;
+GRANT ALL ON __WDB_SCHEMA__.baseunitconversion TO wdb_admin;
 
 
-
--- Parameter functions
-CREATE TABLE __WDB_SCHEMA__.parameterfunctiontype (
-    parameterfunctiontype 			character varying(80) NOT NULL,
-    parameterfunctiondescription 	character varying(255) NOT NULL
+-- Parameter
+CREATE TABLE __WDB_SCHEMA__.parameter (
+	parameterid 					serial NOT NULL,
+  	cfstandardname					character varying(255) NOT NULL,
+ 	cfsurface						character varying(255),
+    cfcomponent						character varying(255),
+    cfmedium						character varying(255),
+    cfprocess						character varying(255),
+    cfcondition						character varying(255),
+    cfmethods						character varying(255),
+    unitname						character varying(80)
 );
 
-ALTER TABLE ONLY __WDB_SCHEMA__.parameterfunctiontype
-    ADD CONSTRAINT parameterfunctiontype_pkey PRIMARY KEY (parameterfunctiontype);
+ALTER TABLE ONLY __WDB_SCHEMA__.parameter
+    ADD CONSTRAINT parameter_pkey PRIMARY KEY (parameterid);
 
-REVOKE ALL ON __WDB_SCHEMA__.parameterfunctiontype FROM public;
-GRANT ALL ON __WDB_SCHEMA__.parameterfunctiontype TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.parameter FROM public;
+GRANT ALL ON __WDB_SCHEMA__.parameter TO wdb_admin;
 
 
-
--- Value parameter usages
-CREATE TABLE __WDB_SCHEMA__.valueparameterusage (
-    valueparameterusage				character varying(80) NOT NULL,
-	valueparameterusagedescription	character varying(255) NOT NULL
+CREATE TABLE __WDB_SCHEMA__.parametername (
+	parameterid 				integer NOT NULL,
+	parameternamespaceid 		integer NOT NULL,
+	parametername 				character varying(255) NOT NULL
 );
 
-ALTER TABLE ONLY __WDB_SCHEMA__.valueparameterusage
-    ADD CONSTRAINT valueparameterusage_pkey PRIMARY KEY (valueparameterusage);
+ALTER TABLE ONLY __WDB_SCHEMA__.parametername
+    ADD CONSTRAINT parametername_pkey PRIMARY KEY (parameterid, parameternamespaceid);
 
-REVOKE ALL ON __WDB_SCHEMA__.valueparameterusage FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valueparameterusage TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.parametername FROM public;
+GRANT ALL ON __WDB_SCHEMA__.parametername TO wdb_admin;
+
+
+
+
+
+
+
 
 
 
@@ -124,180 +143,6 @@ CREATE TABLE __WDB_SCHEMA__.valueparameter (
 			((valueparametertype)::text = 'Code Parameter'::text) OR
 			((valueparametertype)::text = 'Dimensionless Parameter'::text))
 );
-
-ALTER TABLE ONLY __WDB_SCHEMA__.valueparameter
-    ADD CONSTRAINT valueparameter_pkey PRIMARY KEY (valueparameterid);
-ALTER SEQUENCE __WDB_SCHEMA__.valueparameter_valueparameterid_seq RESTART WITH 100000;
-
-REVOKE ALL ON __WDB_SCHEMA__.valueparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valueparameter TO wdb_admin;
---GRANT INSERT ON __WDB_SCHEMA__.valueparameter TO wdb_write;
---GRANT SELECT, INSERT, UPDATE ON __WDB_SCHEMA__.valueparameter_valueparameterid_seq TO wdb_write;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.valuemeasureparameter (
-	valueparameterid 				integer NOT NULL,
-	valueparameterusage 			character varying(80) NOT NULL,
-	valueparameterunitname 			character varying(80) NOT NULL,
-	parameterquantitytype			character varying(80) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.valuemeasureparameter
-    ADD CONSTRAINT valuemeasureparameter_pkey PRIMARY KEY (valueparameterid);
-
-ALTER TABLE __WDB_SCHEMA__.valuemeasureparameter
-	ADD FOREIGN KEY (valueparameterid)
-					REFERENCES __WDB_SCHEMA__.valueparameter
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-ALTER TABLE __WDB_SCHEMA__.valuemeasureparameter
-	ADD FOREIGN KEY (valueparameterunitname)
-					REFERENCES __WDB_SCHEMA__.unit
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-ALTER TABLE __WDB_SCHEMA__.valuemeasureparameter
-	ADD FOREIGN KEY (valueparameterusage)
-					REFERENCES __WDB_SCHEMA__.valueparameterusage
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-REVOKE ALL ON __WDB_SCHEMA__.valuemeasureparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valuemeasureparameter TO wdb_admin;
---GRANT INSERT ON __WDB_SCHEMA__.valuemeasureparameter TO wdb_write;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.valuefunctionparameter (
-	valueparameterid 				integer NOT NULL,
-    parameterfunctiontype			character varying(80) NOT NULL,
-	valueparameterusage 			character varying(80) NOT NULL,
-	valueparameterunitname 			character varying(80) NOT NULL,
-	parameterquantitytype			character varying(80) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.valuefunctionparameter
-    ADD CONSTRAINT valuefunctionparameter_pkey PRIMARY KEY (valueparameterid);
-
-REVOKE ALL ON __WDB_SCHEMA__.valuefunctionparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valuefunctionparameter TO wdb_admin;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.valuecodeparameter (
-	valueparameterid 			integer NOT NULL,
-	valuecodeparametername 		character varying(255) NOT NULL,
-	codeparameterreference 		character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.valuecodeparameter
-    ADD CONSTRAINT valuecodeparameter_pkey PRIMARY KEY (valueparameterid);
-
-REVOKE ALL ON __WDB_SCHEMA__.valuecodeparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valuecodeparameter TO wdb_admin;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.valuedimensionlessparameter (
-	valueparameterid 				integer NOT NULL,
-	valuedimensionlessparametername character varying(255) NOT NULL,
-	valueparameterdescription		character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.valuedimensionlessparameter
-    ADD CONSTRAINT valuedimensionlessparameter_pkey PRIMARY KEY (valueparameterid);
-
-REVOKE ALL ON __WDB_SCHEMA__.valuedimensionlessparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valuedimensionlessparameter TO wdb_admin;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.valueparametername (
-	valueparameterid 			integer NOT NULL,
-	parameternamespaceid 		integer NOT NULL,
-	valueparametername 			character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.valueparametername
-    ADD CONSTRAINT valueparametername_pkey PRIMARY KEY (valueparameterid, parameternamespaceid);
-
-REVOKE ALL ON __WDB_SCHEMA__.valueparametername FROM public;
-GRANT ALL ON __WDB_SCHEMA__.valueparametername TO wdb_admin;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.levelparameterusage (
-    levelparameterusage			character varying(80) NOT NULL,
-    levelparameterusagedescription	character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.levelparameterusage
-    ADD CONSTRAINT levelparameterusage_pkey PRIMARY KEY (levelparameterusage);
-
-REVOKE ALL ON __WDB_SCHEMA__.levelparameterusage FROM public;
-GRANT ALL ON __WDB_SCHEMA__.levelparameterusage TO wdb_admin;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.levelparameter (
-	levelparameterid 			serial NOT NULL,
-	levelparametertype 			character varying(80) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.levelparameter
-    ADD CONSTRAINT levelparameter_pkey PRIMARY KEY (levelparameterid);
-ALTER SEQUENCE __WDB_SCHEMA__.levelparameter_levelparameterid_seq RESTART WITH 100000;
-
-REVOKE ALL ON __WDB_SCHEMA__.levelparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.levelparameter TO wdb_admin;
---GRANT INSERT ON __WDB_SCHEMA__.levelparameter TO wdb_write;
---GRANT SELECT, INSERT, UPDATE ON __WDB_SCHEMA__.levelparameter_levelparameterid_seq TO wdb_write;
-
-
-CREATE TABLE __WDB_SCHEMA__.levelmeasureparameter (
-	levelparameterid 			integer NOT NULL,
-	levelparameterunitname 		character varying(80) NOT NULL,
-    levelparameterusage 		character varying(80) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.levelmeasureparameter
-    ADD CONSTRAINT levelmeasureparameter_pkey PRIMARY KEY (levelparameterid);
-
-REVOKE ALL ON __WDB_SCHEMA__.levelmeasureparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.levelmeasureparameter TO wdb_admin;
---GRANT INSERT ON __WDB_SCHEMA__.levelmeasureparameter TO wdb_write;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.levelcodeparameter (
-	levelparameterid 			integer NOT NULL,
-	levelcodeparametername 		character varying(255) NOT NULL,
-	codeparameterreference 		character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.levelcodeparameter
-    ADD CONSTRAINT levelcodeparameter_pkey PRIMARY KEY (levelparameterid);
-
-REVOKE ALL ON __WDB_SCHEMA__.levelcodeparameter FROM public;
-GRANT ALL ON __WDB_SCHEMA__.levelcodeparameter TO wdb_admin;
-
-
-
-CREATE TABLE __WDB_SCHEMA__.levelparametername (
-	levelparameterid 			integer NOT NULL,
-	parameternamespaceid 		integer NOT NULL,
-	levelparametername 			character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.levelparametername
-    ADD CONSTRAINT levelparametername_pkey PRIMARY KEY (levelparameterid, parameternamespaceid);
-
-REVOKE ALL ON __WDB_SCHEMA__.levelparametername FROM public;
-GRANT ALL ON __WDB_SCHEMA__.levelparametername TO wdb_admin;
-
-
 
 CREATE TABLE __WDB_SCHEMA__.levelindeterminatetype (
     levelindeterminatecode		integer NOT NULL,

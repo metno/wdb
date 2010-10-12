@@ -19,4 +19,4 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 
-psql `./wdbConfiguration --psqlArgs` -c "SELECT cleanupdb()" >> /dev/null
+psql `./wdbConfiguration --psqlArgs` -c "SELECT test.cleanTestData();" >> /dev/null

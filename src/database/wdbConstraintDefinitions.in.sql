@@ -41,78 +41,13 @@ ALTER TABLE ONLY __WDB_SCHEMA__.valueadditionallevelinfo
 -- Foreign Key Constraints
 --
 
-
-ALTER TABLE __WDB_SCHEMA__.valuefunctionparameter
-	ADD FOREIGN KEY (parameterfunctiontype)
-					REFERENCES __WDB_SCHEMA__.parameterfunctiontype
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-
-ALTER TABLE __WDB_SCHEMA__.valuecodeparameter
-	ADD FOREIGN KEY (valueparameterid)
-					REFERENCES __WDB_SCHEMA__.valueparameter
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.valueparametername
-	ADD FOREIGN KEY (valueparameterid)
-					REFERENCES __WDB_SCHEMA__.valueparameter
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.valueparametername
+ALTER TABLE __WDB_SCHEMA__.parametername
 	ADD FOREIGN KEY (parameternamespaceid)
 					REFERENCES __WDB_SCHEMA__.namespace
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
-
-ALTER TABLE __WDB_SCHEMA__.levelmeasureparameter
-	ADD FOREIGN KEY (levelparameterid)
-					REFERENCES __WDB_SCHEMA__.levelparameter
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.levelmeasureparameter
-	ADD FOREIGN KEY (levelparameterunitname)
-					REFERENCES __WDB_SCHEMA__.unit
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.levelmeasureparameter
-	ADD FOREIGN KEY (levelparameterusage)
-					REFERENCES __WDB_SCHEMA__.levelparameterusage
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.levelcodeparameter
-	ADD FOREIGN KEY (levelparameterid)
-					REFERENCES __WDB_SCHEMA__.levelparameter
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.levelparametername
-	ADD FOREIGN KEY (levelparameterid)
-					REFERENCES __WDB_SCHEMA__.levelparameter
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
-ALTER TABLE __WDB_SCHEMA__.levelparametername
-	ADD FOREIGN KEY (parameternamespaceid)
-					REFERENCES __WDB_SCHEMA__.namespace
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-
+					
 ALTER TABLE __WDB_SCHEMA__.floatvalue
 	ADD FOREIGN KEY (dataproviderid)
 					REFERENCES __WDB_SCHEMA__.dataprovider
@@ -136,14 +71,14 @@ ALTER TABLE __WDB_SCHEMA__.floatvalue
 
 ALTER TABLE __WDB_SCHEMA__.floatvalue
 	ADD FOREIGN KEY (valueparameterid)
-					REFERENCES __WDB_SCHEMA__.valueparameter
+					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
 ALTER TABLE __WDB_SCHEMA__.floatvalue
 	ADD FOREIGN KEY (levelparameterid)
-					REFERENCES __WDB_SCHEMA__.levelparameter
+					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
@@ -185,14 +120,14 @@ ALTER TABLE __WDB_SCHEMA__.gridvalue
 
 ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (valueparameterid)
-					REFERENCES __WDB_SCHEMA__.valueparameter
+					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
 ALTER TABLE __WDB_SCHEMA__.gridvalue
 	ADD FOREIGN KEY (levelparameterid)
-					REFERENCES __WDB_SCHEMA__.levelparameter
+					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 

@@ -96,19 +96,19 @@ class ValueParameterTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testWildCardAll );
 
 	// Test Add and Delete of Value Parameters Components
-	CPPUNIT_TEST( testP7_01_AddMeasure );
+	//CPPUNIT_TEST( testP7_01_AddMeasure );
 	CPPUNIT_TEST( testP7_02_AddUnit );
-	CPPUNIT_TEST( testP7_03_AddFunction );
-	CPPUNIT_TEST( testP7_04_AddParameterUsage );
+	//CPPUNIT_TEST( testP7_03_AddFunction );
+	//CPPUNIT_TEST( testP7_04_AddParameterUsage );
 
 	// Add Parameters
-	CPPUNIT_TEST( testP8_01_AddMeasureParameter );
-	CPPUNIT_TEST( testP8_02_AddFunctionParameter );
-	CPPUNIT_TEST( testP8_03_AddCodeParameter );
-	CPPUNIT_TEST( testP8_04_AddDimensionlessParameter );
+	//CPPUNIT_TEST( testP8_01_AddMeasureParameter );
+	//CPPUNIT_TEST( testP8_02_AddFunctionParameter );
+	//CPPUNIT_TEST( testP8_03_AddCodeParameter );
+	//CPPUNIT_TEST( testP8_04_AddDimensionlessParameter );
 
 	// Names
-	CPPUNIT_TEST( testP9_01_SetParameterName );
+	//CPPUNIT_TEST( testP9_01_SetParameterName );
 
 	CPPUNIT_TEST_SUITE_END();
 public:

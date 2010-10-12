@@ -17,256 +17,415 @@
 --  (at your option) any later version.
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
---
--- Add Measure Value Parameter
--- Measure Value Parameters are parameters based on measures; 
--- usually physical phenomena such as temperature, pressure, etc.
+
+-- Get CF-Metadata Surface Parameter
+CREATE OR REPLACE FUNCTION 
+wci.getcfsurface( searchterm 		text )	
+RETURNS SETOF __WCI_SCHEMA__.cfsurface AS
+$BODY$
+	SELECT
+		cfsurface,
+		cfsurfacecomment
+	FROM 
+		__WCI_SCHEMA__.cfsurface v,
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		($1 IS NULL OR cfsurface LIKE lower($1));
+$BODY$
+LANGUAGE sql STABLE;
+
+-- Add CF-metadata for Surface  
 CREATE OR REPLACE FUNCTION
-wci.addMeasureValueParameter
+wci.addCfSurface
 (
-	parameterUsage_ 		text,
-	parameterUnit_			text,
-	parameterQuantity_		text
+	surface_ 			text,
+	comment_			text
 )
-RETURNS int AS
+RETURNS void AS
 $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq');
-	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.valueparameter
-	VALUES ( parameterid_, 'Measure Parameter' );
-	-- Insert Value
-	INSERT INTO __WDB_SCHEMA__.valuemeasureparameter
-	VALUES ( parameterid_,
-			 lower(parameterUsage_),
-			 parameterUnit_,
-			 lower(parameterQuantity_) );
-	RETURN parameterid_;
+	-- Check for Duplicate
+	PERFORM *
+	FROM __WCI_SCHEMA__.cfsurface
+	WHERE cfsurface = surface_;
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.cfsurface
+		VALUES ( surface_, comment_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.cfsurface
+		SET cfsurface=surface_, cfsurfacecomment=comment_
+		WHERE cfsurface = surface_;
+	END IF;
+	RETURN;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
--- Add Function Value Parameter
--- Function Value Parameters are measure parameters that are modified
--- by some function; i.e., aggregated or accumulated values.
+-- Get CF-Metadata component Parameter
+CREATE OR REPLACE FUNCTION 
+wci.getcfcomponent( searchterm 		text )	
+RETURNS SETOF __WCI_SCHEMA__.cfcomponent AS
+$BODY$
+	SELECT
+		cfcomponent,
+		cfcomponentcomment
+	FROM 
+		__WCI_SCHEMA__.cfcomponent v,
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		($1 IS NULL OR cfcomponent LIKE lower($1));
+$BODY$
+LANGUAGE sql STABLE;
+
+-- Add CF-metadata for component  
 CREATE OR REPLACE FUNCTION
-wci.addFunctionValueParameter
+wci.addCfcomponent
 (
-	parameterUsage_ 		text,
-	parameterUnit_			text,
-	parameterFunction_		text,
-	parameterQuantity_		text
+	component_ 			text,
+	comment_			text
 )
-RETURNS int AS
+RETURNS void AS
 $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq');
-	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.valueparameter
-	VALUES ( parameterid_, 'Function Parameter' );
-	-- Insert Value
-	INSERT INTO __WDB_SCHEMA__.valuefunctionparameter
-	VALUES ( parameterid_,
-			 lower(parameterFunction_),
-			 lower(parameterUsage_),
-			 parameterUnit_,
-			 lower(parameterQuantity_) );
-	RETURN parameterid_;
+	-- Check for Duplicate
+	PERFORM * 
+	FROM __WCI_SCHEMA__.cfcomponent
+	WHERE cfcomponent = component_;
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.cfcomponent
+		VALUES ( component_, comment_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.cfcomponent
+		SET cfcomponent=component_, cfcomponentcomment=comment_
+		WHERE cfcomponent = component_;
+	END IF;
+	RETURN;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
--- Add Code Value Parameter
--- Code Value Parameters are parameters that are set according to
--- some table of codes.
+-- Get CF-Metadata medium Parameter
+CREATE OR REPLACE FUNCTION 
+wci.getcfmedium( searchterm 		text )	
+RETURNS SETOF __WCI_SCHEMA__.cfmedium AS
+$BODY$
+	SELECT
+		cfmedium,
+		cfmediumcomment
+	FROM 
+		__WCI_SCHEMA__.cfmedium v,
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		($1 IS NULL OR cfmedium LIKE lower($1));
+$BODY$
+LANGUAGE sql STABLE;
+
+-- Add CF-metadata for medium  
 CREATE OR REPLACE FUNCTION
-wci.addCodeValueParameter
+wci.addCfmedium
 (
-	parameterName_ 			text,
-	parameterReference_		text
+	medium_ 			text,	
+	comment_			text
 )
-RETURNS int AS
+RETURNS void AS
 $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq');
-	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.valueparameter
-	VALUES ( parameterid_, 'Code Parameter' );
-	-- Insert Value
-	INSERT INTO __WDB_SCHEMA__.valuecodeparameter
-	VALUES ( parameterid_,
-			 lower(parameterName_),
-			 parameterReference_ );
-	RETURN parameterid_;
+	-- Check for Duplicate
+	PERFORM * 
+	FROM __WCI_SCHEMA__.cfmedium
+	WHERE cfmedium = medium_;
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.cfmedium
+		VALUES ( medium_, comment_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.cfmedium
+		SET cfmedium=medium_, cfmediumcomment=comment_
+		WHERE cfmedium = medium_;
+	END IF;
+	RETURN;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
--- Add Dimensionless Value Parameter
--- Dimensionless Value Parameters are parameters that do not have a
--- dimension in terms of the measures described in the measure table.
--- Examples of queries are most ratios.
+-- Get CF-Metadata process Parameter
+CREATE OR REPLACE FUNCTION 
+wci.getcfprocess( searchterm 		text )	
+RETURNS SETOF __WCI_SCHEMA__.cfprocess AS
+$BODY$
+	SELECT
+		cfprocess,
+		cfprocesscomment
+	FROM 
+		__WCI_SCHEMA__.cfprocess v,
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		($1 IS NULL OR cfprocess LIKE lower($1));
+$BODY$
+LANGUAGE sql STABLE;
+
+-- Add CF-metadata for process  
 CREATE OR REPLACE FUNCTION
-wci.addDimensionlessValueParameter
+wci.addcfprocess
 (
-	parameterName_ 			text,
-	parameterDescription_	text
+	process_ 			text,
+	comment_			text
 )
-RETURNS int AS
+RETURNS void AS
 $BODY$
 DECLARE	
 	parameterid_ int;
 BEGIN
 	-- WCI User Check
 	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.valueparameter_valueparameterid_seq');
-	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.valueparameter
-	VALUES ( parameterid_, 'Dimensionless Parameter' );
-	-- Insert Value
-	INSERT INTO __WDB_SCHEMA__.valuedimensionlessparameter
-	VALUES ( parameterid_,
-			 lower(parameterName_),
-			 parameterDescription_ );
-	RETURN parameterid_;
+	-- Check for Duplicate
+	PERFORM * 
+	FROM __WCI_SCHEMA__.cfprocess
+	WHERE cfprocess = process_;
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.cfprocess
+		VALUES ( process_, comment_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.cfprocess
+		SET cfprocess=process_, cfprocesscomment=comment_
+		WHERE cfprocess = process_;
+	END IF;
+	RETURN;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
--- Get Value Parameter (All Types)
+-- Get CF-Metadata condition Parameter
+CREATE OR REPLACE FUNCTION 
+wci.getcfcondition( searchterm 		text )	
+RETURNS SETOF __WCI_SCHEMA__.cfcondition AS
+$BODY$
+	SELECT
+		cfcondition,
+		cfconditioncomment
+	FROM 
+		__WCI_SCHEMA__.cfcondition v,
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		($1 IS NULL OR cfcondition LIKE lower($1));
+$BODY$
+LANGUAGE sql STABLE;
+
+-- Add CF-metadata for condition  
 CREATE OR REPLACE FUNCTION
-wci.getValueParameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.valueparameter AS
+wci.addcfcondition
+(
+	condition_ 			text,
+	comment_			text
+)
+RETURNS void AS
+$BODY$
+DECLARE	
+	parameterid_ int;
+BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Check for Duplicate
+	PERFORM * 
+	FROM __WCI_SCHEMA__.cfcondition
+	WHERE cfcondition = condition_;
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.cfcondition
+		VALUES ( condition_, comment_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.cfcondition
+		SET cfcondition=condition_, cfconditioncomment=comment_
+		WHERE cfcondition = condition_;
+	END IF;
+	RETURN;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+
+-- Get CF-Metadata Parameter Function
+CREATE OR REPLACE FUNCTION 
+wci.getcfmethods( searchterm 		text )	
+RETURNS SETOF __WCI_SCHEMA__.cfmethods AS
+$BODY$
+	SELECT
+		cfmethods,
+		cfmethodscomment,
+		cfmethodsname
+	FROM 
+		__WCI_SCHEMA__.cfmethods v,
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		($1 IS NULL OR cfmethods LIKE lower($1));
+$BODY$
+LANGUAGE sql STABLE;
+
+-- Add CF-metadata for Surface  
+CREATE OR REPLACE FUNCTION
+wci.addcfmethods
+(
+	cfmethods_ 			text,
+	comment_ 			text,
+	cfmethodsname_		text
+)
+RETURNS void AS
+$BODY$
+BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Check for Duplicate
+	PERFORM * 
+	FROM __WCI_SCHEMA__.cfmethods
+	WHERE cfmethods = cfmethods_;
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.cfmethods
+		VALUES ( cfmethods_, comment_, cfmethodsname_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.cfmethods
+		SET cfmethods=cfmethods_, cfmethodscomment = comment_, cfmethodsname=cfmethodsname_
+		WHERE cfmethods = cfmethods_;
+	END IF;
+	RETURN;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION
+wci.getParameter( parameter 		text )	
+RETURNS SETOF __WCI_SCHEMA__.parameter AS
 $BODY$
 	SELECT 
-		v.valueparameterid,
-		v.parameternamespaceid,
-		v.valueparametername, 
-		v.valueunitname
+		parameterid,
+		cfstandardname,
+ 		cfsurface,
+    	cfcomponent,
+    	cfmedium,
+    	cfprocess,
+    	cfcondition,
+    	cfmethods,
+    	unitname,
+    	v.parameternamespaceid,
+    	parametername
 	FROM 
-		__WCI_SCHEMA__.valueparameter_mv v, 
+		__WCI_SCHEMA__.parameter_mv v, 
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE v.parameternamespaceid = s.parameternamespaceid 
-	  AND ( $1 IS NULL OR valueparametername LIKE lower($1) );
+	  AND ( $1 IS NULL OR v.parametername LIKE lower($1) );
 $BODY$
 LANGUAGE sql STABLE;
 
 
--- Get Measure Value Parameter
 CREATE OR REPLACE FUNCTION
-wci.getMeasureValueParameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.measurevalueparameter AS
+wci.addparameter( cfstandardname_		text,
+				  cfsurface_ 			text,
+				  cfcomponent_			text,
+				  cfmedium_				text,
+				  cfprocess_			text,
+				  cfcondition_			text,
+				  cfmethods_			text,
+				  unitname_				text )	
+RETURNS void AS
 $BODY$
-	SELECT
-		v.valueparameterid,
-		v.valueparameterusage,
-		v.parameterquantitytype,
-		v.measure, 
-		v.valueunitname,
-		v.parameternamespaceid,
-		v.valueparametername
-	FROM 
-		__WCI_SCHEMA__.measurevalueparameter v, 
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE v.parameternamespaceid = s.parameternamespaceid 
-	  AND ( $1 IS NULL OR valueparametername LIKE lower($1) );
+DECLARE	
+	parameterid_ int;
+BEGIN
+	-- WCI User Check
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- No cfstandardname
+	IF cfstandardname_ IS NULL THEN
+		RAISE EXCEPTION 'The CF standard name must be non-null';
+	END IF;		
+	-- Check Dimensions
+	IF ( cfsurface_ IS NOT NULL ) THEN
+		PERFORM * 
+		FROM wci.getcfsurface( cfsurface_ );
+		IF NOT FOUND THEN
+			RAISE EXCEPTION 'Could not identify the CF surface identified %', cfsurface_;
+		END IF;		
+	END IF;			
+	-- Check for Duplicate
+	SELECT parameterid INTO parameterid_
+	FROM   __WCI_SCHEMA__.parameter
+	WHERE  parametername::text = __WCI_SCHEMA__.getCanonicalParameterName( cfstandardname_, cfsurface_, cfcomponent_, 
+			cfmedium_, cfprocess_, cfcondition_, cfmethods_ );
+	-- Insert
+	IF NOT FOUND THEN
+		INSERT INTO __WDB_SCHEMA__.parameter
+			   ( cfstandardname,
+			   	 cfsurface,
+			   	 cfcomponent,
+			   	 cfmedium,
+			   	 cfprocess,
+			   	 cfcondition,
+			   	 cfmethods,
+			   	 unitname )
+		VALUES ( cfstandardname_,
+				 cfsurface_,
+				 cfcomponent_,
+				 cfmedium_,
+				 cfprocess_,
+				 cfcondition_,
+				 cfmethods_,
+				 unitname_ );
+	ELSE
+	-- Update
+		UPDATE __WDB_SCHEMA__.parameter
+		SET  cfstandardname = cfstandardname_,
+			 cfsurface = cfsurface_,
+			 cfcomponent = cfcomponent_,
+			 cfmedium = cfmedium_,
+			 cfprocess = cfprocess_,
+			 cfcondition = cfcondition_,
+			 cfmethods = cfmethods_,
+			 unitname = unitname_ 
+		WHERE parameterid = parameterid_;
+	END IF;
+	RETURN;
+END;
 $BODY$
-LANGUAGE sql STABLE;
-
-
--- Get Function Value Parameter
-CREATE OR REPLACE FUNCTION
-wci.getFunctionValueParameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.functionvalueparameter AS
-$BODY$
-	SELECT
-		v.valueparameterid,
-		v.parameterfunctiontype,
-		v.valueparameterusage,
-		v.parameterquantitytype,
-		v.measure, 
-		v.valueunitname,
-		v.parameternamespaceid,
-		v.valueparametername
-	FROM 
-		__WCI_SCHEMA__.functionvalueparameter v, 
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE v.parameternamespaceid = s.parameternamespaceid 
-	  AND ( $1 IS NULL OR valueparametername LIKE lower($1) );
-$BODY$
-LANGUAGE sql STABLE;
-
-
--- Get Code Parameters
-CREATE OR REPLACE FUNCTION
-wci.getCodeValueParameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.codevalueparameter AS
-$BODY$
-	SELECT
-		v.valueparameterid,
-		v.valuecodeparametername,
-		v.codeparameterreference,
-		v.parameternamespaceid,
-		v.valueparametername
-	FROM 
-		__WCI_SCHEMA__.codevalueparameter v, 
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE v.parameternamespaceid = s.parameternamespaceid 
-	  AND ( $1 IS NULL OR valueparametername LIKE lower($1) );
-$BODY$
-LANGUAGE sql STABLE;
-
-
--- Get Dimensionless Parameter
-CREATE OR REPLACE FUNCTION
-wci.getDimensionlessValueParameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.dimensionlessvalueparameter AS
-$BODY$
-	SELECT
-		v.valueparameterid,
-		v.valuedimensionlessparametername,
-		v.valueparameterdescription,
-		v.valueunitname,
-		v.parameternamespaceid,
-		v.valueparametername
-	FROM 
-		__WCI_SCHEMA__.dimensionlessvalueparameter v, 
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE v.parameternamespaceid = s.parameternamespaceid 
-	  AND ( $1 IS NULL OR valueparametername LIKE lower($1) );
-$BODY$
-LANGUAGE sql STABLE;
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
 
 
 --
 -- set Value Parameter Name
 --
 CREATE OR REPLACE FUNCTION
-wci.setValueParameterName
+wci.setParameterName
 (
 	canonicalName_					text,
 	valueParameterName_ 			text
@@ -284,258 +443,58 @@ BEGIN
 		RAISE EXCEPTION 'Cannot set the WDB Canonical ValueParameterName';
 	END IF;	
 	-- Get parameterid
-	SELECT valueparameterid INTO parameterid_
-	FROM __WCI_SCHEMA__.valueparameter_mv
-	WHERE valueparametername = lower(canonicalName_) AND
+	SELECT parameterid INTO parameterid_
+	FROM __WCI_SCHEMA__.parameter_mv
+	WHERE parametername = lower(canonicalName_) AND
 		  parameternamespaceid = 0;
 	IF NOT FOUND THEN
-		RAISE EXCEPTION 'Could not identify any value parameter with the specified canonical ValueParameterName';		
+		RAISE EXCEPTION 'Could not identify any parameter with the specified canonical parametername';		
 	END IF;
 	-- Delete old name if it exists
-	DELETE FROM __WDB_SCHEMA__.valueparametername
+	DELETE FROM __WDB_SCHEMA__.parametername
 	WHERE parameternamespaceid = namespace_ AND
-		  valueparameterid = parameterid_;
+		  parameterid = parameterid_;
 	-- Insert new name
-	INSERT INTO __WDB_SCHEMA__.valueparametername
+	INSERT INTO __WDB_SCHEMA__.parametername
 	VALUES ( parameterid_,
 			 namespace_,
-			 lower(valueParameterName_) );
+			 lower(btrim(valueParameterName_)) );
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
-
--- Add Measure Level Parameter
-CREATE OR REPLACE FUNCTION
-wci.addMeasureLevelParameter
-(
-	parameterUsage_ 	text,
-	parameterUnit_		text
-)
-RETURNS int AS
-$BODY$
-DECLARE	
-	parameterid_ int;
-BEGIN
-	-- WCI User Check
-	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.levelparameter_levelparameterid_seq');
-	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.levelparameter
-	VALUES ( parameterid_, 'Measure Parameter' );
-	-- Insert Value
-	INSERT INTO __WDB_SCHEMA__.levelmeasureparameter
-	VALUES ( parameterid_,
-			 parameterUnit_,
-			 lower(parameterUsage_ ) );
-	RETURN parameterid_;
-END;
-$BODY$
-SECURITY DEFINER
-LANGUAGE plpgsql VOLATILE;
-
-
--- add Code Level Parameter
-CREATE OR REPLACE FUNCTION
-wci.addCodeLevelParameter
-(
-	parameterName_ 			text,
-	parameterReference_		text
-)
-RETURNS int AS
-$BODY$
-DECLARE	
-	parameterid_ int;
-BEGIN
-	-- WCI User Check
-	PERFORM __WCI_SCHEMA__.getSessionData();
-	-- Get value parameter Id 
-	parameterId_ := nextval('__WDB_SCHEMA__.levelparameter_levelparameterid_seq');
-	-- Insert Base
-	INSERT INTO __WDB_SCHEMA__.levelparameter
-	VALUES ( parameterid_, 'Code Parameter' );
-	-- Insert Value
-	INSERT INTO __WDB_SCHEMA__.levelcodeparameter
-	VALUES ( parameterid_,
-			 lower(parameterName_),
-			 parameterReference_ );
-	RETURN parameterid_;
-END;
-$BODY$
-SECURITY DEFINER
-LANGUAGE plpgsql VOLATILE;
-
-
--- Get Level Parameter
-CREATE OR REPLACE FUNCTION 
-wci.getlevelparameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.levelparameter AS
-$BODY$
-	SELECT 
-		l.levelparameterid,
-		l.parameternamespaceid,
-		l.levelparametername,
-		l.levelunitname
-	FROM 
-		__WCI_SCHEMA__.levelparameter_mv l,
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE 
-		l.parameternamespaceid = s.parameternamespaceid AND
-		($1 IS NULL OR levelparametername LIKE lower($1));
-$BODY$
-LANGUAGE sql STABLE;
-
-
--- Get Measure Level Parameter
-CREATE OR REPLACE FUNCTION 
-wci.getmeasurelevelparameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.measurelevelparameter AS
-$BODY$
-	SELECT
-		lp.levelparameterid,
-		lp.levelparameterusage,
-		lp.measure, 
-		lp.levelunitname,
-		lp.parameternamespaceid,
-		lp.levelparametername
-	FROM 
-		__WCI_SCHEMA__.measurelevelparameter lp,
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE 
-		lp.parameternamespaceid = s.parameternamespaceid AND
-		($1 IS NULL OR levelparametername LIKE lower($1));
-$BODY$
-LANGUAGE sql STABLE;
-
-
--- Get Code Level Parameter
-CREATE OR REPLACE FUNCTION 
-wci.getcodelevelparameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.codelevelparameter AS
-$BODY$
-	SELECT
-		lc.levelparameterid,
-		lc.levelcodeparametername,
-		lc.codeparameterreference,
-		lc.parameternamespaceid,
-		lc.levelparametername
-	FROM 
-		__WCI_SCHEMA__.codelevelparameter lc,
-		__WCI_SCHEMA__.getSessionData() s
-	WHERE 
-		lc.parameternamespaceid = s.parameternamespaceid AND
-		($1 IS NULL OR levelparametername LIKE lower($1));
-$BODY$
-LANGUAGE sql STABLE;
-
-
---
--- add Value Parameter
---
-CREATE OR REPLACE FUNCTION
-wci.setLevelParameterName
-(
-	canonicalName_					text,
-	levelParameterName_ 			text
-)
-RETURNS void AS
-$BODY$
-DECLARE	
-	namespace_ 		int;
-	parameterid_ 	int;
-BEGIN
-	-- Get namespace
-	SELECT parameternamespaceid INTO namespace_
-	FROM __WCI_SCHEMA__.getSessionData();
-	IF ( namespace_ = 0 ) THEN
-		RAISE EXCEPTION 'Cannot set the WDB Canonical LevelParameterName';
-	END IF;	
-	-- Get parameterid
-	SELECT levelparameterid INTO parameterid_
-	FROM __WCI_SCHEMA__.levelparameter_mv
-	WHERE levelparametername = lower(canonicalName_) AND
-		  parameternamespaceid = 0;
-	IF NOT FOUND THEN
-		RAISE EXCEPTION 'Could not identify any level parameter with the specified canonical LevelParameterName';		
-	END IF;
-	-- Delete old name if it exists
-	DELETE FROM __WDB_SCHEMA__.levelparametername
-	WHERE parameternamespaceid = namespace_ AND
-		  levelparameterid = parameterid_;
-	-- Insert new name
-	INSERT INTO __WDB_SCHEMA__.levelparametername
-	VALUES ( parameterid_,
-			 namespace_,
-			 lower(levelParameterName_) );
-END;
-$BODY$
-SECURITY DEFINER
-LANGUAGE plpgsql VOLATILE;
-
-
--- Add Measure
-CREATE OR REPLACE FUNCTION
-wci.addMeasure(
-    measure						varchar(80),
-    distancepower				int,
-    masspower					int,
-    timepower					int,
-    luminositypower				int,
-    electriccurrentpower		int,
-    temperaturepower			int,
-    substanceamountpower		int,
-	anglepower					int
-)
-RETURNS void AS
-$BODY$
-	INSERT INTO __WDB_SCHEMA__.measure
-	VALUES ( lower($1), $2, $3, $4, $5, $6, $7, $8, $9 );
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql VOLATILE;
-
-
-
--- Get Measure
-CREATE OR REPLACE FUNCTION 
-wci.getMeasure(
-	measure_	text
-)
-RETURNS SETOF __WCI_SCHEMA__.measure AS
-$BODY$
-	SELECT 	*
-	FROM 	__WCI_SCHEMA__.measure
-	WHERE 	measure LIKE lower($1) OR $1 IS NULL;
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql STABLE;
 
 
 -- Add Unit
 CREATE OR REPLACE FUNCTION
 wci.addUnit(
-    unitname_						varchar(80),
-    unittype_						varchar(80),
-    measure_						varchar(80),
-	description_					varchar(255),
-    siunitconversioncoefficient_	float,
-    siunitconversionterm_			float
+    unitname_							varchar(80),
+	description_						varchar(255),
+    baseunitname_						varchar(80),
+    baseunitconversioncoefficient_		float,
+    baseunitconversionterm_				float
 )
 RETURNS void AS
 $BODY$
 DECLARE	
 	namespace_ 		int;
 	parameterid_ 	int;
+	unittype_ 		varchar(80);
 BEGIN
+	-- Unit
+	IF ( unitname_ = baseunitname_ ) THEN
+		unittype_ := 'base unit';
+	ELSE
+		unittype_ := 'derived unit';	
+	END IF;	
 	-- Insert into units
 	INSERT INTO __WDB_SCHEMA__.unit 
-	VALUES ( unitname_, unittype_, measure_, description_ );
-	-- If not SI unit
-	IF ( unittype_::text <> 'SI Unit'::text ) THEN
-		INSERT INTO __WDB_SCHEMA__.siunitconversion
-		VALUES( unitname_, siunitconversioncoefficient_, siunitconversionterm_ );	
+	VALUES ( unitname_, unittype_, description_ );
+	-- If not a base unit
+	IF ( unittype_::text = 'derived unit'::text ) THEN
+		INSERT INTO __WDB_SCHEMA__.baseunitconversion
+		VALUES( unitname_, baseunitname_, baseunitconversioncoefficient_, baseunitconversionterm_ );	
 	END IF;	
 END;
 $BODY$
@@ -558,91 +517,3 @@ SECURITY DEFINER
 LANGUAGE sql STABLE;
 
 
--- Add Function Type
-CREATE OR REPLACE FUNCTION
-wci.addParameterFunctionType(
-    parameterfunctiontype 			varchar(80),
-    parameterfunctiondescription 	varchar(255)
-)
-RETURNS void AS
-$BODY$
-	INSERT INTO __WDB_SCHEMA__.parameterfunctiontype
-	VALUES ( lower($1), $2 );
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql VOLATILE;
-
-
--- Get Function Type
-CREATE OR REPLACE FUNCTION 
-wci.getParameterFunctionType(
-	type_	text
-)
-RETURNS SETOF __WCI_SCHEMA__.parameterfunctiontype AS
-$BODY$
-	SELECT 	*
-	FROM 	__WCI_SCHEMA__.parameterfunctiontype
-	WHERE 	parameterfunctiontype ILIKE $1 OR $1 IS NULL;
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql STABLE;
-
-
--- Add Value Usage
-CREATE OR REPLACE FUNCTION
-wci.addValueParameterUsage(
-    valueparameterusage 	varchar(80),
-    description 			varchar(255)
-)
-RETURNS void AS
-$BODY$
-	INSERT INTO __WDB_SCHEMA__.valueparameterusage
-	VALUES ( lower($1), $2 );
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql VOLATILE;
-
-
--- Get Value Usage
-CREATE OR REPLACE FUNCTION 
-wci.getValueParameterUsage(
-	usage_	text
-)
-RETURNS SETOF __WCI_SCHEMA__.valueparameterusage AS
-$BODY$
-	SELECT 	*
-	FROM 	__WCI_SCHEMA__.valueparameterusage
-	WHERE 	valueparameterusage LIKE lower($1) OR $1 IS NULL;
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql STABLE;
-
-
--- Add Level Usage
-CREATE OR REPLACE FUNCTION
-wci.addLevelParameterUsage(
-    levelparameterusage 	varchar(80),
-    leveldescription 		varchar(255)
-)
-RETURNS void AS
-$BODY$
-	INSERT INTO __WDB_SCHEMA__.levelparameterusage
-	VALUES ( lower($1), $2 );
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql VOLATILE;
-
-
--- Get Level Usage
-CREATE OR REPLACE FUNCTION 
-wci.getLevelParameterUsage(
-	usage_	text
-)
-RETURNS SETOF __WCI_SCHEMA__.levelparameterusage AS
-$BODY$
-	SELECT 	*
-	FROM 	__WCI_SCHEMA__.levelparameterusage
-	WHERE 	levelparameterusage LIKE lower($1) OR $1 IS NULL;
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql STABLE;

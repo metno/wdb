@@ -55,7 +55,7 @@ TestWriteConfiguration::TestWriteConfiguration( )
 								  "now",
 								  "now",
 								  "air pressure",
-								  "height above ground distance",
+								  "height above ground",
 								  0.0 )
 {
 	configOptions().add( getDataOpt( ) );

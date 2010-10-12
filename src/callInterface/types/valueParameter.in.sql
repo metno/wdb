@@ -65,10 +65,10 @@ DECLARE
 BEGIN
 	session := __WCI_SCHEMA__.getsessiondata();
 
-	SELECT valueparameterid INTO ret
-	FROM __WCI_SCHEMA__.valueparameter_mv
+	SELECT parameterid INTO ret
+	FROM __WCI_SCHEMA__.parameter_mv
 	WHERE
-		valueparametername = parameter AND
+		parametername = parameter AND
 		parameternamespaceid = session.parameterNameSpaceId;
 	
 	IF NOT FOUND THEN

@@ -38,7 +38,7 @@ CREATE TYPE wci.returnFloat AS (
 	confidencecode integer,
 	storetime timestamp with time zone,
 	valueid bigint,
-	valuetype varchar( 80 )
+	valuetype int
 );
 
 CREATE TYPE wci.returnGid AS (
@@ -61,5 +61,5 @@ CREATE TYPE wci.returnGid AS (
 	confidencecode integer,
 	storetime timestamp with time zone,
 	valueid bigint,
-	valuetype varchar( 80 )
+	valuetype int
 );

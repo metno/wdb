@@ -60,15 +60,14 @@ BEGIN
 	
 		-- TODO: Need to verify that this is in fact secure (serial)
 		SELECT max(dataprovidernamerightset) INTO gpid_ 
-		FROM   __WCI_SCHEMA__.dataprovider
-		WHERE  dataprovidernamespaceid = namespace_;
+		FROM   __WCI_SCHEMA__.dataprovider;
 
 		IF ( gpid_ IS NULL ) THEN
 			gpid_ := 0;
 		END IF;	
 			  
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-			( dpid_, namespace_, lower(dataProviderName_), 
+			( dpid_, namespace_, lower(btrim(dataProviderName_)), 
 			  'today'::TIMESTAMP WITH TIME ZONE, 
 			  'infinity'::TIMESTAMP WITH TIME ZONE, 
 			  gpid_ + 1, gpid_ + 2 );
@@ -84,8 +83,7 @@ BEGIN
 	
 		-- TODO: Need to verify that this is in fact secure (serial)
 		SELECT max(dataprovidernamerightset) INTO gpid_ 
-		FROM   __WCI_SCHEMA__.dataprovider
-		WHERE  dataprovidernamespaceid = namespace_;
+		FROM   __WCI_SCHEMA__.dataprovider;
 
 		IF ( gpid_ IS NULL ) THEN
 			gpid_ := 0;
@@ -143,8 +141,7 @@ BEGIN
 	UPDATE	__WDB_SCHEMA__.dataprovidername 
 	SET 	dataprovidernameleftset = dataprovidernameleftset + 2,
 			dataprovidernamerightset = dataprovidernamerightset + 2
-	WHERE	dataprovidernamespaceid = namespace_
-	  AND	dataprovidernamerightset > gprgt_;
+	WHERE	dataprovidernamerightset > gprgt_;
 	-- Update Group
 	UPDATE	__WDB_SCHEMA__.dataprovidername 
 	SET 	dataprovidernamerightset = dataprovidernamerightset + 2

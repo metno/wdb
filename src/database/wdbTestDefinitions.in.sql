@@ -43,11 +43,11 @@ SELECT
 	val.validtimeto,
 	val.validtimeindeterminatecode,
 	val.valueparameterid,
-	vp.valueparametername, 
-	vp.valueunitname,
+	vp.parametername as valueparametername, 
+	vp.unitname as valueunitname,
 	val.levelparameterid,
-	vl.levelparametername,
-	vl.levelunitname,
+	vl.parametername as levelparametername,
+	vl.unitname as levelunitname,
 	val.levelFrom, 
 	val.levelTo,
 	val.levelindeterminatecode,
@@ -59,15 +59,18 @@ SELECT
 	val.valuetype
 FROM 	
 	__WDB_SCHEMA__.gridvalue val,
-	__WDB_SCHEMA__.placedefinition place,
 	__WCI_SCHEMA__.dataprovider_mv dp,
-	__WCI_SCHEMA__.valueparameter_mv vp,
-	__WCI_SCHEMA__.levelparameter_mv vl
+	__WDB_SCHEMA__.placedefinition place,
+	__WCI_SCHEMA__.parameter_mv vp,
+	__WCI_SCHEMA__.parameter_mv vl
 WHERE
 	val.dataproviderid = dp.dataproviderid 
 	AND val.placeid = place.placeid
-	AND val.valueparameterid = vp.valueparameterid
-	AND val.levelparameterid = vl.levelparameterid;
+	AND val.valueparameterid = vp.parameterid
+	AND val.levelparameterid = vl.parameterid
+	AND dp.dataprovidernamespaceid = 999
+	AND vp.parameternamespaceid = 999
+	AND vl.parameternamespaceid = 999;
 
 REVOKE ALL ON test.gridvalue FROM public;
 GRANT ALL ON test.gridvalue TO wdb_admin;
@@ -133,6 +136,22 @@ WHERE
 REVOKE ALL ON TABLE test.placeregulargrid FROM PUBLIC;
 GRANT ALL ON TABLE test.placeregulargrid TO wdb_admin;
 GRANT SELECT ON TABLE test.placeregulargrid TO wdb_test;
+
+
+CREATE OR REPLACE FUNCTION 
+test.cleanTestData( )
+RETURNS void AS
+$BODY$
+	DELETE FROM __WDB_SCHEMA__.gridvalue 
+	WHERE dataproviderid IN ( SELECT b.dataproviderid
+					   		  FROM   __WCI_SCHEMA__.dataprovider_mv a,
+					   		         __WCI_SCHEMA__.dataprovider_mv b
+					   		  WHERE	 a.dataprovidername = 'test group'
+					   		    AND	 a.dataprovidernameleftset <= b.dataprovidernameleftset
+					   		    AND  a.dataprovidernamerightset >= b.dataprovidernamerightset);    
+$BODY$
+SECURITY DEFINER
+LANGUAGE 'sql' VOLATILE;
 
 
 CREATE OR REPLACE FUNCTION 

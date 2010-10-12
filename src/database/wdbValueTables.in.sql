@@ -20,6 +20,19 @@
 SET SESSION client_min_messages TO 'warning';
 
 
+CREATE TABLE __WDB_SCHEMA__.valuetype (
+	valuetype				integer NOT NULL,
+	valuetypename			character varying(80) NOT NULL,
+    valuetypedescription	character varying(255) NOT NULL
+);
+
+ALTER TABLE ONLY __WDB_SCHEMA__.valuetype
+    ADD CONSTRAINT valuetype_pkey PRIMARY KEY (valuetype);
+
+REVOKE ALL ON __WDB_SCHEMA__.valuetype FROM public;
+GRANT ALL ON __WDB_SCHEMA__.valuetype TO wdb_admin;
+
+
 CREATE TABLE __WDB_SCHEMA__.qualityconfidencecode (
     confidencecode				integer NOT NULL,
     confidencecodedescription	character varying(255) NOT NULL
@@ -37,7 +50,7 @@ GRANT ALL ON __WDB_SCHEMA__.qualityconfidencecode TO wdb_admin;
 --
 CREATE TABLE __WDB_SCHEMA__.floatvalue (
     valueid						bigserial NOT NULL,
-    valuetype 					character varying(80) NOT NULL,
+    valuetype 					integer NOT NULL,
     dataproviderid 				bigint NOT NULL,
     placeid						bigint NOT NULL,
     referencetime				timestamp with time zone NOT NULL,
@@ -70,7 +83,7 @@ GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvalue TO wdb_clean;
 --
 CREATE TABLE __WDB_SCHEMA__.gridvalue (
     valueid 					bigserial NOT NULL,
-    valuetype 					character varying(80) NOT NULL,   
+    valuetype 					integer NOT NULL,   
 	dataproviderid 				bigint NOT NULL,
     placeid 					bigint NOT NULL,
     referencetime				timestamp with time zone NOT NULL,
