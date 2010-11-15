@@ -3,7 +3,7 @@
 # 
 # wdb - weather and water data storage
 #
-# Copyright (C) 2007 met.no
+# Copyright (C) 2007-2010 met.no
 #
 #  Contact information:
 #  Norwegian Meteorological Institute
@@ -148,20 +148,28 @@ echo "---- wdb database installation ----"
 export LOGDIR=/tmp/$USER/wdb/var/logs/
 mkdir -p $LOGDIR
 
+# installation information
+echo -n "installing user identification... "
+echo $WDB_INSTALL_USER
+echo -n "installing database with database name... "
+echo $WDB_INSTALL_DATABASE
+echo -n "installing database on database port... "
+echo $WDB_INSTALL_PORT
+
 # checking if we can find the sql source files
 echo -n "checking for the presence of wdb database files... "
 WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
 WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
 if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
-	echo "no"
+	echo "not found"
     echo "Error: Could not locate database installation files."
 	echo "Checking: $WDB_DATAMODEL_PATH"
 	echo "Unable to install wdb."
     echo "Error: Could not locate database installation files. Unable to install wdb."
     exit 1
 fi
-echo "done"
+echo "found"
 
 # If WDB_POSTGIS_CONTRIB set...
 if test -n "$WDB_POSTGIS_CONTRIB"; then
@@ -196,7 +204,7 @@ elif test -f $POSTGIS_DIR/contrib/postgis.sql; then
     POSTGIS_DIR=$POSTGIS_DIR/contrib
     echo $POSTGIS_FILE
 else 
-    echo "no"
+    echo "not found"
     echo "Error: could not find the postgis.sql file (alternately lwpostgis.sql). Postgis must be installed together with postgres. Installation assumes that postgis.sql is installed in $POSTGIS_DIR/contrib."
     exit 1
 fi
@@ -205,9 +213,9 @@ fi
 # Check for Postgis file spatial_ref_sys.sql
 echo -n "checking for the presence of spatial_ref_sys.sql file... "
 if test -f $POSTGIS_DIR/spatial_ref_sys.sql; then
-    echo "yes"
+    echo "spatial_ref_sys.sql"
 else
-    echo "no"
+    echo "not found"
     echo "Error: could not find spatial_ref_sys.sql. Postgis must be installed together with postgres. Installation assumes that spatial_ref_sys.sql is installed in <postgres>/share/contrib."
     exit 1
 fi
@@ -229,7 +237,7 @@ WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
 export $WDB_NAME
 
 # Check that the database exists
-echo -n "checking that database $WDB_NAME exists... "
+echo -n "checking whether database $WDB_NAME exists... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
 # grab first line (name) | trim whitesoace
 DB_CHECK=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
@@ -386,7 +394,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql
 \i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
 \i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
 EOF
 	if [ 0 != $? ]; then
@@ -429,6 +436,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciMetaPlace.sql
 \i $WCI_DIR/api/wciRead.sql
 \i $WCI_DIR/api/wciVersion.sql
+\i $WCI_DIR/api/wciAdmin.sql
 \i $WCI_DIR/api/wciWrite.sql
 EOF
 	if [ 0 != $? ]; then
@@ -437,6 +445,19 @@ EOF
 	echo "done"
 fi
 
+	# Install cleanup script
+	echo -n "installing wdb test functionality... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_testDb.log
+\i $WDB_DATAMODEL_PATH/wdbTestDefinitions.sql
+EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR: Installation of WDB test functionality failed"; exit 1
+	else
+	    echo "done"
+	fi
 	
 	
 	# Install Metadata
@@ -497,7 +518,7 @@ EOF
 	else
 	    echo "done"
 	fi
-	
+
 	
 while [ $current_version -lt $version_number ]
 do

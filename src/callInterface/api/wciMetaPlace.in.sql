@@ -89,7 +89,7 @@ DECLARE
 BEGIN
 	-- Get Namespace
 	SELECT placenamespaceid INTO namespace_
-	FROM __WCI_SCHEMA__.getSessionData();	
+	FROM __WCI_SCHEMA__.getSessionData();
 	-- Get SRID
 	SELECT srid INTO srid_
 	FROM spatial_ref_sys
@@ -100,18 +100,19 @@ BEGIN
 	END IF;
 	-- Get placedef
 	SELECT placeid INTO placeId_ 
-	FROM  __WCI_SCHEMA__.placespec
+	FROM  __WCI_SCHEMA__.placeregulargrid_mv
 	WHERE numberx = numX_ AND
 		  numbery = numY_ AND
-		  incrementx = incX_ AND
-		  incrementy = incY_ AND
-		  startx = startX_ AND
-		  starty = startY_ AND
-		  projdefinition = btrim(projection_);
+		  round(incrementx::numeric, 3) = round(incX_::numeric, 3) AND
+		  round(incrementy::numeric, 3) = round(incY_::numeric, 3) AND
+		  round(startx::numeric, 3) = round(startX_::numeric, 3) AND
+		  round(starty::numeric, 3) = round(startY_::numeric, 3) AND
+		  projdefinition = btrim(projection_) AND
+		  placenamespaceid = 0;
 	-- Add dataprovider
 	IF NOT FOUND THEN
 		-- Get PlaceId
-		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq') ;
+		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 		-- Insert Data
 		INSERT INTO __WDB_SCHEMA__.placeregulargrid
 		VALUES ( placeId_,

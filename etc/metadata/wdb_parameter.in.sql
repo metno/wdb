@@ -84,21 +84,21 @@ SELECT wci.addparameter( 'land area fraction', null, null, null, null, null, nul
 SELECT wci.addparameter( 'roughness length', 'surface', null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'albedo', 'surface', null, null, null, null, null, 'm' );
 --85|soil|K|scalar
---86|soil|kg/m2|scalar
+SELECT wci.addparameter( 'moisture content of soil layer', null, null, null, null, null, null, 'kg/m2' );
 --87|land vegetation|NA
 SELECT wci.addparameter( 'sea water salinity', null, null, null, null, null, null, 'none' );
 --89|water|kg/m3|scalar
 --90|water run-off|kg/m2|scalar
---91|ice cover|NA
---93|ice drift direction|NA
+SELECT wci.addparameter( 'sea ice area fraction', null, null, null, null, null, null, '%' );
 --92|ice thickness|m|scalar
+--93|ice drift direction|NA
 --94|ice drift|m/s|scalar
 --95|ice drift|m/s|u vector
 --96|ice drift|m/s|v vector
 --97|ice growth rate|m/s|scalar
 --98|ice divergence|/s|scalar
 --99|snow melt|kg/m2|scalar
---100|significant combined wind waves and swell height|m|scalar
+SELECT wci.addparameter( 'significant height of wind and swell waves', null, null, null, null, null, null, 'm' );
 --102|significant wind waves height|m|scalar
 --105|significant swell waves height|m|scalar
 --115|long-wave|W/m2|scalar
@@ -107,20 +107,20 @@ SELECT wci.addparameter( 'sea water salinity', null, null, null, null, null, nul
 --118|brightness|K|scalar
 --119|wave number|W/(m.sr)|u vector
 --120|wave number|W/(m.sr)|v vector
---121|latent heat|W/m2|scalar
---122|sensible heat|W/m2|scalar
+SELECT wci.addparameter( 'latent heat flux', 'surface', 'upward', null, null, null, null, 'W/m2' );
+SELECT wci.addparameter( 'sensible heat flux', 'surface', 'upward', null, null, null, null, 'W/m2' );
 --123|boundary layer dissipation|W/m2|scalar
 --124|momentum flux|N/m2|u vector
 --125|momentum flux|N/m2|v vector
 --126|wind mixing|J|scalar
---140|land|K|scalar
---144|snow fall|m|scalar
+SELECT wci.addparameter( 'surface temperature', null, null, null, null, null, null, 'K' );
+SELECT wci.addparameter( 'lwe thickness of snowfall amount', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'cloud liquid water content', null, null, 'atmosphere layer', null, null, null, 'ratio' );
 --189|sunshine|s|scalar
 --228|rain|kg/m2|scalar
 SELECT wci.addparameter( 'undefined', null, null, null, null, null, null, 'none' );
 --351|geometrical sea depth|m|scalar
---1101|model topography|m|scalar
+SELECT wci.addparameter( 'altitude', null, null, null, null, null, null, 'm' );
 --6100|total precipitation|mm|scalar
 --10351|sea bottom topography|m|scalar
 --10291|stokes drift|m/s|u vector
@@ -173,7 +173,6 @@ SELECT wci.addparameter( 'undefined', null, null, null, null, null, null, 'none'
 --802|probability of wind strength|Probability of the correctness of yr wind parameters
 --1104|probability of fog|NA
 --1106|vessel icing index|PROFF
---1181|proportion of land (model)|NA
 SELECT wci.addparameter( 'cloud area fraction', null, null, 'atmosphere layer', null, null, null, '%' );
 --10349|wtsurf|Hav and kyst
 --10352|alfaF|Hav and kyst
@@ -187,10 +186,11 @@ SELECT wci.addparameter( 'cloud area fraction', null, null, 'atmosphere layer', 
 --106|mean|swell waves|s|scalar
 --108|mean|primary waves|s|scalar
 --110|mean|secondary waves|s|scalar
---111|accumulated|short wave|W/m2|scalar
+SELECT wci.addparameter( 'shortwave flux', 'surface', 'downwelling', 'air', null, null, null, 'W/m2' );
 --112|accumulated|long wave|W/m2|scalar
 --113|accumulated|top atmosphere short-wave |W/m2|scalar
 --114|accumulated|top atmosphere long-wave |W/m2|scalar
+SELECT wci.addparameter( 'longwave radiation', 'surface', null, null, null, null, null, 'W.s/m2' );
 --142|accumulated|large scale precipitation|m|scalar
 --143|accumulated|convective precipitation|m|scalar
 --151|mean|sea level|Pa|scalar
@@ -205,9 +205,6 @@ SELECT wci.addparameter( 'cloud area fraction', null, null, 'atmosphere layer', 
 --712|50th percentile accumulated|precipitation|kg/m2|scalar
 --713|75th percentile accumulated|precipitation|kg/m2|scalar
 --714|90th percentile accumulated|precipitation|kg/m2|scalar
---715|local 20th percentile accumulated|precipitation|kg/m2|scalar
---716|local 50th percentile accumulated|precipitation|kg/m2|scalar
---717|local 80th percentile accumulated|precipitation|kg/m2|scalar
 --10201|peak|wave|s|scalar
 --10202|significant|wave|s|scalar
 --10203|peak|wave|rad|scalar
@@ -222,7 +219,19 @@ SELECT wci.addparameter( 'cloud area fraction', null, null, 'atmosphere layer', 
 --10223|mean|swell wave|s|scalar
 --10224|mean|swell wave|rad|scalar
 
+-- MetNo
+SELECT wci.addparameter( 'kalman air temperature', null, null, null, null, null, null, 'K' );
+SELECT wci.addparameter( 'precipitation amount', null, null, null, null, null, 'local 20th percentile', 'kg/m2' );
+SELECT wci.addparameter( 'precipitation amount', null, null, null, null, null, 'local 50th percentile', 'kg/m2' );
+SELECT wci.addparameter( 'precipitation amount', null, null, null, null, null, 'local 80th percentile', 'kg/m2' );
+SELECT wci.addparameter( 'probability of precipitation', null, null, null, null, null, null, '%' );
+SELECT wci.addparameter( 'vessel icing index', null, null, null, null, null, null, 'none' );
+SELECT wci.addparameter( 'lwe thickness of precipitation amount', null, null, null, null, null, null, 'm' );
+SELECT wci.addparameter( 'unsmoothed land area fraction', null, null, null, null, null, null, '%' );
+
 -- Levels
+SELECT wci.addparameter( 'ground or water surface', null, null, null, null, null, null, 'm' );
+SELECT wci.addparameter( 'isobaric surface pressure', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'height above ground', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'height above reference ellipsoid', null, null, null, null, null, null, 'm' );
  

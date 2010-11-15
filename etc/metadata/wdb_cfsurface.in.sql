@@ -42,7 +42,9 @@ select wci.addcfsurface('surface', 'Lower boundary of the atmosphere');
 
 select wci.addcfcomponent('eastward', 'U-component of vector');
 select wci.addcfcomponent('northward', 'V-component of vector');
-select wci.addcfcomponent('uphward', 'Upward component');
+select wci.addcfcomponent('upward', 'Upward component');
+select wci.addcfcomponent('downward', 'Upward component');
+select wci.addcfcomponent('downwelling', 'Downwelling');
 
 select wci.addcfmedium('air', 'Air');
 select wci.addcfmedium('atmosphere layer', 'Atmosphere layer');
@@ -50,3 +52,7 @@ select wci.addcfmedium('atmosphere layer', 'Atmosphere layer');
 
 select wci.addcfmethods('maximum within days', 'Maximum', 'max' );
 select wci.addcfmethods('minimum within days', 'Minimum', 'min' );
+select wci.addcfmethods('10th percentile', 'Minimum', 'min' );
+select wci.addcfmethods('local 20th percentile', '20th percentile value aggregated over the local area', 'local 20th percentile of' );
+select wci.addcfmethods('local 50th percentile', '50th percentile value aggregated over the local area', 'local 50th percentile of' );
+select wci.addcfmethods('local 80th percentile', '80th percentile value aggregated over the local area', 'local 80th percentile of' );

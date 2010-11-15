@@ -19,18 +19,10 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
--- test is a schema that contains views, functions and tables that
--- are specific to the testing of the WDB system
-CREATE SCHEMA test;
-REVOKE ALL ON SCHEMA test FROM PUBLIC;
-GRANT ALL ON SCHEMA test TO wdb_admin;
-GRANT USAGE ON SCHEMA test TO wdb_test;
-
-
 --
 -- Test View
 --
-CREATE VIEW test.gridvalue AS
+CREATE OR REPLACE VIEW test.gridvalue AS
 SELECT	
 	val.value,
 	dp.dataproviderid,
@@ -80,7 +72,7 @@ GRANT SELECT ON test.gridvalue TO wdb_test;
 -- 
 -- Data Provider
 
-CREATE VIEW test.dataprovider AS
+CREATE OR REPLACE VIEW test.dataprovider AS
 SELECT
 	dp.dataproviderid,
 	dp.dataprovidertype,
@@ -107,7 +99,7 @@ GRANT SELECT ON test.dataprovider TO wdb_test;
 --
 -- Place Regular Grid
 
-CREATE VIEW test.placeregulargrid AS SELECT 
+CREATE OR REPLACE VIEW test.placeregulargrid AS SELECT 
 	pd.placeid,
 	pn.placename,
 	pn.placenamespaceid,
@@ -158,43 +150,33 @@ CREATE OR REPLACE FUNCTION
 test.removePlaceDef( )
 RETURNS void AS
 $BODY$
-	DELETE FROM __WDB_SCHEMA__.gridvalue WHERE placeid=500;
-	DELETE FROM __WDB_SCHEMA__.placeregulargrid WHERE placeid=500;
-	DELETE FROM __WDB_SCHEMA__.placedefinition WHERE placeid=500;
-$BODY$
-SECURITY DEFINER
-LANGUAGE 'sql' VOLATILE;
-
-
-CREATE OR REPLACE FUNCTION 
-test.insertPlaceDef( )
-RETURNS void AS
-$BODY$
-	INSERT INTO __WDB_SCHEMA__.placeregulargrid 
-	VALUES (500, 2, 2, 0.1, 0.1, 0, 0, 50001);
-	INSERT INTO __WDB_SCHEMA__.placename
-	VALUES (
-		500,999,'test grid, rotated','2000-01-01','2999-01-01'
-	);
-$BODY$
-SECURITY DEFINER
-LANGUAGE 'sql' VOLATILE;
-
-
-CREATE OR REPLACE FUNCTION 
-test.removeInsertedPlaceDef( )
-RETURNS void AS
-$BODY$
 DECLARE
 	pid 	integer;
 BEGIN
-	SELECT placeid INTO pid FROM test.gridvalue WHERE dataproviderid = 30 LIMIT 1;
-	DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid = 30;
-	DELETE FROM __WDB_SCHEMA__.placedefinition WHERE placeid = pid;
+	SELECT placeid INTO pid FROM test.placeregulargrid 
+	WHERE  numberX = 3 AND numberY = 3 AND
+	       round(incrementX::numeric, 3) = 0.1 AND round(incrementY::numeric, 3) = 0.1 AND
+	       startX = 0 AND startY = 0 AND
+	       projdefinition='+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs'
+		   LIMIT 1;
+	DELETE FROM __WDB_SCHEMA__.gridvalue WHERE placeid=pid;
+	DELETE FROM __WDB_SCHEMA__.placeregulargrid WHERE placeid=pid;
+	DELETE FROM __WDB_SCHEMA__.placedefinition WHERE placeid=pid;
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE 'plpgsql' VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION 
+test.insertPlaceDef( )
+RETURNS bigint AS
+$BODY$
+	select wci.addplaceregulargrid('test grid, gribload', 3, 3, 0.100,0.100,0.0000,0.0000,
+								   '+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs');
+$BODY$
+SECURITY DEFINER
+LANGUAGE 'sql' VOLATILE;
 
 
 CREATE OR REPLACE FUNCTION 

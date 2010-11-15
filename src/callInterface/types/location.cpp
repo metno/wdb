@@ -29,12 +29,12 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#include "location.h"
-#include <getPlaceQuery.h>
 #include <boost/regex.hpp>
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include "location.h"
+#include "getPlaceQuery.h"
 #include <vector>
 #include <sstream>
 #include <iostream>

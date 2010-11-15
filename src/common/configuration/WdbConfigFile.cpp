@@ -93,6 +93,7 @@ std::string WdbConfigFile::operator[] ( std::string key ) const
 
 void WdbConfigFile::open( std::string fileName )
 {
+	fileName_ = fileName;
     ifstream file( fileName.c_str() );
     if (!file)
     	throw std::invalid_argument( string("Could not open file " + fileName) );
@@ -132,9 +133,9 @@ void WdbConfigFile::parse( std::string specification )
 
 	// Needs to be case-sensitive due to units. :/
 	// specification -> lowercase
-	//typedef int ( *f_lower ) ( int );
-	//f_lower lower = tolower;
-	//transform( specification.begin(), specification.end(), specification.begin(), lower );
+	// typedef int ( *f_lower ) ( int );
+	// f_lower lower = tolower;
+	// transform( specification.begin(), specification.end(), specification.begin(), lower );
 
 	// check for 'don't load'
 	bool loadValue = true;
@@ -166,7 +167,7 @@ std::string WdbConfigFile::extractKey( const std::string & specification )
 	std::string ret = specification.substr( 0, specification.find_first_of("=") );
 	trim( ret );
 	if ( ret.length() == 0)
-    	throw std::invalid_argument( string("Specification does not contain a key: " + specification ) );
+    	throw std::invalid_argument( string("Specification in file " + fileName_ + " does not contain a key: " + specification ) );
 	return ret;
 }
 
@@ -176,7 +177,7 @@ std::string WdbConfigFile::extractValue( const std::string & specification )
 	std::string ret = specification.substr( specification.find_first_of("=") + 1 );
 	trim( ret );
 	if ( ret.length() == 0)
-    	throw std::invalid_argument( string("Specification does not contain a value: " + specification ) );
+    	throw std::invalid_argument( string("Specification in file " + fileName_ + " does not contain a value: " + specification ) );
 	return ret;
 }
 

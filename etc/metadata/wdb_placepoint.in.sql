@@ -1,4 +1,4 @@
-select wci.begin('wdb', 999, 999, 0 );
+select wci.begin('wdb', 999, 999, 999 );
 select wci.addplacepoint('oslo', geomfromtext('POINT(10.7464 59.9111)',4030) );
 select wci.addplacepoint('sortland',geomfromtext('POINT(15.4161 68.6931)',4030));
 select wci.addplacepoint('test point 0',geomfromtext('POINT(-40 68.1332)',4030));

@@ -93,6 +93,8 @@ public:
 private:
 	/// Config Hash map
 	std::tr1::unordered_map< std::string, std::string> configTable_;
+	// File Name
+	std::string fileName_;
 
 	virtual void parse( std::string specification );
 	virtual std::string extractKey( const std::string & specification );

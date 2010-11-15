@@ -34,6 +34,7 @@ COPY __WDB_SCHEMA__.softwareversion FROM '__WDB_DATADIR__/sql/wdb_softwareversio
 -- Namespace (wci.addNameSpace, wci.getNameSpace, wci.begin, wci.setDefaultNameSpace )
 COPY __WDB_SCHEMA__.namespace FROM '__WDB_DATADIR__/sql/wdb_namespace.csv' CSV HEADER DELIMITER '|';
 COPY __WDB_SCHEMA__.defaultnamespace FROM '__WDB_DATADIR__/sql/wdb_defaultnamespace.csv' CSV HEADER DELIMITER '|';
+SELECT wci.setDefaultNameSpace( '', 88, 88, 88 );
 
 -- Configuration (wci.version)
 COPY __WDB_SCHEMA__.configuration FROM '__WDB_DATADIR__/sql/wdb_configuration.csv' CSV HEADER DELIMITER '|';

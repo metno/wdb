@@ -28,9 +28,9 @@
 
 
 #include "wciSession.h"
+#include <boost/regex.hpp>
 #include <stdexcept>
 #include <psqlTupleInterface.h>
-#include <boost/regex.hpp>
 #include <string>
 #include <sstream>
 

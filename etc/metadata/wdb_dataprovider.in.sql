@@ -35,6 +35,7 @@ select wci.adddataprovidertogroup( 'gribload', 'wdb');
 select wci.adddataprovider( 'feltload', 'Computer System', 'grid', 'Data received from WDB FeltLoad (unidentified)' );
 select wci.adddataprovidertogroup( 'feltload', 'wdb');
 --- PROFF Data
+select wci.begin( 'wdb', 88, 88, 88 );
 select wci.adddataprovider( 'proff',   'Data Provider Group', 		   'any', 'Field data produced in the PROFF system' );
 select wci.adddataprovider( 'proff.raw', 'Computer System', 'grid', 'proff.raw' );
 select wci.adddataprovidertogroup( 'proff.raw', 'proff');

@@ -48,7 +48,7 @@ CREATE TABLE __WDB_SCHEMA__.placedefinition (
 			((placegeometrytype)::text = 'point'::text) )
 );
 SELECT AddGeometryColumn('__WDB_SCHEMA__', 'placedefinition', 'placegeometry', 4030, 'GEOMETRY', 2);
-ALTER SEQUENCE __WDB_SCHEMA__.placedefinition_placeid_seq RESTART WITH 100000;
+--ALTER SEQUENCE __WDB_SCHEMA__.placedefinition_placeid_seq RESTART WITH 100000;
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placedefinition
     ADD CONSTRAINT placedefiniton_pkey PRIMARY KEY (placeid);

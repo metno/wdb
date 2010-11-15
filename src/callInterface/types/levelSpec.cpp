@@ -28,9 +28,9 @@
 
 #include "LevelSpecification.h"
 #include "levelIndeterminateType.h"
+#include <boost/lexical_cast.hpp>
 #include <util/conversion.h>
 #include <util/tuple.h>
-#include <boost/lexical_cast.hpp>
 #include <stdexcept>
 
 extern "C"

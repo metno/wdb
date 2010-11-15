@@ -211,7 +211,7 @@ protected:
 	 * @param	argc		Number of command line arguments
 	 * @param	argv		The actual command line arguments
 	 */
-    virtual void parse_( int argc, char ** argv );
+    //virtual void parse_( int argc, char ** argv );
 
     /**
      * Parse arguments from a given stream,
@@ -251,6 +251,9 @@ protected:
 	 */
 	boost::program_options::variables_map givenOptions_;
 
+	/// All shown options
+	boost::program_options::options_description shownOptions_;
+
 private:
 	/**
 	 * The storage object used to save the general option information.
@@ -269,8 +272,6 @@ private:
 	boost::program_options::options_description configOptions_;
 	/// Description of command-type options
 	boost::program_options::options_description cmdOptions_;
-	/// All shown options
-	boost::program_options::options_description shownOptions_;
 };
 
 }	// namespace wdb
