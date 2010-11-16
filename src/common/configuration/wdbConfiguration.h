@@ -211,7 +211,7 @@ protected:
 	 * @param	argc		Number of command line arguments
 	 * @param	argv		The actual command line arguments
 	 */
-    //virtual void parse_( int argc, char ** argv );
+    virtual void parse_( int argc, char ** argv );
 
     /**
      * Parse arguments from a given stream,

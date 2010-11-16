@@ -107,7 +107,7 @@ void WciBrowseTest::testBrowsePlace()
 	// Check various places used
     CPPUNIT_ASSERT( count_val( rS, "placename", "test grid, rotated" ) );
     CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 10 grid" ) );
-    CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 20" ) );
+    CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 20 grid" ) );
 
 }
 

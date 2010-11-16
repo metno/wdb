@@ -111,26 +111,7 @@ protected:
 private:
 	/// loading options
 	DataDefinitions dataDefinitions_;
-	/*
-	/// Default Data Provider
-	const std::string defaultDataProvider_;
-	/// Default Place name
-	const std::string defaultPlaceName_;
-	/// Default Reference Time
-	const std::string defaultRefTime_;
-	/// Default Valid Time From
-	const std::string defaultValidTimeFrom_;
-	/// Default Valid Time To
-	const std::string defaultValidTimeTo_;
-	/// Default Value Parameter
-	const std::string defaultValueParameter_;
-	/// Default Level Parameter
-	const std::string defaultLevelParameter_;
-	/// Default Level From
-	float defaultLevelFrom_;
-	/// Default Level To
-	float defaultLevelTo_;
-	*/
+
 };
 
 }		// namespace wdb

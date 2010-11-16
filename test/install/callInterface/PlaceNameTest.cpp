@@ -80,7 +80,7 @@ void PlaceNameTest::testL1_02B_OnePlaceName()
     result r = t->exec( statementFloat_( "nearest test point 0" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 test grid, rotated" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20 grid" ) );
 }
 
 void PlaceNameTest::testL1_03A_NullPlaceName()
@@ -88,10 +88,10 @@ void PlaceNameTest::testL1_03A_NullPlaceName()
     result r = t->exec( statementOid_( "NULL" ) );
 
     CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 10 grid" ) );
-    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 20" ) );
+    CPPUNIT_ASSERT( count_val( r, "placename", "hirlam 20 grid" ) );
     CPPUNIT_ASSERT( count_val( r, "placename", "test grid, rotated" ) );
     CPPUNIT_ASSERT_EQUAL( count_val( r, "placename", "hirlam 10 grid" ) +
-                          count_val( r, "placename", "hirlam 20" ) +
+                          count_val( r, "placename", "hirlam 20 grid" ) +
                           count_val( r, "placename", "test grid, rotated" ),
                           size_t( r.size() ) );
 }
@@ -147,7 +147,7 @@ void PlaceNameTest::testL3_01B_LowerCase()
     result r = t->exec( statementFloat_( "nearest test point 0" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 test grid, rotated" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20 grid" ) );
 }
 
 void PlaceNameTest::testL3_02A_UpperCase()
@@ -245,7 +245,7 @@ void PlaceNameTest::testL5_01_PointDataByName_Mixed()
 
     CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 10 grid" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 20 grid" ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo" ) );
 }
 
@@ -255,7 +255,7 @@ void PlaceNameTest::testL5_02_PointDataByName_GridOnly()
 
     CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 10 grid" ) );
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 20" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 20 grid" ) );
 }
 void PlaceNameTest::testL5_03_PointDataByName_FloatOnly()
 {
