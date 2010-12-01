@@ -334,11 +334,6 @@ if test "$DATABASE_CLEAN" = "no"; then
 	echo -n "current schema version of WDB... "
 	current_version=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -l -c "select max(packageversion) from wci.configuration() where name ='WDB';" -q | sed -e '1,2d' | sed -e '2,$d' | sed 's/^[ ]//g'`
 	echo $current_version
-	if [ "x$version_number" = "x$current_version" ]; then
-		echo "EXIT: No upgrade of the database schema is required." 
-		echo "---- wdb database upgrade completed ----"
-		exit 0			
-	fi
 else
 	#
 	# Install Baseline Version
@@ -434,6 +429,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciMetaDataProvider.sql
 \i $WCI_DIR/api/wciMetaParameter.sql
 \i $WCI_DIR/api/wciMetaPlace.sql
+\i $WCI_DIR/api/wciMetaParty.sql
 \i $WCI_DIR/api/wciRead.sql
 \i $WCI_DIR/api/wciVersion.sql
 \i $WCI_DIR/api/wciAdmin.sql
@@ -441,11 +437,11 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR: Installation of WDB Call Interface failed"; exit 1
+	else
+		echo "done"
 	fi
-	echo "done"
-fi
 
-	# Install cleanup script
+	# Install test functionality
 	echo -n "installing wdb test functionality... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
@@ -455,37 +451,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 EOF
 	if [ 0 != $? ]; then
 	    echo "ERROR: Installation of WDB test functionality failed"; exit 1
-	else
-	    echo "done"
-	fi
-	
-	
-	# Install Metadata
-	echo -n "installing baseline metadata... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
-SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_metadata.log
-\i $WDB_METADATA_PATH/wdbMetadata.sql 
-EOF
-	if [ 0 != $? ]; then
-	    echo "ERROR"; exit 1
-	else
-	    echo "done"
-	fi
-	
-	# Update Materialized View
-	echo -n "updating materialized view base... "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
-SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP
-\o $LOGDIR/wdb_install_matview.log
-SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv'); 
-SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv'); 
-SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.parameter_mv');
-EOF
-	if [ 0 != $? ]; then
-	    echo "ERROR"; exit 1
 	else
 	    echo "done"
 	fi
@@ -504,7 +469,6 @@ EOF
 	    echo "done"
 	fi
 	
-	
 	# Install cleanup script
 	echo -n "installing wdb cleaner base... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
@@ -518,6 +482,9 @@ EOF
 	else
 	    echo "done"
 	fi
+
+# End Clean Install
+fi
 
 	
 while [ $current_version -lt $version_number ]
@@ -537,6 +504,38 @@ EOF
 	fi
 	echo "done"
 done
+
+
+# Install Metadata
+echo -n "installing baseline metadata... "
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_metadata.log
+\i $WDB_METADATA_PATH/wdbMetadata.sql 
+EOF
+if [ 0 != $? ]; then
+    echo "ERROR"; exit 1
+else
+    echo "done"
+fi
+	
+# Update Materialized View
+echo -n "updating materialized view base... "
+psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_matview.log
+SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv'); 
+SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv'); 
+SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.parameter_mv');
+EOF
+if [ 0 != $? ]; then
+    echo "ERROR"; exit 1
+else
+    echo "done"
+fi
+	
 
 echo "---- wdb database installation completed ----"
 exit 0

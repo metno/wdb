@@ -34,6 +34,15 @@ ALTER TABLE ONLY __WDB_SCHEMA__.placeindeterminatetype
 REVOKE ALL ON __WDB_SCHEMA__.placeindeterminatetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placeindeterminatetype TO wdb_admin;
 
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 0, 'any', 'Values are valid for any location');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 1, 'exact', 'Values are valid for the given place definition');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 2, 'inside', 'Values are valid for positions inside the place definition given');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 3, 'outside', 'Values are valid for positions outside the place definition given');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 6, 'withheld', 'Place definition is known but withheld');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 7, 'withdrawn', 'Place definition was given but has been retracted');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 8, 'unknown', 'Place definition is unknown');
+INSERT INTO __WDB_SCHEMA__.placeindeterminatetype VALUES ( 9, 'delayed', 'Place definition will be set later');
+
 
 
 -- Place definition encodes a location on the earth

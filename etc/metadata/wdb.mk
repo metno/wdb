@@ -43,12 +43,14 @@ CORE_METADATA =			etc/metadata/wdb_party.in.csv \
 						etc/metadata/wdb_spatial_ref_sys.in.csv
 
 METADATA_SOURCES =		etc/metadata/wdb_spatial_ref_sys.in.sql \
+						etc/metadata/wdb_party.in.sql \
 						etc/metadata/wdb_dataprovider.in.sql \
 						etc/metadata/wdb_placepoint.in.sql \
 						etc/metadata/wdb_placeregulargrid.in.sql \
 						etc/metadata/wdb_unit.in.sql \
 						etc/metadata/wdb_cfsurface.in.sql \
 						etc/metadata/wdb_parameter.in.sql \
+						etc/metadata/wdb_namespace.in.sql \
 						etc/metadata/wdbMetadata.in.sql
 
 sql_DATA +=		 		$(METADATA_SOURCES:.in.sql=.sql) \

@@ -10,6 +10,7 @@ WCIAPI_SOURCES = 		src/callInterface/api/wciWrite.in.sql \
 						src/callInterface/api/wciMetaDataProvider.in.sql \
 						src/callInterface/api/wciMetaParameter.in.sql \
 						src/callInterface/api/wciMetaPlace.in.sql \
+						src/callInterface/api/wciMetaParty.in.sql \
 						src/callInterface/api/wciBegin.in.sql \
 						src/callInterface/api/wciEnd.in.sql \
 						src/callInterface/api/wciVersion.in.sql \

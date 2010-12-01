@@ -27,6 +27,7 @@ wci.addDataProvider
 	dataProviderName_		text,
 	dataProviderType_ 		text,
 	domainDelivery_			text,
+	lifeCycle_				interval,
 	dataProviderComment_	text
 )
 RETURNS bigint AS
@@ -53,7 +54,7 @@ BEGIN
 		dpid_ := nextval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass);
 		
 		INSERT INTO __WDB_SCHEMA__.dataprovider VALUES
-		( dpid_, lower(dataProviderType_), lower(domainDelivery_), '1 day', 'now' );
+		( dpid_, lower(dataProviderType_), lower(domainDelivery_), lifeCycle_, 'now' );
 	
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		( dpid_, dataProviderComment_, 'now' );
@@ -72,25 +73,18 @@ BEGIN
 			  'infinity'::TIMESTAMP WITH TIME ZONE, 
 			  gpid_ + 1, gpid_ + 2 );
 	ELSE
-		UPDATE __WDB_SCHEMA__.dataprovider AS d SET
-				d.dataprovidertype = lower(dataProviderType_),
-				d.domaindelivery = lower(domainDelivery_),
-				d.dataproviderstoretime = 'now'
-		WHERE d.dataproviderid = dpid_;
+		UPDATE __WDB_SCHEMA__.dataprovider SET
+				dataprovidertype = lower(dataProviderType_),
+				spatialdomaindelivery = lower(domainDelivery_),
+				dataproviderlife = lifeCycle_,
+				dataproviderstoretime = 'now'
+		WHERE dataproviderid = dpid_;
 	
 		INSERT INTO __WDB_SCHEMA__.dataprovidercomment VALUES
 		( dpid_, dataProviderComment_, 'now' );
-	
-		-- TODO: Need to verify that this is in fact secure (serial)
-		SELECT max(dataprovidernamerightset) INTO gpid_ 
-		FROM   __WCI_SCHEMA__.dataprovider;
 
-		IF ( gpid_ IS NULL ) THEN
-			gpid_ := 0;
-		END IF;	
-			  
-		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
-			( dpid_, namespace_, lower(dataProviderName_), 'today'::TIMESTAMP WITH TIME ZONE, 'infinity'::TIMESTAMP WITH TIME ZONE, gpid_ + 1, gpid_ + 2 );
+		-- Data Provider Name is unchanged
+		
 	END IF;
 	-- Return dataproviderid
 	RETURN dpid_;
@@ -200,8 +194,8 @@ BEGIN
 
 		INSERT INTO __WDB_SCHEMA__.dataprovidername VALUES
 		(id, namespace_, lower(newDataProviderName), 'today', '2999-12-31', gpid_ + 1, gpid_ + 2 );
-	ELSE
-		RAISE INFO 'User was already defined as a dataprovider';
+	--ELSE
+	--	RAISE INFO 'User was already defined as a dataprovider';
 	END IF;
 
 	RETURN id;

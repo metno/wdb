@@ -155,3 +155,14 @@ ALTER TABLE ONLY __WDB_SCHEMA__.levelindeterminatetype
 
 REVOKE ALL ON __WDB_SCHEMA__.levelindeterminatetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.levelindeterminatetype TO wdb_admin;
+
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 0, 'any', 'Values are valid for any level' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 1, 'exact', 'The level is exactly identical with the given interval' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 2, 'inside', 'The level is inside the given interval' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 3, 'outside', 'The level is outside the given interval' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 4, 'above', 'The level is above the given interval' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 5, 'below', 'The level is below the given interval' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 6, 'withheld', 'The level is known but not exposed' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 7, 'withdrawn', 'The level is changed to unknown' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 8, 'unknown', 'The level definition is unknown' );
+INSERT INTO __WDB_SCHEMA__.levelindeterminatetype VALUES( 9, 'delayed', 'The level definition will be set later' );

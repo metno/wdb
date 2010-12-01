@@ -2864,7 +2864,7 @@ SELECT * FROM wci.browse ( NULL::wci.browsedataprovider );
 				
 				<programlisting>
 SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], 
-						   NULL, NULL, NULL, NULL, NULL,
+						   NULL, NULL, NULL, NULL, NULL, NULL,
 					       NULL::wci.browsereferencetime );   					
 				</programlisting>
 
@@ -2876,7 +2876,7 @@ SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ],
 				<programlisting>
 SELECT * FROM wci.browse ( ARRAY[ 'hirlam' ], NULL, 
 						   'exact 1980-03-15 12:00:00+00', 
-						   NULL, NULL, NULL,
+						   NULL, NULL, NULL, NULL,
 					       NULL::wci.browsevalueparameter );
 				</programlisting>
 				

@@ -37,8 +37,8 @@ BEGIN
 	-- Get namespace
 	SELECT placenamespaceid INTO namespace_
 	FROM __WCI_SCHEMA__.getSessionData();
-	-- Indeterminate Code 0 = Exact
-	indCode_ := 0;	
+	-- Indeterminate Code 1 = Exact
+	indCode_ := 1;	
 	-- Check that geometry is POINT
 	IF GeometryType( placeGeometry_ ) <> 'POINT' THEN
 		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
@@ -53,10 +53,24 @@ BEGIN
 		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
 		( placeId_, indCode_, 'point', 'now', placeGeometry_ );
-	END IF;
-	IF namespace_ <> 0 THEN
-		INSERT INTO __WDB_SCHEMA__.placename VALUES
-		( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+		IF namespace_ <> 0 THEN
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+			( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+		END IF;
+	ELSE
+		IF namespace_ <> 0 THEN
+			PERFORM * 
+			FROM  __WDB_SCHEMA__.placename
+			WHERE placenamespaceid = namespace_;
+			IF NOT FOUND THEN
+				INSERT INTO __WDB_SCHEMA__.placename VALUES
+				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+			ELSE
+				UPDATE __WDB_SCHEMA__.placename 
+				SET placename = lower(placeName_)
+				WHERE placeid = placeId_;
+			END IF;
+		END IF;
 	END IF;
 	RETURN placeId_;
 END;
@@ -123,16 +137,30 @@ BEGIN
 				 startX_,
 				 startY_,
 				 srid_ );
+		IF namespace_ <> 0 THEN
+			INSERT INTO __WDB_SCHEMA__.placename
+			VALUES ( placeId_,
+					 nameSpace_,
+					 lower(placeName_),
+					 'today'::TIMESTAMP WITH TIME ZONE,
+					 'infinity'::TIMESTAMP WITH TIME ZONE );
+		END IF;
+	ELSE
+		IF namespace_ <> 0 THEN
+			PERFORM * 
+			FROM  __WDB_SCHEMA__.placename
+			WHERE placenamespaceid = namespace_;
+			IF NOT FOUND THEN
+				INSERT INTO __WDB_SCHEMA__.placename VALUES
+				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+			ELSE
+				UPDATE __WDB_SCHEMA__.placename 
+				SET placename = lower(placeName_)
+				WHERE placeid = placeId_;
+			END IF;
+		END IF;
 	END IF;
 	-- Insert new placename
-	IF namespace_ <> 0 THEN
-		INSERT INTO __WDB_SCHEMA__.placename
-		VALUES ( placeId_,
-				 nameSpace_,
-				 lower(placeName_),
-				 'today'::TIMESTAMP WITH TIME ZONE,
-				 'infinity'::TIMESTAMP WITH TIME ZONE );
-	END IF;
 	RETURN placeId_;
 END;
 $BODY$
@@ -233,8 +261,7 @@ BEGIN
 	WHERE btrim(proj4text) = btrim(projection_);
 	-- If SRID not found...
 	IF srid_ IS NOT NULL THEN
-		RAISE EXCEPTION 'The SRID is already in the database. Aborting.';
-		-- RENAME?
+		RETURN srid_;
 	END IF;
 	-- Get SRID
 	SELECT max(srid) + 1 INTO srid_

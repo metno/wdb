@@ -430,6 +430,7 @@ void DataProviderTest::testD6_01_AddDataProvider()
     result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-01\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
+    												  "\'1 day\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     // Check for meta
     result rC = t->exec( "SELECT * FROM wci.getDataProvider( \'installTest 06-01\' )" );
@@ -444,6 +445,7 @@ void DataProviderTest::testD6_02_SetDataProviderName()
     result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-02\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
+    												  "\'1 day\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     // Check for meta
     result rC = t->exec( "SELECT * FROM wci.getDataProvider( \'Installtest 06-02\' )" );
@@ -467,7 +469,8 @@ void DataProviderTest::testD6_03_SetDataProviderNameFail()
     result rId = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-03\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
-													  "\'Data Provider inserted by the WDB install tests\')" );
+			  	  	  	  	  	  	  	  	  	  	  "\'1 day\',"
+    												  "\'Data Provider inserted by the WDB install tests\')" );
     // Set Name
     result rN = t->exec( "SELECT wci.setDataProviderName(999, \'InstallTest 06-03\', \'InstallationsTest 06-03\')" );
     // Check for meta
@@ -483,14 +486,14 @@ void DataProviderTest::testD6_04_AddMultipleDataProvider()
 	result rId = t->exec("SELECT wci.addDataProvider(\'InstallTest 06-04\',"
 		"\'Computer System\',"
 		"\'Grid\',"
+		"\'1 day\',"
 		"\'Data Provider inserted by the WDB install tests\')");
 
-	CPPUNIT_ASSERT_THROW(
-		t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-04\',"
-				"\'Computer System\',"
-				"\'Grid\',"
-				"\'Another Data Provider inserted by the WDB install tests\')" ),
-		pqxx::sql_error );
+	t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-04\',"
+			"\'Computer System\',"
+			"\'Grid\',"
+			"\'1 day\',"
+			"\'Another Data Provider inserted by the WDB install tests\')" );
 }
 
 void DataProviderTest::testD6_05_AddDataProviderGroup()
@@ -501,18 +504,22 @@ void DataProviderTest::testD6_05_AddDataProviderGroup()
     result rIA = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05A\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
+    												  "\'1 day\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     result rI0 = t->exec( "SELECT wci.addDataProvider(\'InstallTest Group\',"
 													  "\'Data Provider Group\',"
 													  "\'Any\',"
+			  	  	  	  	  	  	  	  	  	  	  "\'1 day\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     result rIB = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05B\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
+			  	  	  	  	  	  	  	  	  	  	  "\'1 day\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
     result rIC = t->exec( "SELECT wci.addDataProvider(\'InstallTest 06-05C\',"
 													  "\'Computer System\',"
 													  "\'Grid\',"
+			  	  	  	  	  	  	  	  	  	  	  "\'1 day\',"
 													  "\'Data Provider inserted by the WDB install tests\')" );
    // Add to Groups
     result rG1 = t->exec( "SELECT * FROM wci.addDataProviderToGroup( \'Installtest 06-05A\', \'Installtest Group\' )" );

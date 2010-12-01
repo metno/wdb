@@ -33,13 +33,16 @@ SELECT
 	sw.softwarename AS name,
 	sw.softwareversioncode AS softwareversion,
 	cf.packageversion AS packageversion,
-	sw.softwaredescription AS description,
+	pc.partycomment AS description,
 	cf.installtime AS installtime
 FROM
 	__WDB_SCHEMA__.configuration cf,
-	__WDB_SCHEMA__.softwareversion sw
+	__WDB_SCHEMA__.softwareversion sw,
+	__WDB_SCHEMA__.partycomment pc
 WHERE
-	cf.softwareversionpartyid = sw.partyid;
+	cf.softwareversionpartyid = sw.partyid AND
+	cf.softwareversionpartyid = pc.partyid;
+
 REVOKE ALL ON __WCI_SCHEMA__.configuration FROM public;
 GRANT ALL ON __WCI_SCHEMA__.configuration TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.configuration TO wdb_read, wdb_write;
@@ -63,6 +66,89 @@ LIMIT
 REVOKE ALL ON __WCI_SCHEMA__.sessiondata FROM public;
 GRANT ALL ON __WCI_SCHEMA__.sessiondata TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.sessiondata TO wdb_read, wdb_write;
+
+
+
+CREATE VIEW __WCI_SCHEMA__.person AS
+SELECT
+    py.partyid,
+    py.partytype,
+    py.partyvalidfrom,
+    py.partyvalidto,
+    pn.firstname,
+    pn.lastname,
+    pn.title,
+    pn.salutation,
+    pn.initials,
+    pn.signum,
+    pn.gender,
+    pn.namesuffix,
+    pn.maritalstatus,
+	pc.partycomment,
+    pc.partycommentstoretime
+FROM
+	__WDB_SCHEMA__.party AS py, 
+	__WDB_SCHEMA__.person AS pn,
+	__WDB_SCHEMA__.partycomment AS pc
+WHERE
+	py.partyid = pn.partyid AND
+	py.partyid = pc.partyid;
+
+REVOKE ALL ON __WCI_SCHEMA__.person FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.person TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.person TO wdb_read, wdb_write;
+
+
+CREATE VIEW __WCI_SCHEMA__.organization AS
+SELECT
+    py.partyid,
+    py.partytype,
+    py.partyvalidfrom,
+    py.partyvalidto,
+    po.organizationname,
+    po.organizationalias,
+    po.organizationtype,
+	pc.partycomment,
+    pc.partycommentstoretime
+FROM
+	__WDB_SCHEMA__.party AS py, 
+	__WDB_SCHEMA__.organization AS po,
+	__WDB_SCHEMA__.partycomment AS pc
+WHERE
+	py.partyid = po.partyid AND
+	py.partyid = pc.partyid;
+
+REVOKE ALL ON __WCI_SCHEMA__.organization FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.organization TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.organization TO wdb_read, wdb_write;
+
+
+CREATE VIEW __WCI_SCHEMA__.softwareversion AS
+SELECT
+    py.partyid,
+    py.partytype,
+    py.partyvalidfrom,
+    py.partyvalidto,
+	ps.softwarename,
+	ps.softwareversioncode,
+	pc.partycomment,
+    pc.partycommentstoretime
+FROM
+	__WDB_SCHEMA__.party AS py, 
+	__WDB_SCHEMA__.softwareversion AS ps,
+	__WDB_SCHEMA__.partycomment AS pc
+WHERE
+	py.partyid = ps.partyid AND
+	py.partyid = pc.partyid;
+
+REVOKE ALL ON __WCI_SCHEMA__.softwareversion FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.softwareversion TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.softwareversion TO wdb_read, wdb_write;
+
+
+
+
+
 
 -- Needs to be defined here to support view creation
 CREATE OR REPLACE FUNCTION 
@@ -803,4 +889,3 @@ FROM
 REVOKE ALL ON TABLE __WCI_SCHEMA__.cfmethods FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.cfmethods TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.cfmethods TO wdb_read, wdb_write;
-

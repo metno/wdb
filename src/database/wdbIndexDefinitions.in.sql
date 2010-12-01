@@ -19,6 +19,29 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+CREATE UNIQUE INDEX XAK1Wdb_Organization ON __WDB_SCHEMA__.Organization
+(
+       organizationalias
+);
+
+CREATE UNIQUE INDEX XAK2Wdb_Organization ON __WDB_SCHEMA__.Organization
+(
+       organizationname
+);
+
+
+CREATE UNIQUE INDEX XAK1Wdb_Person ON __WDB_SCHEMA__.Person
+(
+       initials
+);
+
+
+CREATE UNIQUE INDEX XAK1Wdb_SoftwareVersion ON __WDB_SCHEMA__.SoftwareVersion
+(
+       softwarename,
+       softwareversioncode
+);
+
 
 CREATE UNIQUE INDEX XAK1Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue
 (
@@ -61,11 +84,6 @@ CREATE UNIQUE INDEX XAK1Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
 CREATE UNIQUE INDEX XAK1Wdb_LevelIndeterminateType ON __WDB_SCHEMA__.LevelIndeterminateType
 (
        LevelIndeterminateType
-);
-
-CREATE UNIQUE INDEX XAK1Wdb_Organization ON __WDB_SCHEMA__.Organization
-(
-       OrganizationName
 );
 
 

@@ -44,6 +44,8 @@ ALTER TABLE ONLY __WDB_SCHEMA__.qualityconfidencecode
 REVOKE ALL ON __WDB_SCHEMA__.qualityconfidencecode FROM public;
 GRANT ALL ON __WDB_SCHEMA__.qualityconfidencecode TO wdb_admin;
 
+INSERT INTO __WDB_SCHEMA__.qualityconfidencecode VALUES ( 0, 'Not defined' );
+
 
 --
 -- Name: FloatValue 

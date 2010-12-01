@@ -488,14 +488,36 @@ BEGIN
 	ELSE
 		unittype_ := 'derived unit';	
 	END IF;	
-	-- Insert into units
-	INSERT INTO __WDB_SCHEMA__.unit 
-	VALUES ( unitname_, unittype_, description_ );
-	-- If not a base unit
-	IF ( unittype_::text = 'derived unit'::text ) THEN
-		INSERT INTO __WDB_SCHEMA__.baseunitconversion
-		VALUES( unitname_, baseunitname_, baseunitconversioncoefficient_, baseunitconversionterm_ );	
-	END IF;	
+	PERFORM *
+	FROM __WDB_SCHEMA__.unit
+	WHERE unitname = unitname_;
+	IF NOT FOUND THEN
+		-- Insert into units
+		INSERT INTO __WDB_SCHEMA__.unit 
+		VALUES ( unitname_, unittype_, description_ );
+		-- If not a base unit
+		IF ( unittype_::text = 'derived unit'::text ) THEN
+			INSERT INTO __WDB_SCHEMA__.baseunitconversion
+			VALUES( unitname_, baseunitname_, baseunitconversioncoefficient_, baseunitconversionterm_ );	
+		END IF;
+	ELSE
+		UPDATE __WDB_SCHEMA__.unit SET
+			unittype = unittype_,
+			description = description_;
+		IF ( unittype_::text = 'derived unit'::text ) THEN
+			PERFORM * 
+			FROM __WDB_SCHEMA__.baseunitconversion;
+			IF NOT FOUND THEN
+				INSERT INTO __WDB_SCHEMA__.baseunitconversion
+				VALUES( unitname_, baseunitname_, baseunitconversioncoefficient_, baseunitconversionterm_ );	
+			ELSE
+				UPDATE __WDB_SCHEMA__.baseunitconversion SET
+					baseunitname = baseunitname_,
+					baseunitconversioncoefficient = baseunitconversioncoefficient_,
+					baseunitconversionterm = baseunitconversionterm_;
+			END IF;
+		END IF;			
+	END IF;
 END;
 $BODY$
 SECURITY DEFINER

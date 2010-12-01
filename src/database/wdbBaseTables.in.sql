@@ -21,16 +21,16 @@ SET SESSION client_min_messages TO 'warning';
 
 
 -- A party represents an actor wrt to the data in the database; either
--- a person, an organization of a piece of software
+-- a person, an organization or a set of software
 CREATE TABLE __WDB_SCHEMA__.party (
     partyid						serial NOT NULL,
     partytype 					character varying(80) NOT NULL,
     partyvalidfrom 				date NOT NULL,
     partyvalidto 				date NOT NULL,
     CONSTRAINT party_partytype_check 
-	CHECK (	((partytype)::text = 'Organization'::text) OR 
-			((partytype)::text = 'Person'::text) OR 
-			((partytype)::text = 'Software'::text) )
+	CHECK (	((partytype)::text = 'organization'::text) OR 
+			((partytype)::text = 'person'::text) OR 
+			((partytype)::text = 'software'::text) )
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.party
@@ -74,14 +74,17 @@ ALTER TABLE ONLY __WDB_SCHEMA__.organizationtype
 REVOKE ALL ON __WDB_SCHEMA__.organizationtype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.organizationtype TO wdb_admin;
 
+INSERT INTO __WDB_SCHEMA__.organizationtype VALUES ('international organization', 'An international organization');
+INSERT INTO __WDB_SCHEMA__.organizationtype VALUES ('government organization', 'A national governmental organization');
+
 
 
 -- Organizations
 CREATE TABLE __WDB_SCHEMA__.organization (
     partyid 					integer NOT NULL,
     organizationname 			character varying(80) NOT NULL,
-    organizationtype 			character varying(80) NOT NULL,
-    organizationdescription 	character varying(255) NOT NULL
+    organizationalias 			character varying(80) NOT NULL,
+    organizationtype 			character varying(80) NOT NULL
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.organization
@@ -104,26 +107,6 @@ GRANT ALL ON __WDB_SCHEMA__.organization TO wdb_admin;
 
 
 
--- Alternative names for organizations
-CREATE TABLE __WDB_SCHEMA__.organizationalias (
-    partyid 					integer NOT NULL,
-    alternativeorganizationname	character varying(80) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.organizationalias
-    ADD CONSTRAINT organizationalias_pkey PRIMARY KEY (partyid, alternativeorganizationname);
-
-ALTER TABLE __WDB_SCHEMA__.organizationalias
-	ADD FOREIGN KEY (partyid)
-					REFERENCES __WDB_SCHEMA__.organization
-					ON DELETE CASCADE
-					ON UPDATE CASCADE;
-
-REVOKE ALL ON __WDB_SCHEMA__.organizationalias FROM public;
-GRANT ALL ON __WDB_SCHEMA__.organizationalias TO wdb_admin;
-
-
-
 -- This is a standard person schema
 CREATE TABLE __WDB_SCHEMA__.person (
     partyid 					integer NOT NULL,
@@ -131,17 +114,17 @@ CREATE TABLE __WDB_SCHEMA__.person (
     lastname 					character varying(80),
     title 						character varying(80),
     salutation 					character varying(80),
-    initials 					character varying(80),
+    initials 					character varying(80) NOT NULL,
     signum 						character varying(80),
     gender 						character varying(80),
     namesuffix 					character varying(80),
     maritalstatus 				character varying(80),
     CONSTRAINT person_gender_check 
-	CHECK ( ((gender)::text = 'Male'::text) OR 
-			((gender)::text = 'Female'::text) ),
+	CHECK ( ((gender)::text = 'male'::text) OR 
+			((gender)::text = 'female'::text) ),
     CONSTRAINT person_maritalstatus_check 
-	CHECK (	((maritalstatus)::text = 'Married'::text) OR 
-			((maritalstatus)::text = 'Single'::text) )
+	CHECK (	((maritalstatus)::text = 'married'::text) OR 
+			((maritalstatus)::text = 'single'::text) )
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.person
@@ -163,8 +146,7 @@ CREATE TABLE __WDB_SCHEMA__.softwareversion
 (
 	partyid						integer NOT NULL,
 	softwarename 				character varying(80) NOT NULL,
-	softwareversioncode			character varying(80) NOT NULL,
-	softwaredescription 		character varying(255) NOT NULL
+	softwareversioncode			character varying(80) NOT NULL
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.softwareversion
@@ -242,3 +224,14 @@ ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
 
 REVOKE ALL ON __WDB_SCHEMA__.timeindeterminatetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.timeindeterminatetype TO wdb_admin;
+
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 0, 'any', 'Values are universal constants (valid for any time)');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 1, 'exact', 'The time definition is exact');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 2, 'inside', 'The time definition is inside the given interval');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 3, 'outside', 'The time definition is outside the given interval');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 4, 'before', 'The time definition is before the given interval');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 5, 'after', 'The time definition is after the given interval');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 6, 'withheld', 'The time definition is known but withheld');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 7, 'withdrawn', 'The time definition has been removed');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 8, 'unknown', 'The time definition is unknown');
+INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 9, 'delayed', 'The time definition will be given later');
