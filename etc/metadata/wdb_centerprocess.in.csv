@@ -1,4 +1,0 @@
-dataproviderid int4 NOT NULL,dataprovidercodespaceid int4 NOT NULL,generatingcenterid int4 NOT NULL,generatingprocessid int4 NOT NULL,processvalidfrom timestamp NOT NULL,processvalidto timestamp NOT NULL,processname varchar(80) NOT NULL
-1,0,96,1,11/21/06 02:15 PM,01/01/00 12:00 AM,Hirlam Process
-10,0,10,1,11/21/06 02:15 PM,01/01/00 12:00 AM,Hirlam Process
-24,0,24,1,11/21/06 02:15 PM,01/01/00 12:00 AM,Hirlam Process

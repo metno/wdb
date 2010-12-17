@@ -42,4 +42,7 @@ SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', 0 );
 -- Parameters & Units (wci.addparamater...)
 \i __WDB_DATADIR__/sql/wdb_unit.sql
 \i __WDB_DATADIR__/sql/wdb_cfsurface.sql
+\i __WDB_DATADIR__/sql/wdb_cfcomponent.sql
+\i __WDB_DATADIR__/sql/wdb_cfmedium.sql
+\i __WDB_DATADIR__/sql/wdb_cfmethods.sql
 \i __WDB_DATADIR__/sql/wdb_parameter.sql

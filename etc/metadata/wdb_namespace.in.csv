@@ -1,4 +1,0 @@
-Namespaceid|Name|Description|FieldOfApplication|OwnerId|ContactId|ValidFrom
-0|WDB Default Namespace|The canonical namespace of the WDB system|Production|0|1000|2000-01-01T00:00:00Z
-88|Met.no Standard Namespace|The standard namespace used for Met.no applications that do not utilize the default namespace|Production|0|1000|2000-01-01T00:00:00Z
-999|WDB Test Namespace|The test namespace for WDB development|Development|0|1000|2000-01-01T00:00:00Z
