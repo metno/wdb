@@ -251,15 +251,3 @@ SELECT wci.setparametername( v.parametername,
 							 					    		  v.cfmethods ) )
 FROM	__WCI_SCHEMA__.parameter v
 WHERE	parameternamespaceid = 0;
-
-SELECT wci.begin( 'wdb', 88, 88, 88 );
-SELECT wci.setparametername( v.parametername, 
-							 __WCI_SCHEMA__.getparametername( v.cfstandardname,
-							 							      v.cfsurface,
-							 					   			  v.cfcomponent,
-							 					   			  v.cfmedium,
-							 					   			  v.cfprocess,
-							 					   			  v.cfcondition,
-							 					    		  v.cfmethods ) )
-FROM	__WCI_SCHEMA__.parameter v
-WHERE	parameternamespaceid = 0;
