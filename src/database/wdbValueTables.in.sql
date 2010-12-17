@@ -32,8 +32,6 @@ ALTER TABLE ONLY __WDB_SCHEMA__.valuetype
 REVOKE ALL ON __WDB_SCHEMA__.valuetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.valuetype TO wdb_admin;
 
-INSERT INTO __WDB_SCHEMA__.valuetype VALUES ( 0, 'none' );
-
 
 
 CREATE TABLE __WDB_SCHEMA__.qualityconfidencecode (
