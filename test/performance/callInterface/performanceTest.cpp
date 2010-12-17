@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
     		C.prepare("ReadRandom1",
     				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
     				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
-    				  "'exact 0 height above ground distance', "
+    				  "'exact 0 height above ground', "
     				  "ARRAY[-1], NULL::wci.returnFloat	)" )
     				  ("varchar", treat_string )
 					  ("varchar", treat_string )
@@ -264,10 +264,10 @@ int main(int argc, char *argv[])
 	    		vector<FloatRow *>::const_iterator myTuple;
 	    		for(myTuple=resultF.begin(); myTuple!=resultF.end(); myTuple++)
 	 			{
-					cout << (*myTuple)->value_ << " ¦ "
-						 << (*myTuple)->dataProvider_ << " ¦ "
-				  	 	 << (*myTuple)->placeName_ << " ¦ "
-				 	 	 << (*myTuple)->placeGeo_ << " ¦ "
+					cout << (*myTuple)->value_ << " ï¿½ "
+						 << (*myTuple)->dataProvider_ << " ï¿½ "
+				  	 	 << (*myTuple)->placeName_ << " ï¿½ "
+				 	 	 << (*myTuple)->placeGeo_ << " ï¿½ "
 					 	 << (*myTuple)->referenceTime_ << endl;
 	   			}
 	    	}
@@ -275,10 +275,10 @@ int main(int argc, char *argv[])
 	    		vector<GridRow *>::const_iterator myTuple;
 	    		for(myTuple=resultG.begin(); myTuple!=resultG.end(); myTuple++)
 	 			{
-					cout << (*myTuple)->value_ << " ¦ "
-						 << (*myTuple)->dataProvider_ << " ¦ "
-				  	 	 << (*myTuple)->placeName_ << " ¦ "
-				 	 	 << (*myTuple)->placeGeo_ << " ¦ "
+					cout << (*myTuple)->value_ << " ï¿½ "
+						 << (*myTuple)->dataProvider_ << " ï¿½ "
+				  	 	 << (*myTuple)->placeName_ << " ï¿½ "
+				 	 	 << (*myTuple)->placeGeo_ << " ï¿½ "
 					 	 << (*myTuple)->referenceTime_ << endl;
 	   			}
 	    	}

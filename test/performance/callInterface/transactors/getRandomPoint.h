@@ -58,7 +58,7 @@ std::string randomDataProvider()
 std::string randomPoint()
 {
 	std::stringstream pt;
-	pt << "'POINT(";
+	pt << "'nearest POINT(";
 	pt << -20 + 40.0*rand()/RAND_MAX;
 	pt << " ";
 	pt << 54.0 + 10.0*rand()/RAND_MAX;
@@ -130,7 +130,7 @@ std::string randomParameter()
 	case 0:
 		return "ARRAY[ 'air pressure' ]";
 	case 1:
-		return "ARRAY[ 'ozone dobson surface density' ]";
+		return "ARRAY[ 'air pressure at sea level' ]";
 	case 2:
 		return "ARRAY[ 'air temperature' ]";
 	case 3:
@@ -166,7 +166,7 @@ public:
 				 << refTime << ", "
 				 << valTime << ", "
 				 << randomParameter() << ", "
-				 << "'exact 0 height above ground distance', "
+				 << "'exact 0 height above ground', "
 				 << "ARRAY[-1], "
 				 << "NULL::wci.returnFloat )";
     	const std::string query = queryStr.str();
@@ -243,7 +243,7 @@ public:
 				 << refTime << ", "
 				 << valTime << ", "
 				 << randomParameter() << ", "
-				 << "'exact 0 height above ground distance', "
+				 << "'exact 0 height above ground', "
 				 << "ARRAY[-1], "
 				 << "NULL::wci.returnFloat )";
     	const std::string query = queryStr.str();
@@ -387,7 +387,7 @@ public:
 		randomTimesP(refTime, valTime);
 		std::string dataProv = "test wci 0";
 		std::stringstream pt;
-		pt << "POINT(";
+		pt << "nearest POINT(";
 		pt << -20 + 40.0*rand()/RAND_MAX;
 		pt << " ";
 		pt << 54.0 + 10.0*rand()/RAND_MAX;
@@ -399,7 +399,7 @@ public:
 		case 0:
 			param = "air pressure";
 		case 1:
-			param = "ozone dobson surface density";
+			param = "air pressure at sea level";
 		case 2:
 			param = "air temperature";
 		case 3:

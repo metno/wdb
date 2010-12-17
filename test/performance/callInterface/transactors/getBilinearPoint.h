@@ -114,7 +114,7 @@ std::string bilinearParameter()
 	case 0:
 		return "ARRAY[ 'air pressure' ]";
 	case 1:
-		return "ARRAY[ 'ozone dobson surface density' ]";
+		return "ARRAY[ 'air pressure at sea level' ]";
 	case 2:
 		return "ARRAY[ 'air temperature' ]";
 	case 3:

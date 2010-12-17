@@ -60,7 +60,7 @@ public:
 	void operator()(argument_type &T)
   	{
 		std::stringstream queryStr;
-        queryStr << "select wci.begin ( 'wcitest', 0, 0, 0 )";
+        queryStr << "select wci.begin ( 'wcitest', 999, 999, 999 )";
     	const std::string query = queryStr.str();
     	pqxx::result R;
 		R = T.exec(query);

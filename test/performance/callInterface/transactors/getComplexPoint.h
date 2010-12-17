@@ -58,7 +58,7 @@ std::string complexDataProvider()
 std::string complexPoint()
 {
 	std::stringstream pt;
-	pt << "'POINT(";
+	pt << "'nearest POINT(";
 	pt << -20 + 40.0*rand()/RAND_MAX;
 	pt << " ";
 	pt << 54.0 + 10.0*rand()/RAND_MAX;
@@ -74,7 +74,7 @@ void complexTimes(std::string & refTime, std::string & valTime)
 
 std::string complexParameter()
 {
-	return "ARRAY[ 'air pressure', 'ozone dobson surface density', 'air temperature', 'max air temperature', 'min air temperature' ]";
+	return "ARRAY[ 'air pressure', 'air pressure at sea level', 'air temperature', 'max air temperature', 'min air temperature' ]";
 }
 
 
@@ -178,7 +178,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << ", "
 				  << valTime << ", "
-				  << "ARRAY['air temperature', 'land temperature'], "
+				  << "ARRAY['air temperature', 'wind speed'], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
@@ -218,7 +218,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << ", "
 				  << valTime << ", "
-				  << "ARRAY['air pressure', 'ozone dobson surface density', 'max air temperature', 'min air temperature', 'accumulated convective precipitation distance', 'fog probability' ], "
+				  << "ARRAY['air pressure', 'air pressure at sea level', 'max air temperature', 'min air temperature', 'precipitation amount', 'cloud area fraction' ], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
@@ -256,7 +256,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << ", "
 				  << valTime << ", "
-				  << "ARRAY['wind velocity (u vector)', 'wind velocity (v vector)' ], "
+				  << "ARRAY['eastward wind', 'northward wind' ], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
@@ -294,7 +294,7 @@ public:
 				  << complexPoint() << ", "
 				  << "NULL, "
 				  << "NULL, "
-				  << "ARRAY['yr weather symbol'], "
+				  << "ARRAY['thunderstorm probability'], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
