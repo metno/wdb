@@ -33,7 +33,7 @@ wci.addOrganization
 	comment_			text
 )
 RETURNS bigint AS
-AS $$
+$$
 DECLARE
 	ppid_		int;
 BEGIN
@@ -57,7 +57,6 @@ BEGIN
 			INSERT INTO wdb_int.partycomment VALUES
 			( ppid_, comment_, 'now' );
 		END IF;
-	
 	ELSE
 		UPDATE wdb_int.party SET
 				partyvalidfrom = validfrom_,
@@ -115,9 +114,8 @@ wci.addPerson
 	validTo_				date,
 	comment_				text
 )
-		( ppid_, firstName_, lastName_, title_, salutation_, initials_, signum_, gender_, suffix_, marital_ );
 RETURNS bigint AS
-AS $$
+$$
 DECLARE
 	ppid_		int;
 BEGIN
@@ -199,7 +197,7 @@ wci.addSoftwareVersion
 	comment_			text
 )
 RETURNS bigint AS
-AS $$
+$$
 DECLARE
 	ppid_		int;
 BEGIN

@@ -36,12 +36,8 @@ SELECT
 	pc.partycomment AS description,
 	cf.installtime AS installtime
 FROM
-	__WDB_SCHEMA__.configuration cf,
-	__WDB_SCHEMA__.softwareversion sw,
-	__WDB_SCHEMA__.partycomment pc
-WHERE
-	cf.softwareversionpartyid = sw.partyid AND
-	cf.softwareversionpartyid = pc.partyid;
+	(__WDB_SCHEMA__.configuration AS cf JOIN __WDB_SCHEMA__.softwareversion AS sw ON cf.softwareversionpartyid = sw.partyid)
+	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc ON softwareversionpartyid = pc.partyid; 
 
 REVOKE ALL ON __WCI_SCHEMA__.configuration FROM public;
 GRANT ALL ON __WCI_SCHEMA__.configuration TO wdb_admin;
@@ -87,12 +83,9 @@ SELECT
 	pc.partycomment,
     pc.partycommentstoretime
 FROM
-	__WDB_SCHEMA__.party AS py, 
-	__WDB_SCHEMA__.person AS pn,
-	__WDB_SCHEMA__.partycomment AS pc
-WHERE
-	py.partyid = pn.partyid AND
-	py.partyid = pc.partyid;
+	(__WDB_SCHEMA__.party AS py JOIN __WDB_SCHEMA__.person AS pn ON py.partyid = pn.partyid)  
+	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc ON py.partyid = pc.partyid;
+	
 
 REVOKE ALL ON __WCI_SCHEMA__.person FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.person TO wdb_admin;
@@ -111,12 +104,8 @@ SELECT
 	pc.partycomment,
     pc.partycommentstoretime
 FROM
-	__WDB_SCHEMA__.party AS py, 
-	__WDB_SCHEMA__.organization AS po,
-	__WDB_SCHEMA__.partycomment AS pc
-WHERE
-	py.partyid = po.partyid AND
-	py.partyid = pc.partyid;
+	(__WDB_SCHEMA__.party AS py JOIN __WDB_SCHEMA__.organization AS po ON py.partyid = po.partyid) 
+	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc ON py.partyid = pc.partyid;
 
 REVOKE ALL ON __WCI_SCHEMA__.organization FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.organization TO wdb_admin;
@@ -134,12 +123,8 @@ SELECT
 	pc.partycomment,
     pc.partycommentstoretime
 FROM
-	__WDB_SCHEMA__.party AS py, 
-	__WDB_SCHEMA__.softwareversion AS ps,
-	__WDB_SCHEMA__.partycomment AS pc
-WHERE
-	py.partyid = ps.partyid AND
-	py.partyid = pc.partyid;
+	(__WDB_SCHEMA__.party AS py JOIN __WDB_SCHEMA__.softwareversion AS ps ON py.partyid = ps.partyid )
+	LEFT OUTER JOIN  __WDB_SCHEMA__.partycomment AS pc ON py.partyid = pc.partyid;
 
 REVOKE ALL ON __WCI_SCHEMA__.softwareversion FROM PUBLIC;
 GRANT ALL ON __WCI_SCHEMA__.softwareversion TO wdb_admin;
