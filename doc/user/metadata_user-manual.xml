@@ -1,3 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[ 
+	<!ENTITY % wdb.entities SYSTEM "../docbook/wdb_entities.ent">
+	%wdb.entities;
+]
+>
+
+<book>
+	<title>WDB Metadata User Manual</title>
+	
+	<bookinfo>
+		<editor>
+			<firstname>Michael</firstname>
+			<othername>O.</othername>
+			<surname>Akinde</surname>
+			
+			<affiliation>
+				<orgname> <ulink url="http://www.met.no">met.no</ulink>
+				</orgname>
+				
+				<address>
+          <street>Niels Henrik Abelsvei 4</street> 
+          <city>Oslo</city>
+          <country>Norway</country>
+          <email>wdb@met.no</email>
+        </address>
+			</affiliation>
+		</editor>
+		<abstract>
+			
+			<para>WDB is a data storage solution for weather and water data based on the
+				PostgreSQL object-relational database system. The system utilizes
+				PostGIS for GIS (Geographic Information Systems) support and handles
+				regular grids (e.g., forecast fields) and point (e.g., observation)
+				data.</para>
+			
+			<para>This is the User's Manual for WDB Metadata of WDB version
+				&version;</para>
+			
+		</abstract>
+	</bookinfo>
+	
+	<chapter id="cha:metadata_introduction">
+		<title>Introduction</title>
+		
+		<para>The WDB system contains a lot of metadata that is used to identify and describe
+		the values stored in the database. The WDB system administrator must have a good 
+		understanding of this metadata in order to maintain the system effectively.</para>
+		
+		<sect1 id="sec:about_manual">
+			<title>About this Manual</title>
+			
+			<para>This manual is intended for the system administrator of the WDB system. It 
+			describes how to maintain the metadata in the WDB system. It is assumed that the reader
+				has some familiarity with SQL and weather data.</para>
+			
+			<para>For a more elaborate description of the vision and system architecture of
+				the WDB system, see the WDB Developer's Manual.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:intended_usage">
+			<title>Intended Usage</title>
+			
+			<para>The metadata in WDB is used to describe the values stored in the system.
+				By carefully and correctly maintaining this metadata, it is possible to view
+				stored data from several different points of view, while maintaining the
+				consistency of the stored data.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:metadata_outline">
+			<title>Outline</title>
+			
+			<para>This document is structured as follows:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>Key Concepts: introduction to the concepts and terms used in the
+						documentation</para>
+				</listitem>
+				<listitem>
+					<para>Data Provider</para>
+				</listitem>
+				<listitem>
+					<para>Place Definition</para>
+				</listitem>
+				<listitem>
+					<para>On Time: Reference and Valid Times</para>
+				</listitem>
+				<listitem>
+					<para>Parameters: Value and Level Parameters</para>
+				</listitem>
+				<listitem>
+					<para>System Metadata</para>
+				</listitem>
+				<listitem>
+					<para>FAQ: Frequently asked questions</para>
+				</listitem>
+				<listitem>
+					<para>Known bugs and limitations</para>
+				</listitem>
+			</itemizedlist>
+			
+		</sect1>
+		
+	</chapter>
+	
+	<chapter id="cha:key_concepts">
+		<title>Key Concepts</title>
+		
+		<para>This section defines and explains some of the key concepts of the WDB metadata system.</para>
+		
+		<sect1 id="sec:data_dimensions">
+			<title>WDB Metadata Dimensions</title>
+			
+			<para>WDB is a database system that stores weather data items. Each data item 
+			in WDB could be an observation, a forecast, an analysis, etc.
+				Each item consists of a value and a number of dimensions that describe the
+				value.</para>
+			
+			<para>Each of the seven dimensions in WDB is used to describe the data item; crucially,
+			for any given data item, there is a set of these seven dimensions that uniquely
+			describe that data item. No two data items in the database can ever have identical 
+			combinations of these dimensions. The metadata dimensions in WDB are:</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>Data Provider: the provider of the data item (e.g., the data source)</para>
+				</listitem>
+				<listitem>
+					<para>Place Definition: the spatial location for which the data item is valid</para>
+				</listitem>
+				<listitem>
+					<para>Reference Time: the time of reference at which the data item was created</para>
+				</listitem>
+				<listitem>
+					<para>Valid Time: the time interval for which the data item is valid</para>
+				</listitem>
+				<listitem>
+					<para>Value Parameter: the parameter which describes value of the data item (e.g., air temperature)</para>
+				</listitem>
+				<listitem>
+					<para>Level Parameter: the parameter which describes the value of the level information (e.g., height above ground)</para>
+				</listitem>
+				<listitem>
+					<para>Data Version: the version number of the data item</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>Of these dimensions, data version is simply a number sequence and will not be
+			discussed further here. The other dimensions will be discussed in greater detail in 
+			the following chapters.</para>
+		</sect1>
+			
+		<sect1 id="sec:namespaces">
+			<title>WDB Namespaces</title>
+			
+			<para>There are a large number of different naming conventions that exist in the meteorological
+			world. Each of these naming conventions may be valid in its own context, but there is also typically
+			a large overlap (for instance, a meteorological station may be identified by several different 
+			indicators or index numbers). WDB provides name spaces as a mechanism to handle this kind of issue.</para>
+			
+			<para></para>
+			
+			Such naming conventions frequently overlap
+			
+			<para>WDB defines three so-called namespaces for its metadata: a data provider namespace,
+			a place namespace, and a parameter namespace. 
+			</para>
+			
+			could be a description of the data item (e.g., temperature),
+				its geographic position, its altitude (or depth), the time the data item was
+				created, the origin of the data item, etc.</para>
+			
+			<para>In order to access the data items in WDB, the user should have an understanding of the
+				dimensions as they are the entry point into the database. When data is retrieved from
+				the database, a set of search criteria is given for each of the
+				WCI dimensions. If the search criteria for a dimension is
+				not specified (i.e., all NULLs), it is assumed the user wants to retrieve all data items,
+				regardless of their dimension description. Please do not attempt this unless the database 
+				you are querying is extremely small.</para>
+				
+			<para>In the context of WCI search criteria, NULL is always interpreted to mean "ALL".</para>
+			
+			<para>The last parameter of a WCI function call that is intended to return data is always
+			reserved for specifying the data type to be returned (this is because most functions are 
+			overloaded to return many different forms of data. By convention, this parameter is 
+			usually given as a NULL cast to the relevant data type; for example:</para>
+
+			<programlisting>
+NULL::wci.browsereferencetime
+		</programlisting>
+			
+			<para>The dimensions are described in the following sections.</para>
+			
+		</sect1>
+		
+		<sect1 id="sec:data_provider">
+			<title>Data Provider</title>
+			
+			<para>The Data Provider identifies the source of the data; literally,
+				<emphasis>the entity that provides the data</emphasis>. Where multiple
+				sources could be identified as the source of the data, the entity that can be
+				identified closest to the creation of the data item at the time of loading is
+				usually used.</para>
+			
+			<para>A data provider can be a software process (e.g., Hirlam), a
+				meteorological or climate station, an aircraft, or a person. A data provider 
+				is identified by a DataProviderName. DataProviderNames are 
+				used to search for the data. For convenience, Data Providers may be
+				collected into groups; e.g., the DataProviderName "Hirlam" might be used
+			    to search for any of the various Hirlam processes: "Hirlam 4", "Hirlam 8", 
+				etc.</para>
+			
+			<para>When searching for data, the user may specify a single DataProviderName,
+				a list of DataProviderNames (specified using an ARRAY constructor), or NULL. 
+				NULL indicates that the user wants all 	data items, regardless of the data 
+				source.</para>
+
+			<para>DataProviderNames exist within a data provider namespace. A namespace can be defined by
+				the WDB administrator, in order to permit the user or an application to retrieve data in
+				an accustomed language or code set. The default namespace of WDB is the DataProviderNameSpaceId
+				0, and is always based on English language names and international standard codes. The 
+				data provider namespace being used in a querying session can be defined by the user when
+				starting up the session.
+			</para>
+			
+			<para>To retrieve all of the DataProviderNames (excluding data provider groups) that are
+				currently stored in the database for the currently specified namespace, the following 
+				wci.browse function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
+		</programlisting>
+
+			<para>To retrieve all of the DataProviderNames (including data provider groups) that the
+				database currently has the capacity to store and display in the currently specified
+				namespace, the following wci.info function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.getDataProvider( NULL );
+		</programlisting>
+									
+		</sect1>
+
+
+
 Spatial Reference ID (SRID)
 
 The Spatial Reference ID in the database is used for conversion 
