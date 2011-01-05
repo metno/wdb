@@ -30,6 +30,7 @@ WCIPERFTEST_SOURCES =	test/performance/callInterface/caseP001_01.in.test \
 						test/performance/callInterface/caseP001_12.in.test \
 						test/performance/callInterface/caseP001_13.in.test \
 						test/performance/callInterface/caseP002_01.in.test \
+						test/performance/callInterface/caseP002_02.in.test \
 						test/performance/callInterface/caseP003_01.in.test \
 						test/performance/callInterface/caseP003_02.in.test \
 						test/performance/callInterface/caseP003_03.in.test \
@@ -65,10 +66,10 @@ DISTCLEANFILES +=		test/performance/callInterface/Makefile
 
 wciPerformanceTest.sh:		test/performance/callInterface/wciPerformanceTest.in.sh
 				sed s/__WDB_VERSION__/$(VERSION)/ $<\
-				| sed s¤__WDB_LIB_PATH__¤$(LD_LIBRARY_PATH)¤ \
+				| sed sï¿½__WDB_LIB_PATH__ï¿½$(LD_LIBRARY_PATH)ï¿½ \
 	 			| sed s:__WDB_BINDIR__:$(bindir): \
 				| sed s:__WDB_BUILDDIR__:"@abs_builddir@": \
-				| sed s¤__WDB_SRCDIR__¤$(srcdir)¤ \
+				| sed sï¿½__WDB_SRCDIR__ï¿½$(srcdir)ï¿½ \
 	 			| sed s:__WDB_SYSCONFDIR__:$(sysconfdir): \
 	 			| sed s:__WDB_LOCALSTATEDIR__:$(localstatedir): \
 	 			> $@;\

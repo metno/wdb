@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     	switch ( conf.input().sample ) {
     	case 1: // Random Point retrieval - individual points
     		isFloat = true;
-			for (int i=0; i<500; i++) {
+			for (int i=0; i<100; i++) {
 				C.perform( RandomPointTest1(resultF) );
    			}
 			break;
@@ -199,8 +199,20 @@ int main(int argc, char *argv[])
    			break;
    		case 22: // Random Field retrieval
     		isGrid = true;
-   			for (int i=0; i<500; i++) {
+   			for (int i=0; i<50; i++) {
 	   			C.perform( MultipleFieldTest( resultG, resultBuffer, fieldSize ) );
+   			}
+   			break;
+   		case 23: // Random Field retrieval
+    		isGrid = true;
+   			for (int i=0; i<500; i++) {
+	   			C.perform( FieldRowTest1( resultG, resultBuffer, fieldSize ) );
+   			}
+   			break;
+   		case 24: // Random Field retrieval
+    		isFloat = true;
+   			for (int i=0; i<500; i++) {
+	   			C.perform( FieldRowTest2( resultF ) );
    			}
    			break;
     	case 31: // Random Point retrieval - individual points

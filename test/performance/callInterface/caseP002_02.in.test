@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script Information
-export TESTCASE="P001_13"
-export TEST_DESCRIPTION="Single thread, multiple bilinear point retrieval"
+export TESTCASE="P002_02"
+export TEST_DESCRIPTION="Single thread, multiple field retrieval"
 export TEST_PATH=__WDB_BUILDDIR__/test/performance/callInterface
 
 # Test Environment
@@ -16,7 +16,7 @@ case $1 in
 esac
 
 # Prepare Test
-EXECUTE="./wciPerformanceTester 33" 
+EXECUTE="./wciPerformanceTester 22" 
 totalTime=0
 
 # Execute Test 1
@@ -38,7 +38,7 @@ endTime=`date +%s%N`
 totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 averageTimeRetrieval=$(echo "$totalTime / 3000000000.0" | bc -l)
-averageRows=$(echo "8400.0 / $averageTimeRetrieval" | bc -l)
+averageRows=$(echo "200.0 / $averageTimeRetrieval" | bc -l)
 
 echo "Average Time: $averageTimeRetrieval seconds"
 echo "Rows Returned: $averageRows per second"

@@ -44,6 +44,8 @@ for dd in $days
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'max air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'min air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'wind speed' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'surface snow amount' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
     done
   done
 done
