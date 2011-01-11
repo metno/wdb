@@ -19,8 +19,8 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
--- test is a schema that contains views, functions and tables that
--- are specific to the testing of the WDB system
+-- Admin is a schema that contains views and functions used for the 
+-- administration of the WDB system
 CREATE SCHEMA admin;
 REVOKE ALL ON SCHEMA admin FROM PUBLIC;
 GRANT ALL ON SCHEMA admin TO wdb_admin;
@@ -38,3 +38,19 @@ FROM
 
 REVOKE ALL ON admin.blob FROM public;
 GRANT ALL ON admin.blob TO wdb_admin;
+
+
+create or replace function
+admin.updateMaterializedViews() 
+returns void as
+$body$
+	SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv'); 
+	SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv'); 
+	SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.parameter_mv');
+$body$
+language sql;
+
+
+REVOKE ALL ON FUNCTION admin.updateMaterializedViews() FROM public;
+GRANT ALL ON FUNCTION admin.updateMaterializedViews() TO wdb_admin;
+
