@@ -16,13 +16,13 @@ Build-Depends: debhelper (>= 5), debconf, dbconfig-common, po-debconf,
   libboost-date-time-dev (>=1.33.1),
   libboost-thread-dev (>=1.33.1),
   libreadline5-dev (>=5.2),
-  postgresql-8.3-postgis, postgresql-server-dev-8.3,
+  postgresql-8.4-postgis, postgresql-server-dev-8.4
 Standards-Version: 3.7.3
 
 Package: wdb
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, python (>=2.4),
- postgresql-8.3, postgresql-8.3-postgis, adduser, 
+ postgresql-8.4, postgresql-8.4-postgis, adduser, 
  dbconfig-common, proj (>=4.6.0)
 Recommends: postgresql-client
 Description: database for meteorological, hydrological and oceanographic data
