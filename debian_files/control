@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 5), debconf, dbconfig-common, po-debconf,
   autotools-dev,  autoconf (>=2.61), automake,
   xmlto, libcppunit-dev, libpqxx-dev (>= 2.6.8), 
   proj (>=4.6.0), 
-  libglib2.0-dev, libgeos-dev
+  libglib2.0-dev, libgeos-dev,
   libboost-filesystem-dev (>=1.33.1), 
   libboost-program-options-dev (>=1.33.1), 
   libboost-regex-dev (>=1.33.1), 
