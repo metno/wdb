@@ -1,3 +1,9 @@
+wdb (0.9.7-1) lucid; urgency=low
+
+  * Metadata package broken out of wdb. 
+
+ -- Michael Omotayo Akinde <michaeloa@pc2506.pc.met.no>  Mon, 17 Jan 2010 12:00:00 +0000
+
 wdb (0.9.7-1) hardy; urgency=low
 
   * Metadata updates for wdb/felt data and new EC. 

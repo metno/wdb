@@ -42,13 +42,13 @@ EXTRA_DIST +=					test/stability/callInterface/wciStabilityTest.in.sh \
 DISTCLEANFILES +=				test/stability/callInterface/Makefile
 
 wciStabilityTest.sh:			test/stability/callInterface/wciStabilityTest.in.sh
-								sed s/__WDB_VERSION__/$(VERSION)/ $<\
-								| sed s¤__WDB_LIB_PATH__¤$(LD_LIBRARY_PATH)¤ \
-					 			| sed s:__WDB_BINDIR__:$(bindir): \
-								| sed s:__WDB_BUILDDIR__:"@abs_builddir@": \
-								| sed s¤__WDB_SRCDIR__¤$(srcdir)¤ \
-					 			| sed s:__WDB_SYSCONFDIR__:$(sysconfdir): \
-					 			| sed s:__WDB_LOCALSTATEDIR__:$(localstatedir): \
+								sed s%__WDB_VERSION__%$(VERSION)% $<\
+								| sed s%__WDB_LIB_PATH__%$(LD_LIBRARY_PATH)% \
+					 			| sed s%__WDB_BINDIR__%$(bindir)% \
+								| sed s%__WDB_BUILDDIR__%"@abs_builddir@"% \
+								| sed s%__WDB_SRCDIR__%$(srcdir)% \
+					 			| sed s%__WDB_SYSCONFDIR__%$(sysconfdir)% \
+					 			| sed s%__WDB_LOCALSTATEDIR__%$(localstatedir)% \
 					 			> $@;\
 								chmod 754 $@
 
