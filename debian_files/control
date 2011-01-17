@@ -17,7 +17,7 @@ Build-Depends: debhelper (>= 5), debconf, dbconfig-common, po-debconf,
   libboost-thread-dev (>=1.33.1),
   libreadline5-dev (>=5.2),
   postgresql-8.4-postgis, postgresql-server-dev-8.4
-Standards-Version: 3.7.3
+Standards-Version: 3.9.1
 
 Package: wdb
 Architecture: any

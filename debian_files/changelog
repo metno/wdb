@@ -1,4 +1,4 @@
-wdb (0.9.7-1) lucid; urgency=low
+wdb (0.9.8) lucid; urgency=low
 
   * Metadata package broken out of wdb. 
 
