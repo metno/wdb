@@ -84,10 +84,31 @@ GRANT ALL ON FUNCTION wci.addNameSpace( id_			integer,
 				  						desc_		varchar(255),
 									  	usage_		varchar(80),
 									  	owner_		varchar(80),
-									  	contact_	varchar(80),
+ 									  	contact_	varchar(80),
 									  	validfrom_	date )
+ 									 TO wdb_admin;
+
+
+CREATE OR REPLACE FUNCTION
+wci.removeNameSpace( id_			integer )
+RETURNS VOID AS
+$BODY$
+BEGIN
+	-- Check Session ID
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Delete
+	DELETE FROM __WDB_SCHEMA__.namespace
+	WHERE namespaceid = id_;
+END;
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE;
+
+REVOKE ALL ON FUNCTION wci.removeNameSpace( id_		integer )
+									  FROM public;
+GRANT ALL ON FUNCTION wci.removeNameSpace( id_			integer )
  									  TO wdb_admin;
-          				 
+ 									  
+ 									  
 -- Set the Default Namespace of a User
 -- This function sets the default namespace that is used if wci.begin is
 -- called without additional parameters.

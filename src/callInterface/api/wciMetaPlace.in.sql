@@ -149,14 +149,16 @@ BEGIN
 		IF namespace_ <> 0 THEN
 			PERFORM * 
 			FROM  __WDB_SCHEMA__.placename
-			WHERE placenamespaceid = namespace_;
+			WHERE placeid = placeId_ AND 
+				  placenamespaceid = namespace_;
 			IF NOT FOUND THEN
 				INSERT INTO __WDB_SCHEMA__.placename VALUES
 				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
 			ELSE
 				UPDATE __WDB_SCHEMA__.placename 
 				SET placename = lower(placeName_)
-				WHERE placeid = placeId_;
+				WHERE placeid = placeId_ AND
+					  placenamespaceid = namespace_;
 			END IF;
 		END IF;
 	END IF;
