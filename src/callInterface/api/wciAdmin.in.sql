@@ -151,7 +151,37 @@ GRANT ALL ON FUNCTION wci.setDefaultNameSpace( userName_ NAME,
           				 placeNameSpaceId_ integer,
           				 parameterNameSpaceId_ integer ) TO wdb_admin;
 
-          				 
+
+
+CREATE OR REPLACE FUNCTION
+wci.copyParameterNameSpace( copyFromId_	integer )
+RETURNS VOID AS
+$BODY$
+BEGIN
+	-- Check Session ID
+	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Delete
+	PERFORM wci.setparametername( v.parametername, 
+							 	 __WCI_SCHEMA__.getparametername( v.cfstandardname,
+							 								      v.cfsurface,
+							 						   			  v.cfcomponent,
+							 						   			  v.cfmedium,
+							 						   			  v.cfprocess,
+							 						   			  v.cfcondition,
+							 					    			  v.cfmethods ) )
+	FROM	__WCI_SCHEMA__.parameter v
+	WHERE	parameternamespaceid = copyFromId_;
+END;
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE;
+
+REVOKE ALL ON FUNCTION wci.copyParameterNamespace( copyfromid_	integer )
+	FROM public;
+GRANT ALL ON FUNCTION wci.copyParameterNameSpace( copyfromid_	integer )
+	TO wdb_admin;
+
+ 									  
+ 									  
 CREATE OR REPLACE FUNCTION
 wci.setConfiguration( name_				varchar(80),
 				  	  code_				varchar(80),
