@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------
 
 INSTALL_SOURCES =		install/install_database.in.sh \
+						install/upgrade_database.in.sh \
 						install/uninstall_database.in.sh
 					
 NOINSTALL_SOURCES = 	install/move_database.in.sh
