@@ -31,24 +31,14 @@ case "$1" in
     purge)
 	rm -f /etc/wdb.conf
 	if [ -n "$DB_USER" ]; then
-	    deluser --remove-home $DB_USER >> /dev/null || true
-	    delgroup --only-if-empty $DB_USER >> /dev/null || true
+		echo 'User:$DB_USER is not purged by package. If this user was created by'
+		echo 'the installation, he must be removed manually.'
 	fi
-	#su postgres -c "for U in wcitestwriter wcitest gribtest cleantest kvalobsload gribload wdb_test wdb_kvalobs wdb_grib wdb_read wdb_clean wdb_write wdb_admin; do dropuser $U; done" || true
     ;;
 
     upgrade)
 	# Called on old postrm
-    	# By this time, all sql files should have been overwritten by the new 
-	# version's, so this should be ok (even if this is called from the old 
-	# postrm script). 
-	su $DB_USER -c "/usr/lib/wdb/upgrade_database -d $DB_NAME"
-
-	# Extra sanity check after upgrade
-	INSTALLED_VERSION=`su postgres -c "psql $DB_NAME -tc 'SELECT wci.version()' | cut -sd\  -f3"`
-	NEW_VERSION=`echo $2 | sed s/-.*//`
-	test $INSTALLED_VERSION = $NEW_VERSION
-	# Fail goes to new-postrm: failed-upgrade
+	# Nothing to do here; upgrading is handled by the install script
     ;;
      
     failed-upgrade)

@@ -77,7 +77,7 @@ install: build
 
 	for TASK in install upgrade; do \
 		mkdir -p $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK; \
-		/bin/echo -e "#!/bin/sh\nsu postgres -c /usr/lib/wdb/$${TASK}_database" > $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK/pgsql; \
+		/bin/echo -e "#!/bin/sh\nsu postgres -c /usr/lib/wdb/install_database" > $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK/pgsql; \
 		chmod 700 $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK/pgsql; \
 	done
 

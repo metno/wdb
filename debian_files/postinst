@@ -35,6 +35,8 @@ case "$1" in
 		    # Remove any old crontab entries if this account have had any before
 		    su $DB_USER -c "crontab -r" 2> /dev/null || true
 		fi
+		mkdir -p /home/$DB_USER
+		chown $DB_USER:$DB_USER /home/$DB_USER
 		echo 'PATH=$PATH:/usr/lib/wdb/' >> /home/$DB_USER/.bashrc
 	
 		# Generate config file
