@@ -1,38 +1,44 @@
-wdb (0.9.8-1) lucid; urgency=low
+wdb (0.9.8-1) lucid; urgency=high
 
-  * Metadata package broken out of wdb. New metadata nomenclature.
+  * WDB versions should now be able to be upgraded between versions.
 
- -- Michael Omotayo Akinde <michaeloa@pc2506.pc.met.no>  Mon, 17 Jan 2011 12:00:00 +0000
+  * New metadata format implemented in WDB.
+    The metadata format is now based around names that can be automatically
+    converted to CF-metadata names.
+
+  * Met.no specific metadata is now located in the metno-wdb-metadata package.
+
+ -- Michael Omotayo Akinde <michael.akinde@met.no>  Mon, 17 Jan 2011 12:00:00 +0000
 
 wdb (0.9.7-1) hardy; urgency=low
 
   * Metadata updates for wdb/felt data and new EC. 
 
- -- Michael Omotayo Akinde <michaeloa@pc2506.pc.met.no>  Mon, 07 Jun 2010 10:45:30 +0200
+ -- Michael Omotayo Akinde <michael.akinde@met.no>  Mon, 07 Jun 2010 10:45:30 +0200
 
 wdb (0.9.6-7) hardy; urgency=low
 
   * debian updates (again)
 
- -- Vegard B�nes <vegardb@met.no>  Wed, 24 Feb 2010 13:25:38 +0000
+ -- Vegard Bønes <vegardb@met.no>  Wed, 24 Feb 2010 13:25:38 +0000
 
 wdb (0.9.6-6) hardy; urgency=low
 
   * debian updates (again)
 
- -- Vegard B�nes <vegardb@met.no>  Tue, 23 Feb 2010 11:44:42 +0000
+ -- Vegard Bønes <vegardb@met.no>  Tue, 23 Feb 2010 11:44:42 +0000
 
 wdb (0.9.6-5) hardy; urgency=low
 
   * debian updates
 
- -- Vegard B�nes <vegardb@met.no>  Mon, 22 Feb 2010 16:30:29 +0000
+ -- Vegard Bønes <vegardb@met.no>  Mon, 22 Feb 2010 16:30:29 +0000
 
 wdb (0.9.6-4) hardy; urgency=low
 
   * final build
 
- -- Vegard B�nes <vegardb@met.no>  Fri, 05 Feb 2010 14:14:35 +0000
+ -- Vegard Bønes <vegardb@met.no>  Fri, 05 Feb 2010 14:14:35 +0000
 
 wdb (0.9.6-1) hardy; urgency=low
 
@@ -44,19 +50,19 @@ wdb (0.9.4-2) hardy; urgency=low
 
   * bugfixes
 
- -- Vegard B�nes <vegardb@met.no>  Tue, 01 Sep 2009 12:41:07 +0000
+ -- Vegard Bønes <vegardb@met.no>  Tue, 01 Sep 2009 12:41:07 +0000
 
 wdb (0.9.4-1) hardy; urgency=low
 
   * new upstream release
 
- -- Vegard B�nes <vegard.bones@met.no>  Thu, 27 Aug 2009 09:38:21 +0000
+ -- Vegard Bønes <vegard.bones@met.no>  Thu, 27 Aug 2009 09:38:21 +0000
 
 wdb (0.9.1-1) hardy; urgency=low
 
   * New upstream release 
 
- -- Vegard B�nes <vegardb@met.no>  Tue, 26 May 2009 12:16:41 +0000
+ -- Vegard Bønes <vegardb@met.no>  Tue, 26 May 2009 12:16:41 +0000
 
 wdb (0.9.0-1) hardy; urgency=low
 
@@ -68,7 +74,7 @@ wdb (0.8.0-1) hardy; urgency=low
 
   * New upstream release
 
- -- Vegard B�nes <vegardb@met.no>  Fri, 20 Mar 2009 11:16:40 +0000
+ -- Vegard Bønes <vegardb@met.no>  Fri, 20 Mar 2009 11:16:40 +0000
 
 wdb (0.7.8-5) unstable; urgency=low
 
@@ -214,4 +220,4 @@ wdb (0.6rc2-1) unstable; urgency=low
   * Initial release 
 
  -- Vegard Bønes <vegard.bones@met.no>  Wed,  9 Jan 2008 13:03:52 +0100
-
+ 

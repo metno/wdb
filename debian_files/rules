@@ -43,7 +43,6 @@ build: build-stamp
 
 build-stamp:  config.status
 	dh_testdir
-
 	$(MAKE)
 	#docbook-to-man debian/wdb.sgml > wdb.1
 
@@ -54,8 +53,6 @@ clean:
 	dh_testroot
 	rm -f build-stamp 
 	#rm -rf grib_api-1.3.0
-
-
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) distclean	
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
@@ -64,9 +61,8 @@ endif
 ifneq "$(wildcard /usr/share/misc/config.guess)" ""
 	cp -f /usr/share/misc/config.guess config.guess
 endif
-
-
 	dh_clean 
+
 
 install: build
 	dh_testdir
@@ -75,19 +71,11 @@ install: build
 	dh_installdirs
 	$(MAKE) DESTDIR=$(CURDIR)/debian/wdb install
 
-	for TASK in install upgrade; do \
-		mkdir -p $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK; \
-		/bin/echo -e "#!/bin/sh\nsu postgres -c /usr/lib/wdb/install_database" > $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK/pgsql; \
-		chmod 700 $(CURDIR)/debian/wdb/usr/share/dbconfig-common/scripts/wdb/$$TASK/pgsql; \
-	done
-
-
-
-
 
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
+
 
 # Build architecture-dependent files here.
 binary-arch: build install

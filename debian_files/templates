@@ -1,11 +1,46 @@
-Template: wdb/user_account
-Type: text
-Default: wdb
-_Description: Wdb administrator account
- A user account for the wdb administrator
-
 Template: wdb/database_name
-Type: text
+Type: string
 Default: wdb
-_Description: Wdb database name
- The name to use on the wdb database
+Description: The wdb database name:
+ The name to use for the wdb database. Note that this debian package only
+ supports having one wdb installation per server. If you wish to install 
+ multiple databases on a single server, you will have to install them 
+ manually.
+
+Template: wdb/database_admin
+Type: string
+Default: wdb
+Description: The wdb administrator account:
+ This is the username for the administrator of the WDB database. This 
+ username should preferably exist as a user on the server with a home 
+ directory under /home. If the user does not exist, he will be created
+ using adduser. If a database user with this id does not exist, a 
+ database user with super user rights in Postgres will be created for
+ the username.
+
+Template: wdb/database_purge
+Type: boolean
+Description: Do you want to purge the database?
+ Purge the database if you want to remove the data in the database along
+ with the wdb package. Please note that all data in the database will be 
+ lost.
+ .
+ If you do not purge the database, the postgres database will be left as
+ is, and all data, data files and configuration files will be left on the
+ server. A subsequent reinstallation of the wdb package may then be able to
+ upgrade the database files without deleting the data in the database. To 
+ remove data at a later time, you should reinstall the database and purge
+ it using debian. Removing a database manually is not recommended.
+
+Template: wdb/database_removeadmin
+Type: boolean
+Default: false
+Description: Do you want to remove the database administrator's user account?
+ If the database administrator's user account did not exist when the wdb
+ package was created, it will have been created during installation. If
+ that was the case, you should let debian remove the administrator account
+ now.
+ .
+ If your server uses some form of centralized user management (NIS or LDAP
+ for instance), you should not purge the user as the operation will very
+ likely fail and leave your system in an inconsistent state. 

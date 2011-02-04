@@ -41,7 +41,7 @@ Options:
 -d NAME, --database=NAME    
                    uninstall database <NAME>
 -u USER, --user=USER
-                   uninstall as user <NAME>
+                   uninstall as user <USER>
 -p PORT, --port=PORT
                    uninstall on port <PORT>
 --help             display this help and exit
@@ -130,19 +130,53 @@ echo "---- wdb database uninstall ----"
 # fi
 # echo "yes"
 
+# Verify that Postmaster is running
+echo -n "checking that postgres is running... "
+PID=`ps aux | grep postgres | grep -v grep`
+if test -n "$PID"; then
+    echo "yes"
+else
+    echo "no"
+    echo "Error: could not find postgres. Check that your postgres installation is set up correctly and that postgres is running"
+    exit 1
+fi
+
 # Get database name
 WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
 export $WDB_NAME
 
+
+# Get database name
+WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
+export $WDB_NAME
+
+# Check that the database exists
+echo -n "checking whether database $WDB_NAME exists... "
+# DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
+# grab first line (name) | trim whitesoace
+DB_CHECK=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
+# Test whether database exists
+# Note: as the list above only grabs the first tablename matching 
+# the WDB_NAME pattern this may fail if there is a database with a
+# similar name present in the DB
+if test "$DB_CHECK" = "$WDB_NAME"; then 
+    echo "yes"
+    DATABASE_EXISTS="yes"
+else
+    echo "no"
+    DATABASE_EXISTS="no"
+fi
+
 # Delete the field data, so it won't remain in the postgresql database folder
+echo -n "deleting data fields... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "DELETE FROM __WDB_SCHEMA__.gridvalue" >> /dev/null
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "SELECT __WDB_SCHEMA__.vacuum_file_blob()" >> /dev/null
-
+echo "done"
 # Drop the wdb database
 echo -n "dropping database... "
 if ! dropdb -p $WDB_INSTALL_PORT $WDB_NAME; then
     echo "No database found - skipping database uninstall"
-    exit 1
+	exit 1
 fi
 echo "done"
 
@@ -158,5 +192,6 @@ echo "done"
 # dropuser -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT wdb_grib -q
 # dropuser -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT wdb_admin -q
 # echo "done"
+
 echo "---- wdb database uninstall completed ----"
 exit 0

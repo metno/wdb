@@ -13,7 +13,14 @@ Nonstandard installation
 ------------------------
 
 In order to get a basic wdb database up and running, just install the
-package, and you should be ok. If you want to use a specific setup,
+package, and you should be ok. The default database name/database admin
+setup for the system is wdb/wdb; if you wish to use an alternative name
+or administrator, you can specify these by setting the priority level
+of the configuration questions to medium (see dpkg-reconfigure).
+
+
+
+If you want to use a specific setup,
 such as a nonstandard database name, or a nonstandard administrator
 user name, you are ok, too. In this case you may use dbconfig-common,
 through debian's regular configuration system (dpkg-preconfigure).
