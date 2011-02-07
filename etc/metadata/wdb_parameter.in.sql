@@ -14,7 +14,6 @@ SELECT wci.addparameter( 'convective precipitation amount', null, null, null, nu
 SELECT wci.addparameter( 'convective snowfall amount', null, null, null, null, null, null, 'kg/m2' );
 SELECT wci.addparameter( 'geopotential', null, null, null, null, null, null, 'm2/s2' );
 SELECT wci.addparameter( 'geopotential height', null, null, null, null, null, null, 'm' );
-SELECT wci.addparameter( 'high cloud area fraction', null, null, null, null, null, null, '%' );
 SELECT wci.addparameter( 'lagrangian tendency of surface air pressure', null, null, null, null, null, null, 'Pa/s' );
 SELECT wci.addparameter( 'land area fraction', null, null, null, null, null, null, '%' );
 SELECT wci.addparameter( 'large scale precipitation amount', null, null, null, null, null, null, 'kg/m2' );
@@ -28,8 +27,6 @@ SELECT wci.addparameter( 'lwe thickness of large scale snowfall amount', null, n
 SELECT wci.addparameter( 'lwe thickness of precipitation amount', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'lwe thickness of snowfall amount', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'lwe thickness of surface snow amount', null, null, null, null, null, null, 'm' );
-SELECT wci.addparameter( 'low cloud area fraction', null, null, null, null, null, null, '%' );
-SELECT wci.addparameter( 'medium cloud area fraction', null, null, null, null, null, null, '%' );
 SELECT wci.addparameter( 'moisture content of soil layer', null, null, null, null, null, null, 'kg/m2' );
 SELECT wci.addparameter( 'precipitation amount', null, null, null, null, null, null, 'kg/m2' );
 SELECT wci.addparameter( 'snowfall amount', null, null, null, null, null, null, 'kg/m2' );
