@@ -21,7 +21,6 @@
 #WDB_TMP_DIR=__WDB_BUILDDIR__/var/tmp
 #mkdir -p $WDB_TMP_DIR
 TEST_WRITE=./testWrite
-LOAD_XML_FILE=./xmlLoad
 
 #
 # Copy across test data
@@ -59,9 +58,9 @@ $TEST_WRITE --dataprovider 'test wci 7' --placename 'test point 1' --reftime '20
 # G1-G4, G7, G8, G17, G31 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air pressure'
 # G5 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'tendency of air pressure' -P 168,156=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'tendency of surface air pressure' -P 168,156=2
 # G6 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'equivalent thickness at stp of atmosphere o3 content' -P280,135=2 -P90,42=3 -P233,17=4 -P233,377=5 -P232,374=6
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snowfall amount' -P280,135=2 -P90,42=3 -P233,17=4 -P233,377=5 -P232,374=6
 # G9 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2
 # G11 Test
@@ -69,11 +68,11 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '
 # G20 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'min air temperature'  -P150,0=2
 # G21 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'wind speed'  -P150,0=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'altitude'  -P150,0=2
 # G22 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'eastward wind' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'x wind' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
 # G23, G24 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'northward wind' -P 175,0=2 -P 175,1=2 -P 176,0=3 -P 176,1=3
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'y wind' -P 175,0=2 -P 175,1=2 -P 176,0=3 -P 176,1=3
 # G25 Test
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 7' --placename 'test point 2' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
@@ -83,7 +82,7 @@ $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 5' --reftime '20
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 6' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 7' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 # G30 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'surface snow thickness' --initCoord
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'surface roughness length' --initCoord
 
 
 # ReferenceTime
@@ -99,13 +98,13 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --refti
 
 # Parameter
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'air pressure'
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'tendency of air pressure'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'tendency of surface air pressure'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'air temperature'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'max air temperature'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'min air temperature'
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'wind speed'
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'eastward wind'
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'northward wind'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'altitude'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'x wind'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-27 06:00:00+00' --valueparameter 'y wind'
 
 # Level
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-28 06:00:00+00' --levelparameter 'height above ground' --levelfrom 0 --levelto 0
@@ -134,11 +133,11 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '20
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 # V6
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'equivalent thickness at stp of atmosphere o3 content' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00'
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
-$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'equivalent thickness at stp of atmosphere o3 content' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2004-12-29 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
@@ -159,8 +158,8 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --refti
 
 # Surround Interpolation
 # G01 Test
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'eastward wind' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
-$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'northward wind' -P 119,99=2 -P 119,100=2 -P 119,101=2 -P 119,102=2 -P 120,99=2 -P 120,100=2 -P 120,101=2 -P 120,102=2 -P 121,99=2 -P 121,100=2 -P 121,101=2 -P 121,102=2 -P 122,99=2 -P 122,100=2 -P 122,101=2 -P 122,102=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'x wind' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'y wind' -P 119,99=2 -P 119,100=2 -P 119,101=2 -P 119,102=2 -P 120,99=2 -P 120,100=2 -P 120,101=2 -P 120,102=2 -P 121,99=2 -P 121,100=2 -P 121,101=2 -P 121,102=2 -P 122,99=2 -P 122,100=2 -P 122,101=2 -P 122,102=2
 
 
 #wciOutputTest

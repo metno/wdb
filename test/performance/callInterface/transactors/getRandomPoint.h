@@ -166,7 +166,7 @@ public:
 				 << refTime << ", "
 				 << valTime << ", "
 				 << randomParameter() << ", "
-				 << "'exact 0 height above ground', "
+				 << "'exact 0 height', "
 				 << "ARRAY[-1], "
 				 << "NULL::wci.returnFloat )";
     	const std::string query = queryStr.str();
@@ -243,7 +243,7 @@ public:
 				 << refTime << ", "
 				 << valTime << ", "
 				 << randomParameter() << ", "
-				 << "'exact 0 height above ground', "
+				 << "'exact 0 height', "
 				 << "ARRAY[-1], "
 				 << "NULL::wci.returnFloat )";
     	const std::string query = queryStr.str();

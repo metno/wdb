@@ -34,8 +34,8 @@ select wci.adddataprovider( 'test gribload', 'computer system', 'grid', '1 day',
 select wci.adddataprovidertogroup( 'test gribload', 'test group');
 select wci.adddataprovider( 'test feltload', 'computer system', 'grid', '1 day', 'Test data provider for WDB tests' );
 select wci.adddataprovidertogroup( 'test feltload', 'test group');
-select wci.adddataprovider( 'test xmlload', 'computer system', 'point', '1 day', 'Test data provider for WDB tests' );
-select wci.adddataprovidertogroup( 'test xmlload', 'test group');
+select wci.adddataprovider( 'test moxload', 'computer system', 'point', '1 day', 'Test data provider for WDB tests' );
+select wci.adddataprovidertogroup( 'test moxload', 'test group');
 
 --- WCI users
 select wci.addwciuser('wcitestwriter');

@@ -361,10 +361,14 @@ wci.addparameter( cfstandardname_		text,
 RETURNS void AS
 $BODY$
 DECLARE	
-	parameterid_ int;
+	parameterid_ 	int;
+	namespace_   	int;
+	canonicname_    text;
+	parametername_  text;
 BEGIN
-	-- WCI User Check
-	PERFORM __WCI_SCHEMA__.getSessionData();
+	-- Get namespace
+	SELECT parameternamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
 	-- No cfstandardname
 	IF cfstandardname_ IS NULL THEN
 		RAISE EXCEPTION 'The CF standard name must be non-null';
@@ -376,12 +380,18 @@ BEGIN
 		IF NOT FOUND THEN
 			RAISE EXCEPTION 'Could not identify the CF surface identified %', cfsurface_;
 		END IF;		
-	END IF;			
+	END IF;
+	-- NAME
+	SELECT getcanonicalparametername INTO canonicname_
+	FROM __WCI_SCHEMA__.getCanonicalParameterName( cfstandardname_, cfsurface_, cfcomponent_, 
+		cfmedium_, cfprocess_, cfcondition_, cfmethods_ );
+	SELECT getparametername INTO parametername_
+	FROM __WCI_SCHEMA__.getParameterName( cfstandardname_, cfsurface_, cfcomponent_, 
+		cfmedium_, cfprocess_, cfcondition_, cfmethods_ );
 	-- Check for Duplicate
 	SELECT parameterid INTO parameterid_
 	FROM   __WCI_SCHEMA__.parameter
-	WHERE  parametername::text = __WCI_SCHEMA__.getCanonicalParameterName( cfstandardname_, cfsurface_, cfcomponent_, 
-			cfmedium_, cfprocess_, cfcondition_, cfmethods_ );
+	WHERE  parametername::text = canonicname_;
 	-- Insert
 	IF NOT FOUND THEN
 		INSERT INTO __WDB_SCHEMA__.parameter
@@ -413,6 +423,10 @@ BEGIN
 			 cfmethods = cfmethods_,
 			 unitname = unitname_ 
 		WHERE parameterid = parameterid_;
+	END IF;
+	-- Namespace
+	IF ( namespace_ <> 0 ) THEN
+		PERFORM wci.setParameterName( canonicname_, parametername_ );
 	END IF;
 	RETURN;
 END;

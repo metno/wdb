@@ -208,7 +208,7 @@ public:
     	queryStr << refTime << ", "; // Reference Time
     	queryStr << valTime << ", "; // Valid Time
     	queryStr << "ARRAY['air temperature', 'air pressure', 'air pressure at sea level',"
-    			<<  "'precipitation amount', 'wind speed', 'snow amount' ], "; // Parameter
+    			<<  "'precipitation amount', 'altitude', 'snow amount' ], "; // Parameter
     	queryStr << "NULL, "; // LevelSpec
     	queryStr << "ARRAY[0], "; // Dataversion
     	queryStr << "NULL::wci.returngid	)"; // Return Type

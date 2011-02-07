@@ -81,7 +81,7 @@ public:
 		using namespace pqxx;
 		T.exec("SELECT wci.begin('" + wciUser_ + "')");
     	pqxx::result r1 = T.exec( "SELECT count(numberoftuples) FROM wci.browse( NULL::wci.browsedataprovider )" );
-		T.exec( "SELECT testclean()" );
+		T.exec( "SELECT test.cleanTestData()" );
     	pqxx::result r2 = T.exec( "SELECT count(numberoftuples) FROM wci.browse( NULL::wci.browsedataprovider )" );
     	int c1, c2;
     	r1.at(0).at(0).to( c1 );

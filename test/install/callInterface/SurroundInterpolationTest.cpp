@@ -337,15 +337,15 @@ map<int, string> getSpecFromParamNumber()
     map<int, string> ret;
 
     ret[ 1 ] = "air pressure";
-    ret[ 3 ] = "tendency of air pressure";
-    ret[ 10 ] = "equivalent thickness at stp of atmosphere o3 content";
+    ret[ 3 ] = "tendency of surface air pressure";
+    ret[ 10 ] = "snowfall amount";
     ret[ 11 ] = "air temperature";
     ret[ 15 ] = "max air temperature";
     ret[ 16 ] = "min air temperature";
-    ret[ 32 ] = "wind speed";
-    ret[ 33 ] = "eastward wind";
-    ret[ 34 ] = "northward wind";
-    ret[ 66 ] = "surface snow thickness";
+    ret[ 32 ] = "altitude";
+    ret[ 33 ] = "x wind";
+    ret[ 34 ] = "y wind";
+    ret[ 66 ] = "surface roughness length";
 
     return ret;
 }

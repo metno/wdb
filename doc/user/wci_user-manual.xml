@@ -464,7 +464,7 @@ interpolation levelFrom TO levelTo leveparametername
 			<para>Examples of level designations are given below:</para>
 			
 			<programlisting>
-exact 2 height above ground distance 
+exact 2 height 
 		</programlisting>
 			
 			<programlisting>
@@ -626,7 +626,7 @@ FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
 				'inside 1980-01-01 12:00:00Z TO 1980-01-01 18:00:00Z', -- Reference time 
 				NULL, -- Valid Time 
 				ARRAY['air temperature'],  -- Value Parameter
-				'2 height above ground distance',  -- Level
+				'2 height',  -- Level
 				ARRAY[-1], -- Data version
 				NULL::wci.returnfloat -- Return type
 			  )
@@ -680,7 +680,7 @@ FROM wci.read ( ARRAY['hirlam norway'],    -- Data provider name
 				'1980-01-01 12:00:00Z',    -- Reference time 
 				NULL,                      -- Valid Time (returns all forecasts) 
 				ARRAY['air temperature'],  -- Value Parameter
-				'2 height above ground distance',  -- Level
+				'2 height',  -- Level
 				ARRAY[-1],                 -- Data version
 				NULL::wci.returngid        -- Return type
 			  )
@@ -1435,7 +1435,7 @@ wci.addlevelparameterusage
 				
 				<programlisting>
 SELECT wci.addlevelparameterusage ( 'height above ground', 
-			'Denotes the height above ground level of the value-' );
+			'Denotes the height level of the value-' );
 </programlisting>
 																
 			</sect2>

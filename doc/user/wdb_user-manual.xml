@@ -400,7 +400,7 @@ mywdb=# select *
 		'1980-01-01 12:00:00',  -- Reference time
 		'inside 1980-01-02 00:00:00 TO 1980-01-03 00:00:00', -- Valid time
 		ARRAY['air temperature'], -- Value Parameter
-		'2 height above ground distance', -- Level
+		'2 height', -- Level
 		ARRAY[-1], -- Data version
 		NULL::returnFloat   -- Return type
 	);

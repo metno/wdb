@@ -23,8 +23,8 @@ void LevelParameterTypeTest::tearDown()
 
 void LevelParameterTypeTest::testNormal1()
 {
-	LevelParameterType p("height above ground distance");
-	CPPUNIT_ASSERT_EQUAL( string("height above ground distance"), p.str() );
+	LevelParameterType p("height above ground");
+	CPPUNIT_ASSERT_EQUAL( string("height above ground"), p.str() );
 	CPPUNIT_ASSERT( !p.isPattern() );
 }
 
@@ -51,8 +51,8 @@ void LevelParameterTypeTest::testWildCard2()
 
 void LevelParameterTypeTest::testWildCard2Verbose()
 {
-	LevelParameterType p("height above ground %");
-	CPPUNIT_ASSERT_EQUAL( string("height above ground %"), p.str() );
+	LevelParameterType p("height %");
+	CPPUNIT_ASSERT_EQUAL( string("height %"), p.str() );
 	CPPUNIT_ASSERT( p.isPattern() );
 }
 

@@ -141,6 +141,13 @@ $BODY$
 					   		  WHERE	 a.dataprovidername = 'test group'
 					   		    AND	 a.dataprovidernameleftset <= b.dataprovidernameleftset
 					   		    AND  a.dataprovidernamerightset >= b.dataprovidernamerightset);    
+	DELETE FROM __WDB_SCHEMA__.floatvalue 
+	WHERE dataproviderid IN ( SELECT b.dataproviderid
+					   		  FROM   __WCI_SCHEMA__.dataprovider_mv a,
+					   		         __WCI_SCHEMA__.dataprovider_mv b
+					   		  WHERE	 a.dataprovidername = 'test group'
+					   		    AND	 a.dataprovidernameleftset <= b.dataprovidernameleftset
+					   		    AND  a.dataprovidernamerightset >= b.dataprovidernamerightset);    
 $BODY$
 SECURITY DEFINER
 LANGUAGE 'sql' VOLATILE;

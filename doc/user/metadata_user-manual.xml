@@ -143,7 +143,7 @@
 					<para>Value Parameter: the parameter which describes value of the data item (e.g., air temperature)</para>
 				</listitem>
 				<listitem>
-					<para>Level Parameter: the parameter which describes the value of the level information (e.g., height above ground)</para>
+					<para>Level Parameter: the parameter which describes the value of the level information (e.g., height)</para>
 				</listitem>
 				<listitem>
 					<para>Data Version: the version number of the data item</para>

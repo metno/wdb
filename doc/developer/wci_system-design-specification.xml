@@ -252,7 +252,7 @@
 				code ('exact', 'above', 'below', 'any') that modifies the
 				level.</para>
 			
-			<para>Example Level Specification: '0.0 TO 10.0, height above ground distance'</para>
+			<para>Example Level Specification: '0.0 TO 10.0, height'</para>
 			
 		</sect2>
 		

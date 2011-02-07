@@ -52,20 +52,3 @@ BEGIN
 END;
 $$ 
 LANGUAGE plpgsql;
-
-/**
- * Cleans up the database of test data. 
- * Deletes all entries of dataproviders < 100.
- */
-CREATE OR REPLACE FUNCTION testclean() RETURNS void AS 
-$$
-BEGIN
-	DELETE FROM __WDB_SCHEMA__.gridvalue 
-	WHERE dataproviderid < 100;
-	DELETE FROM __WDB_SCHEMA__.floatvalue 
-	WHERE dataproviderid < 100;
-	--PERFORM __WDB_SCHEMA__.vacuum_file_blob();
-	--PERFORM __WDB_SCHEMA__.remove_unreferenced_files();
-END;
-$$ 
-LANGUAGE plpgsql;

@@ -44,7 +44,7 @@ for dd in $days
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'max air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'min air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'wind speed' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'altitude' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'surface snow amount' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
     done
   done
@@ -75,10 +75,10 @@ for dd in $days
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'max air temperature' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'min air temperature' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'wind speed' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'altitude' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
 	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'precipitation amount' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'eastward wind' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'northward wind' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'x wind' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
+	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'y wind' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00	  
 	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'air pressure' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'air pressure at sea level' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 
 	  $TEST_WRITE --dataprovider 'test wci 1' --placename 'proff grid' --reftime 1980-02-"$dd"T00:00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-02-"$vd"T"$vh":00:00+00 --validtimeto 1980-02-"$vd"T"$vh":00:00+00 

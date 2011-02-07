@@ -125,7 +125,7 @@ void wciWriteTest::testCanInsert3()
 						  "'hirlam 10 grid'::text,"
 						  "'2006-04-21 07:00:00+00',"
 						  "'2006-04-01 06:00:00+00',"
-						  "ARRAY['virtual temperature'], "
+						  "ARRAY['thunderstorm probability'], "
 						  "'0 TO 100 height above ground', "
 						  "NULL,"
 						  "NULL::wci.returngid)";
@@ -140,7 +140,7 @@ void wciWriteTest::testCanInsert3()
 						 "'2006-04-21 07:00:00+00', "
 						 "'2006-04-01 06:00:00+00', "
 						 "'2006-04-01 06:00:00+00', "
-		 				 "'virtual temperature', "
+		 				 "'thunderstorm probability', "
 						 "'height above ground', 0, 100, 0, 0 )";
 	t->exec(write);
 

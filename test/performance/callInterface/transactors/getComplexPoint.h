@@ -178,7 +178,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << ", "
 				  << valTime << ", "
-				  << "ARRAY['air temperature', 'wind speed'], "
+				  << "ARRAY['air temperature', 'altitude'], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";
@@ -256,7 +256,7 @@ public:
 				  << complexPoint() << ", "
 				  << refTime << ", "
 				  << valTime << ", "
-				  << "ARRAY['eastward wind', 'northward wind' ], "
+				  << "ARRAY['x wind', 'y wind' ], "
 				  << "NULL, "
 				  << "ARRAY[-1], "
 				  << "NULL::wci.returnFloat )";

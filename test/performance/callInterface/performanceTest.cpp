@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
     		C.prepare("ReadRandom1",
     				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
     				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
-    				  "'exact 0 height above ground', "
+    				  "'exact 0 height', "
     				  "ARRAY[-1], NULL::wci.returnFloat	)" )
     				  ("varchar", treat_string )
 					  ("varchar", treat_string )
