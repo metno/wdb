@@ -122,16 +122,25 @@ bool getNextRowFromGridTable(struct ReadStore * store)
 	else
 		store->isNull[WCI_READ_VALUE] = false;
 
-	const text * location = getWktFromCache(ret->location);
-	if ( ! location )
+	if ( ret->location ) // should always be true, but just in case..
 	{
-		char * wkt = GEOSGeomToWKT(ret->location);
-		location = DatumGetTextP(DirectFunctionCall1(textin, CStringGetDatum(wkt)));
-		free(wkt);
-		setWktCache(ret->location, location);
+		const text * location = getWktFromCache(ret->location);
+		if ( ! location )
+		{
+			char * wkt = GEOSGeomToWKT(ret->location);
+			location = DatumGetTextP(DirectFunctionCall1(textin, CStringGetDatum(wkt)));
+			free(wkt);
+			setWktCache(ret->location, location);
+		}
+		store->values[WCI_READ_PLACEGEOMETRY] = PointerGetDatum(location);
+		store->isNull[WCI_READ_PLACEGEOMETRY] = false;
 	}
-	store->values[WCI_READ_PLACEGEOMETRY] = PointerGetDatum(location);
-	store->isNull[WCI_READ_PLACEGEOMETRY] = false;
+	else
+	{
+		elog(WARNING, "No location in return value");
+		store->values[WCI_READ_PLACEGEOMETRY] = PointerGetDatum(NULL);
+		store->isNull[WCI_READ_PLACEGEOMETRY] = true;
+	}
 
 	return true;
 }
