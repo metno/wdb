@@ -36,7 +36,7 @@ void GridPointDataDestroy(struct GridPointData * toDestroy)
 
 struct GridPointDataList * GridPointDataListNew(size_t size)
 {
-	struct GridPointDataList * dl = (struct GridPointDataList *) palloc(sizeof(struct GridPointDataList) * size);
+	struct GridPointDataList * dl = (struct GridPointDataList *) palloc(sizeof(struct GridPointDataList));
 	dl->count = size;
 	if ( size != 0)
 		dl->data = palloc(sizeof(struct GridPointData) * size);
