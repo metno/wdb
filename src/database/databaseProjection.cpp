@@ -20,7 +20,7 @@ Datum createGeometryText(PG_FUNCTION_ARGS)
 	const double startY = PG_GETARG_FLOAT8(5);
 	const text * projDef = PG_GETARG_TEXT_P(6);
 
-	std::string projDefinition(VARDATA(projDef), VARDATA(projDef) + VARSIZE(projDef) +1 -VARHDRSZ);
+	std::string projDefinition((const char*) VARDATA(projDef), (const char*) projDef + VARSIZE(projDef));
 
 	std::string geoText;
 	try
