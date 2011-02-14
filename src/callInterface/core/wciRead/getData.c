@@ -68,15 +68,10 @@ static Datum getLocationString(const char * locationString, HeapTuple currentTup
 		return SPI_getbinval(currentTuple, tupdesc, 3, isNull); // text
 }
 
-static void getNextSetOfValues(struct ReadStore * store)
+static void getCommonValues(struct ReadStore * store)
 {
-	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex ++];
+	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex];
 	TupleDesc tupdesc = store->tuples->tupdesc;
-
-	long long placeid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 21, NULL));
-	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, NULL));
-
-	store->pointData = getValues(placeid, dataid, store);
 
 	store->values[WCI_READ_DATAPROVIDERNAME] = SPI_getbinval(currentTuple, tupdesc, 2, & store->isNull[WCI_READ_DATAPROVIDERNAME]); // varchar( 255 )
 	store->values[WCI_READ_PLACENAME] = getLocationString(store->locationString, currentTuple, tupdesc, store->isNull + WCI_READ_PLACENAME);
@@ -97,6 +92,22 @@ static void getNextSetOfValues(struct ReadStore * store)
 	store->values[WCI_READ_VALUEID] = SPI_getbinval(currentTuple, tupdesc, 19, store->isNull + WCI_READ_VALUEID); // bigint
 	store->values[WCI_READ_VALUETYPE] = SPI_getbinval(currentTuple, tupdesc, 20, store->isNull + WCI_READ_VALUETYPE); // varchar( 80 )
 }
+
+static void getNextSetOfValues(struct ReadStore * store)
+{
+	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex];
+	TupleDesc tupdesc = store->tuples->tupdesc;
+
+	long long placeid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 21, NULL));
+	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, NULL));
+
+	store->pointData = getValues(placeid, dataid, store);
+
+	getCommonValues(store);
+
+	++ store->currentTupleIndex;
+}
+
 
 bool getNextRowFromGridTable(struct ReadStore * store)
 {
@@ -141,6 +152,23 @@ bool getNextRowFromGridTable(struct ReadStore * store)
 		store->values[WCI_READ_PLACEGEOMETRY] = PointerGetDatum(NULL);
 		store->isNull[WCI_READ_PLACEGEOMETRY] = true;
 	}
+
+	return true;
+}
+
+bool getNextRowFromFloatTable(struct ReadStore * store)
+{
+	if ( store->currentTupleIndex >= store->tupleCount )
+		return false;
+
+
+	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex];
+	TupleDesc tupdesc = store->tuples->tupdesc;
+	getCommonValues(store);
+	store->values[WCI_READ_VALUE] = SPI_getbinval(currentTuple, tupdesc, 1, & store->isNull[WCI_READ_VALUE]); // float
+	store->values[WCI_READ_PLACEGEOMETRY] = SPI_getbinval(currentTuple, tupdesc, 4, & store->isNull[WCI_READ_PLACEGEOMETRY]); // float
+
+	++ store->currentTupleIndex;
 
 	return true;
 }

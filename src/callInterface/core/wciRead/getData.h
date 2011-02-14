@@ -53,6 +53,14 @@ bool getNextRowFromGridTable(struct ReadStore * store);
 
 
 /**
+ * Extract the next float value from the the query, placing it into the given
+ * ReadStore.
+ *
+ * @return true if there were more data to return, otherwise false.
+ */
+bool getNextRowFromFloatTable(struct ReadStore * store);
+
+/**
  * @}
  */
 

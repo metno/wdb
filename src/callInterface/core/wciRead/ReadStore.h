@@ -80,6 +80,11 @@ struct ReadStore
 };
 
 /**
+ * Initialize the given ReadStore, making it ready for processing float data
+ */
+void ReadStoreFloatReturnInit(struct ReadStore * out);
+
+/**
  * Initialize the given ReadStore with the given data
  */
 void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char * location);

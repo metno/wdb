@@ -98,6 +98,12 @@ void setReadStoreGeometry(struct ReadStore * out, SPITupleTable * tuples, const 
 	out->interpolationParameter = 1;
 }
 
+void ReadStoreFloatReturnInit(struct ReadStore * out)
+{
+	memset(out, 0, sizeof(struct ReadStore));
+	out->returnMode = ReturningFromFloatTable;
+}
+
 void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char * location)
 {
 	out->tuples = tuples;

@@ -73,9 +73,7 @@ static void runWciReadFloatQueryFloat(struct ReadStore * out, FunctionCallInfo f
 	}
 
 	out->tuples = SPI_tuptable;
-	out->currentTupleIndex = 0;
 	out->tupleCount = SPI_processed;
-	out->returnMode = ReturningFromFloatTable;
 }
 
 /**
@@ -134,6 +132,7 @@ PG_FUNCTION_INFO_V1(wciReadFloat);
 Datum wciReadFloat(PG_FUNCTION_ARGS)
 {
 	FuncCallContext * funcctx;
+	struct ReadStore * store = NULL;
 
 	if ( SRF_IS_FIRSTCALL() )
 	{
@@ -147,7 +146,8 @@ Datum wciReadFloat(PG_FUNCTION_ARGS)
 					"unable to connect to SPI procedure")));
 		}
 
-		struct ReadStore * store = (struct ReadStore *) palloc(sizeof(struct ReadStore));
+		store = (struct ReadStore *) palloc(sizeof(struct ReadStore));
+		ReadStoreFloatReturnInit(store);
 		funcctx->user_fctx = (void *) store;
 
 		runWciReadFloatQueryFloat(store, fcinfo);
@@ -168,20 +168,17 @@ Datum wciReadFloat(PG_FUNCTION_ARGS)
 	funcctx = SRF_PERCALL_SETUP();
 
 	// return another item:
-	struct ReadStore * store = (struct ReadStore *) funcctx->user_fctx;
+	store = (struct ReadStore *) funcctx->user_fctx;
 
 	if ( store->returnMode == ReturningFromFloatTable )
 	{
-		if ( store->currentTupleIndex < store->tupleCount )
+		if ( getNextRowFromFloatTable(store) )
 		{
-			SPITupleTable * tuples = store->tuples;
-
-			HeapTupleHeader ret = SPI_returntuple(tuples->vals[store->currentTupleIndex], tuples->tupdesc);
-
-			++ store->currentTupleIndex;
-
-			SRF_RETURN_NEXT(funcctx, PointerGetDatum(ret));
-			//store->tuples[store->currentTupleIndex];
+			MemoryContext oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+			HeapTuple tuple = heap_form_tuple(funcctx->tuple_desc, store->values, store->isNull);
+			Datum result = HeapTupleGetDatum(tuple);
+			MemoryContextSwitchTo(oldcontext);
+			SRF_RETURN_NEXT(funcctx, result);
 		}
 		else
 			runWciReadFloatQueryGrid(store, funcctx, fcinfo); // sets store->returnMode to ReturningFromGridTable
@@ -205,6 +202,7 @@ Datum wciReadFloat(PG_FUNCTION_ARGS)
 		SRF_RETURN_NEXT(funcctx, result);
 	}
 	// Never reached
+	elog(ERROR, "Code flow reached an unexpeced point: %s:%d", __FILE__, __LINE__);
 	SRF_RETURN_DONE(funcctx);
 }
 
