@@ -45,14 +45,14 @@ typedef boost::shared_ptr<bstream> bstream_p;
 typedef boost::filesystem::ifstream ibstream;
 typedef boost::shared_ptr<ibstream> ibstream_p;
 
-inline ibstream_p getBStream(long long id)
+inline ibstream_p getBStream(long long id, std::ios::openmode openmode = std::ios::in | std::ios::binary)
 {
 	boost::filesystem::path file = getFilePath(id);
 
 	if ( not boost::filesystem::exists(file) )
 		throw std::runtime_error("File does not exist");
 
-	return ibstream_p(new ibstream(file));
+	return ibstream_p(new ibstream(file, openmode));
 }
 
 }

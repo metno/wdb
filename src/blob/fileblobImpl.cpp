@@ -151,17 +151,17 @@ void readFile(FileId id, std::vector<char> & out)
 {
 	initializeFileStorage();
 
-	lo::ibstream_p f = lo::getBStream(id);
+	lo::ibstream_p f = lo::getBStream(id, std::ios::in | std::ios::binary | std::ios::ate);
+	if ( f->is_open() )
+	{
+		std::size_t size = f->tellg();
+		f->seekg(0, std::ios::beg);
 
-	char c;
-	while ( f->get(c) )
-		out.push_back(c);
-
-	// This gives too little data, for some reason
-	//std::copy(
-	//	std::istream_iterator<char>(* f),
-	//	std::istream_iterator<char>(),
-	//	std::back_inserter(out));
+		out.resize(size);
+		f->read(& out[0], size);
+	}
+	else
+		throw std::runtime_error("Unable to read file");
 }
 
 void cacheFile(FileId id)
