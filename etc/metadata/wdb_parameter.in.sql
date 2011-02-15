@@ -48,7 +48,7 @@ SELECT wci.addparameter( 'wind', null, 'y', null, null, null, null, 'm/s' );
 
 
 -- Level Parameters
-SELECT wci.addparameter( 'atmosphere sigma coordinate', null, null, null, null, null, null, 'm' );
+SELECT wci.addparameter( 'atmosphere sigma coordinate', null, null, null, null, null, null, 'none' );
 SELECT wci.addparameter( 'height above ground', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'height above reference ellipsoid', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'isobaric surface', null, null, null, null, null, null, 'Pa' );
