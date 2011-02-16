@@ -50,5 +50,5 @@ then
 fi
 
 # Exit
-echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+echo -e "ok - `basename $0`\t$TEST_DESCRIPTION"
 exit 0

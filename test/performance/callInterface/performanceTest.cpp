@@ -276,10 +276,10 @@ int main(int argc, char *argv[])
 	    		vector<FloatRow *>::const_iterator myTuple;
 	    		for(myTuple=resultF.begin(); myTuple!=resultF.end(); myTuple++)
 	 			{
-					cout << (*myTuple)->value_ << " � "
-						 << (*myTuple)->dataProvider_ << " � "
-				  	 	 << (*myTuple)->placeName_ << " � "
-				 	 	 << (*myTuple)->placeGeo_ << " � "
+					cout << (*myTuple)->value_ << " | "
+						 << (*myTuple)->dataProvider_ << " | "
+				  	 	 << (*myTuple)->placeName_ << " | "
+				 	 	 << (*myTuple)->placeGeo_ << " | "
 					 	 << (*myTuple)->referenceTime_ << endl;
 	   			}
 	    	}
@@ -287,10 +287,10 @@ int main(int argc, char *argv[])
 	    		vector<GridRow *>::const_iterator myTuple;
 	    		for(myTuple=resultG.begin(); myTuple!=resultG.end(); myTuple++)
 	 			{
-					cout << (*myTuple)->value_ << " � "
-						 << (*myTuple)->dataProvider_ << " � "
-				  	 	 << (*myTuple)->placeName_ << " � "
-				 	 	 << (*myTuple)->placeGeo_ << " � "
+					cout << (*myTuple)->value_ << " | "
+						 << (*myTuple)->dataProvider_ << " | "
+				  	 	 << (*myTuple)->placeName_ << " | "
+				 	 	 << (*myTuple)->placeGeo_ << " | "
 					 	 << (*myTuple)->referenceTime_ << endl;
 	   			}
 	    	}
