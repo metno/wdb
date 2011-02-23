@@ -2,9 +2,9 @@ wdb (0.9.8-2) lucid; urgency=high
 
   * Minor upgrade to metadata (ratio now converts to percentages).
 
-  * 64-bit build.
+  * Updated dependencies.
 
- -- Michael Akinde <michael.akinde@met.no>  Wed, 23 Feb 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Wed, 23 Feb 2011 12:00:00 +0000
 
 wdb (0.9.8-1) lucid; urgency=high
 
@@ -18,13 +18,13 @@ wdb (0.9.8-1) lucid; urgency=high
   
   * Rewrite of the field reading module. 
 
- -- Michael Akinde <michael.akinde@met.no>  Mon, 17 Jan 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Mon, 17 Jan 2011 12:00:00 +0000
 
 wdb (0.9.7-1) hardy; urgency=low
 
   * Metadata updates for wdb/felt data and new EC. 
 
- -- Michael Omotayo Akinde <michael.akinde@met.no>  Mon, 07 Jun 2010 10:45:30 +0200
+ -- Michael Omotayo Akinde <wdb@met.no>  Mon, 07 Jun 2010 10:45:30 +0200
 
 wdb (0.9.6-7) hardy; urgency=low
 

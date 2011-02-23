@@ -11,31 +11,31 @@ Build-Depends: debhelper (>= 5),
  autoconf (>=2.61),
  automake,
  xmlto,
- liblog4cpp5-dev (>=1.0), 
- libglib2.0-dev,
- libreadline-dev (>=5.2),
- libcppunit-dev,
- libpqxx-dev (>= 2.6.8), 
- libproj-dev (>=4.6.0), 
- libgeos-dev,
  libboost-filesystem-dev (>=1.33.1), 
  libboost-program-options-dev (>=1.33.1), 
  libboost-regex-dev (>=1.33.1), 
  libboost-date-time-dev (>=1.33.1),
  libboost-thread-dev (>=1.33.1),
- postgresql-8.4-postgis,
+ libreadline-dev (>=5.2),
+ libcppunit-dev (>=1.12.1),
+ libproj-dev (>=4.6.0), 
+ libgeos-dev (>=3.0.0),
+ libpqxx-dev (>= 2.6.8), 
+ liblog4cpp5-dev (>=1.0), 
+ libglib2.0-dev (>=2.24.0),
  postgresql-server-dev-8.4
 Standards-Version: 3.9.1
 
 Package: wdb
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
+ adduser, 
  python (>=2.4),
  postgresql-8.4,
  postgresql-8.4-postgis,
- adduser, 
+ postgresql-client (>=8.4.0),
  proj (>=4.6.0)
-Recommends: postgresql-client-8.4
+Recommends: 
 Description: database for meteorological, hydrological and oceanographic data
  wdb is designed to store MHO (Meteorological, Hydrological and
  Oceanographic) data. The purpose of the system is to improve the

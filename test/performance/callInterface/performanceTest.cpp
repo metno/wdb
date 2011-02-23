@@ -41,6 +41,7 @@
 #include <transactors/getField.h>
 #include <performanceTestConfiguration.h>
 #include <wdbConfiguration.h>
+#include "libpq-fe.h"
 // - Logging
 #include <wdbLogHandler.h>
 
@@ -74,6 +75,14 @@ void help( const boost::program_options::options_description & options, std::ost
 		<< "Options:\n"
 		<< options << std::endl;
 };
+
+static void
+exitPq(PGconn *conn)
+{
+    PQfinish(conn);
+    exit(1);
+}
+
 
 }
 
@@ -112,202 +121,279 @@ int main(int argc, char *argv[])
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.wciPerformanceTest" );
     log.infoStream() << "Starting WCI PerformanceTester";
 
+    if ( conf.input().sample < 100 ) {
+		// Test Samples
+		try
+		{
+			// Result Vector - used to store results from queries
+			vector <FloatRow *> resultF;
+			// Result Vector - used to store results from queries
+			vector <GridRow *> resultG;
+			// Size of a field
+			const int fieldSize = 1000000;
+			// The bufer for holding a field
+			char resultBuffer[fieldSize];
+			// Float Return
+			bool isFloat = false;
+			// Grid Return
+			bool isGrid = false;
 
-	// Test Samples
-	try
-  	{
-		// Result Vector - used to store results from queries
-		vector <FloatRow *> resultF;
-		// Result Vector - used to store results from queries
-		vector <GridRow *> resultG;
-		// Size of a field
-		const int fieldSize = 1000000;
-		// The bufer for holding a field
-		char resultBuffer[fieldSize];
-		// Float Return
-		bool isFloat = false;
-		// Grid Return
-		bool isGrid = false;
+			// Start Timer
+			ptime timeStart(microsec_clock::universal_time());
+			// Connect to the Database
+			connection C( conf.pqDatabaseConnection() );
 
-		// Start Timer
-  		ptime timeStart(microsec_clock::universal_time());
-  		// Connect to the Database
-    	connection C( conf.pqDatabaseConnection() );
-
-		C.perform( WciBegin( ) );
-    	switch ( conf.input().sample ) {
-    	case 1: // Random Point retrieval - individual points
-    		isFloat = true;
-			for (int i=0; i<100; i++) {
-				C.perform( RandomPointTest1(resultF) );
-   			}
-			break;
-    	case 2: // Random Point retrieval - multiple points
-    		isFloat = true;
-   			for (int i=0; i<500; i++) {
-				C.perform( RandomPointTest2(resultF) );
-   			}
-   			break;
-    	case 3: // Random Point retrieval - multiple points
-    		isFloat = true;
-   			for (int i=0; i<50; i++) {
-				C.perform( RandomPointTest3(resultF) );
-   			}
-   			break;
-    	case 4: // Random Point retrieval - simple multiple point query
-    		isFloat = true;
-   			for (int i=0; i<10; i++) {
-				C.perform( RandomPointTest4(resultF) );
-   			}
-   			break;
-    	case 8: // Prepared Random Point retrieval - individual points
-    		isFloat = true;
-    		C.prepare("ReadRandom1",
-    				  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
-    				  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
-    				  "'exact 0 height', "
-    				  "ARRAY[-1], NULL::wci.returnFloat	)" )
-    				  ("varchar", treat_string )
-					  ("varchar", treat_string )
-    				  ("varchar", treat_string )
-    				  ("varchar", treat_string )
-			          ("varchar", treat_string );
-			for (int i=0; i<1000; i++) {
-				try {
-					C.perform( PreparedRandomPointTest1(resultF) );
+			C.perform( WciBegin( ) );
+			switch ( conf.input().sample ) {
+			case 1: // Random Point retrieval - individual points
+				isFloat = true;
+				for (int i=0; i<100; i++) {
+					C.perform( RandomPointTest1(resultF) );
 				}
-				catch (const exception &e)
-				{
-					// All exceptions thrown by libpqxx are derived from std::exception
-				    cerr << "Exception: " << i << " " << e.what() << endl;
+				break;
+			case 2: // Random Point retrieval - multiple points
+				isFloat = true;
+				for (int i=0; i<500; i++) {
+					C.perform( RandomPointTest2(resultF) );
 				}
-   			}
-			break;
-    	case 11: // Individual simple polygon
-    		isFloat = true;
-			C.perform( SimplePolygonTest(resultF) );
-   			break;
-    	case 12: // Individual complex polygon
-    		isFloat = true;
-			C.perform( ComplexPolygonTest(resultF) );
-   			break;
-   		case 21: // Random Field retrieval
-    		isGrid = true;
-   			for (int i=0; i<200; i++) {
-	   			C.perform( SingleFieldTest( resultG, resultBuffer, fieldSize ) );
-   			}
-   			break;
-   		case 22: // Random Field retrieval
-    		isGrid = true;
-   			for (int i=0; i<50; i++) {
-	   			C.perform( MultipleFieldTest( resultG, resultBuffer, fieldSize ) );
-   			}
-   			break;
-   		case 23: // Random Field retrieval
-    		isGrid = true;
-   			for (int i=0; i<500; i++) {
-	   			C.perform( FieldRowTest1( resultG, resultBuffer, fieldSize ) );
-   			}
-   			break;
-   		case 24: // Random Field retrieval
-    		isFloat = true;
-   			for (int i=0; i<500; i++) {
-	   			C.perform( FieldRowTest2( resultF ) );
-   			}
-   			break;
-    	case 31: // Random Point retrieval - individual points
-    		isFloat = true;
-			for (int i=0; i<1000; i++) {
-				C.perform( BilinearPointTest1(resultF) );
-   			}
-			break;
-    	case 32: // Random Point retrieval - multiple points
-    		isFloat = true;
-   			for (int i=0; i<500; i++) {
-				C.perform( BilinearPointTest2(resultF) );
-   			}
-   			break;
-    	case 33: // Random Point retrieval - multiple points
-    		isFloat = true;
-   			for (int i=0; i<50; i++) {
-				C.perform( BilinearPointTest3(resultF) );
-   			}
-   			break;
-    	case 41: // Complex Random Point retrieval - individual points
-    		isFloat = true;
-			for (int i=0; i<5; i++) {
-				C.perform( ComplexPointTest1(resultF) );
-   			}
-			break;
-    	case 42: // Complex Random Point retrieval - individual points
-    		isFloat = true;
-			for (int i=0; i<5; i++) {
-				C.perform( ComplexPointTest2(resultF) );
-   			}
-			break;
-		case 13: // Multiple point retrieval - Not implemented
-		case 5: // Multiple simple polygon retrieval - Not implemented
-		case 7: // Multiple complex polygon retrieval - Not implemented
-   		default:
-   			cerr << "Unknown test sample:" << conf.input().sample << endl;
-   			return 1;
-   		}
-		C.perform( WciEnd( ) );
-		// Timing
-  		ptime timeEnd(microsec_clock::universal_time());
-  		time_duration timeSpent = timeEnd - timeStart;
-  		int rowsR = 0;
-  		if (isFloat) {
-  			rowsR += resultF.size();
-  			cout << endl << "Float Rows Returned: " << resultF.size() << " rows" << endl;
-  		}
-  		if (isGrid) {
-  			rowsR += resultG.size();
-  			cout << endl << "Grid Rows Returned: " << resultG.size() << " rows" << endl;
-  		}
-  		cout << "Time Elapsed:  " << timeSpent.total_milliseconds() << " milliseconds" << endl;
-  		cout << "Throughput:    " << static_cast<double>(rowsR)/static_cast<double>(timeSpent.total_milliseconds()) * 1000.0
-  			 << " rows per second" << endl;
+				break;
+			case 3: // Random Point retrieval - multiple points
+				isFloat = true;
+				for (int i=0; i<50; i++) {
+					C.perform( RandomPointTest3(resultF) );
+				}
+				break;
+			case 4: // Random Point retrieval - simple multiple point query
+				isFloat = true;
+				for (int i=0; i<10; i++) {
+					C.perform( RandomPointTest4(resultF) );
+				}
+				break;
+			case 8: // Prepared Random Point retrieval - individual points
+				isFloat = true;
+				C.prepare("ReadRandom1",
+						  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
+						  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
+						  "'exact 0 height', "
+						  "ARRAY[-1], NULL::wci.returnFloat	)" )
+						  ("varchar", treat_string )
+						  ("varchar", treat_string )
+						  ("varchar", treat_string )
+						  ("varchar", treat_string )
+						  ("varchar", treat_string );
+				for (int i=0; i<1000; i++) {
+					try {
+						C.perform( PreparedRandomPointTest1(resultF) );
+					}
+					catch (const exception &e)
+					{
+						// All exceptions thrown by libpqxx are derived from std::exception
+						cerr << "Exception: " << i << " " << e.what() << endl;
+					}
+				}
+				break;
+			case 11: // Individual simple polygon
+				isFloat = true;
+				C.perform( SimplePolygonTest(resultF) );
+				break;
+			case 12: // Individual complex polygon
+				isFloat = true;
+				C.perform( ComplexPolygonTest(resultF) );
+				break;
+			case 21: // Random Field retrieval
+				isGrid = true;
+				for (int i=0; i<200; i++) {
+					C.perform( SingleFieldTest( resultG, resultBuffer, fieldSize ) );
+				}
+				break;
+			case 22: // Random Field retrieval
+				isGrid = true;
+				for (int i=0; i<50; i++) {
+					C.perform( MultipleFieldTest( resultG, resultBuffer, fieldSize ) );
+				}
+				break;
+			case 23: // Random Field retrieval
+				isGrid = true;
+				for (int i=0; i<500; i++) {
+					C.perform( FieldRowTest1( resultG, resultBuffer, fieldSize ) );
+				}
+				break;
+			case 24: // Random Field retrieval
+				isFloat = true;
+				for (int i=0; i<500; i++) {
+					C.perform( FieldRowTest2( resultF ) );
+				}
+				break;
+			case 31: // Random Point retrieval - individual points
+				isFloat = true;
+				for (int i=0; i<1000; i++) {
+					C.perform( BilinearPointTest1(resultF) );
+				}
+				break;
+			case 32: // Random Point retrieval - multiple points
+				isFloat = true;
+				for (int i=0; i<500; i++) {
+					C.perform( BilinearPointTest2(resultF) );
+				}
+				break;
+			case 33: // Random Point retrieval - multiple points
+				isFloat = true;
+				for (int i=0; i<50; i++) {
+					C.perform( BilinearPointTest3(resultF) );
+				}
+				break;
+			case 41: // Complex Random Point retrieval - individual points
+				isFloat = true;
+				for (int i=0; i<5; i++) {
+					C.perform( ComplexPointTest1(resultF) );
+				}
+				break;
+			case 42: // Complex Random Point retrieval - individual points
+				isFloat = true;
+				for (int i=0; i<5; i++) {
+					C.perform( ComplexPointTest2(resultF) );
+				}
+				break;
+			case 13: // Multiple point retrieval - Not implemented
+			case 5: // Multiple simple polygon retrieval - Not implemented
+			case 7: // Multiple complex polygon retrieval - Not implemented
+			default:
+				cerr << "Unknown test sample:" << conf.input().sample << endl;
+				return 1;
+			}
+			C.perform( WciEnd( ) );
+			// Timing
+			ptime timeEnd(microsec_clock::universal_time());
+			time_duration timeSpent = timeEnd - timeStart;
+			int rowsR = 0;
+			if (isFloat) {
+				rowsR += resultF.size();
+				cout << endl << "Float Rows Returned: " << resultF.size() << " rows" << endl;
+			}
+			if (isGrid) {
+				rowsR += resultG.size();
+				cout << endl << "Grid Rows Returned: " << resultG.size() << " rows" << endl;
+			}
+			cout << "Time Elapsed:  " << timeSpent.total_milliseconds() << " milliseconds" << endl;
+			cout << "Throughput:    " << static_cast<double>(rowsR)/static_cast<double>(timeSpent.total_milliseconds()) * 1000.0
+				 << " rows per second" << endl;
 
-		// Print Out
-		if ( conf.output().printResult ) {
-			cout << "Results" << endl;
-	    	if (isFloat) {
-	    		vector<FloatRow *>::const_iterator myTuple;
-	    		for(myTuple=resultF.begin(); myTuple!=resultF.end(); myTuple++)
-	 			{
-					cout << (*myTuple)->value_ << " | "
-						 << (*myTuple)->dataProvider_ << " | "
-				  	 	 << (*myTuple)->placeName_ << " | "
-				 	 	 << (*myTuple)->placeGeo_ << " | "
-					 	 << (*myTuple)->referenceTime_ << endl;
-	   			}
-	    	}
-	    	if (isGrid) {
-	    		vector<GridRow *>::const_iterator myTuple;
-	    		for(myTuple=resultG.begin(); myTuple!=resultG.end(); myTuple++)
-	 			{
-					cout << (*myTuple)->value_ << " | "
-						 << (*myTuple)->dataProvider_ << " | "
-				  	 	 << (*myTuple)->placeName_ << " | "
-				 	 	 << (*myTuple)->placeGeo_ << " | "
-					 	 << (*myTuple)->referenceTime_ << endl;
-	   			}
-	    	}
+			// Print Out
+			if ( conf.output().printResult ) {
+				cout << "Results" << endl;
+				if (isFloat) {
+					vector<FloatRow *>::const_iterator myTuple;
+					for(myTuple=resultF.begin(); myTuple!=resultF.end(); myTuple++)
+					{
+						cout << (*myTuple)->value_ << " | "
+							 << (*myTuple)->dataProvider_ << " | "
+							 << (*myTuple)->placeName_ << " | "
+							 << (*myTuple)->placeGeo_ << " | "
+							 << (*myTuple)->referenceTime_ << endl;
+					}
+				}
+				if (isGrid) {
+					vector<GridRow *>::const_iterator myTuple;
+					for(myTuple=resultG.begin(); myTuple!=resultG.end(); myTuple++)
+					{
+						cout << (*myTuple)->value_ << " | "
+							 << (*myTuple)->dataProvider_ << " | "
+							 << (*myTuple)->placeName_ << " | "
+							 << (*myTuple)->placeGeo_ << " | "
+							 << (*myTuple)->referenceTime_ << endl;
+					}
+				}
+			}
 		}
-	}
-	catch (const exception &e)
-	{
-		// All exceptions thrown by libpqxx are derived from std::exception
-	    log.errorStream() << "Exception: " << e.what();
-	    return 2;
-	}
-	catch (...)
-	{
-		// This is really unexpected (see above)
-	    log.errorStream() << "Unhandled exception";
-	    return 100;
-	}
+		catch (const exception &e)
+		{
+			// All exceptions thrown by libpqxx are derived from std::exception
+			log.errorStream() << "Exception: " << e.what();
+			return 2;
+		}
+		catch (...)
+		{
+			// This is really unexpected (see above)
+			log.errorStream() << "Unhandled exception";
+			return 100;
+		}
+    }
+	/*
+	 * libPQ tests
+	 */
+    /*
+    else {
+        PGconn * conn = PQconnectdb(conf.pqDatabaseConnection());
+        if (PQstatus(conn) != CONNECTION_OK)
+        {
+			log.errorStream() << "Failed to connect to " << conf.pqDatabaseConnection();
+        	exitPq(conn);
+        }
 
+		switch ( conf.input().sample ) {
+		case 121: // Random Field Retrieval
+			// WCI Begin
+			res = PQexec(conn, "select wci.begin ( 'wcitest', 999, 999, 999 )" );
+			if (PQresultStatus(res) != PGRES_COMMAND_OK)
+			{
+				log.errorStream() << "Exception: " << e.what();
+	            PQclear(res);
+				exitNicely();
+			}
+	        PQclear(res);
+
+        /*
+         * Fetch rows from pg_database, the system catalog of databases
+         *
+        res = PQexec(conn, "DECLARE myportal CURSOR FOR select * from pg_database");
+        if (PQresultStatus(res) != PGRES_COMMAND_OK)
+        {
+            fprintf(stderr, "DECLARE CURSOR failed: %s", PQerrorMessage(conn));
+            PQclear(res);
+            exit_nicely(conn);
+        }
+        PQclear(res);
+
+        res = PQexec(conn, "FETCH ALL in myportal");
+        if (PQresultStatus(res) != PGRES_TUPLES_OK)
+        {
+            fprintf(stderr, "FETCH ALL failed: %s", PQerrorMessage(conn));
+            PQclear(res);
+            exit_nicely(conn);
+        }
+
+        /* first, print out the attribute names
+        nFields = PQnfields(res);
+        for (i = 0; i < nFields; i++)
+            printf("%-15s", PQfname(res, i));
+        printf("\n\n");
+
+        /* next, print out the rows
+        for (i = 0; i < PQntuples(res); i++)
+        {
+            for (j = 0; j < nFields; j++)
+                printf("%-15s", PQgetvalue(res, i, j));
+            printf("\n");
+        }
+
+        PQclear(res);
+
+        /* close the portal ... we don't bother to check for errors ...
+        res = PQexec(conn, "CLOSE myportal");
+        PQclear(res);
+
+        /* end the transaction *
+        res = PQexec(conn, "END");
+        PQclear(res);
+
+        /* close the connection to the database and cleanup
+        PQfinish(conn);
+
+        return 0;
+    	pqConnect();
+
+
+    }
+	*/
 	return 0;
 }

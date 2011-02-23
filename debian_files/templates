@@ -1,7 +1,7 @@
 Template: wdb/database_name
 Type: string
 Default: wdb
-Description: The wdb database name:
+_Description: The wdb database name:
  The name to use for the wdb database. Note that this debian package only
  supports having one wdb installation per server. If you wish to install 
  multiple databases on a single server, you will have to install them 
@@ -10,7 +10,7 @@ Description: The wdb database name:
 Template: wdb/database_admin
 Type: string
 Default: wdb
-Description: The wdb administrator account:
+_Description: The wdb administrator account:
  This is the username for the administrator of the WDB database. This 
  username should preferably exist as a user on the server with a home 
  directory under /home. If the user does not exist, he will be created
@@ -20,7 +20,7 @@ Description: The wdb administrator account:
 
 Template: wdb/database_purge
 Type: boolean
-Description: Do you want to purge the database?
+_Description: Do you want to purge the database?
  Purge the database if you want to remove the data in the database along
  with the wdb package. Please note that all data in the database will be 
  lost.
@@ -35,7 +35,7 @@ Description: Do you want to purge the database?
 Template: wdb/database_removeadmin
 Type: boolean
 Default: false
-Description: Do you want to remove the database administrator's user account?
+_Description: Do you want to remove the database administrator's user account?
  If the database administrator's user account did not exist when the wdb
  package was created, it will have been created during installation. If
  that was the case, you should let debian remove the administrator account
