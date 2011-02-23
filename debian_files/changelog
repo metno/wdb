@@ -1,3 +1,11 @@
+wdb (0.9.8-2) lucid; urgency=high
+
+  * Minor upgrade to metadata (ratio now converts to percentages).
+
+  * 64-bit build.
+
+ -- Michael Akinde <michael.akinde@met.no>  Wed, 23 Feb 2011 12:00:00 +0000
+
 wdb (0.9.8-1) lucid; urgency=high
 
   * WDB versions should now be able to be upgraded between versions.
@@ -7,8 +15,10 @@ wdb (0.9.8-1) lucid; urgency=high
     converted to CF-metadata names.
 
   * Met.no specific metadata is now located in the metno-wdb-metadata package.
+  
+  * Rewrite of the field reading module. 
 
- -- Michael Omotayo Akinde <michael.akinde@met.no>  Mon, 17 Jan 2011 12:00:00 +0000
+ -- Michael Akinde <michael.akinde@met.no>  Mon, 17 Jan 2011 12:00:00 +0000
 
 wdb (0.9.7-1) hardy; urgency=low
 

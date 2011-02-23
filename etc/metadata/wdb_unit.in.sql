@@ -1,5 +1,5 @@
 select wci.addunit('%', 'percent', '%', 1.0, 0.0 );
-select wci.addunit('ratio', 'ratio', 'ratio', 1.0, 0.0 );
+select wci.addunit('ratio', 'ratio between 0 and 1', '%', 100.0, 0.0 );
 select wci.addunit('none', 'no known unit', 'none', 1.0, 0.0 );
 select wci.addunit('m', 'metre (SI unit)', 'm', 1.0, 0.0 );
 select wci.addunit('mm', 'millimetre', 'm', 0.001, 0.0 );
