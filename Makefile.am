@@ -446,3 +446,5 @@ upgradecheck: all
 	@builddir@/test/upgrade/upgrade_test.sh
 
 include mk/debian.mk
+
+debian: common-debian
