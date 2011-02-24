@@ -2,8 +2,7 @@ Source: wdb-0.9
 Section: devel
 Priority: extra
 Maintainer: Vegard Bønes <wdb@met.no>
-Build-Depends: 
- debhelper (>= 5),
+Build-Depends: debhelper (>= 5),
  debconf,
  po-debconf,
  devscripts,
@@ -29,8 +28,7 @@ Standards-Version: 3.9.1
 
 Package: wdb-0.9
 Architecture: any
-Depends: 
- ${shlibs:Depends},
+Depends: ${shlibs:Depends},
  ${misc:Depends},
  adduser, 
  python (>=2.4),
@@ -38,10 +36,8 @@ Depends:
  postgresql-8.4-postgis,
  postgresql-client (>=8.4.0),
  proj (>=4.6.0)
-Recommends: 
-Description:
- wdb is designed to store MHO (Meteorological, Hydrological and
+Description: wdb is designed to store MHO (Meteorological, Hydrological and
  Oceanographic) data. The purpose of the system is to improve the
- quality and effectiveness of IT systems for MHO production by
- providing a complete, flexible, and effective data storage solution
- for real-time and archive data.
+ quality and effectiveness of IT systems for MHO production by providing a
+ complete, flexible, and effective data storage solution for real-time and
+ archive data.
