@@ -18,62 +18,10 @@ setup for the system is wdb/wdb; if you wish to use an alternative name
 or administrator, you can specify these by setting the priority level
 of the configuration questions to medium (see dpkg-reconfigure).
 
-
-
-If you want to use a specific setup,
-such as a nonstandard database name, or a nonstandard administrator
-user name, you are ok, too. In this case you may use dbconfig-common,
-through debian's regular configuration system (dpkg-preconfigure).
-
-However, dbconfig-common does not know about database clusters. This 
-means that:
-
-1: If the installed computer has more that one database cluster,
-   installation will fail.
-2: If you want to do anything nonstandard about your cluster, you must
-   do it yourself, manually.
-
-In order to set up a new specific cluster with data located in the
-folder /somewhere/var/lib/hindcast/, you may do the following:
-
-1: pg_dropcluster --stop 8.1 main
-2: pg_createcluster 8.1 main -d /somewhere/var/lib/hindcast \
-       -s /var/run/hindcast --start
-
-WARNING: This will destroy all other postgres databases on the
-computer, so you may want to find another way of doing this.
-
-If you absolutely need to use multiple clusters, you can create a
-cluster manually, and then install the database manually on the new
-cluster. 
-
-Here is an example of how to set up a database hindcast, running on
-its own cluster, with the database's data located in the folder
-/somewhere/var/lib/hindcast/.
-
-1. su wdb -c uninstall-database
-2. adduser wdb --disabled-password --gecos 0
-3. su wdb -c 'echo "8.1 hindcast hindcast" > $HOME/.postgresqlrc'
-4. pg_createcluster 8.1 hindcast -d /somewhere/var/lib/hindcast -s /var/run/hindcast -u wdb -g wdb --start
-5. echo -e "database = hindcast\nhost = /var/run/hindcast\nport = 5433" > /etc/wdb.conf
-6. su wdb -c install-database
-
-Comments:
-
-2: This creates a database administrator. Currently, the name *must*
-   be wdb.
-
-3: This sets default database to a database called hindcast in a
-   cluster with the same name, running on postgresql v. 8.1.
-
-4: Creating and starting the cluster.
-
-5: This is the database configuration. Note that the port number must
-   match the port number assigned by pg_createcluster (which will be
-   printed on stdout). If you wish, you may instead place the file in
-   wdb's $HOME/.wdb/wdb.conf, but then only the wdb user will be able
-   to run any local applications related to wdb.
-
+Since rebuilding the package, there are a number of options not yet 
+completely tested out. Using a non-standard installaiton is thus not
+currently supported properly. If you try it, you're rolling the dice
+and taking your chances.
 
 
 Users
@@ -87,18 +35,10 @@ WARNING: The following is not good security-wise, since it allows
 *anyone* to log into the database.
 
 1. psql -c "CREATE ROLE wcireader INHERIT LOGIN IN ROLE wdb_read"
-2. echo "host    hindcast    wcireader   127.0.0.1/0           trust" >> /etc/postgresql/8.1/hindcast/pg_hba.conf
-3. <<Change /etc/postgresql/8.1/hindcast/postgresql.conf listen_addresses to '*'>>
-4: pg_ctlcluster 8.1 hindcast restart
+2. echo "host    myservername    wcireader   127.0.0.1/0           trust" >> /etc/postgresql/8.4/myservername/pg_hba.conf
+3. <<Change /etc/postgresql/8.4/myservername/postgresql.conf listen_addresses to '*'>>
+4: pg_ctlcluster 8.4 myservername restart
 
 This will create a role, wcireader, which is only allowed to read from
 the database. Anyone may log in as this role, from anywhere in the
 world.
-
-
-Loading data
-------------
-
-Programs for loading data into the database is placed in
-/usr/lib/wdb. These are not run autmatically, so you must yourself
-invoke these programs when needed.

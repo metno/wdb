@@ -8,13 +8,13 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.9.8, [wdb@met.no])
+AC_INIT(wdb, 0.9.9, [wdb@met.no])
 AC_SUBST( [SCHEMA_VERSION],["0"] )
 # A previous schema version
 # - This is used for test purposes; e.g., the upgrade test
 AC_SUBST( [OLD_MAJOR_VERSION], ["0"] )
 AC_SUBST( [OLD_MINOR_VERSION], ["9"] )
-AC_SUBST( [OLD_MICRO_VERSION], ["5"] )
+AC_SUBST( [OLD_MICRO_VERSION], ["8"] )
 
 # Config
 AC_CONFIG_SRCDIR([config.h.in])
@@ -135,8 +135,8 @@ VL_LIB_READLINE
 #-----------------------------------------------------------------------------
 
 # POSTGRES
-WDB_POSTGRES_CHECK(8.1.x)
-WDB_POSTGIS_CHECK(1.1.x)
+WDB_POSTGRES_CHECK(8.4.x)
+WDB_POSTGIS_CHECK(1.4.x)
 WDB_PQXX_CHECK(2.6.8)
 
 WDB_GEOS_C
@@ -145,7 +145,7 @@ WDB_GEOS_C
 WDB_BOOST_CHECK(1.33.1)
 
 # LOG4CPP
-WDB_LOG4CPP_CHECK(0.3.5rc3)
+WDB_LOG4CPP_CHECK(1.0)
 
 # PROJ
 WDB_PROJ_CHECK
