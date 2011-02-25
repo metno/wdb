@@ -28,8 +28,7 @@ Standards-Version: 3.9.1
 
 Package: wdb-0.9
 Architecture: any
-Depends: ${shlibs:Depends},
- ${misc:Depends},
+Depends: ${misc:Depends},
  adduser, 
  python (>=2.4),
  postgresql-8.4,

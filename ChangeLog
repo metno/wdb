@@ -154,13 +154,13 @@ wdb-0.9 (0.7.6-2) unstable; urgency=low
 
 wdb-0.9 (0.7.6-1) unstable; urgency=low
 
-  * New upstream release
+  * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Fri, 22 Aug 2008 16:00:30 +0200
 
 wdb-0.9 (0.7.5-1) unstable; urgency=low
 
-  * New upstream release
+  * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Wed,  2 Jul 2008 14:44:17 +0200
 
@@ -196,7 +196,7 @@ wdb-0.9 (0.7.1-1) unstable; urgency=low
 
 wdb-0.9 (0.6-1) unstable; urgency=low
 
-  * New upstream release
+  * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Mon,  4 Feb 2008 12:56:31 +0100
 
