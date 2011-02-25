@@ -5,5 +5,5 @@
 
 EXTRA_DIST +=			package/compat \
 						package/control \
-						package copyright \
+						package/copyright \
 						package/rules
