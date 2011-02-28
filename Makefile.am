@@ -87,9 +87,6 @@ SUFFIXES = 				.in.cron .cron \
 .in.test.test:
 						$(TEST_COMPILE)
 
-wdb-config: $(PACKAGE)-config
-	cp $(PACKAGE)-config wdb-config
-
 # Setting Targets
 bin_PROGRAMS =
 bin_SCRIPTS =
