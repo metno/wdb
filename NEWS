@@ -1,5 +1,8 @@
 wdb-1.0 (1.0.0~rc1-1) lucid; urgency=high
 
+  * Updated package and system to be compatible with Ubuntu 10.04 (lucid)
+    and Postgres 8.4.
+
   * The wdb database can now be upgraded in place without deleting the
     existing database.
 
