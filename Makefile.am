@@ -87,6 +87,8 @@ SUFFIXES = 				.in.cron .cron \
 .in.test.test:
 						$(TEST_COMPILE)
 
+wdb-config: $(PACKAGE)-config
+	cp $(PACKAGE)-config wdb-config
 
 # Setting Targets
 bin_PROGRAMS =
@@ -249,7 +251,6 @@ distcheck-hook:
 # Makefile Maintenance
 #-----------------------------------------------------------------------------
 
-
 update-makefiles:
 	@for dir in @build_subdirs@ ; do \
 		echo "cp $(top_srcdir)/config/Makefile.am.subdir \
@@ -264,9 +265,8 @@ update-makefiles:
 # Install Check Framework
 #-----------------------------------------------------------------------------
 
-
 installcheck-local: run_installchecks installcheck_cleanup
-	
+
 # In case any tests are not well-behaved:
 installcheck_cleanup:
 	psql `./wdbConfiguration --psqlArgs` -c "SELECT cleanupdb()" >> /dev/null
@@ -453,7 +453,7 @@ upgradecheck: all
 
 include mk/debian.mk
 
-WDB_PKG_DIR = $(PACKAGE)_$(VERSION)_all
+WDB_PKG_DIR = wdb_$(VERSION)_all
 WDB_DEBIAN_DIR = $(WDB_PKG_DIR)/debian
 WDB_DEBIAN_SUBNAME = `head -n1 $(top_srcdir)/NEWS | sed "s/ (.*//"`
 WDB_DEBIAN_PACKAGE_NAME_BASE = `head -n1 $(top_srcdir)/NEWS | sed "s/.* (/$(PACKAGE)_/" | sed "s/).*//"`
