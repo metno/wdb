@@ -1,4 +1,4 @@
-Source: wdb-0.9
+Source: wdb-1.0
 Section: devel
 Priority: extra
 Maintainer: Vegard Bønes <wdb@met.no>
@@ -26,7 +26,7 @@ Build-Depends: debhelper (>= 5),
  postgresql-server-dev-8.4
 Standards-Version: 3.9.1
 
-Package: wdb-0.9
+Package: wdb-1.0
 Architecture: any
 Depends: ${misc:Depends},
  adduser, 
