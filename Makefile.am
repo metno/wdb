@@ -455,24 +455,21 @@ include mk/debian.mk
 
 WDB_PKG_DIR = $(PACKAGE)_$(VERSION)_all
 WDB_DEBIAN_DIR = $(WDB_PKG_DIR)/debian
-WDB_DEBIAN_SUBNAME = `head -n1 $(top_srcdir)/ChangeLog | sed "s/ (.*//"`
-WDB_DEBIAN_PACKAGE_NAME_BASE = `head -n1 $(top_srcdir)/ChangeLog | sed "s/.* (/$(PACKAGE)_/" | sed "s/).*//"`
+WDB_DEBIAN_SUBNAME = `head -n1 $(top_srcdir)/NEWS | sed "s/ (.*//"`
+WDB_DEBIAN_PACKAGE_NAME_BASE = `head -n1 $(top_srcdir)/NEWS | sed "s/.* (/$(PACKAGE)_/" | sed "s/).*//"`
 WDB_DEBIAN_PACKAGE = $(WDB_DEBIAN_PACKAGE_NAME_BASE)_all.deb
 
 pkg-debian: clean-pkg
 	rm -rf $(WDB_DEBIAN_DIR)
 	mkdir -p $(WDB_DEBIAN_DIR)
 	cp -r $(top_srcdir)/package/* $(WDB_DEBIAN_DIR)
-	cat $(top_srcdir)/ChangeLog | sed "s/$(WDB_DEBIAN_SUBNAME)/$(PACKAGE)/" > $(WDB_DEBIAN_DIR)/changelog  
+	cat $(top_srcdir)/NEWS | sed "s/$(WDB_DEBIAN_SUBNAME)/$(PACKAGE)/" > $(WDB_DEBIAN_DIR)/changelog  
 	chmod 774 $(WDB_DEBIAN_DIR)/rules
 	cd $(WDB_PKG_DIR) && dpkg-buildpackage -rfakeroot -us -uc -b -i.svn
 	lintian $(WDB_DEBIAN_PACKAGE)
 
 clean-pkg:
 	debclean
-	rm -rf $(WDB_PKG_DIR)
-	
-	
-#	rm -rf $(WDB_DEBIAN_PACKAGE)*
+	rm -rf $(WDB_PKG_DIR) $(WDB_DEBIAN_PACKAGE)*
 
 debian: common-debian pkg-debian

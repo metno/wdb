@@ -8,13 +8,13 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 0.9.9, [wdb@met.no])
+AC_INIT(wdb, 1.0.0, [wdb@met.no])
 AC_SUBST( [SCHEMA_VERSION],["0"] )
 # A previous schema version
 # - This is used for test purposes; e.g., the upgrade test
-AC_SUBST( [OLD_MAJOR_VERSION], ["0"] )
-AC_SUBST( [OLD_MINOR_VERSION], ["9"] )
-AC_SUBST( [OLD_MICRO_VERSION], ["8"] )
+AC_SUBST( [OLD_MAJOR_VERSION], ["1"] )
+AC_SUBST( [OLD_MINOR_VERSION], ["0"] )
+AC_SUBST( [OLD_MICRO_VERSION], ["0"] )
 
 # Config
 AC_CONFIG_SRCDIR([config.h.in])
