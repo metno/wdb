@@ -6,7 +6,8 @@ Maintainer: Michael Akinde <wdb@met.no>
 Package: wdb
 Architecture: all
 Depends: wdb-1.0
-Description: This meta-package installs the currently supported version of
+Description: This meta-package installs the latest WDB database.
+ This meta-package installs the currently supported version of
  the wdb database.
  . 
  wdb is designed to store MHO (Meteorological, Hydrological and

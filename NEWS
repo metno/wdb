@@ -1,11 +1,17 @@
-wdb-1.0 (1.0.0~rc2-1) lucid; urgency=high
+wdb-1.0 (1.0.0~rc2-2) lucid; urgency=low
+
+  * Corrected the short package descriptions, so that they form a complete sentence.
+
+ -- Michael Akinde <wdb@met.no>  Tue, 01 Mar 2011 13:00:00 +0000
+
+wdb-1.0 (1.0.0~rc2-1) lucid; urgency=low
 
   * This release candidate fixes some errors in the packaging code that
     caused the wdb-1.0 package to be empty.
 
  -- Michael Akinde <wdb@met.no>  Tue, 01 Mar 2011 12:00:00 +0000
 
-wdb-1.0 (1.0.0~rc1-1) lucid; urgency=high
+wdb-1.0 (1.0.0~rc1-1) lucid; urgency=low
 
   * Updated package and system to be compatible with Ubuntu 10.04 (lucid)
     and Postgres 8.4.

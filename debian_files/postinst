@@ -48,6 +48,7 @@ case "$1" in
 		
 		# Create user for installation
 		su postgres -c "psql -c \"CREATE ROLE $DB_USER\"" >> /dev/null 2>&1 || true
+		su postgres -c "psql -c \"ALTER ROLE $DB_USER WITH LOGIN\"" >> /dev/null 2>&1
 		su postgres -c "psql -c \"ALTER ROLE $DB_USER WITH SUPERUSER\"" >> /dev/null 2>&1
 		# Run install script
 		su $DB_USER -c "/usr/lib/wdb/install_database -d $DB_NAME -u $DB_USER"
