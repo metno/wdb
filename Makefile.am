@@ -16,7 +16,7 @@ ACLOCAL_AMFLAGS = 		-I m4
 AM_CPPFLAGS =			-DSYSCONFDIR=\"$(sysconfdir)\"
 AM_LDFLAGS =			-L@builddir@
 
-LIBTOOL_VERSION_FLAG = 	-release $(VERSION)
+LIBTOOL_VERSION_FLAG = 	-release $(DEBIAN_VERSION)
 
 # Compiler Settings
 SED_SUBSTITUTION = 		sed s%__WDB_VERSION__%$(VERSION)%g $< \
@@ -199,7 +199,7 @@ clean-local:
 # The dbclean target is used by Buildbot to clean-up after a failed distcheck.
 dbclean:
 	dropdb wdb_distcheck
-#	@builddir@/install/uninstall_database -d wdb_distcheck
+	#@builddir@/install/uninstall_database -d wdb_distcheck
 
 
 #-----------------------------------------------------------------------------

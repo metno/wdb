@@ -8,7 +8,8 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb-1.0, 1.0.0, [wdb@met.no])
+AC_INIT(wdb, 1.0.0, [wdb@met.no])
+AC_SUBST( [DEBIAN_VERSION],["1.0"] )
 AC_SUBST( [SCHEMA_VERSION],["0"] )
 # A previous schema version
 # - This is used for test purposes; e.g., the upgrade test
