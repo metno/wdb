@@ -36,7 +36,7 @@ Depends: ${misc:Depends},
  postgresql-8.4-postgis,
  postgresql-client (>=8.4.0),
  proj (>=4.6.0)
-Breaks; wdb-0.9
+Breaks: wdb-0.9
 Replaces: wdb-0.9
 Description: wdb is a database designed to store MHO data.
  The server is designed to store MHO (Meteorological, Hydrological and
