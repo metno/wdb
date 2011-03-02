@@ -1,10 +1,12 @@
 --- WDB Specific
 select wci.begin( 'wdb', 0, 0, 0 );
 select wci.adddataprovider( 'wdb', 'data provider group', 'any', '1 day', 'Data received from WDB components (unidentified)' );
-select wci.adddataprovider( 'gribload', 'computer system', 'grid', '1 day', 'Data received from WDB GribLoad (unidentified)' );
-select wci.adddataprovidertogroup( 'gribload', 'wdb');
-select wci.adddataprovider( 'feltload', 'computer system', 'grid', '1 day', 'Data received from WDB FeltLoad (unidentified)' );
+select wci.adddataprovider( 'demload', 'computer system', 'grid', '1 day', 'Data received from WDB demLoad (unidentified)' );
+select wci.adddataprovidertogroup( 'demload', 'wdb');
+select wci.adddataprovider( 'feltload', 'computer system', 'grid', '1 day', 'Data received from WDB feltLoad (unidentified)' );
 select wci.adddataprovidertogroup( 'feltload', 'wdb');
+select wci.adddataprovider( 'gribload', 'computer system', 'grid', '1 day', 'Data received from WDB gribLoad (unidentified)' );
+select wci.adddataprovidertogroup( 'gribload', 'wdb');
 
 -- Test Data
 select wci.begin( 'wdb', 999, 999, 999 );

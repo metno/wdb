@@ -34,6 +34,7 @@ CREATE TABLE __WDB_SCHEMA__.dataprovider (
 			((dataprovidertype)::text = 'computer system'::text) OR
 			((dataprovidertype)::text = 'data provider group'::text) OR
 			((dataprovidertype)::text = 'named observation site'::text) OR
+			((dataprovidertype)::text = 'organization'::text) OR
 			((dataprovidertype)::text = 'person'::text) OR
 			((dataprovidertype)::text = 'ship'::text) OR 
 			((dataprovidertype)::text = 'wci user'::text) ),

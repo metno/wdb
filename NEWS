@@ -1,3 +1,11 @@
+wdb-1.0 (1.0.0~rc4-1) lucid; urgency=low
+
+  * Added organization as a dataprovider type.
+  
+  * Added replaces and breaks in debian control.
+
+ -- Michael Akinde <wdb@met.no>  Tue, 02 Mar 2011 12:00:00 +0000
+
 wdb-1.0 (1.0.0~rc3-1) lucid; urgency=low
 
   * Corrected the short package descriptions, so that they form a complete
@@ -45,13 +53,13 @@ wdb-1.0 (1.0.0~rc1-1) lucid; urgency=low
 
  -- Michael Akinde <wdb@met.no>  Wed, 23 Feb 2011 12:00:00 +0000
 
-wdb-1.0 (0.9.7-1) hardy; urgency=low
+wdb-0.9 (0.9.7-1) hardy; urgency=low
 
   * Metadata updates for wdb/felt data and new EC 
 
  -- Michael Akinde <wdb@met.no>  Mon, 07 Jun 2010 10:45:30 +0200
 
-wdb-1.0 (0.9.6-7) hardy; urgency=low
+wdb-0.9 (0.9.6-7) hardy; urgency=low
 
   * debian updates (again)
 
