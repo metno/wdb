@@ -14,7 +14,7 @@ wdb-1.0 (1.0.0~rc3-1) lucid; urgency=low
   * Fixed the creation of the wdb user, so that he correctly receives LOGIN
     permissions.
 
- -- Michael Akinde <wdb@met.no>  Tue, 02 Mar 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Tue, 02 Mar 2011 10:00:00 +0000
 
 wdb-1.0 (1.0.0~rc2-1) lucid; urgency=low
 
@@ -65,200 +65,200 @@ wdb-0.9 (0.9.6-7) hardy; urgency=low
 
  -- Vegard Bønes <wdb@met.no>  Wed, 24 Feb 2010 13:25:38 +0000
 
-wdb-1.0 (0.9.6-6) hardy; urgency=low
+wdb-0.9 (0.9.6-6) hardy; urgency=low
 
   * debian updates (again)
 
  -- Vegard Bønes <wdb@met.no>  Tue, 23 Feb 2010 11:44:42 +0000
 
-wdb-1.0 (0.9.6-5) hardy; urgency=low
+wdb-0.9 (0.9.6-5) hardy; urgency=low
 
   * debian updates
 
  -- Vegard Bønes <wdb@met.no>  Mon, 22 Feb 2010 16:30:29 +0000
 
-wdb-1.0 (0.9.6-4) hardy; urgency=low
+wdb-0.9 (0.9.6-4) hardy; urgency=low
 
   * final build
 
  -- Vegard Bønes <wdb@met.no>  Fri, 05 Feb 2010 14:14:35 +0000
 
-wdb-1.0 (0.9.6-1) hardy; urgency=low
+wdb-0.9 (0.9.6-1) hardy; urgency=low
 
   * new version
 
  -- Vegard Bønes <vegard.bones@met.no>  Wed, 28 Oct 2009 11:16:00 +0100
 
-wdb-1.0 (0.9.4-2) hardy; urgency=low
+wdb-0.9 (0.9.4-2) hardy; urgency=low
 
   * bugfixes
 
  -- Vegard Bønes <wdb@met.no>  Tue, 01 Sep 2009 12:41:07 +0000
 
-wdb-1.0 (0.9.4-1) hardy; urgency=low
+wdb-0.9 (0.9.4-1) hardy; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <vegard.bones@met.no>  Thu, 27 Aug 2009 09:38:21 +0000
 
-wdb-1.0 (0.9.1-1) hardy; urgency=low
+wdb-0.9 (0.9.1-1) hardy; urgency=low
 
   * New upstream release 
 
  -- Vegard Bønes <wdb@met.no>  Tue, 26 May 2009 12:16:41 +0000
 
-wdb-1.0 (0.9.0-1) hardy; urgency=low
+wdb-0.9 (0.9.0-1) hardy; urgency=low
 
   * New upstream release 
 
  -- Vegard Bønes <wdb@met.no>  Wed, 06 May 2009 13:35:08 +0200
 
-wdb-1.0 (0.8.0-1) hardy; urgency=low
+wdb-0.8 (0.8.0-1) hardy; urgency=low
 
   * New upstream release
 
  -- Vegard Bønes <wdb@met.no>  Fri, 20 Mar 2009 11:16:40 +0000
 
-wdb-1.0 (0.7.8-5) unstable; urgency=low
+wdb-0.7 (0.7.8-5) unstable; urgency=low
 
   * Metadata added
 
  -- Vegard Bønes <wdb@met.no>  Tue, 25 Nov 2008 12:48:57 +0100
 
-wdb-1.0 (0.7.8-4) unstable; urgency=low
+wdb-0.7 (0.7.8-4) unstable; urgency=low
 
   * Minor improvements
 
  -- Vegard Bønes <wdb@met.no>  Mon, 24 Nov 2008 12:39:19 +0100
 
-wdb-1.0 (0.7.8-3) unstable; urgency=low
+wdb-0.7 (0.7.8-3) unstable; urgency=low
 
   * Performance enhancements
 
  -- Vegard Bønes <wdb@met.no>  Fri,  7 Nov 2008 11:00:15 +0100
 
-wdb-1.0 (0.7.8-2) unstable; urgency=low
+wdb-0.7 (0.7.8-2) unstable; urgency=low
 
   * Minor bugfix in upstream without upraded version number
 
  -- Vegard Bønes <wdb@met.no>  Wed, 29 Oct 2008 12:28:24 +0100
 
-wdb-1.0 (0.7.8-1) unstable; urgency=low
+wdb-0.7 (0.7.8-1) unstable; urgency=low
 
   * New upstream release
 
  -- Vegard Bønes <wdb@met.no>  Fri, 17 Oct 2008 15:49:58 +0200
 
-wdb-1.0 (0.7.7-4) unstable; urgency=low
+wdb-0.7 (0.7.7-4) unstable; urgency=low
 
   * metadata again
 
  -- Vegard Bønes <wdb@met.no>  Tue,  7 Oct 2008 14:09:50 +0200
 
-wdb-1.0 (0.7.7-3) unstable; urgency=low
+wdb-0.7 (0.7.7-3) unstable; urgency=low
 
   * metadata upgrades
 
  -- Vegard Bønes <wdb@met.no>  Wed,  1 Oct 2008 15:49:23 +0200
 
-wdb-1.0 (0.7.7-2) unstable; urgency=low
+wdb-0.7 (0.7.7-2) unstable; urgency=low
 
   * Upgrade
 
  -- Vegard Bønes <wdb@met.no>  Wed, 24 Sep 2008 14:47:41 +0200
 
-wdb-1.0 (0.7.7-1) unstable; urgency=low
+wdb-0.7 (0.7.7-1) unstable; urgency=low
 
   * Development progress on next version
 
  -- Vegard Bønes <wdb@met.no>  Mon, 22 Sep 2008 15:30:31 +0200
 
-wdb-1.0 (0.7.6-3) unstable; urgency=low
+wdb-0.7 (0.7.6-3) unstable; urgency=low
 
   * Also removing wdb group on uninstall
 
  -- Vegard Bønes <wdb@met.no>  Fri, 19 Sep 2008 13:35:03 +0200
 
-wdb-1.0 (0.7.6-2) unstable; urgency=low
+wdb-0.7 (0.7.6-2) unstable; urgency=low
 
   * Upgraded to the official 0.7.6 (the other one was incorrect)
 
  -- Vegard Bønes <wdb@met.no>  Fri, 19 Sep 2008 09:01:59 +0200
 
-wdb-1.0 (0.7.6-1) unstable; urgency=low
+wdb-0.7 (0.7.6-1) unstable; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Fri, 22 Aug 2008 16:00:30 +0200
 
-wdb-1.0 (0.7.5-1) unstable; urgency=low
+wdb-0.7 (0.7.5-1) unstable; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Wed,  2 Jul 2008 14:44:17 +0200
 
-wdb-1.0 (0.7.4-2) unstable; urgency=low
+wdb-0.7 (0.7.4-2) unstable; urgency=low
 
   * Corrected dependencies
 
  -- Vegard Bønes <wdb@met.no>  Tue, 24 Jun 2008 13:09:43 +0200
 
-wdb-1.0 (0.7.4-1) unstable; urgency=low
+wdb-0.7 (0.7.4-1) unstable; urgency=low
 
   * new upstream release (informal)
 
  -- Vegard Bønes <wdb@met.no>  Fri, 23 May 2008 15:05:23 +0200
 
-wdb-1.0 (0.7.3-1) unstable; urgency=low
+wdb-0.7 (0.7.3-1) unstable; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Fri, 23 May 2008 12:38:27 +0200
 
-wdb-1.0 (0.7.2-1) unstable; urgency=low
+wdb-0.7 (0.7.2-1) unstable; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Wed,  7 May 2008 15:36:11 +0200
 
-wdb-1.0 (0.7.1-1) unstable; urgency=low
+wdb-0.7 (0.7.1-1) unstable; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Tue, 29 Apr 2008 10:02:31 +0200
 
-wdb-1.0 (0.6-1) unstable; urgency=low
+wdb-0.6 (0.6-1) unstable; urgency=low
 
   * new upstream release
 
  -- Vegard Bønes <wdb@met.no>  Mon,  4 Feb 2008 12:56:31 +0100
 
-wdb-1.0 (0.6rc2-5) unstable; urgency=low
+wdb-0.6 (0.6rc2-5) unstable; urgency=low
 
   * fixed dependency issue blocking running of gribload
 
  -- Vegard Bønes <wdb@met.no>  Tue, 29 Jan 2008 14:11:12 +0100
 
-wdb-1.0 (0.6rc2-4) unstable; urgency=low
+wdb-0.6 (0.6rc2-4) unstable; urgency=low
 
   * pqxx will now use unix domain sockets when host is left unspecified
 
  -- Vegard Bønes <wdb@met.no>  Fri, 25 Jan 2008 14:58:14 +0100
 
-wdb-1.0 (0.6rc2-3) unstable; urgency=low
+wdb-0.6 (0.6rc2-3) unstable; urgency=low
 
   * added creation of wdb user account - which fixes local database
     access problems
 
  -- Vegard Bønes <wdb@met.no>  Fri, 25 Jan 2008 13:12:28 +0100
 
-wdb-1.0 (0.6rc2-2) unstable; urgency=low
+wdb-0.6 (0.6rc2-2) unstable; urgency=low
 
   * corrected dependencies and configuration database port number
 
  -- Vegard Bønes <wdb@met.no>  Tue, 15 Jan 2008 10:18:28 +0100
 
-wdb-1.0 (0.6rc2-1) unstable; urgency=low
+wdb-0.6 (0.6rc2-1) unstable; urgency=low
 
   * Initial release 
 
