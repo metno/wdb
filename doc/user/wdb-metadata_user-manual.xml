@@ -53,8 +53,8 @@
 			<title>About this Manual</title>
 			
 			<para>This manual is intended for the system administrator of the WDB system. It 
-			describes how to maintain the metadata in the WDB system. It is assumed that the reader
-				has some familiarity with SQL and weather data.</para>
+			describes how to maintain the metadata in the WDB system. It is assumed that the
+			reader has some familiarity with SQL and weather data.</para>
 			
 			<para>For a more elaborate description of the vision and system architecture of
 				the WDB system, see the WDB Developer's Manual.</para>
@@ -163,13 +163,19 @@
 			a large overlap (for instance, a meteorological station may be identified by several different 
 			indicators or index numbers). WDB provides name spaces as a mechanism to handle this kind of issue.</para>
 			
-			<para></para>
+			<para>A namespace is simply a mapping from a set of names to a set of metadata. Within that mapping,
+			each of the metadata items are unique; thus, one particular data item may have many different 
+			identifications in different namespaces, but only one specific identification within any particular
+			namespace. For example, three countries within one namespace may be named Denmark, Norway, and 
+			Sweden. In another namespace, they could be named Danmark, Norge, and Sverige.</para>
 			
-			Such naming conventions frequently overlap
+			<para>WDB defines namespaces for three types of metadata: a data provider namespace, a place namespace, 
+			and a parameter namespace. For each type of metadata, there always exists a default namespace. The naming in the default
+			namespace is automatically generated from the base metadata in the database.</para>
 			
-			<para>WDB defines three so-called namespaces for its metadata: a data provider namespace,
-			a place namespace, and a parameter namespace. 
-			</para>
+			<para>A namespace in WDB is usually identified by a numerical ID. The default namespace uses ID 0;
+			the test namespace (utilized for the WDB testing framework) is defined by the ID 999. 
+			
 			
 			could be a description of the data item (e.g., temperature),
 				its geographic position, its altitude (or depth), the time the data item was
@@ -246,16 +252,18 @@ SELECT * FROM wci.getDataProvider( NULL );
 									
 		</sect1>
 
-
-
+<sect1>
+		<title>Place (Geographic Location)</title>
+<para>
 Spatial Reference ID (SRID)
 
 The Spatial Reference ID in the database is used for conversion 
 between the different projections that we encounter data in. The
 database is set up to use the "standard" WGS84 longitude-latitude
 projection as its base projection.
+</para>
 
-
+</sect1>
 
 		<sect1 id="sec:place">
 			<title>Place (Geographic Location)</title>
@@ -283,9 +291,8 @@ projection as its base projection.
 				
 				<para>
 				</para>
-				
-			</sect2>
 
+<para>
 
 			Adding a Place Definition
 				Point
@@ -294,6 +301,12 @@ projection as its base projection.
 				
 			Setting a Place Name
 				PlaceName	
-						 				 
+		</para>				 				 
+
+				
+			</sect2>
 
 
+</sect1>
+</chapter>
+</book>

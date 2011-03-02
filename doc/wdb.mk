@@ -4,12 +4,7 @@
 DOCUMENTATION_SRC = \
 	doc/user/wci_user-manual.xml \
 	doc/user/wdb_user-manual.xml \
-	doc/developer/feltload_system-design-specification.xml \
-	doc/developer/feltload_system-test-specification.xml \
-	doc/developer/gribload_system-design-specification.xml \
-	doc/developer/gribload_system-test-specification.xml \
-	doc/developer/kvalobsLoad_system-design-specification.xml \
-	doc/developer/loaderDaemon_system-design-specification.xml \
+	doc/user/wdb-metadata_user-manual.xml \
 	doc/developer/wci_system-design-specification.xml \
 	doc/developer/wci_system-test-specification.xml \
 	doc/developer/wdb_developer-manual.xml \
@@ -23,13 +18,7 @@ html_DATA = $(DOCUMENTATION_OUTPUT)
 
 documentation:	$(DOCUMENTATION_OUTPUT)
 
-
-UNUSED_DOC = \
-	doc/user/feltLoad.man.xml \
-	doc/user/gribLoad.man.xml
-
 USED_DOCS = \
-	doc/user/load_user-manual.xml \
 	doc/user/gfx/wdb_users-architecture-overview.dia \
 	doc/user/gfx/wdb_users-architecture-overview.png \
 	doc/user/gfx/wdb_value-dimensions.dia \

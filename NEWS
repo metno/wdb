@@ -1,8 +1,12 @@
-wdb-1.0 (1.0.0~rc2-2) lucid; urgency=low
+wdb-1.0 (1.0.0~rc3-1) lucid; urgency=low
 
-  * Corrected the short package descriptions, so that they form a complete sentence.
+  * Corrected the short package descriptions, so that they form a complete
+    sentence.
+  
+  * Fixed the creation of the wdb user, so that he correctly receives LOGIN
+    permissions.
 
- -- Michael Akinde <wdb@met.no>  Tue, 01 Mar 2011 13:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Tue, 02 Mar 2011 12:00:00 +0000
 
 wdb-1.0 (1.0.0~rc2-1) lucid; urgency=low
 
@@ -27,9 +31,12 @@ wdb-1.0 (1.0.0~rc1-1) lucid; urgency=low
 
   * Met.no specific metadata has been split out of the core system and is 
     now located in the metno-wdb-metadata package.
-  
+    
   * The field reading module in WCI has been rewritten to improve the 
     performance of wdb.
+  
+  * Fixed a bug that caused an exception when reading point-based float data
+    from both gridded and point-based data sources. 
 
   * Updated dependencies of the wdb package. Split the wdb package into
     two components; a wdb-X.Y package to contain the shared library and
