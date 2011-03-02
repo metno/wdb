@@ -60,7 +60,6 @@
 	<!-- This program is out of date, and should not be in documentation
 	<xi:include href="kvalobsLoad_system-design-specification.xml"
 		xmlns:xi="http://www.w3.org/2003/XInclude"/>
-		-->
 	
 	<xi:include href="gribload_system-design-specification.xml"
 		xmlns:xi="http://www.w3.org/2003/XInclude"/>
@@ -74,5 +73,6 @@
 	
 	<xi:include href="loaderDaemon_system-design-specification.xml"
 		xmlns:xi="http://www.w3.org/2003/XInclude"/>
+		-->
 	
 </book>
