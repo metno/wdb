@@ -36,7 +36,7 @@ Depends: ${misc:Depends},
  postgresql-8.4-postgis,
  postgresql-client (>=8.4.0),
  proj (>=4.6.0)
-Breaks: wdb-0.9
+Breaks: wdb-0.9 (<=0.9.9)
 Replaces: wdb-0.9
 Description: wdb is a database designed to store MHO data.
  The server is designed to store MHO (Meteorological, Hydrological and
@@ -44,3 +44,18 @@ Description: wdb is a database designed to store MHO data.
   is to improve the quality and effectiveness of IT systems for MHO 
   production by providing a complete, flexible, and effective data storage
   solution for real-time and archive data.
+
+Package: wdb
+Architecture: all
+Depends: ${misc:Depends},
+ wdb-1.0
+Description: This meta-package installs the latest WDB database.
+ This meta-package installs the currently supported version of
+ the wdb database.
+ . 
+ wdb is designed to store MHO (Meteorological, Hydrological and
+ Oceanographic) data. The purpose of the system is to improve the
+ quality and effectiveness of IT systems for MHO production by
+ providing a complete, flexible, and effective data storage solution
+ for real-time and archive data.
+  
