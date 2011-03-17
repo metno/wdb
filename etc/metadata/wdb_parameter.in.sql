@@ -12,6 +12,7 @@ SELECT wci.addparameter( 'cloud area fraction', null, null, 'atmosphere layer', 
 SELECT wci.addparameter( 'cloud liquid water content of atmosphere layer', null, null, null, null, null, null, 'ratio' );
 SELECT wci.addparameter( 'convective precipitation amount', null, null, null, null, null, null, 'kg/m2' );
 SELECT wci.addparameter( 'convective snowfall amount', null, null, null, null, null, null, 'kg/m2' );
+SELECT wci.addparameter( 'dew point temperature', null, null, null, null, null, null, 'K' );
 SELECT wci.addparameter( 'geopotential', null, null, null, null, null, null, 'm2/s2' );
 SELECT wci.addparameter( 'geopotential height', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'lagrangian tendency of surface air pressure', null, null, null, null, null, null, 'Pa/s' );
