@@ -68,7 +68,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
     ADD CONSTRAINT dataprovidername_pkey PRIMARY KEY (dataproviderid, dataprovidernamespaceid);
 
 ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
-    ADD CONSTRAINT dataprovidername_skey UNIQUE (dataprovidername);
+    ADD CONSTRAINT dataprovidername_skey UNIQUE (dataprovidernamespaceid, dataprovidername);
 
 ALTER TABLE __WDB_SCHEMA__.dataprovidername
 	ADD FOREIGN KEY (dataproviderid)

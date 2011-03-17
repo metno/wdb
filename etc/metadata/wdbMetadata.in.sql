@@ -30,7 +30,7 @@
 
 -- Configuration (wci.version)
 --COPY __WDB_SCHEMA__.configuration FROM '__WDB_DATADIR__/sql/wdb_configuration.csv' CSV HEADER DELIMITER '|';
-SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', 0 );
+SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', __SCHEMA_VERSION__ );
 
 -- DataProvider (wci.adddataprovider, adddataprovidertogroup, addwciuser)
 \i __WDB_DATADIR__/sql/wdb_dataprovider.sql

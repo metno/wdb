@@ -486,7 +486,7 @@ EOF
 # End Clean Install
 fi
 
-	
+
 while [ $current_version -lt $version_number ]
 do
 	current_version=`expr $current_version + 1`

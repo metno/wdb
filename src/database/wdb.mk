@@ -21,8 +21,9 @@ DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
 						src/database/wciViewDefinitions.in.sql \
 						src/database/wdbAdminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
+
 						
-UPGRADE_SOURCES =		
+UPGRADE_SOURCES =		src/database/wdbUpgrade0001.in.sql		
 # Example: src/database/wdbUpgrade0001.in.sql src/database/wdbUpgrade0002.in.sql  					
 
 sql_DATA += 			$(DATABASE_SOURCES:.in.sql=.sql) \

@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2009 met.no
+-- Copyright (C) 2011 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -17,7 +17,21 @@
 --  (at your option) any later version.
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--
+-- This is the update file for WDB from schema version 0 to schema version 1
+--
+SET SESSION client_min_messages TO 'warning';
 
+-- Fix dataprovidername to correctly handle similar names in different namespaces
+-- 
+ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
+    DROP CONSTRAINT dataprovidername_skey;
+
+ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
+    ADD CONSTRAINT dataprovidername_skey UNIQUE (dataprovidernamespaceid, dataprovidername);
+
+
+    
 --
 -- add New Data Provider
 -- 
@@ -89,70 +103,6 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
---
--- add New Data Provider
--- 
-CREATE OR REPLACE FUNCTION
-wci.addDataProviderToGroup
-(
-	dataProviderName_		text,
-	dataProviderGroup_ 		text
-)
-RETURNS bigint AS
-$BODY$
-DECLARE
-	dpid_		bigint;
-	gpid_		bigint;
-	gplft_		bigint;
-	gprgt_		bigint;
-	namespace_	int;
-BEGIN
-	-- Get namespace
-	SELECT dataprovidernamespaceid INTO namespace_
-	FROM __WCI_SCHEMA__.getSessionData();
-	-- Get DataProvider
-	SELECT dataproviderid INTO dpid_
-	FROM __WCI_SCHEMA__.dataprovider
-	WHERE dataprovidername = lower(dataProviderName_) AND
-		  dataprovidernamespaceid = namespace_;
-	IF NOT FOUND THEN
-		RAISE EXCEPTION 'Could not identify the dataprovider name in WDB';
-	END IF;
-	-- Get Group
-	SELECT dataproviderid, dataprovidernameleftset, dataprovidernamerightset INTO gpid_, gplft_, gprgt_ 
-	FROM __WCI_SCHEMA__.dataprovider
-	WHERE dataprovidername = lower(dataProviderGroup_) AND
-		  dataprovidertype = 'data provider group' AND
-		  dataprovidernamespaceid = namespace_;
-	IF NOT FOUND THEN
-		RAISE EXCEPTION 'Could not identify the dataprovider group in WDB';
-	END IF;
-	-- Update Sets to the right
-	UPDATE	__WDB_SCHEMA__.dataprovidername 
-	SET 	dataprovidernameleftset = dataprovidernameleftset + 2,
-			dataprovidernamerightset = dataprovidernamerightset + 2
-	WHERE	dataprovidernamerightset > gprgt_;
-	-- Update Group
-	UPDATE	__WDB_SCHEMA__.dataprovidername 
-	SET 	dataprovidernamerightset = dataprovidernamerightset + 2
-	WHERE	dataprovidernamespaceid = namespace_
-	  AND	dataproviderid = gpid_;
-	-- Update Dataprovider
-	UPDATE	__WDB_SCHEMA__.dataprovidername 
-	SET 	dataprovidernameleftset = gprgt_
-	WHERE	dataprovidernamespaceid = namespace_
-	  AND	dataproviderid = dpid_;
-	UPDATE	__WDB_SCHEMA__.dataprovidername 
-	SET 	dataprovidernamerightset = gprgt_ + 1
-	WHERE	dataprovidernamespaceid = namespace_
-	  AND	dataproviderid = dpid_;
-	-- Return dataproviderid
-	RETURN dpid_;
-END;
-$BODY$
-SECURITY DEFINER
-LANGUAGE plpgsql VOLATILE;
-
 
 
 CREATE OR REPLACE FUNCTION
@@ -176,34 +126,6 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql STRICT VOLATILE;
-
-
-
---
--- Get DataProviders
---
-CREATE OR REPLACE FUNCTION 
-wci.getDataProvider( dataprovider 		text )	
-RETURNS SETOF __WCI_SCHEMA__.dataprovider AS
-$BODY$
-	SELECT 	d.dataproviderid,
-			d.dataprovidertype,
-			d.spatialdomaindelivery,
-			d.dataprovidernamespaceid,
-			d.dataprovidername,
-			d.dataprovidernameleftset,
-			d.dataprovidernamerightset,
-			d.dataproviderstoretime,
-			d.dataprovidercomment
-	FROM   __WCI_SCHEMA__.dataprovider_mv  d,
-		   __WCI_SCHEMA__.getSessionData() s
-	WHERE  d.dataprovidernamespaceid = s.dataprovidernamespaceid
-	  AND  ( $1 IS NULL OR d.dataprovidername LIKE lower($1) );
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql STABLE;
-
-
 
 --
 -- add new data provider name in namespace
@@ -258,25 +180,45 @@ LANGUAGE plpgsql VOLATILE;
 
 
 
---
--- Get DataProviderName
---
-CREATE OR REPLACE FUNCTION 
-wci.getDataProviderName(
-	name_	text
-)
-RETURNS SETOF __WCI_SCHEMA__.dataprovidername_v AS
+CREATE OR REPLACE FUNCTION
+wci.setConfiguration( name_				varchar(80),
+				  	  code_				varchar(80),
+				  	  versionNumber_	integer )
+RETURNS VOID AS
 $BODY$
-	SELECT
-		*
-	FROM
-		__WCI_SCHEMA__.dataprovidername_v
-	WHERE dataproviderid = SOME 
-		  ( SELECT dataproviderid 
-		    FROM   __WCI_SCHEMA__.dataprovidername_v d,
-		    	   __WCI_SCHEMA__.getSessionData() s
-		    WHERE  d.dataprovidernamespaceid = s.dataprovidernamespaceid
-		      AND  ( d.dataprovidername = lower($1) OR $1 IS NULL ) );
+DECLARE
+	sid_		int;
+BEGIN
+	-- Get OwnerID
+	SELECT partyid INTO sid_
+	FROM __WCI_SCHEMA__.softwareversion
+	WHERE softwarename = name_ AND
+		  softwareversioncode = code_;
+	-- Update or INSERT
+	IF NOT FOUND THEN
+		sid_ := nextval('__WDB_SCHEMA__.party_partyid_seq'::regclass);
+		
+		INSERT INTO __WDB_SCHEMA__.party( PartyId, PartyType, PartyValidFrom, PartyValidTo ) 
+			VALUES ( sid_, 'software', 'now',  'infinity' );
+	
+		INSERT INTO __WDB_SCHEMA__.softwareversion VALUES
+		( sid_, name_, code_ );
+		
+		INSERT INTO __WDB_SCHEMA__.configuration
+		VALUES ( sid_,
+				 versionNumber_,
+				 'now' );
+	ELSE
+		PERFORM *
+		FROM __WDB_SCHEMA__.configuration
+		WHERE softwareversionpartyid = sid_;
+		IF NOT FOUND THEN
+			INSERT INTO __WDB_SCHEMA__.configuration
+			VALUES ( sid_,
+					 versionNumber_,
+					 'now' );
+		END IF;
+	END IF;
+END;
 $BODY$
-SECURITY DEFINER
-LANGUAGE sql STABLE;
+LANGUAGE 'plpgsql' VOLATILE;

@@ -201,7 +201,7 @@ BEGIN
 		sid_ := nextval('__WDB_SCHEMA__.party_partyid_seq'::regclass);
 		
 		INSERT INTO __WDB_SCHEMA__.party( PartyId, PartyType, PartyValidFrom, PartyValidTo ) 
-			VALUES ( sid_, 'software', 'now',  '2999-12-31' );
+			VALUES ( sid_, 'software', 'now',  'infinity' );
 	
 		INSERT INTO __WDB_SCHEMA__.softwareversion VALUES
 		( sid_, name_, code_ );
