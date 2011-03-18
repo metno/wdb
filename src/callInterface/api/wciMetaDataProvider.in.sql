@@ -240,8 +240,7 @@ BEGIN
 		  dataproviderid = dataProviderId_;
 	-- Get Group ID
 	SELECT max(dataprovidernamerightset) INTO gpid_ 
-	FROM   __WCI_SCHEMA__.dataprovider
-	WHERE  dataprovidernamespaceid = namespace_;
+	FROM   __WCI_SCHEMA__.dataprovider;
 	-- Insert new name
 	INSERT INTO __WDB_SCHEMA__.dataprovidername
 	VALUES ( dataProviderId_,

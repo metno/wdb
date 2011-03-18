@@ -1,3 +1,9 @@
+wdb-1.0 (1.0.1~rc2-1) lucid; urgency=high
+
+  * Fixed a bug in wci.setdataprovidername.
+
+ -- Michael Akinde <wdb@met.no>  Fri, 18 Mar 2011 12:00:00 +0000
+
 wdb-1.0 (1.0.1~rc1-1) lucid; urgency=high
 
   * Cleaned up the code for wci.addDataProvider, wci.setDataProviderName
