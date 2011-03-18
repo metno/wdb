@@ -1,4 +1,4 @@
-wdb-1.0 (1.0.1-1) lucid; urgency=high
+wdb-1.0 (1.0.1~rc1-1) lucid; urgency=high
 
   * Cleaned up the code for wci.addDataProvider, wci.setDataProviderName
     and wci.addWciUser. Tweaked the wci.setConfiguration function. 
@@ -12,45 +12,15 @@ wdb-1.0 (1.0.1-1) lucid; urgency=high
 
 wdb-1.0 (1.0.0-1) lucid; urgency=high
 
-  * Release version of WDB 1.0.0
-
- -- Michael Akinde <wdb@met.no>  Wed, 09 Mar 2011 12:00:00 +0000
-
-wdb-1.0 (1.0.0~rc5-1) lucid; urgency=low
-
-  * Simplified the debian packaging for the wdb meta-package.
-
- -- Michael Akinde <wdb@met.no>  Fri, 04 Mar 2011 12:00:00 +0000
-
-wdb-1.0 (1.0.0~rc4-1) lucid; urgency=low
+  * Updated package and system to be compatible with Ubuntu 10.04 (lucid)
+    and Postgres 8.4.
 
   * Added organization as a dataprovider type.
   
   * Added replaces and breaks in debian control.
-
- -- Michael Akinde <wdb@met.no>  Tue, 02 Mar 2011 12:00:00 +0000
-
-wdb-1.0 (1.0.0~rc3-1) lucid; urgency=low
-
-  * Corrected the short package descriptions, so that they form a complete
-    sentence.
   
   * Fixed the creation of the wdb user, so that he correctly receives LOGIN
     permissions.
-
- -- Michael Akinde <wdb@met.no>  Tue, 02 Mar 2011 10:00:00 +0000
-
-wdb-1.0 (1.0.0~rc2-1) lucid; urgency=low
-
-  * This release candidate fixes some errors in the packaging code that
-    caused the wdb-1.0 package to be empty.
-
- -- Michael Akinde <wdb@met.no>  Tue, 01 Mar 2011 12:00:00 +0000
-
-wdb-1.0 (1.0.0~rc1-1) lucid; urgency=low
-
-  * Updated package and system to be compatible with Ubuntu 10.04 (lucid)
-    and Postgres 8.4.
 
   * The wdb database can now be upgraded in place without deleting the
     existing database.
@@ -75,7 +45,7 @@ wdb-1.0 (1.0.0~rc1-1) lucid; urgency=low
     a wdb meta-package that installs the last supported version of the
     database.
 
- -- Michael Akinde <wdb@met.no>  Wed, 23 Feb 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Wed, 09 Mar 2011 12:00:00 +0000
 
 wdb-0.9 (0.9.7-1) hardy; urgency=low
 
