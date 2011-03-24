@@ -1,10 +1,4 @@
-wdb-1.0 (1.0.1~rc2-1) lucid; urgency=high
-
-  * Fixed a bug in wci.setdataprovidername.
-
- -- Michael Akinde <wdb@met.no>  Fri, 18 Mar 2011 12:00:00 +0000
-
-wdb-1.0 (1.0.1~rc1-1) lucid; urgency=high
+wdb-1.0 (1.0.1-1) lucid; urgency=high
 
   * Cleaned up the code for wci.addDataProvider, wci.setDataProviderName
     and wci.addWciUser. Tweaked the wci.setConfiguration function. 
@@ -14,7 +8,7 @@ wdb-1.0 (1.0.1~rc1-1) lucid; urgency=high
     
   * Metadata: Added 'dew point temperature' as a parameter.
 
- -- Michael Akinde <wdb@met.no>  Thu, 17 Mar 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Thu, 24 Mar 2011 12:00:00 +0000
 
 wdb-1.0 (1.0.0-1) lucid; urgency=high
 
