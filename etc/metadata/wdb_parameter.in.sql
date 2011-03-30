@@ -35,10 +35,16 @@ SELECT wci.addparameter( 'relative humidity', null, null, null, null, null, null
 SELECT wci.addparameter( 'roughness length', 'surface', null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'sea floor depth below geoid', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'sea ice area fraction', null, null, null, null, null, null, '%' );
+SELECT wci.addparameter( 'sea surface height above geoid', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'sea surface temperature', null, null, null, null, null, null, 'K' );
 SELECT wci.addparameter( 'sea surface wave significant height', null, null, null, null, null, null, 'm' );
+SELECT wci.addparameter( 'sea surface wave to direction', null, null, null, null, null, null, 'rad' );
+SELECT wci.addparameter( 'sea water temperature', null, null, null, null, null, null, 'K' );
+SELECT wci.addparameter( 'sea water x velocity', null, null, null, null, null, null, 'm/s' );
+SELECT wci.addparameter( 'sea water y velocity', null, null, null, null, null, null, 'm/s' );
 SELECT wci.addparameter( 'sensible heat flux', 'surface', 'upward', null, null, null, null, 'W/m2' );
 SELECT wci.addparameter( 'shortwave flux', 'surface', 'downwelling', 'air', null, null, null, 'W/m2' );
+SELECT wci.addparameter( 'significant wave period', null, null, null, null, null, null, 's' );
 SELECT wci.addparameter( 'soil moisture content', null, null, null, null, null, null, 'kg/m2' );
 SELECT wci.addparameter( 'specific humidity', null, null, null, null, null, null, 'none' );
 SELECT wci.addparameter( 'tendency of surface air pressure', null, null, null, null, null, null, 'Pa/s' );
@@ -50,6 +56,7 @@ SELECT wci.addparameter( 'wind', null, 'y', null, null, null, null, 'm/s' );
 
 -- Level Parameters
 SELECT wci.addparameter( 'atmosphere sigma coordinate', null, null, null, null, null, null, 'none' );
+SELECT wci.addparameter( 'depth', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'height above ground', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'height above reference ellipsoid', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'isobaric surface', null, null, null, null, null, null, 'Pa' );
