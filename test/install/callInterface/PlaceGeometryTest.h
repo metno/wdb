@@ -204,6 +204,11 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG41_04_addWithBothSpacedSrid );
 	CPPUNIT_TEST_EXCEPTION( testG41_05_addWithArbitrarySpacedSrid, pqxx::sql_error );
 
+	// Bug Tests
+	CPPUNIT_TEST( testG101_01_lonlatoutofbounds );
+	CPPUNIT_TEST( testG101_02_lonlatoutofbounds );
+	CPPUNIT_TEST( testG102_01_testLocationInterference );
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -388,6 +393,10 @@ public:
 	void testG41_04_addWithBothSpacedSrid();
 	void testG41_05_addWithArbitrarySpacedSrid();
 
+	void testG101_01_lonlatoutofbounds();
+	void testG101_02_lonlatoutofbounds();
+
+	void testG102_01_testLocationInterference();
 
 private:
 	/**

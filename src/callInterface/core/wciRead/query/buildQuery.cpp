@@ -101,7 +101,7 @@ std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray *
  *                    vary, depending on which table is chosen.
  * @return the given stream.
  */
-std::ostream & addLocationQuery(std::ostream & q, const char * location, DataSource sourceTable, enum OutputType output)
+std::ostream & addLocationQuery(std::ostringstream & q, const char * location, DataSource sourceTable, enum OutputType output)
 {
 	if ( location )
 	{
@@ -110,13 +110,13 @@ std::ostream & addLocationQuery(std::ostream & q, const char * location, DataSou
 			if ( sourceTable == FloatTable )
 			{
 				Location loc(location);
-				q << "AND " << loc.query(Location::RETURN_FLOAT) << " ";
+				q << "AND " << loc.query(q, Location::RETURN_FLOAT) << " ";
 			}
 			else if ( sourceTable == GridTable )
 			{
 				Location loc(location);
 				if ( output == OutputGid )
-					q << "AND " << loc.query(Location::RETURN_OID) << " ";
+					q << "AND " << loc.query(q, Location::RETURN_OID) << " ";
 				//else // OutputFloat
 				//	q << "AND " << loc.query(Location::RETURN_OID_FLOAT);
 			}
@@ -146,14 +146,15 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 
 		if ( parameters )
 		{
-			q << "WHERE ";
-			addDataProviderQuery(q, parameters->dataProvider);
-			addLocationQuery(q, parameters->location, dataSource, output);
-			addReferenceTimeQuery(q, parameters->referenceTime);
-			addValidTimeQuery(q, parameters->validTime);
-			addParameterQuery(q, parameters->parameter);
-			addLevelQuery(q, parameters->level);
-			addDataVersionQuery(q, parameters->dataVersion);
+			std::ostringstream w;
+			addDataProviderQuery(w, parameters->dataProvider);
+			addReferenceTimeQuery(w, parameters->referenceTime);
+			addValidTimeQuery(w, parameters->validTime);
+			addParameterQuery(w, parameters->parameter);
+			addLevelQuery(w, parameters->level);
+			addDataVersionQuery(w, parameters->dataVersion);
+			addLocationQuery(w, parameters->location, dataSource, output);
+			q << "WHERE " << w.str();
 		}
 		if ( ordering )
 		{

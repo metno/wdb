@@ -42,6 +42,7 @@
 #include <performanceTestConfiguration.h>
 #include <wdbConfiguration.h>
 #include "libpq-fe.h"
+#include <endian.h>
 // - Logging
 #include <wdbLogHandler.h>
 
@@ -82,7 +83,6 @@ exitPq(PGconn *conn)
     PQfinish(conn);
     exit(1);
 }
-
 
 }
 
@@ -321,79 +321,366 @@ int main(int argc, char *argv[])
 	/*
 	 * libPQ tests
 	 */
-    /*
     else {
-        PGconn * conn = PQconnectdb(conf.pqDatabaseConnection());
+		// Start Timer
+		ptime timeStart(microsec_clock::universal_time());
+		// Connect
+		PGconn * conn = PQconnectdb(conf.pqDatabaseConnection().c_str());
         if (PQstatus(conn) != CONNECTION_OK)
         {
 			log.errorStream() << "Failed to connect to " << conf.pqDatabaseConnection();
         	exitPq(conn);
         }
-
+        PGresult * res;
+		vector <GridRow *> rows;
 		switch ( conf.input().sample ) {
 		case 121: // Random Field Retrieval
 			// WCI Begin
 			res = PQexec(conn, "select wci.begin ( 'wcitest', 999, 999, 999 )" );
-			if (PQresultStatus(res) != PGRES_COMMAND_OK)
+			if (PQresultStatus(res) != PGRES_TUPLES_OK)
 			{
-				log.errorStream() << "Exception: " << e.what();
+				log.errorStream() << "Failed wci.begin: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
 	            PQclear(res);
-				exitNicely();
+				exitPq(conn);
 			}
 	        PQclear(res);
+			for (int i=0; i<200; i++) {
+				// Fetch rows from pg_database, the system catalog of databases
+				std::string refTime;
+				std::string valTime;
+				randomTimesG(refTime, valTime);
+				std::stringstream queryStr;
+				queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+						 << "from wci.read ("
+						 << "ARRAY['test wci 0'], " // DataProvider
+						 << "'hirlam 10 grid', " // Place
+						 << refTime << ", " // Reference Time
+						 << valTime << ", " // Valid Time
+						 << randomParameterG() << ", " // Parameter
+						 << "NULL, " // LevelSpec
+						 << "ARRAY[0], " // Dataversion
+						 << "NULL::wci.returngid )"; // Return Type
+				const std::string query = queryStr.str();
+				res = PQexecParams(conn, query.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+				if (PQresultStatus(res) != PGRES_TUPLES_OK)
+				{
+					log.errorStream() << "Failed wci.read: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+					PQclear(res);
+					exitPq(conn);
+				}
+				for (int i = 0; i < PQntuples(res); i++)
+				{
+					GridRow * ret = new GridRow();
+					char * valueC = PQgetvalue(res, i, 0);
+					ret->value_ = be64toh(*((uint64_t *) valueC));
+					ret->dataProvider_ = PQgetvalue(res, i, 1);
+					ret->placeName_ = PQgetvalue(res, i, 2);
+					ret->placeGeo_ = PQgetvalue(res, i, 3);
+					ret->referenceTime_ = PQgetvalue(res, i, 4);
+					ret->validFrom_ = PQgetvalue(res, i, 5);
+					ret->validTo_ = PQgetvalue(res, i, 6);
+					ret->parameter_ = PQgetvalue(res, i, 7);
+					ret->parameterUnit_ = PQgetvalue(res, i, 8);
+					ret->levelParameter_ = PQgetvalue(res, i, 9);
+					ret->levelUnit_ = PQgetvalue(res, i, 10);
+					char * levelFC = PQgetvalue(res, i, 11);
+					ret->levelFrom_ = be32toh(*((uint64_t *) levelFC));
+					char * levelTC = PQgetvalue(res, i, 12);
+					ret->levelTo_ =  be32toh(*((uint64_t *) levelTC));
+					char * dataVC = PQgetvalue(res, i, 13);
+					ret->dataVersion_ = be32toh(*((uint32_t *) dataVC));
+					char * qualC = PQgetvalue(res, i, 14);
+					ret->quality_ = be32toh(*((uint32_t *) qualC));
+					ret->storeTime_ = PQgetvalue(res, i, 15);
+					char * validC = PQgetvalue(res, i, 16);
+					ret->valueId_ = be32toh(*((uint32_t *) validC));
+					char * valtC = PQgetvalue(res, i, 17);
+					ret->valueType_ = be32toh(*((uint32_t *) valtC));
+					// Read Field
+					std::stringstream fetchStr;
+					fetchStr << "select * ";
+					fetchStr << "from wci.fetch (";
+					fetchStr <<  ret->value_ <<", "; // DataProvider
+					fetchStr << "NULL::wci.grid	)"; // Return Type
+					log.infoStream() << "Fetch Query: " << fetchStr.str();
+					const std::string fetch = fetchStr.str();
+					PGresult * resF = PQexecParams(conn, fetch.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+					int sizeGrid = PQgetlength(resF, 0, 0);
+					memcpy( &ret->grid_[0], PQgetvalue(resF, 0, 0), sizeGrid);
+					log.infoStream() <<  "Read " << sizeGrid << " bytes";
+					rows.push_back(ret);
+					PQclear(resF);
+				}
+				PQclear(res);
+			}
 
-        /*
-         * Fetch rows from pg_database, the system catalog of databases
-         *
-        res = PQexec(conn, "DECLARE myportal CURSOR FOR select * from pg_database");
-        if (PQresultStatus(res) != PGRES_COMMAND_OK)
-        {
-            fprintf(stderr, "DECLARE CURSOR failed: %s", PQerrorMessage(conn));
-            PQclear(res);
-            exit_nicely(conn);
-        }
-        PQclear(res);
+	    	break;
+		case 122: // Random Field Retrieval
+			// WCI Begin
+			res = PQexec(conn, "select wci.begin ( 'wcitest', 999, 999, 999 )" );
+			if (PQresultStatus(res) != PGRES_TUPLES_OK)
+			{
+				log.errorStream() << "Failed wci.begin: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+	            PQclear(res);
+				exitPq(conn);
+			}
+	        PQclear(res);
+			for (int i=0; i<50; i++) {
+				// Fetch rows from pg_database, the system catalog of databases
+				std::string refTime;
+				std::string valTime;
+				randomTimesG(refTime, valTime);
+				std::stringstream queryStr;
+		        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+		        		 << "from wci.read ("
+		        		 << "ARRAY['test wci 0'], " // DataProvider
+		        		 << "'hirlam 10 grid', " // Place
+		        		 << refTime << ", " // Reference Time
+		        		 << valTime << ", " // Valid Time
+		        		 << "ARRAY['air temperature', 'air pressure', 'air pressure at sea level',"
+		        		 <<  "'precipitation amount', 'altitude', 'snow amount' ], " // Parameter
+		        		 << "NULL, " // LevelSpec
+		        		 << "ARRAY[0], " // Dataversion
+		        		 << "NULL::wci.returngid	)"; // Return Type
+				const std::string query = queryStr.str();
+				res = PQexecParams(conn, query.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+				if (PQresultStatus(res) != PGRES_TUPLES_OK)
+				{
+					log.errorStream() << "Failed wci.read: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+					PQclear(res);
+					exitPq(conn);
+				}
+				for (int i = 0; i < PQntuples(res); i++)
+				{
+					GridRow * ret = new GridRow();
+					char * valueC = PQgetvalue(res, i, 0);
+					ret->value_ = be64toh(*((uint64_t *) valueC));
+					ret->dataProvider_ = PQgetvalue(res, i, 1);
+					ret->placeName_ = PQgetvalue(res, i, 2);
+					ret->placeGeo_ = PQgetvalue(res, i, 3);
+					ret->referenceTime_ = PQgetvalue(res, i, 4);
+					ret->validFrom_ = PQgetvalue(res, i, 5);
+					ret->validTo_ = PQgetvalue(res, i, 6);
+					ret->parameter_ = PQgetvalue(res, i, 7);
+					ret->parameterUnit_ = PQgetvalue(res, i, 8);
+					ret->levelParameter_ = PQgetvalue(res, i, 9);
+					ret->levelUnit_ = PQgetvalue(res, i, 10);
+					char * levelFC = PQgetvalue(res, i, 11);
+					ret->levelFrom_ = be32toh(*((uint64_t *) levelFC));
+					char * levelTC = PQgetvalue(res, i, 12);
+					ret->levelTo_ =  be32toh(*((uint64_t *) levelTC));
+					char * dataVC = PQgetvalue(res, i, 13);
+					ret->dataVersion_ = be32toh(*((uint32_t *) dataVC));
+					char * qualC = PQgetvalue(res, i, 14);
+					ret->quality_ = be32toh(*((uint32_t *) qualC));
+					ret->storeTime_ = PQgetvalue(res, i, 15);
+					char * validC = PQgetvalue(res, i, 16);
+					ret->valueId_ = be32toh(*((uint32_t *) validC));
+					char * valtC = PQgetvalue(res, i, 17);
+					ret->valueType_ = be32toh(*((uint32_t *) valtC));
+					// Read Field
+					std::stringstream fetchStr;
+					fetchStr << "select * ";
+					fetchStr << "from wci.fetch (";
+					fetchStr <<  ret->value_ <<", "; // DataProvider
+					fetchStr << "NULL::wci.grid	)"; // Return Type
+					//log.infoStream() << "Fetch Query: " << fetchStr.str();
+					const std::string fetch = fetchStr.str();
+					PGresult * resF = PQexecParams(conn, fetch.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+					int sizeGrid = PQgetlength(resF, 0, 0);
+					memcpy( &ret->grid_[0], PQgetvalue(resF, 0, 0), sizeGrid);
+					log.infoStream() <<  "Read " << sizeGrid << " bytes";
+					rows.push_back(ret);
+					PQclear(resF);
+				}
+				PQclear(res);
+			}
+	    	break;
+		case 123: // Random Field Retrieval
+			// WCI Begin
+			res = PQexec(conn, "select wci.begin ( 'wcitest', 999, 999, 999 )" );
+			if (PQresultStatus(res) != PGRES_TUPLES_OK)
+			{
+				log.errorStream() << "Failed wci.begin: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+	            PQclear(res);
+				exitPq(conn);
+			}
+	        PQclear(res);
+			for (int i=0; i<500; i++) {
+				// Fetch rows from pg_database, the system catalog of databases
+				std::string refTime;
+				std::string valTime;
+				randomTimesG(refTime, valTime);
+				std::stringstream queryStr;
+		        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+		        		 << "from wci.read ("
+		        		 << "ARRAY['test wci 0'], " // DataProvider
+		        		 << "'hirlam 10 grid', " // Place
+		        		 << "'1980-01-01 12:00:00Z', " // Reference Time
+		        		 << "NULL, " // Valid Time
+		        		 << "ARRAY['air temperature'], " // Parameter
+		        		 << "NULL, " // LevelSpec
+		        		 << "ARRAY[0], " // Dataversion
+		        		 << "NULL::wci.returngid	)"; // Return Type
+				const std::string query = queryStr.str();
+				res = PQexecParams(conn, query.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+				if (PQresultStatus(res) != PGRES_TUPLES_OK)
+				{
+					log.errorStream() << "Failed wci.read: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+					PQclear(res);
+					exitPq(conn);
+				}
+				for (int i = 0; i < PQntuples(res); i++)
+				{
+					GridRow * ret = new GridRow();
+					char * valueC = PQgetvalue(res, i, 0);
+					ret->value_ = be64toh(*((uint64_t *) valueC));
+					ret->dataProvider_ = PQgetvalue(res, i, 1);
+					ret->placeName_ = PQgetvalue(res, i, 2);
+					ret->placeGeo_ = PQgetvalue(res, i, 3);
+					ret->referenceTime_ = PQgetvalue(res, i, 4);
+					ret->validFrom_ = PQgetvalue(res, i, 5);
+					ret->validTo_ = PQgetvalue(res, i, 6);
+					ret->parameter_ = PQgetvalue(res, i, 7);
+					ret->parameterUnit_ = PQgetvalue(res, i, 8);
+					ret->levelParameter_ = PQgetvalue(res, i, 9);
+					ret->levelUnit_ = PQgetvalue(res, i, 10);
+					char * levelFC = PQgetvalue(res, i, 11);
+					ret->levelFrom_ = be32toh(*((uint64_t *) levelFC));
+					char * levelTC = PQgetvalue(res, i, 12);
+					ret->levelTo_ =  be32toh(*((uint64_t *) levelTC));
+					char * dataVC = PQgetvalue(res, i, 13);
+					ret->dataVersion_ = be32toh(*((uint32_t *) dataVC));
+					char * qualC = PQgetvalue(res, i, 14);
+					ret->quality_ = be32toh(*((uint32_t *) qualC));
+					ret->storeTime_ = PQgetvalue(res, i, 15);
+					char * validC = PQgetvalue(res, i, 16);
+					ret->valueId_ = be32toh(*((uint32_t *) validC));
+					char * valtC = PQgetvalue(res, i, 17);
+					ret->valueType_ = be32toh(*((uint32_t *) valtC));
+					// Read Field
+					std::stringstream fetchStr;
+					fetchStr << "select * ";
+					fetchStr << "from wci.fetch (";
+					fetchStr <<  ret->value_ <<", "; // DataProvider
+					fetchStr << "NULL::wci.grid	)"; // Return Type
+					//log.infoStream() << "Fetch Query: " << fetchStr.str();
+					const std::string fetch = fetchStr.str();
+					PGresult * resF = PQexecParams(conn, fetch.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+					int sizeGrid = PQgetlength(resF, 0, 0);
+					memcpy( &ret->grid_[0], PQgetvalue(resF, 0, 0), sizeGrid);
+					log.infoStream() <<  "Read " << sizeGrid << " bytes";
+					rows.push_back(ret);
+					PQclear(resF);
+				}
+				PQclear(res);
+			}
+	    	break;
+		case 124: // Random Field Retrieval
+			// WCI Begin
+			res = PQexec(conn, "select wci.begin ( 'wcitest', 999, 999, 999 )" );
+			if (PQresultStatus(res) != PGRES_TUPLES_OK)
+			{
+				log.errorStream() << "Failed wci.begin: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+	            PQclear(res);
+				exitPq(conn);
+			}
+	        PQclear(res);
+			for (int i=0; i<50; i++) {
+				// Fetch rows from pg_database, the system catalog of databases
+				std::string refTime;
+				std::string valTime;
+				randomTimesG(refTime, valTime);
+				std::stringstream queryStr;
+		        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+		        		 << "from wci.read ("
+		        		 << "ARRAY['test wci 0'], " // DataProvider
+		        		 << randomPointF() << ", " // Place
+		        		 << "'1980-01-01 12:00:00Z', " // Reference Time
+		        		 << "'1980-01-01 13:00:00Z', " // Valid Time
+		        		 << "ARRAY['air temperature'], " // Parameter
+		        		 << "NULL, " // LevelSpec
+		        		 << "ARRAY[0], " // Dataversion
+		        		 << "NULL::wci.returnfloat	)"; // Return Type
+				const std::string query = queryStr.str();
+				res = PQexecParams(conn, query.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+				if (PQresultStatus(res) != PGRES_TUPLES_OK)
+				{
+					log.errorStream() << "Failed wci.read: " << PQresultErrorMessage(res) << " " << PQerrorMessage(conn);
+					PQclear(res);
+					exitPq(conn);
+				}
+				for (int i = 0; i < PQntuples(res); i++)
+				{
+					GridRow * ret = new GridRow();
+					char * valueC = PQgetvalue(res, i, 0);
+					ret->value_ = be64toh(*((uint64_t *) valueC));
+					ret->dataProvider_ = PQgetvalue(res, i, 1);
+					ret->placeName_ = PQgetvalue(res, i, 2);
+					ret->placeGeo_ = PQgetvalue(res, i, 3);
+					ret->referenceTime_ = PQgetvalue(res, i, 4);
+					ret->validFrom_ = PQgetvalue(res, i, 5);
+					ret->validTo_ = PQgetvalue(res, i, 6);
+					ret->parameter_ = PQgetvalue(res, i, 7);
+					ret->parameterUnit_ = PQgetvalue(res, i, 8);
+					ret->levelParameter_ = PQgetvalue(res, i, 9);
+					ret->levelUnit_ = PQgetvalue(res, i, 10);
+					char * levelFC = PQgetvalue(res, i, 11);
+					ret->levelFrom_ = be32toh(*((uint64_t *) levelFC));
+					char * levelTC = PQgetvalue(res, i, 12);
+					ret->levelTo_ =  be32toh(*((uint64_t *) levelTC));
+					char * dataVC = PQgetvalue(res, i, 13);
+					ret->dataVersion_ = be32toh(*((uint32_t *) dataVC));
+					char * qualC = PQgetvalue(res, i, 14);
+					ret->quality_ = be32toh(*((uint32_t *) qualC));
+					ret->storeTime_ = PQgetvalue(res, i, 15);
+					char * validC = PQgetvalue(res, i, 16);
+					ret->valueId_ = be32toh(*((uint32_t *) validC));
+					char * valtC = PQgetvalue(res, i, 17);
+					ret->valueType_ = be32toh(*((uint32_t *) valtC));
+					// Read Field
+					std::stringstream fetchStr;
+					fetchStr << "select * ";
+					fetchStr << "from wci.fetch (";
+					fetchStr <<  ret->value_ <<", "; // DataProvider
+					fetchStr << "NULL::wci.grid	)"; // Return Type
+					//log.infoStream() << "Fetch Query: " << fetchStr.str();
+					const std::string fetch = fetchStr.str();
+					PGresult * resF = PQexecParams(conn, fetch.c_str(), 0, NULL, NULL, NULL, NULL, 1 );
+					int sizeGrid = PQgetlength(resF, 0, 0);
+					memcpy( &ret->grid_[0], PQgetvalue(resF, 0, 0), sizeGrid);
+					log.infoStream() <<  "Read " << sizeGrid << " bytes";
+					rows.push_back(ret);
+					PQclear(resF);
+				}
+				PQclear(res);
+			}
+	    	break;
+		}
+		// Timing
+		ptime timeEnd(microsec_clock::universal_time());
+		time_duration timeSpent = timeEnd - timeStart;
+		int rowsR = 0;
+		rowsR += rows.size();
+		cout << endl << "Grid Rows Returned: " << rows.size() << " rows" << endl;
+		cout << "Time Elapsed:  " << timeSpent.total_milliseconds() << " milliseconds" << endl;
+		cout << "Throughput:    " << static_cast<double>(rowsR)/static_cast<double>(timeSpent.total_milliseconds()) * 1000.0
+			 << " rows per second" << endl;
 
-        res = PQexec(conn, "FETCH ALL in myportal");
-        if (PQresultStatus(res) != PGRES_TUPLES_OK)
-        {
-            fprintf(stderr, "FETCH ALL failed: %s", PQerrorMessage(conn));
-            PQclear(res);
-            exit_nicely(conn);
-        }
-
-        /* first, print out the attribute names
-        nFields = PQnfields(res);
-        for (i = 0; i < nFields; i++)
-            printf("%-15s", PQfname(res, i));
-        printf("\n\n");
-
-        /* next, print out the rows
-        for (i = 0; i < PQntuples(res); i++)
-        {
-            for (j = 0; j < nFields; j++)
-                printf("%-15s", PQgetvalue(res, i, j));
-            printf("\n");
-        }
-
-        PQclear(res);
-
-        /* close the portal ... we don't bother to check for errors ...
-        res = PQexec(conn, "CLOSE myportal");
-        PQclear(res);
-
-        /* end the transaction *
-        res = PQexec(conn, "END");
-        PQclear(res);
-
-        /* close the connection to the database and cleanup
+		// Print Out
+		if ( conf.output().printResult ) {
+			cout << "Results" << endl;
+			vector<GridRow *>::const_iterator myTuple;
+			for(myTuple=rows.begin(); myTuple!=rows.end(); myTuple++)
+			{
+				cout << (*myTuple)->value_ << " | "
+					 << (*myTuple)->dataProvider_ << " | "
+					 << (*myTuple)->placeName_ << " | "
+					 << (*myTuple)->placeGeo_ << endl;
+			}
+		}
+        // close the connection to the database and cleanup
         PQfinish(conn);
-
-        return 0;
-    	pqConnect();
-
-
     }
-	*/
 	return 0;
 }

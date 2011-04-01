@@ -59,7 +59,7 @@ Location::Location(const std::string & location)
 					"(POLYGON)\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
 						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
 					")|"
-					"([\\wæøåäö][\\w\\d\\s,._æøåäö]*))$"); // freetext location
+					"([\\wï¿½ï¿½ï¿½ï¿½ï¿½][\\w\\d\\s,._ï¿½ï¿½ï¿½ï¿½ï¿½]*))$"); // freetext location
 	smatch match;
 	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
@@ -130,10 +130,16 @@ void Location::determineInterpolation() {
 		interpolationType_ = find->second;
 }
 
-string Location::query( Location::QueryReturnType returnType ) const
+string Location::query( std::ostringstream & w, Location::QueryReturnType returnType ) const
 {
 	ostringstream q;
 	std::string myGeometry;
+	std::string where = w.str();
+	size_t found = where.find("'");
+	while (found!=string::npos) {
+		where.replace(found, 1, "''");
+		found = where.find("'", found + 2);
+	}
 
 	switch ( returnType )
 	{
@@ -194,7 +200,7 @@ string Location::query( Location::QueryReturnType returnType ) const
 				<< "1, "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "
-				<< "'true', "
+				<< "'" << where << "', "
 				<< "'placeid', "
 				<< "'placegeometry' ))";
 			break;
@@ -212,7 +218,7 @@ string Location::query( Location::QueryReturnType returnType ) const
 				<< interpolationParameter_ << ", "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "
-				<< "'true', "
+				<< "'" << where << "', "
 				<< "'valueid', "
 				<< "'placegeometry' ))";
 			break;

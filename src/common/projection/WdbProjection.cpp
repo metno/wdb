@@ -47,6 +47,7 @@
 // PROJECT INCLUDES
 #include <wdbLogHandler.h>
 // SYSTEM INCLUDES
+#include <math.h>
 #include <sstream>
 #include <proj_api.h>
 #include <boost/noncopyable.hpp>
@@ -78,15 +79,24 @@ WdbProjection::transform(const WdbProjection & dest, size_t size, double * lon, 
 	int error = pj_transform( projDef_, dest.projDef_, size, 0, lon, lat, NULL);
 	if ( error )
 	{
-		ostringstream msg;
-		msg << "Error during reprojection: " << pj_strerrno(error) << "." << '\n'
-			<< "From:\t" << projText_ << '\n'
-			<< "To:\t"<< dest.projText_ ;
-		if ( size > 0 ) {
-			msg << '\n' << "Coordinates: " << lon[0] << ' ' << lat[0];
+		switch ( error ) {
+		case -14:
+			// Longitude or Latitude out of bounds
+			for ( int i=0; i<size; i++ ) {
+				lon[i] = HUGE_VAL;
+				lat[i] = HUGE_VAL;
+			}
+			break;
+		default:
+			ostringstream msg;
+			msg << "Error during reprojection: " << pj_strerrno(error) << "." << '\n'
+				<< "From:\t" << projText_ << '\n'
+				<< "To:\t"<< dest.projText_ ;
+			if ( size > 0 ) {
+				msg << '\n' << "Coordinates: " << lon[0] << ' ' << lat[0];
+			}
+			throw std::runtime_error( msg.str() );
 		}
-
-		throw std::runtime_error( msg.str() );
 	}
 }
 

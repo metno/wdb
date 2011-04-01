@@ -64,28 +64,61 @@ done
 # Variables
 WORK_DIR=`pwd | sed -e 's,^[^:\\/]:[\\/],/,'`
 UPGRADE_DIR=upgradecheck
-INSTALL_DIR=$UPGRADE_DIR/_inst
 OLDWDB_DIR=$UPGRADE_DIR/__OLD_VERSION__
 NEWWDB_DIR=$UPGRADE_DIR/__WDB_VERSION__
+INSTALL_DIR0=$UPGRADE_DIR/_inst0
+INSTALL_DIR1=$UPGRADE_DIR/_inst1
+TEST_DB0=wdb_upgradecheck0
+TEST_DB1=wdb_upgradecheck1
 WDBSVN_DIR=https://svn.met.no/wdbSystem/
-TEST_DB=wdb_upgradecheck
-export PGDATABASE=$TEST_DB
-export PSQL="psql -d $TEST_DB"
 TEST_WRITE="./testWrite"
+
+export PGDATABASE=$TEST_DB0
+export PSQL="psql -d $TEST_DB0"
 
 test_cleanup() {
 	echo "Cleaning up database"
 	cd $WORK_DIR
 	rm -rf $UPGRADE_DIR
+	dropdb $TEST_DB0
 	dropdb $TEST_DB
 }
 
-# Create directories
-mkdir $UPGRADE_DIR
-mkdir $INSTALL_DIR
+test_datawrite() {
+	# Insert some test data
+	echo -n "Inserting test data into the database... "
+	days="01"
+	hours="00 06 12 18"
+	timesteps="0 6 12 18"
+	for dd in $days
+	  do
+	  for hh in $hours 
+	    do
+	    for timestep in $timesteps
+		  do
+		  vh=`expr $timestep + $hh`
+		  if test $vh -ge 24; then
+			vh=`expr $vh - 24`
+		  fi		
+		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air pressure' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'snow depth distance' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+	    done
+	  done
+	done
+	echo "done"
+}
 
-# Create package
-make dist
+# Create directories
+mkdir -p $OLDWDB_DIR
+mkdir -p $NEWWDB_DIR
+
+# Create Baseline
+
+
+# Create Upgrade
+export PGDATABASE=$TEST_DB1
+export PSQL="psql -d $TEST_DB1"
 
 # Check out WDB
 svn co $WDBSVN_DIR/tags/__OLD_VERSION__/wdb $OLDWDB_DIR
@@ -95,10 +128,6 @@ if [ 0 != $? ]; then
     exit 1
 fi
 
-cd $INSTALL_DIR
-PREFIX_DIR=`pwd | sed -e 's,^[^:\\/]:[\\/],/,'`
-cd $WORK_DIR
-
 # Make and install
 cd $OLDWDB_DIR
 if [ 0 != $? ]; then
@@ -107,7 +136,7 @@ if [ 0 != $? ]; then
     exit 1
 fi
 ./autogen.sh
-./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
+./configure --srcdir=. --prefix=$INSTALL_DIR1 --with-database-name=$TEST_DB1
 make all install
 if [ 0 != $? ]; then
     echo "ERROR: Install of old database failed"
@@ -115,29 +144,8 @@ if [ 0 != $? ]; then
     exit 1
 fi
 
-# Insert some test data
-echo -n "Inserting test data into the database... "
-days="01"
-hours="00 06 12 18"
-timesteps="0 6 12 18"
-for dd in $days
-  do
-  for hh in $hours 
-    do
-    for timestep in $timesteps
-	  do
-	  vh=`expr $timestep + $hh`
-	  if test $vh -ge 24; then
-		vh=`expr $vh - 24`
-	  fi		
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air pressure' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
-	  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'snow depth distance' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
-    done
-  done
-done
-echo "done"
-
+# Write test data
+test_datawrite
 
 # -- Check for presence of test data 
 echo -n "Checking number of rows in gridvalue... "

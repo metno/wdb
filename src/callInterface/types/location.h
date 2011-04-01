@@ -33,6 +33,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <sstream>
 #include <interpolationType.h>
 
 class Location
@@ -88,7 +89,7 @@ public:
 	 * the return type that is required by the wci_read query.
 	 * 0 = OID, and 1 = Float.
 	 */
-	std::string query( QueryReturnType returnType ) const;
+	std::string query( std::ostringstream & w, QueryReturnType returnType ) const;
 
 	/**
 	 * The error when a specification is syntactically incorrect

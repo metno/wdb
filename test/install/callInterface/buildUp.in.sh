@@ -83,6 +83,15 @@ $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 6' --reftime '20
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 7' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 # G30 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'surface roughness length' --initCoord
+# G101 Test
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test utm grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'cloud area fraction'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test utm grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'land area fraction'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'global grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'land area fraction'
+# G102 Test
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 8' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-13 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 9' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-13 06:00:00+00' 
+
+# Fix wci.write. Cannot write gridded data to floatvalue table
 
 
 # ReferenceTime

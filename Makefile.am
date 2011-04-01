@@ -439,7 +439,7 @@ performancecheck:  $(PERFORMANCETESTS)
 #-----------------------------------------------------------------------------
 
 UPGRADECHECK_DATABASE_NAME = wdb_upgradecheck
-UPGRADECHECK_CONFIGURE_FLAGS = --enable-database-install --with-database-name=$(UPGARDECHECK_DATABASE_NAME)
+UPGRADECHECK_CONFIGURE_FLAGS = --enable-database-install --with-database-name=$(UPGRADECHECK_DATABASE_NAME)
 
 upgradecheck: all
 	@builddir@/test/upgrade/upgrade_test.sh

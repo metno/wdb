@@ -424,7 +424,7 @@ string DataVersionTest::statementOid_( const string & dataVersion, int paramid )
 {
     ostringstream st;
     st << "SELECT dataversion FROM wci.read( ARRAY['test wci 0'], NULL,"
-       << "'2004-12-29 06:00:00', NULL, "
+       << "'2004-12-29 06:00:00+00', NULL, "
        << "ARRAY['" << specFromParamNumber_.find( paramid )->second << "'], "
        << "NULL, "
        << dataVersion << ", NULL::wci.returngid )";
@@ -437,7 +437,7 @@ string DataVersionTest::statementFloat_( const string & dataVersion, int paramid
     ostringstream st;
     st << "SELECT dataversion FROM wci.read( ARRAY['test wci 1', 'test wci 4'], "
 	   << "'nearest test point 0', "
-       << "'2004-12-29 06:00:00', NULL, "
+       << "'2004-12-29 06:00:00+00', NULL, "
        << "ARRAY['" << specFromParamNumber_.find( paramid )->second << "'], "
        << "NULL, "
        << dataVersion << ", NULL::wci.returnFloat )";

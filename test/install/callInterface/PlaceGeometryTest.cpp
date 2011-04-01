@@ -216,8 +216,6 @@ void PlaceGeometryTest::testG2_05A_NullGeometry()
 void PlaceGeometryTest::testG2_05B_NullGeometry()
 {
     // We are here only interested in showing that this is valid, but returns no rows
-    // Since we have had an error here related to return value, we test this
-    // aswell: return value is oid instead of floats.
     result floatReturn = t->exec( statement_( "NULL" ) );
     CPPUNIT_ASSERT( floatReturn.empty() ); // No rows returned
 }
@@ -1288,7 +1286,34 @@ void PlaceGeometryTest::testG41_05_addWithArbitrarySpacedSrid()
     CPPUNIT_ASSERT( rC.size() );
 }
 
+void PlaceGeometryTest::testG101_01_lonlatoutofbounds()
+{
+	const result::size_type expectedRowsI = 1;
+    result rI = t->exec( statement_( "nearest POINT(13 64.5)", 100 ) );
+    CPPUNIT_ASSERT_EQUAL( expectedRowsI, rI.size() );
 
+    const result::size_type expectedRows = 0;
+    result r = t->exec( statement_( "nearest POINT(151 -33)", 100 ) );
+    CPPUNIT_ASSERT_EQUAL( expectedRows, r.size() );
+}
+
+void PlaceGeometryTest::testG101_02_lonlatoutofbounds()
+{
+	const result::size_type expectedRowsI = 2;
+    result rI = t->exec( statement_( "nearest POINT(13 64.5)", 101 ) );
+    CPPUNIT_ASSERT_EQUAL( expectedRowsI, rI.size() );
+
+    const result::size_type expectedRows = 1;
+    result r = t->exec( statement_( "nearest POINT(151 -33)", 101 ) );
+    CPPUNIT_ASSERT_EQUAL( expectedRows, r.size() );
+}
+
+void PlaceGeometryTest::testG102_01_testLocationInterference()
+{
+	const result::size_type expectedRowsI = 1;
+    result rI = t->exec( statementFloat_( "nearest POINT(15 60)", 10 ) );
+    CPPUNIT_ASSERT_EQUAL( expectedRowsI, rI.size() );
+}
 
 
 // Support Functions
@@ -1343,6 +1368,8 @@ map<int, string> getSpecFromParamNumber()
     ret[ 33 ] = "x wind";
     ret[ 34 ] = "y wind";
     ret[ 66 ] = "surface roughness length";
+    ret[ 100 ] = "cloud area fraction";
+    ret[ 101 ] = "land area fraction";
 
     return ret;
 }

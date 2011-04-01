@@ -40,13 +40,6 @@ RETURNS __WCI_SCHEMA__.location AS
 LANGUAGE 'c' IMMUTABLE STRICT;
 
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getPlaceQuery( spec TEXT, returnType INTEGER )
-RETURNS text AS
-'__WDB_LIBDIR__/__WCI_LIB__', 'wci_getPlaceQuery'
-LANGUAGE 'c' IMMUTABLE STRICT;
-
-
-
 CREATE OR REPLACE FUNCTION
 __WCI_SCHEMA__.getPlaceId(
 	name_ text

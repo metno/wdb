@@ -75,7 +75,7 @@ extern "C"
         PG_RETURN_NULL();
     }
 
-
+    /*
 	PG_FUNCTION_INFO_V1( wci_getPlaceQuery );
 	/// Create where clause based on place id
 	Datum wci_getPlaceQuery(PG_FUNCTION_ARGS)
@@ -118,7 +118,7 @@ extern "C"
 		PG_RETURN_TEXT_P( ret );
 		
 	}
-
+	*/
 		
     
 }
