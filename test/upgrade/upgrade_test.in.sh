@@ -63,25 +63,22 @@ done
 
 # Variables
 WORK_DIR=`pwd | sed -e 's,^[^:\\/]:[\\/],/,'`
-UPGRADE_DIR=upgradecheck
+UPGRADE_DIR=__WDB_BUILDDIR__/upgradecheck
 OLDWDB_DIR=$UPGRADE_DIR/__OLD_VERSION__
 NEWWDB_DIR=$UPGRADE_DIR/__WDB_VERSION__
 INSTALL_DIR0=$UPGRADE_DIR/_inst0
 INSTALL_DIR1=$UPGRADE_DIR/_inst1
 TEST_DB0=wdb_upgradecheck0
 TEST_DB1=wdb_upgradecheck1
-WDBSVN_DIR=https://svn.met.no/wdbSystem/
+WDBSVN_DIR=https://wdb.svn.sourceforge.net/svnroot/wdb
 TEST_WRITE="./testWrite"
-
-export PGDATABASE=$TEST_DB0
-export PSQL="psql -d $TEST_DB0"
 
 test_cleanup() {
 	echo "Cleaning up database"
 	cd $WORK_DIR
 	rm -rf $UPGRADE_DIR
 	dropdb $TEST_DB0
-	dropdb $TEST_DB
+	dropdb $TEST_DB1
 }
 
 test_datawrite() {
@@ -102,7 +99,7 @@ test_datawrite() {
 		  fi		
 		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air pressure' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'air temperature' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
-		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'snow depth distance' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
+		  $TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime 1980-01-"$dd"T"$hh":00:00+00 --valueparameter 'snowfall amount' --validtimefrom 1980-01-"$dd"T"$vh":00:00+00 --validtimeto 1980-01-"$dd"T"$vh":00:00+00 
 	    done
 	  done
 	done
@@ -114,14 +111,65 @@ mkdir -p $OLDWDB_DIR
 mkdir -p $NEWWDB_DIR
 
 # Create Baseline
+export PGDATABASE=$TEST_DB0
+export PSQL="psql -d $TEST_DB0"
 
+cd $WORK_DIR
+
+make dist
+mv __WDB_DISTDIR__.tar.gz $UPGRADE_DIR
+cd $UPGRADE_DIR
+tar xvf __WDB_DISTDIR__.tar.gz
+cd __WDB_DISTDIR__
+./configure --srcdir=. --prefix=$INSTALL_DIR0 --with-database-name=$TEST_DB0
+if [ 0 != $? ]; then
+    echo "ERROR: Failed to run configure on clean database"
+	test_cleanup
+    exit 1
+fi
+make all install installcheck
+if [ 0 != $? ]; then
+    echo "ERROR: Install anc check of clean database failed"
+	test_cleanup
+    exit 1
+fi
+
+# Write test data
+test_datawrite
+
+# -- Check for presence of test data 
+echo -n "Checking number of rows in gridvalue... "
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+then
+   	echo "failed"
+	test_cleanup
+    exit 1
+else
+	echo "48"
+fi
+echo -n "Checking number of rows in fileblob... "
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+then
+   	echo "failed"
+	test_cleanup
+    exit 1
+else
+	echo "48"
+fi
+
+echo -n "Writing data check files... "
+$PSQL -Atc "SELECT dataprovidername, ASTEXT(placegeometry), placeindeterminatecode, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelFrom, levelTo, levelindeterminatecode, dataversion, maxdataversion, confidencecode FROM test.gridvalue" -t -o $UPGRADE_DIR/data_check0.txt 
+echo "done"
+
+# Ensure we are in build directory
+cd $WORK_DIR
 
 # Create Upgrade
 export PGDATABASE=$TEST_DB1
 export PSQL="psql -d $TEST_DB1"
 
 # Check out WDB
-svn co $WDBSVN_DIR/tags/__OLD_VERSION__/wdb $OLDWDB_DIR
+svn co $WDBSVN_DIR/tags/wdb___OLD_VERSION__ $OLDWDB_DIR
 if [ 0 != $? ]; then
     echo "ERROR: Failed to check out the old version of WDB."
 	test_cleanup
@@ -171,17 +219,18 @@ fi
 cd $WORK_DIR
 
 # Upgrade database
+make dist
 mv __WDB_DISTDIR__.tar.gz $UPGRADE_DIR
 cd $UPGRADE_DIR
 tar xvf __WDB_DISTDIR__.tar.gz
 cd __WDB_DISTDIR__
-./configure --srcdir=. --prefix=$PREFIX_DIR --with-database-name=$TEST_DB
+./configure --srcdir=. --prefix=$INSTALL_DIR1 --with-database-name=$TEST_DB1
 if [ 0 != $? ]; then
     echo "ERROR: Failed to run configure on the new database version"
 	test_cleanup
     exit 1
 fi
-make upgrade
+make all install
 if [ 0 != $? ]; then
     echo "ERROR: Upgrading of the database failed"
 	test_cleanup
@@ -207,6 +256,24 @@ then
 else
 	echo "48"
 fi
+
+echo -n "Writing data check files... "
+$PSQL -Atc "SELECT dataprovidername, ASTEXT(placegeometry), placeindeterminatecode, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelFrom, levelTo, levelindeterminatecode, dataversion, maxdataversion, confidencecode FROM test.gridvalue" -t -o $UPGRADE_DIR/data_check1.txt 
+echo "done"
+
+echo -n "Diff between data check files... "
+if diff $UPGRADE_DIR/data_check0.txt $UPGRADE_DIR/data_check1.txt
+then
+   	echo "done"
+else
+	echo "failed"
+	# Save diff files
+	cp $UPGRADE_DIR/data_check0.txt $UPGRADE_DIR/data_check1.txt $WORK_DIR
+	test_cleanup
+    exit 1
+fi
+
+# Test for point-based data (grid and point values)
 
 # -- Check the integrity of the database
 make installcheck

@@ -218,6 +218,9 @@
 				starting up the session.
 			</para>
 			
+			<sect2 id="sec:data_provider_browse">
+				<title>Browse Data Providers</title>
+			
 			<para>To retrieve all of the DataProviderNames (excluding data provider groups) that are
 				currently stored in the database for the currently specified namespace, the following 
 				wci.browse function call could be used:</para>
@@ -233,10 +236,97 @@ SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
 			<programlisting>
 SELECT * FROM wci.getDataProvider( NULL );
 		</programlisting>
-									
+		
+			</sect2>
+			
+			<sect2 id="sec:data_provider_add">
+				<title>Add Data Providers</title>
+			
+			<para>To add a new data provider to the database, the wci.adddataprovider function is used.
+			The following function call adds the dataprovider gribload to the database.</para>
+			
+			<programlisting>
+select wci.adddataprovider( 'gribload',
+							'computer system',
+							'grid', 
+							'1 day',
+							'Data received from WDB gribLoad (unidentified)' );
+			</programlisting>
+			
+			<para>The first parameter in the function is the data provider name itself. The following
+			parameter details the type of data provider. The current data provider types available are:</para>
+		
+			<itemizedlist>
+				<listitem>
+					<para>aeroplane</para>
+				</listitem>
+				<listitem>
+					<para>computer system</para>
+				</listitem>
+				<listitem>
+					<para>data provider group</para>
+				</listitem>
+				<listitem>
+					<para>named observation site</para>
+				</listitem>
+				<listitem>
+					<para>organization</para>
+				</listitem>
+				<listitem>
+					<para>person</para>
+				</listitem>
+				<listitem>
+					<para>ship</para>
+				</listitem>
+				<listitem>
+					<para>wci user</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>The third parameter describes what kind of data can be written by 
+			the data provider. Currently there are two kinds of data that are possible;
+			'point' and 'grid'. Specifying 'any' here indicates that the type of data
+			provided can be either of the above options.</para>
+			
+			<para>The fourth parameter describes the lifetime of the data in the WDB
+			system as an interval. Depending on when (and how) the cleaning programs
+			are run, the database will be expected to clean out data once it's age
+			exceeds the number given here.</para>
+			
+			<para>The fifth parameter is a comment field. Ideally, it contains a
+			few brief lines of text that describe and explain the data provider
+			entity.</para>
+			
+			</sect2>
+			
+			<sect2 id="sec:data_provider_group">
+				<title>Data Provider Groups</title>
+			
+			<para>Data provider groups permit the user a convenient way to retrieve a set of 
+			data providers without having to specify each </para>
+			
+			<para>retrieve all of the DataProviderNames (excluding data provider groups) that are
+				currently stored in the database for the currently specified namespace, the following 
+				wci.browse function call could be used:</para>
+			
+<para>
+select wci.adddataprovider( 'demload', 'computer system', 'grid', '1 day', 'Data received from WDB demLoad (unidentified)' );
+select wci.adddataprovidertogroup( 'demload', 'wdb');
+</para>
+
+			<para>To retrieve all of the DataProviderNames (including data provider groups) that the
+				database currently has the capacity to store and display in the currently specified
+				namespace, the following wci.info function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.getDataProvider( NULL );
+		</programlisting>
+		
+			</sect2>
+			
 		</sect1>
 
-<sect1>
+	<sect1>
 		<title>Place (Geographic Location)</title>
 <para>
 Spatial Reference ID (SRID)
