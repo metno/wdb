@@ -62,3 +62,4 @@ select wci.addunit('m2/s2', 'square metre per square second', 'J/kg', 1.0, 0.0 )
 select wci.addunit('Cel', 'degree celsius', 'K', 1.0, 273.15 );
 select wci.addunit('K/m', 'kelvin per metre (SI unit)', 'K/m', 1.0, 0.0 );
 select wci.addunit('[in_i]', 'inch', 'm', 0.03, 0 );
+select wci.addunit('[ppth]', 'parts per thousand', '[ppth]', 1.0, 0 );

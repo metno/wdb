@@ -8,9 +8,11 @@ wdb-1.0 (1.0.2~rc1-1) lucid; urgency=medium
     retrieval (Test G102).
    
   * Added some CF parameters for ocean data: depth, sea surface height 
-    above geoid, sea water x velocity, sea water y velocity, sea water 
-    temperature, sea surface wave to direction, significant wave period, and
-	sea floor depth below geoid.
+    above geoid, sea water x velocity, sea water y velocity, sea water
+    salinity, sea water temperature, sea surface wave to direction, 
+    significant wave period, and sea floor depth below geoid.
+    
+  * Parts per thousand [ppth] added as a base unit.
 
  -- Michael Akinde <wdb@met.no>  Thu, 31 Mar 2011 12:00:00 +0000
 

@@ -39,6 +39,7 @@ SELECT wci.addparameter( 'sea surface height above geoid', null, null, null, nul
 SELECT wci.addparameter( 'sea surface temperature', null, null, null, null, null, null, 'K' );
 SELECT wci.addparameter( 'sea surface wave significant height', null, null, null, null, null, null, 'm' );
 SELECT wci.addparameter( 'sea surface wave to direction', null, null, null, null, null, null, 'rad' );
+SELECT wci.addparameter( 'sea water salinity', null, null, null, null, null, null, '[ppth]' );
 SELECT wci.addparameter( 'sea water temperature', null, null, null, null, null, null, 'K' );
 SELECT wci.addparameter( 'sea water x velocity', null, null, null, null, null, null, 'm/s' );
 SELECT wci.addparameter( 'sea water y velocity', null, null, null, null, null, null, 'm/s' );
