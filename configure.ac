@@ -15,7 +15,7 @@ AC_SUBST( [SCHEMA_VERSION],["1"] )
 # - This is used for test purposes; e.g., the upgrade test
 AC_SUBST( [OLD_MAJOR_VERSION], ["1"] )
 AC_SUBST( [OLD_MINOR_VERSION], ["0"] )
-AC_SUBST( [OLD_MICRO_VERSION], ["0"] )
+AC_SUBST( [OLD_MICRO_VERSION], ["1"] )
 
 # Config
 AC_CONFIG_SRCDIR([config.h.in])
