@@ -1,7 +1,7 @@
 /*
     wdb - weather and water data storage
 
-    Copyright (C) 2007 met.no
+    Copyright (C) 2011 met.no
 
     Contact information:
     Norwegian Meteorological Institute
@@ -25,7 +25,6 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
     MA  02110-1301, USA
 */
-
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -53,25 +52,18 @@ namespace {
 
 void version( std::ostream & out )
 {
-	out << "Call Interface Performance Test (" << PACKAGE << ") " << VERSION << std::endl;
+	out << "WDB Call Interface Performance Test (" << PACKAGE << ") " << VERSION << std::endl;
 };
 
 void help( const boost::program_options::options_description & options, std::ostream & out )
 {
 	version( out );
 	out << '\n'
-		<< "Usage: performanceTest [OPTIONS] TESTSAMPLE#\n\n"
-		<< "Test Samples:\n"
-        << "1  - random point retrieval (single point)\n"
-        << "2  - random point retrieval (multiple points)\n"
-        << "3  - random point retrieval (all parameters)\n"
-        << "4  - random point retrieval (large query)\n"
-        << "8  - prepared random point retrieval (single point)\n"
-        << "31 - random bilinear point retrieval (single point)\n"
-        << "32 - random bilinear point retrieval (multiple point)\n"
-        << "33 - random bilinear point retrieval (all parameters)\n"
-        << "41 - complex point tests 1\n"
-        << "42 - complex point tests 2\n"
+		<< "Usage: performanceTest [OPTIONS] QUERY\n\n"
+		<< "QUERY is an SQL query which may contain the following keywords:\n"
+		<< "RANDOMPOINT0 - a random point inside Norway\n"
+		<< "RANDOMTIME24 - a random time within 24 hours of the referencetime\n"
+		<< "RANDOMPARAMETER - a random parameter\n"
 		<< "\n\n"
 		<< "Options:\n"
 		<< options << std::endl;

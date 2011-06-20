@@ -184,12 +184,12 @@
 		</chapter>
 
 	<chapter id="cha:data_provider">
-		<title>D</title>
+		<title>Data Provider</title>
 		
 		<para>This section defines the metadata for data providers.</para>
 		
 		<sect1 id="sec:data_provider">
-			<title>Data Provider</title>
+			<title>Definition</title>
 			
 			<para>The Data Provider identifies the source of the data; literally,
 				<emphasis>the entity that provides the data</emphasis>. Where multiple
@@ -217,9 +217,10 @@
 				data provider namespace being used in a querying session can be defined by the user when
 				starting up the session.
 			</para>
+		</sect1>
 			
-			<sect2 id="sec:data_provider_browse">
-				<title>Browse Data Providers</title>
+		<sect1 id="sec:data_provider_browse">
+			<title>Browse Data Providers</title>
 			
 			<para>To retrieve all of the DataProviderNames (excluding data provider groups) that are
 				currently stored in the database for the currently specified namespace, the following 
@@ -237,9 +238,9 @@ SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
 SELECT * FROM wci.getDataProvider( NULL );
 		</programlisting>
 		
-			</sect2>
+			</sect1>
 			
-			<sect2 id="sec:data_provider_add">
+			<sect1 id="sec:data_provider_add">
 				<title>Add Data Providers</title>
 			
 			<para>To add a new data provider to the database, the wci.adddataprovider function is used.
@@ -247,10 +248,10 @@ SELECT * FROM wci.getDataProvider( NULL );
 			
 			<programlisting>
 select wci.adddataprovider( 'gribload',
-							'computer system',
-							'grid', 
-							'1 day',
-							'Data received from WDB gribLoad (unidentified)' );
+                            'computer system',
+                            'grid', 
+                            '1 day',
+                            'Data received from WDB gribLoad (unidentified)' );
 			</programlisting>
 			
 			<para>The first parameter in the function is the data provider name itself. The following
@@ -297,9 +298,9 @@ select wci.adddataprovider( 'gribload',
 			few brief lines of text that describe and explain the data provider
 			entity.</para>
 			
-			</sect2>
+			</sect1>
 			
-			<sect2 id="sec:data_provider_group">
+			<sect1 id="sec:data_provider_group">
 				<title>Data Provider Groups</title>
 			
 			<para>Data provider groups permit the user a convenient way to retrieve a set of 
@@ -322,25 +323,17 @@ select wci.adddataprovidertogroup( 'demload', 'wdb');
 SELECT * FROM wci.getDataProvider( NULL );
 		</programlisting>
 		
-			</sect2>
-			
-		</sect1>
+			</sect1>
+	
+	</chapter>
 
-	<sect1>
+	<chapter id="cha:place_definition">
 		<title>Place (Geographic Location)</title>
-<para>
-Spatial Reference ID (SRID)
 
-The Spatial Reference ID in the database is used for conversion 
-between the different projections that we encounter data in. The
-database is set up to use the "standard" WGS84 longitude-latitude
-projection as its base projection.
-</para>
+		<para>This section defines the metadata for place definitions.</para>
 
-</sect1>
-
-		<sect1 id="sec:place">
-			<title>Place (Geographic Location)</title>
+		<sect1 id="sec:place_definition">
+			<title>Definition</title>
 			
 			<para>The place (geographic location) of a data item is the position of the item
 				on the earth in a 2D space. In WDB, the geographic location is by default
@@ -359,6 +352,123 @@ projection as its base projection.
 				identifies one geographical object (referred to as  a Place definition) in the 
 				database (note that multiple PlaceNames may identify the same object), allowing the
 				use of "aliases".</para>
+				
+			<para>Place Definitions are always defined using a spatial reference ID (SRID); defined
+			using PROJ.4 definition strings. WDB is set up with the default SRIDs that come with the
+			Postgis package; additional SRIDs as required by new data types are added as needed in
+			WDB meta data packages.</para>
+
+		</sect1>
+			
+		<sect1 id="sec:place_definition_browse">
+			<title>Browse Place Definitions</title>
+			
+			<para>To retrieve all of the Place Definition Names that are
+				currently stored in the database for the currently specified namespace, the following 
+				wci.browse function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.browse( NULL::wci.browsedataprovider );
+		</programlisting>
+
+			<para>To retrieve all of the Place Definition  that the
+				database currently has the capacity to store and display in the currently specified
+				namespace, the following wci function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.getPlaceDefinition( NULL );
+		</programlisting>
+
+			<para>To retrieve the full list of SRIDs registered in the database,
+				the following wci function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.getsrid( NULL );
+		</programlisting>
+		
+			</sect1>
+			
+			<sect1 id="sec:place_definition_add">
+				<title>Add place Definitions</title>
+			
+			<para>There are various differing functions to add a place definition 
+			to the database, depending on the type of place definition to be added.
+			The function wci.addplacepoint is used for adding point data, while
+			wci.addplaceregulargrid is used to define regular grids as follows.</para>
+			
+			<programlisting>
+select wci.addplacepoint( 'oslo',
+                          'POINT(10.7564 59.9494)' );
+			</programlisting>
+			
+			<para>The first parameter in the function is the place name, while the 
+			second is the geographical position of the place definition in the default
+			coordinate system of the WDB instance.</para>
+		
+			<programlisting>
+select wci.addplaceregulargrid( 'ecmwf 0.5 grid',
+                                187,
+                                109,
+                                0.500,
+                                0.500,
+                                -21.0000,30.0000,'+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs');
+			</programlisting>
+
+
+
+			<para>The third parameter describes what kind of data can be written by 
+			the data provider. Currently there are two kinds of data that are possible;
+			'point' and 'grid'. Specifying 'any' here indicates that the type of data
+			provided can be either of the above options.</para>
+			
+			<para>The fourth parameter describes the lifetime of the data in the WDB
+			system as an interval. Depending on when (and how) the cleaning programs
+			are run, the database will be expected to clean out data once it's age
+			exceeds the number given here.</para>
+			
+			<para>The fifth parameter is a comment field. Ideally, it contains a
+			few brief lines of text that describe and explain the data provider
+			entity.</para>
+			
+			</sect1>
+			
+			<sect1 id="sec:srid">
+				<title>Data Provider Groups</title>
+			
+			<para>Data provider groups permit the user a convenient way to retrieve a set of 
+			data providers without having to specify each </para>
+			
+			<para>retrieve all of the DataProviderNames (excluding data provider groups) that are
+				currently stored in the database for the currently specified namespace, the following 
+				wci.browse function call could be used:</para>
+			
+<para>
+select wci.adddataprovider( 'demload', 'computer system', 'grid', '1 day', 'Data received from WDB demLoad (unidentified)' );
+select wci.adddataprovidertogroup( 'demload', 'wdb');
+</para>
+
+			<para>To retrieve all of the DataProviderNames (including data provider groups) that the
+				database currently has the capacity to store and display in the currently specified
+				namespace, the following wci.info function call could be used:</para>
+			
+			<programlisting>
+SELECT * FROM wci.getDataProvider( NULL );
+		</programlisting>
+		
+<para>
+Spatial Reference ID (SRID)
+
+The Spatial Reference ID in the database is used for conversion 
+between the different projections that we encounter data in. The
+database is set up to use the "standard" WGS84 longitude-latitude
+projection as its base projection.
+</para>
+
+</sect1>
+
+		<sect1 id="sec:place">
+			<title>Place (Geographic Location)</title>
+			
 				
 			<sect2 id="sec:place:addplacedef">
 				<title>Adding a Place Definition</title>
@@ -379,8 +489,8 @@ projection as its base projection.
 
 				
 			</sect2>
-
-
 </sect1>
+
 </chapter>
+
 </book>
