@@ -36,7 +36,7 @@ using namespace boost;
 TimeSpecification::TimeSpecification(const std::string & spec)
 {
 	static const regex re(
-			"(exact|before|after|inside|contains)?\\s*(\\w.*?\\w)(\\s+(TO|FOR)\\s+(\\w.*\\w))?",
+			"(exact|before|after|inside|contains)?\\s*(-?\\w.*?\\w)(\\s+(TO|FOR)\\s+(-?\\w.*\\w))?",
 			boost::regex::perl|boost::regex::icase);
 
 	smatch match;

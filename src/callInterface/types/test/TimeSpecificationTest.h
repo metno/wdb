@@ -39,6 +39,8 @@ class TimeSpecificationTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testNoFrom );
 	CPPUNIT_TEST( testFrom );
 	CPPUNIT_TEST( testDoubleTo );
+	CPPUNIT_TEST( testInfinity );
+	CPPUNIT_TEST( testNegativeInfinity );
 	CPPUNIT_TEST( testDuration );
 	CPPUNIT_TEST_SUITE_END();
 public:
@@ -49,6 +51,8 @@ public:
 	void testNoFrom();
 	void testFrom();
 	void testDoubleTo();
+	void testInfinity();
+	void testNegativeInfinity();
 	void testDuration();
 	void testDurationNoData();
 };

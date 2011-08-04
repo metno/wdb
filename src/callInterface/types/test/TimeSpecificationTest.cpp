@@ -76,6 +76,18 @@ void TimeSpecificationTest::testDoubleTo()
 	// use this.
 }
 
+void TimeSpecificationTest::testInfinity()
+{
+	TimeSpecification t1("infinity TO 2009-10-21 03:00:00Z");
+	TimeSpecification t2("inside infinity TO 2009-10-21 03:00:00Z");
+}
+
+void TimeSpecificationTest::testNegativeInfinity()
+{
+	TimeSpecification t1("-infinity TO 2009-10-21 03:00:00Z");
+	TimeSpecification t2("inside -infinity TO 2009-10-21 03:00:00Z");
+}
+
 void TimeSpecificationTest::testDuration()
 {
 	TimeSpecification t("exact today 02:00:00+02 FOR 6 hours");
