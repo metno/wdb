@@ -234,7 +234,6 @@ fi
 
 # Get database name
 WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
-export $WDB_NAME
 
 # Check that the database exists
 echo -n "checking whether database $WDB_NAME exists... "
