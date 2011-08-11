@@ -90,14 +90,20 @@ void cacheFile(FileId id);
 
 namespace internal_
 {
-struct end_of_file;
+struct end_of_file : public std::runtime_error
+{
+	end_of_file(const std::string & what) : std::runtime_error(what) {}
+};
 float readFloat_(std::istream & s);
 float readFloat_(std::istream & s, int position);
 }
 
+void initializeFileStorage();
+
 template <typename InIter, typename OutIter>
 void readFloatsFromFile(FileId id, InIter positionStart, InIter positionStop, OutIter result)
 {
+	initializeFileStorage();
 	lo::ibstream_p f = lo::getBStream(id);
 
 	for ( ; positionStart != positionStop; ++ positionStart )
@@ -107,11 +113,16 @@ void readFloatsFromFile(FileId id, InIter positionStart, InIter positionStop, Ou
 template <typename OutIter>
 void readAllFloatsFromFile(FileId id, OutIter result)
 {
+	initializeFileStorage();
 	lo::ibstream_p f = lo::getBStream(id);
 	try
 	{
 		while( 1 )
-			* (result ++) = internal_::readFloat_(* f );
+		{
+			float val = internal_::readFloat_(* f );
+			//std::cout << "Value read: " <<  val << std::endl;
+			* (result ++) = val;
+		}
 	}
 	catch ( internal_::end_of_file & )
 	{

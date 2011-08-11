@@ -36,7 +36,6 @@
 #include <stdexcept>
 #include <iterator>
 #include <algorithm>
-#include <iostream>
 
 namespace fs = boost::filesystem;
 
@@ -181,10 +180,6 @@ void cacheFile(FileId id)
 
 namespace internal_
 {
-struct end_of_file : public std::runtime_error
-{
-	end_of_file(const std::string & what) : std::runtime_error(what) {}
-};
 
 float readFloat_(std::istream & s)
 {

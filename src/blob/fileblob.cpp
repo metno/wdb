@@ -30,6 +30,9 @@
 #include "database_query.h"
 #include <stdexcept>
 #include <sstream>
+#include <algorithm>
+
+//#define EXPECT_NETWORK_ORDER_BYTES
 
 extern "C"
 {
@@ -47,6 +50,42 @@ extern "C"
 		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ), errmsg("Error, reason unknown"))); \
 	}
 
+namespace
+{
+struct convert_to_host_order
+{
+	float operator () (float f) const
+	{
+		union
+		{
+			int32_t i;
+			float f;
+		} data;
+		data.f = f;
+
+		data.i = ntohl(data.i);
+
+		return data.f;
+	}
+};
+struct convert_to_network_order
+{
+	float operator () (float f) const
+	{
+		union
+		{
+			int32_t i;
+			float f;
+		} data;
+		data.f = f;
+
+		data.i = htonl(data.i);
+
+		return data.f;
+	}
+};
+}
+
 
 
 PG_FUNCTION_INFO_V1(write_file);
@@ -62,7 +101,12 @@ Datum write_file(PG_FUNCTION_ARGS)
 	bytea * data = PG_GETARG_BYTEA_P(1);
 
 	int dataSize = VARSIZE(data) - VARHDRSZ;
-	const char * rawData = VARDATA(data);
+	char * rawData = VARDATA(data);
+
+#ifdef EXPECT_NETWORK_ORDER_BYTES
+	float * values = (float *) rawData;
+	std::transform(values, values + dataSize / sizeof(float), values, convert_to_host_order());
+#endif
 
 	// WARNING:
 	// Do not use any postgres functionality within this macro
@@ -127,6 +171,37 @@ PG_FUNCTION_INFO_V1(read_file);
  * Will throw an error at you if readSize does not match the size of the given
  * file.
  */
+//Datum read_file(PG_FUNCTION_ARGS)
+//{
+//	int64 id = PG_GETARG_INT64(0);
+//
+//	// Making this static will reduce chances of memory leak in case something
+//	// goes wrong when interfacing postgres library. (If the vector's
+//	// destructor fails to be called, we can clear its contents at next method
+//	// invocation
+//	static std::vector<char> data;
+//	data.clear();
+//
+//	// WARNING:
+//	// Do not use any postgres functionality within this macro
+//	// It will cause a resource leak.
+//	HANDLE_EXCEPTIONS(readFile(id, data));
+//
+//#ifdef EXPECT_NETWORK_ORDER_BYTES
+//
+//	int * valueData = (int *) & data[0];
+//	std::transform(valueData, valueData + (data.size() / sizeof(int32)), valueData, convert_to_network_order());
+//#endif
+//
+//	bytea * ret = (bytea *) palloc(VARHDRSZ + data.size());
+//	SET_VARSIZE(ret, VARHDRSZ + data.size());
+//	//VARATT_SIZEP(ret) = VARHDRSZ + data.size();
+//	std::copy(data.begin(), data.end(), VARDATA(ret));
+//
+//	data.clear();
+//
+//	PG_RETURN_TEXT_P(ret);
+//}
 Datum read_file(PG_FUNCTION_ARGS)
 {
 	int64 id = PG_GETARG_INT64(0);
@@ -135,23 +210,29 @@ Datum read_file(PG_FUNCTION_ARGS)
 	// goes wrong when interfacing postgres library. (If the vector's
 	// destructor fails to be called, we can clear its contents at next method
 	// invocation
-	static std::vector<char> data;
+	static std::vector<float> data;
 	data.clear();
 
 	// WARNING:
 	// Do not use any postgres functionality within this macro
 	// It will cause a resource leak.
-	HANDLE_EXCEPTIONS(readFile(id, data));
+	HANDLE_EXCEPTIONS(readAllFloatsFromFile(id, std::back_inserter(data)));
 
-	bytea * ret = (bytea *) palloc(VARHDRSZ + data.size());
-	SET_VARSIZE(ret, VARHDRSZ + data.size());
-	//VARATT_SIZEP(ret) = VARHDRSZ + data.size();
-	std::copy(data.begin(), data.end(), VARDATA(ret));
+#ifdef EXPECT_NETWORK_ORDER_BYTES
+	std::transform(data.begin(), data.end(), data.begin(), convert_to_network_order());
+#endif
+
+	unsigned rawDataSize = data.size() * sizeof(float);
+	bytea * ret = (bytea *) palloc(VARHDRSZ + rawDataSize);
+	SET_VARSIZE(ret, VARHDRSZ + rawDataSize);
+
+	std::copy(data.begin(), data.end(), (float*) VARDATA(ret));
 
 	data.clear();
 
 	PG_RETURN_TEXT_P(ret);
 }
+
 
 PG_FUNCTION_INFO_V1(read_float_from_file);
 /**
@@ -175,6 +256,10 @@ Datum read_float_from_file(PG_FUNCTION_ARGS)
 	// Do not use any postgres functionality within this macro
 	// It will cause a resource leak.
 	HANDLE_EXCEPTIONS(ret = readFloatFromFile(id, position));
+
+#ifdef EXPECT_NETWORK_ORDER_BYTES
+	ret = convert_to_network_order()(ret);
+#endif
 
 	PG_RETURN_FLOAT4(ret);
 }

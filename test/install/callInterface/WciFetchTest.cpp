@@ -59,8 +59,9 @@ void WciFetchTest::tearDown()
 
 void WciFetchTest::testFetchBinaryData()
 {
-	const string bin_data("x \0 x01 \x02 \xff y", 11);
-	CPPUNIT_ASSERT(bin_data.size() == 11);
+	// Binary data size matches that of grid definition
+	const string bin_data("x \0 x01 \x02 \xff y2\n\t, ", 16);
+	CPPUNIT_ASSERT(bin_data.size() == 16);
 	CPPUNIT_ASSERT(bin_data[2] == '\0');
 	CPPUNIT_ASSERT(bin_data[bin_data.size()-1] != '\0');
 	stringstream wrQ;

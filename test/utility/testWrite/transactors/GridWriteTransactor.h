@@ -56,7 +56,15 @@
 #include <iostream>
 #include <fstream>
 #include <exception>
+#include <algorithm>
 #include <cassert>
+
+//#define EXPECT_NETWORK_ORDER_BYTES
+
+extern "C"
+{
+#include <arpa/inet.h>
+}
 
 
 // FORWARD REFERENCES
@@ -66,6 +74,25 @@
 namespace wdb {
 
 namespace database {
+
+namespace {
+struct convert_to_network_order
+{
+	float operator () (float f) const
+	{
+		union
+		{
+			int32_t i;
+			float f;
+		} data;
+		data.f = f;
+
+		data.i = htonl(data.i);
+
+		return data.f;
+	}
+};
+}
 
 /**
  * Transactor to write grid information defined in testWrite to the
@@ -159,6 +186,9 @@ public:
             values[ index ] = it->val();
         }
 
+#ifdef EXPECT_NETWORK_ORDER_BYTES
+        std::transform(values.begin(), values.end(), values.begin(), convert_to_network_order());
+#endif
 
 		// Load Values Blob
 		const unsigned char * rawData = reinterpret_cast<const unsigned char *>(& values[0]);
