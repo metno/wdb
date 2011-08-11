@@ -13,3 +13,5 @@
 /.cproject
 /config.sub
 /configure
+.autotools
+.settings/
