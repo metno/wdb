@@ -158,6 +158,7 @@ include src/common/exception/wdb.mk
 include src/common/logHandler/wdb.mk
 include src/common/math/wdb.mk
 include src/common/projection/wdb.mk
+include src/common/data_transfer/wdb.mk
 
 include src/database/wdb.mk
 include src/blob/wdb.mk

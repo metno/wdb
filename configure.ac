@@ -43,6 +43,7 @@ src_subdirs="			src/blob \
 				     	src/common/math \
 				     	src/common/projection \
 				     	src/common/projection/test \
+				     	src/common/data_transfer \
 				    	src/database \
 				    	src/admin \
 				    	src/admin/operations \
@@ -210,6 +211,7 @@ AC_CONFIG_FILES([Makefile
 				 src/common/math/Makefile
 				 src/common/projection/Makefile
 				 src/common/projection/test/Makefile
+				 src/common/data_transfer/Makefile
 				 src/callInterface/api/Makefile
 				 src/callInterface/core/Makefile
 				 src/callInterface/core/test/Makefile
