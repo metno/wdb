@@ -145,11 +145,6 @@ fi
 WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
 export $WDB_NAME
 
-
-# Get database name
-WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
-export $WDB_NAME
-
 # Check that the database exists
 echo -n "checking whether database $WDB_NAME exists... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
