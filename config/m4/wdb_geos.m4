@@ -68,7 +68,10 @@ AC_ARG_WITH([geos],
 	    	[LDFLAGS="-L$withval/lib $LDFLAGS"
 	    	CPPFLAGS="-I$withval/include $CPPFLAGS"])
 
-AC_CHECK_HEADER([geos_c.h])
-AC_CHECK_LIB([geos_c], [GEOSGeom_getCoordSeq])
-            
+AC_CHECK_HEADER([geos_c.h],
+				[],
+				[AC_MSG_ERROR([Unable to find geos_c headers])])
+AC_CHECK_LIB([geos_c], [GEOSGeom_getCoordSeq],
+				[],
+				[AC_MSG_ERROR([Uanble to find geos_c library])])
 ])
