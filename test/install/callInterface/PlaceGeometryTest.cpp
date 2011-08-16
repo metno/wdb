@@ -908,6 +908,22 @@ void PlaceGeometryTest::testG20_04_ExactFarOutsideGrid()
     CPPUNIT_ASSERT( r.empty() );
 }
 
+void PlaceGeometryTest::testG20_05_ExactWithUndefinedPoint()
+{
+	double lon = 5.750 + (175 * 0.1);
+	double lat = -13.250 + (1 * 0.1);
+	pointToWgs84( lon, lat );
+
+	ostringstream pt;
+	pt << "nearest POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	result r = t->exec( statement_( pt.str(), 14 ) );
+
+	CPPUNIT_ASSERT_EQUAL(1, (int) r.size());
+
+	CPPUNIT_ASSERT( r.front()[ "value" ].is_null() );
+}
+
+
 void PlaceGeometryTest::testG21_01_NearestInsideGrid()
 {
 	double lon = 5.750 + (150 * 0.1) + 0.02;
@@ -960,6 +976,22 @@ void PlaceGeometryTest::testG21_04_NearestFarOutsideGrid()
 
     CPPUNIT_ASSERT( r.empty() );
 }
+
+void PlaceGeometryTest::testG21_05_NearestWithUndefinedPoint()
+{
+	double lon = 5.750 + (175 * 0.1) + 0.02;
+	double lat = -13.250 + (1 * 0.1) + 0.02;
+	pointToWgs84( lon, lat );
+
+	ostringstream pt;
+	pt << "nearest POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	result r = t->exec( statement_( pt.str(), 14 ) );
+
+	CPPUNIT_ASSERT_EQUAL(1, (int) r.size());
+
+	CPPUNIT_ASSERT( r.front()[ "value" ].is_null() );
+}
+
 
 void PlaceGeometryTest::testG22_01_SurroundInsideGrid()
 {

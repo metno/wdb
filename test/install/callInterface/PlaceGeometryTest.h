@@ -165,11 +165,13 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG20_02_ExactEdgeOfGrid );
 	CPPUNIT_TEST( testG20_03_ExactJustOutsideGrid );
 	CPPUNIT_TEST( testG20_04_ExactFarOutsideGrid );
+	CPPUNIT_TEST( testG20_05_ExactWithUndefinedPoint );
 
 	CPPUNIT_TEST( testG21_01_NearestInsideGrid );
 	CPPUNIT_TEST( testG21_02_NearestEdgeOfGrid );
 	CPPUNIT_TEST( testG21_03_NearestJustOutsideGrid );
 	CPPUNIT_TEST( testG21_04_NearestFarOutsideGrid );
+	CPPUNIT_TEST( testG21_05_NearestWithUndefinedPoint );
 
 	CPPUNIT_TEST( testG22_01_SurroundInsideGrid );
 	CPPUNIT_TEST( testG22_02_SurroundEdgeOfGrid );
@@ -340,12 +342,16 @@ public:
 	void testG20_02_ExactEdgeOfGrid();
 	void testG20_03_ExactJustOutsideGrid();
 	void testG20_04_ExactFarOutsideGrid();
+	void testG20_05_ExactWithUndefinedPoint();
+
 
 	// Offset for nearest
 	void testG21_01_NearestInsideGrid();
 	void testG21_02_NearestEdgeOfGrid();
 	void testG21_03_NearestJustOutsideGrid();
 	void testG21_04_NearestFarOutsideGrid();
+	void testG21_05_NearestWithUndefinedPoint();
+
 
 	// Offset for surround
 	void testG22_01_SurroundInsideGrid();

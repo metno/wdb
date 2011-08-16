@@ -73,6 +73,7 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'x wind' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
 # G23, G24 Test
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'y wind' -P 175,0=2 -P 175,1=2 -P 176,0=3 -P 176,1=3
+# Undefined points G20-5 G21-5 G22-5 G23-5
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'dew point temperature' -P 175,0=2 -P 175,1=NaN -P 176,0=3 -P 176,1=3
 # G25 Test
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
