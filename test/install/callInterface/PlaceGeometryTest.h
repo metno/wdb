@@ -175,11 +175,14 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG22_02_SurroundEdgeOfGrid );
 	CPPUNIT_TEST( testG22_03_SurroundJustOutsideGrid );
 	CPPUNIT_TEST( testG22_04_SurroundFarOutsideGrid );
+	CPPUNIT_TEST( testG22_05_SurroundWithOneUndefinedPoint );
 
 	CPPUNIT_TEST( testG23_01_BilinearInsideGrid );
 	CPPUNIT_TEST( testG23_02_BilinearEdgeOfGrid );
 	CPPUNIT_TEST( testG23_03_BilinearJustOutsideGrid );
 	CPPUNIT_TEST( testG23_04_BilinearFarOutsideGrid );
+	CPPUNIT_TEST( testG23_05_BilinearWithOneUndefinedPoint );
+
 	CPPUNIT_TEST( testG24_01_BilinearReturnsCorrectGeometry );
 
 	CPPUNIT_TEST( testG25_01_PointSource_ExactHit );
@@ -350,11 +353,15 @@ public:
 	void testG22_03_SurroundJustOutsideGrid();
 	void testG22_04_SurroundFarOutsideGrid();
 
+	void testG22_05_SurroundWithOneUndefinedPoint();
+
 	// Bilinear interpolations
 	void testG23_01_BilinearInsideGrid();
 	void testG23_02_BilinearEdgeOfGrid();
 	void testG23_03_BilinearJustOutsideGrid();
 	void testG23_04_BilinearFarOutsideGrid();
+
+	void testG23_05_BilinearWithOneUndefinedPoint();
 
 	// Bilinear interpolation (correct return)
 	void testG24_01_BilinearReturnsCorrectGeometry();

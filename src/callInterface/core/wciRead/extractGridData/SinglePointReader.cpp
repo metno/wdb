@@ -145,6 +145,7 @@ namespace interpolate
 
 float linear(float low, float high, double pos)
 {
+	// If one of low or high is NaN, NaN is returned
 	return (low * (1-pos)) + (high * pos);
 }
 

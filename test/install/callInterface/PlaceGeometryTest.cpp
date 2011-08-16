@@ -1029,6 +1029,24 @@ void PlaceGeometryTest::testG22_04_SurroundFarOutsideGrid()
     CPPUNIT_ASSERT( r.empty() );
 }
 
+void PlaceGeometryTest::testG22_05_SurroundWithOneUndefinedPoint()
+{
+	double lon = 5.750 + (175 * 0.1) + 0.05;
+	double lat = -13.250 + (0 * 0.1) + 0.05;
+	pointToWgs84( lon, lat );
+
+	ostringstream pt;
+	pt << "surround POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	result r = t->exec( statement_( pt.str(), 14 ) );
+
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 4 ), r.size() );
+
+    CPPUNIT_ASSERT_EQUAL( 2, r[0]["value"].as<int>() );
+    CPPUNIT_ASSERT_EQUAL( 3, r[1]["value"].as<int>() );
+    CPPUNIT_ASSERT( r[2]["value"].is_null() );
+    CPPUNIT_ASSERT_EQUAL( 3, r[3]["value"].as<int>() );
+}
+
 void PlaceGeometryTest::testG23_01_BilinearInsideGrid()
 {
 	double lon = 5.750 + (175 * 0.1) + 0.05;
@@ -1081,6 +1099,20 @@ void PlaceGeometryTest::testG23_04_BilinearFarOutsideGrid()
 	pt << "bilinear POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
 	result r = t->exec( statement_( pt.str(), 34 ) );
 	CPPUNIT_ASSERT(r.empty());
+}
+
+void PlaceGeometryTest::testG23_05_BilinearWithOneUndefinedPoint()
+{
+	double lon = 5.750 + (175 * 0.1) + 0.05;
+	double lat = -13.250 + (0 * 0.1) + 0.05;
+	pointToWgs84( lon, lat );
+
+	ostringstream pt;
+	pt << "bilinear POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+	result r = t->exec( statement_( pt.str(), 14 ) );
+
+    //CPPUNIT_ASSERT( r.empty() );
+    CPPUNIT_ASSERT( r.front()[ "value" ].is_null() );
 }
 
 void PlaceGeometryTest::testG24_01_BilinearReturnsCorrectGeometry()
@@ -1362,6 +1394,7 @@ map<int, string> getSpecFromParamNumber()
     ret[ 3 ] = "tendency of surface air pressure";
     ret[ 10 ] = "snowfall amount";
     ret[ 11 ] = "air temperature";
+    ret[ 14 ] = "dew point temperature";
     ret[ 15 ] = "max air temperature";
     ret[ 16 ] = "min air temperature";
     ret[ 32 ] = "altitude";
