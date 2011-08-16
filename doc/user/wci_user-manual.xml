@@ -659,11 +659,25 @@ FROM wci.read ( ARRAY['hirlam norway'], -- Data provider name
 			<para>The above call returns all precipitation parameters valid for the 10 days following the 
 				given referencetime measured at the nearest point to oslo. Oslo, in this case, is a place name
 				usually defined as a geographical point within the database. Prefixing the place name is the 
-	µ			interpolation that we wish to use when retrieving points; we could also have used any of the
+				interpolation that we wish to use when retrieving points; we could also have used any of the
 				alternatives defined in the reference manual below. Note the use of SQL wildcard characters in the
 				value parameter; although these slow down queries (since wildcard searching is not as efficient
 				as a straight comparison), it is possible to use the wci.read call in this way. Note also that names 
 				can be written in upper or lower case; the wci.read function call is not case-sensitive.</para>
+						
+			<sect3 id="sec:reading_wci_point_return_type">
+			<title>Return values</title>
+			
+			<para>The return value from this call is one row for each value. This means that if you have chosen an 
+			interpolation type that will return several values for each grid, you will get many rows for each grid. 
+			</para>
+			
+			<para>
+			The actual data value is given in the column "value". In some cases this may have a NULL value. This means 
+			that the there exists a data field for your query, and the point(s) you requested is inside the data's grid, 
+			but that grid point has explicitly gotten a "not defined" value. 
+			 </para>
+			</sect3>
 						
 			</sect2>
 
@@ -691,7 +705,7 @@ FROM wci.read ( ARRAY['hirlam norway'],    -- Data provider name
 				not be returned), whose referencetime is 12:00 on January 1, 1980. The query will return
 				all grid references to air temperature forecasts for the above configuration.</para>
 			
-			<para>Grid IDs are essentially 8-bit integers, that are then passed to the wci.fetch
+			<para>Grid IDs are essentially 8-byte integers, that are then passed to the wci.fetch
 				command, as given below:</para>
 
 			<programlisting>
@@ -704,11 +718,19 @@ FROM wci.fetch ( 7411403,          -- Grid ID (bigint)
 			<para>The above call returns a single row, containing a binary string containing the actual grid data.
 				It also includes additional information detailing the configuration of the grid. For details about
 			the wci.fetch call, see the function reference.</para>
-						
-			</sect2>
+
+			<sect3 id="sec:reading_wci_grid_return_type">
+			<title>Return values</title>
 			
+			<para>The return value from this call is one row for each grid. The number given in the "value" column 
+			may be used as input argument for a wci.fetch call.
+			</para>
+			</sect3>
+			
+			</sect2>
+
 		</sect1>
-		
+
 		<sect1 id="sec:release_wci">
 			<title>Release WCI</title>
 			
@@ -3061,6 +3083,10 @@ SELECT wci.end ( );
 				The function takes a binary object ID returned by a wci.read call and returns
 				a row containing the binary data (as bytea data) as well as additional relevant
 				information required for the manipulation of the binary data.</para>
+				
+				<para>The returned binary data should be interpreted as 4-byte floats. Some of the data 
+				may have the value not-a-number. This means that that particular point does not have any 
+				defined value.</para>
 					
 			<sect2 id="sec:wci.fetch:prerequisites">
 				<title>Prerequisites</title>
