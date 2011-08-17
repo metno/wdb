@@ -2,20 +2,21 @@
 # WDB C++ examples
 #-----------------------------------------------------------------------------
 
-CPP_EXAMPLES = 				exampleExtractFullField exampleGetPoint
+CPP_EXAMPLES = 				exampleGetPoint exampleGetField
 
 EXTRA_PROGRAMS += 			$(CPP_EXAMPLES) 
 
 
-exampleExtractFullField_SOURCES = 	examples/C++/extractFullField.cpp
-exampleExtractFullField_LDADD = 	-lwdbConfig
-
 exampleGetPoint_SOURCES = examples/C++/getPoint.cpp
-exampleGetPoint_LDADD = -lwdbConfig
+exampleGetPoint_LDADD = -lpqxx
 
-run_examples: exampleGetPoint
+exampleGetField_SOURCES = examples/C++/getField.cpp
+exampleGetField_LDADD = -lpqxx
+
+run_examples: exampleGetPoint exampleGetField
 	@echo
 	./exampleGetPoint
+	./exampleGetField
 
 
 all_cpp_examples:   		$(CPP_EXAMPLES)
@@ -24,6 +25,6 @@ EXTRA_DIST +=   			examples/C++/wdb.mk \
 			                examples/C++/Makefile.am \
 			                examples/C++/Makefile.in
 			                
-CLEANFILES += exampleExtractFullField exampleGetPoint
+CLEANFILES += exampleGetPoint exampleGetField
 
 DISTCLEANFILES +=       	examples/C++/Makefile        
