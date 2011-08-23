@@ -98,8 +98,10 @@ static void getNextSetOfValues(struct ReadStore * store)
 	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex];
 	TupleDesc tupdesc = store->tuples->tupdesc;
 
-	long long placeid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 21, NULL));
-	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, NULL));
+	bool isnull;
+
+	long long placeid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 21, & isnull));
+	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, & isnull));
 
 	store->pointData = getValues(placeid, dataid, store);
 

@@ -50,12 +50,13 @@ struct PlaceSpecification * getPlaceSpecificationFromDatabase(long long placeid)
 	HeapTuple placeRow = * SPI_tuptable->vals;
 
 	struct PlaceSpecification * ret = (struct PlaceSpecification *) malloc(sizeof(struct PlaceSpecification));
-	ret->startX_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 1, NULL) );
-	ret->startY_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 2, NULL) );
-	ret->xNumber_ = DatumGetInt32( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 3, NULL) );
-	ret->yNumber_ = DatumGetInt32( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 4, NULL) );
-	ret->xIncrement_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 5, NULL) );
-	ret->yIncrement_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 6, NULL) );
+	bool isnull; // unused
+	ret->startX_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 1, & isnull) );
+	ret->startY_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 2, & isnull) );
+	ret->xNumber_ = DatumGetInt32( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 3, & isnull) );
+	ret->yNumber_ = DatumGetInt32( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 4, & isnull) );
+	ret->xIncrement_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 5, & isnull) );
+	ret->yIncrement_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 6, & isnull) );
 
 	char * projDef = SPI_getvalue(placeRow, SPI_tuptable->tupdesc, 7);
 	ret->projDefinition_ = strdup(projDef);
