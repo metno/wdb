@@ -65,7 +65,7 @@ int main(int argc, char ** argv)
 		// Do something with the data
 
 		if ( result.size() != 2 )
-			throw std::runtime_error("unexpected unmber of return values");
+			throw std::runtime_error("unexpected number of return values");
 
 		float xWind;
 		float yWind;
