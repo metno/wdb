@@ -44,15 +44,16 @@ int main()
 		pqxx::work transaction(connection);
 
 		// Initialize wci
-		transaction.exec("SELECT wci.begin('wdb')");
+		// Since we run this program as part of wdb tests, explicitly set test namespaces
+		transaction.exec("SELECT wci.begin('wdb',999,999,999)");
 
 		// This is the read query
 		std::string readQuery =
 				"SELECT value, valueparametername FROM wci.read("
-				"'{proff.approved}', " // data provider
+				"'{test wci 5}', " // data provider
 				"NULL, " // location
-				"'2011-08-01 00:00:00Z', " // reference (model) time
-				"'2011-08-03 12:00:00Z', " // valid time
+				"'2009-11-13 00:00:00Z', " // reference (model) time
+				"'2009-11-13 18:00:00Z', " // valid time
 				"'{air temperature}', " // wanted parameters
 				"NULL, " // level (get any level)
 				"'{-1}', " // data version (get the one with the highets number in case there are several

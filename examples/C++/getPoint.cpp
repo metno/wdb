@@ -45,16 +45,17 @@ int main(int argc, char ** argv)
 		pqxx::work transaction(connection);
 
 		// Initialize wci
-		transaction.exec("SELECT wci.begin('wdb')");
+		// Since we run this program as part of wdb tests, explicitly set test namespaces
+		transaction.exec("SELECT wci.begin('wdb',999,999,999)");
 
 		// This is the read query
 		std::string realQuery =
-				"SELECT value, valueparametername FROM wci.read("
-				"'{proff.approved}', " // data provider
+				"SELECT value, valueparametername, valueparameterunit FROM wci.read("
+				"'{test wci 5}', " // data provider
 				"'nearest POINT(8.3132 61.6364)', " // location
-				"'2011-08-01 00:00:00Z', " // reference (model) time
-				"'2011-08-03 12:00:00Z', " // valid time
-				"'{x wind, y_wind}', " // wanted parameters
+				"'2009-11-13 00:00:00Z', " // reference (model) time
+				"NULL, " // valid time
+				"'{visibility in air}', " // wanted parameters
 				"NULL, " // level (get any level)
 				"'{-1}', " // data version (get the one with the highets number in case there are several
 				"NULL::wci.returnfloat)"; // get point data
@@ -64,25 +65,12 @@ int main(int argc, char ** argv)
 
 		// Do something with the data
 
-		if ( result.size() != 2 )
-			throw std::runtime_error("unexpected number of return values");
+//		if ( result.size() != 3 )
+//			throw std::runtime_error("unexpected number of return values");
 
-		float xWind;
-		float yWind;
-
+		// since the example fields don't have any data, the result will be "visiblity in air is 0 K"
 		for ( pqxx::result::const_iterator it = result.begin(); it != result.end(); ++ it )
-		{
-			const pqxx::result::tuple & row = * it;
-			const std::string & valueParameterName = row["valueparametername"].as<std::string>();
-			if ( valueParameterName == "x wind" )
-				xWind = row["value"].as<float>();
-			else if ( valueParameterName == "y wind" )
-				xWind = row["value"].as<float>();
-			else
-				throw std::runtime_error("Unexpected parameter returned: " + valueParameterName);
-		}
-		float windSpeed = std::sqrt(std::pow(xWind, 2) + std::pow(yWind, 2));
-		std::cout << "wind speed at time (m/s): " <<  std::fixed << windSpeed << std::endl;
+			std::cout << it->at("valueparametername") << " is " << it->at("value") << " " << it->at("valueparameterunit") << std::endl;
 	}
 	catch ( pqxx::sql_error & e )
 	{
