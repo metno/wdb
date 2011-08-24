@@ -138,6 +138,13 @@ protected:
 	 */
 	virtual void endTransaction();
 
+	/**
+	 * Ensure that bytea represenations are in escape format.
+	 *
+	 * @warning must be called after startNewTransaction
+	 */
+	void setPre9ByteaFormat();
+
     /**
      * Database connection.
      */

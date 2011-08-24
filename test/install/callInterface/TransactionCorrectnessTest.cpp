@@ -49,6 +49,7 @@ void TransactionCorrectnessTest::setUp()
 {
 	setUser("wcitestwriter");
 	AbstractWciTestFixture::setUp();
+	setPre9ByteaFormat();
 }
 
 void TransactionCorrectnessTest::tearDown()
@@ -91,6 +92,8 @@ void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 
 void TransactionCorrectnessTest::testAbortedDelete()
 {
+	const std::string expectedResult = "\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000";
+
 	const string read = "SELECT valueid, value FROM wci.read("
 			"ARRAY['test wci 0'], "
 			"'test grid, rotated', "
@@ -109,7 +112,7 @@ void TransactionCorrectnessTest::testAbortedDelete()
 	const string fetch = fetchS.str();
 	result f = t->exec(fetch);
 	string data = f[0]["grid"].as<string>();
-	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), data);
+	CPPUNIT_ASSERT_EQUAL(expectedResult, data);
 
 	ostringstream remove;
 	remove << "DELETE FROM " << WDB_SCHEMA << ".gridvalue WHERE valueid=" << valueid;
@@ -117,11 +120,12 @@ void TransactionCorrectnessTest::testAbortedDelete()
 	t->exec(remove.str());
 
 	startNewTransaction(); // rollback the old one
+	setPre9ByteaFormat();
 
 	r = t->exec(read);
 	f = t->exec(fetch);
 	data = f[0]["grid"].as<string>();
 
 	CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
-	CPPUNIT_ASSERT_EQUAL(string("\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000\\000"), data);
+	CPPUNIT_ASSERT_EQUAL(expectedResult, data);
 }

@@ -75,6 +75,18 @@ void AbstractWdbTestFixture::startNewTransaction()
 	t = new work( * connection_ );
 }
 
+
+void AbstractWdbTestFixture::setPre9ByteaFormat()
+{
+	if ( ! t )
+		throw std::logic_error("Attempting to seet output format before starting a transaction");
+
+	// Ensure that bytea representation is in pre-9.0 format
+	// This will be undone by rolling back transaction in tearDown
+	if ( connection_->server_version() >= 90000 )
+		t->exec("SET bytea_output TO escape");
+}
+
 void AbstractWdbTestFixture::endTransaction()
 {
 	delete t;
