@@ -62,16 +62,31 @@ AC_SUBST(geos_LIBS)
 
 AC_DEFUN([WDB_GEOS_C],
 [
+# Set up option
 AC_ARG_WITH([geos],
-	     	AS_HELP_STRING([--with-geos_c=GEOS_PATH], 
-			[Specify the directory in which geos c interface is installed (by default, configure checks your PATH).]),
-	    	[LDFLAGS="-L$withval/lib $LDFLAGS"
-	    	CPPFLAGS="-I$withval/include $CPPFLAGS"])
+	     	AS_HELP_STRING([--with-geos=GEOS_PATH], 
+			[Specify the directory in which geos is installed (by default, configure checks your PATH).]),
+	    	[ac_geos_path="$withval"],
+            [])
 
-AC_CHECK_HEADER([geos_c.h],
-				[],
-				[AC_MSG_ERROR([Unable to find geos_c headers])])
-AC_CHECK_LIB([geos_c], [GEOSGeom_getCoordSeq],
-				[],
-				[AC_MSG_ERROR([Uanble to find geos_c library])])
+# Add path if given
+PATH="$ac_docbook_path/bin:$PATH"
+
+# Find xmlto
+AC_PATH_PROG(GEOS_CONFIG, geos-config, no, $PATH)
+
+if test "$GEOS_CONFIG" = "no" ; then
+ 
+	AC_MSG_ERROR([
+-------------------------------------------------------------------------
+    Unable to find geos. Geos is required in order to build the WDB 
+    documentation.
+-------------------------------------------------------------------------
+])
+fi
+
+geos_CFLAGS=`$GEOS_CONFIG --cflags`
+geos_LIBS="`$GEOS_CONFIG --libs` -lgeos_c"
+AC_SUBST(geos_CFLAGS)
+AC_SUBST(geos_LIBS)
 ])
