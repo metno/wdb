@@ -58,7 +58,7 @@ enum ReadStoreMode
 
 /**
  * This data is stored between invocations of wciReadFloat. It contains all
- * neccessary data to generate all return rows from a call to that function.
+ * necessary data to generate all return rows from a call to that function.
  */
 struct ReadStore
 {

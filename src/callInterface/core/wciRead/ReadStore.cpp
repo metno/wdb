@@ -57,20 +57,6 @@ namespace
 
 		return location;
 	}
-
-	Location getGeometry(const std::string & locationName)
-	{
-		Location loc(locationName);
-		if ( not loc.isGeometry() )
-		{
-			std::string newLocation = loc.interpolation();
-			if ( not newLocation.empty() )
-				newLocation += " ";
-			newLocation += geometryFromLocation(loc.location());
-			loc = Location(newLocation);
-		}
-		return loc;
-	}
 }
 
 extern "C"
@@ -79,23 +65,30 @@ extern "C"
 
 void setReadStoreGeometry(struct ReadStore * out, SPITupleTable * tuples, const char * location)
 {
+	out->location = NULL;
+	out->interpolation = Exact;
+	out->interpolationParameter = 1;
+
 	if ( location )
 	{
 		try
 		{
-			Location loc = getGeometry(location);
-			out->location = GEOSGeomFromWKT(loc.location().c_str());
+			Location loc(location);
+			if ( loc.hasGeometry() )
+				out->location = GEOSGeomFromWKT(loc.geometry().c_str());
+			else
+			{
+				std::string locationName = geometryFromLocation(loc.placeName());
+				out->location = GEOSGeomFromWKT(locationName.c_str());
+			}
 			out->interpolation = loc.interpolationType();
 			out->interpolationParameter = loc.interpolationParameter();
-			return;
 		}
 		catch (NoSuchGeometryName)
 		{
+			// ignored - keep unset varaiables
 		}
 	}
-	out->location = NULL;
-	out->interpolation = Exact;
-	out->interpolationParameter = 1;
 }
 
 void ReadStoreFloatReturnInit(struct ReadStore * out)

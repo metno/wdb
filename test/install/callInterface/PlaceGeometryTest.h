@@ -187,6 +187,11 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 
 	CPPUNIT_TEST( testG24_01_BilinearReturnsCorrectGeometry );
 
+//	CPPUNIT_TEST( testExactPointAndPlaceName );
+//	CPPUNIT_TEST( testNearestPointAndPlaceName );
+//	CPPUNIT_TEST( testSurroundPointAndPlaceName );
+//	CPPUNIT_TEST( testBilinearPointAndPlaceName );
+
 	CPPUNIT_TEST( testG25_01_PointSource_ExactHit );
 	CPPUNIT_TEST( testG25_02_PointSource_ExactMiss );
 	CPPUNIT_TEST( testG25_03_PointSource_Nearest );
@@ -371,6 +376,12 @@ public:
 
 	// Bilinear interpolation (correct return)
 	void testG24_01_BilinearReturnsCorrectGeometry();
+
+//	void testExactPointAndPlaceName();
+//	void testNearestPointAndPlaceName();
+//	void testSurroundPointAndPlaceName();
+//	void testBilinearPointAndPlaceName();
+
 
 	// Points
 	void testG25_01_PointSource_ExactHit();

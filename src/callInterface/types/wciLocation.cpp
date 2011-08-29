@@ -54,10 +54,11 @@ extern "C"
         {
             const Location loc( p.get() );
 
-            Datum d = packWciLocation(  loc.interpolation().c_str(),
-					            		loc.location().c_str(),
-					            		loc.isGeometry(),
-					                    fcinfo );
+            Datum d = packWciLocation(
+            		loc.interpolation().c_str(),
+            		loc.hasGeometry() ? loc.geometry().c_str() : loc.placeName().c_str(),
+            				loc.hasGeometry(),
+            				fcinfo );
             return d;
         }
         catch ( std::logic_error & e )

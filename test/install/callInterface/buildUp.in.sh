@@ -93,6 +93,12 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'global grid' --reftime '200
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 8' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-13 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 9' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-13 06:00:00+00' 
 
+# PlaceGeometryTest::testPointAndPlaceName
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'geopotential'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 06:00:00+00' --valueparameter 'geopotential'
+
+
+
 # Fix wci.write. Cannot write gridded data to floatvalue table
 
 

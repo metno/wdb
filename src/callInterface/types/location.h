@@ -56,17 +56,29 @@ public:
 	const int interpolationParameter() const { return interpolationParameter_; }
 
 	/**
-	 * Get the WKT or name of the location
+	 * Get the WKT the location, if it is known
 	 */
-	const std::string & location() const { return location_; }
+	const std::string & geometry() const { return geometry_; }
 
 	/**
-	 * Is the location represented by a WKT geometry specification? If not, it
-	 * is (supposed to be) a name of a location.
-	 *
-	 * @return True if the geometry looks like a WKT geometry spec.
+	 * Get the name of this location, if one is given.
 	 */
-	bool isGeometry() const { return isGeometry_; }
+	const std::string & placeName() const { return placeName_; }
+
+
+	/**
+	 * Does this location contain a geometry specification?
+	 *
+	 * @return True if the geometry contains a WKT geometry spec.
+	 */
+	bool hasGeometry() const { return not geometry_.empty(); }
+
+	/**
+	 * Does this location contain a place name
+	 *
+	 * @return True if the geometry contains a place name
+	 */
+	bool hasPlaceName() const { return not placeName_.empty(); }
 
 	enum GeomType
 	{
@@ -87,7 +99,6 @@ public:
 	 *
 	 * @param returnType	The query constructed is partially dependent on
 	 * the return type that is required by the wci_read query.
-	 * 0 = OID, and 1 = Float.
 	 */
 	std::string query( std::ostringstream & w, QueryReturnType returnType ) const;
 
@@ -100,11 +111,14 @@ public:
 	};
 
 private:
+	void parseWithRegex_(const std::string & location);
+	void parseWithSpirit_(const std::string & location);
+
 	std::string interpolation_;
 	InterpolationType interpolationType_;
 	int interpolationParameter_;
-	std::string location_;
-	bool isGeometry_;
+	std::string geometry_;
+	std::string placeName_;
 	GeomType geomType_;
 
 	void determineInterpolation();

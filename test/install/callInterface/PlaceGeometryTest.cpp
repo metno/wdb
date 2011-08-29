@@ -1165,6 +1165,80 @@ void PlaceGeometryTest::testG24_01_BilinearReturnsCorrectGeometry()
     CPPUNIT_ASSERT_EQUAL( pnt.str(), r.front()["geometry_as_text"].as<string>() );
 }
 
+//void PlaceGeometryTest::testExactPointAndPlaceName()
+//{
+//	double lon = 5.750 + (175 * 0.1) + 0.05;
+//	double lat = -13.250 + (0 * 0.1) + 0.05;
+//	pointToWgs84( lon, lat );
+//
+//	ostringstream pt;
+//	pt << "exact POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+//
+//	{
+//		result r =  t->exec(statement_( pt.str(), 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(2), r.size());
+//	}
+//	{
+//		result r =  t->exec(statement_( pt.str() + " hirlam 10 grid", 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
+//	}
+//}
+//
+//void PlaceGeometryTest::testNearestPointAndPlaceName()
+//{
+//	double lon = 5.750 + (175 * 0.1) + 0.05;
+//	double lat = -13.250 + (0 * 0.1) + 0.05;
+//	pointToWgs84( lon, lat );
+//
+//	ostringstream pt;
+//	pt << "nearest POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+//
+//	{
+//		result r =  t->exec(statement_( pt.str(), 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(2), r.size());
+//	}
+//	{
+//		result r =  t->exec(statement_( pt.str() + " hirlam 10 grid", 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
+//	}
+//}
+//void PlaceGeometryTest::testSurroundPointAndPlaceName()
+//{
+//	double lon = 5.750 + (175 * 0.1) + 0.05;
+//	double lat = -13.250 + (0 * 0.1) + 0.05;
+//	pointToWgs84( lon, lat );
+//
+//	ostringstream pt;
+//	pt << "surround POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+//
+//	{
+//		result r =  t->exec(statement_( pt.str(), 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(8), r.size());
+//	}
+//	{
+//		result r =  t->exec(statement_( pt.str() + " hirlam 10 grid", 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(4), r.size());
+//	}
+//}
+//void PlaceGeometryTest::testBilinearPointAndPlaceName()
+//{
+//	double lon = 5.750 + (175 * 0.1) + 0.05;
+//	double lat = -13.250 + (0 * 0.1) + 0.05;
+//	pointToWgs84( lon, lat );
+//
+//	ostringstream pt;
+//	pt << "bilinear POINT(" << wdb::round(lon,4) << " " << wdb::round(lat,4) << ")";
+//
+//	{
+//		result r =  t->exec(statement_( pt.str(), 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(2), r.size());
+//	}
+//	{
+//		result r =  t->exec(statement_( pt.str() + " hirlam 10 grid", 999 ));
+//		CPPUNIT_ASSERT_EQUAL(result::size_type(1), r.size());
+//	}
+//}
+
 void PlaceGeometryTest::testG25_01_PointSource_ExactHit()
 {
 	result r =  t->exec( statementFloat_( "exact POINT(15.2 55.75)", 11 ) );
@@ -1435,6 +1509,7 @@ map<int, string> getSpecFromParamNumber()
     ret[ 66 ] = "surface roughness length";
     ret[ 100 ] = "cloud area fraction";
     ret[ 101 ] = "land area fraction";
+    ret[ 999 ] = "geopotential";
 
     return ret;
 }

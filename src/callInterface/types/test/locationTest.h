@@ -39,6 +39,7 @@ class LocationTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testExactInterpolation );
 	CPPUNIT_TEST( testNearestInterpolation );
 	CPPUNIT_TEST( testSurroundInterpolation );
+	CPPUNIT_TEST( testSurroundInterpolationWithExplicitParameter );
 	CPPUNIT_TEST( testImplicitInterpolation );
 	CPPUNIT_TEST( testInvalidInterpolationPlaceLocation );
 	CPPUNIT_TEST_EXCEPTION( testInvalidInterpolationGeometryLocation, Location::InvalidSpecification );
@@ -48,7 +49,10 @@ class LocationTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testPolygonImplicitInterpolation );
 	CPPUNIT_TEST( testFreeTextPlace );
 	CPPUNIT_TEST( testFreeTextPlaceImplicitInterpolation );
+	CPPUNIT_TEST( testRejectMultiPoint );
+	CPPUNIT_TEST( testRejectMultiPolygon );
 	CPPUNIT_TEST( testSpaceInWkt );
+//	CPPUNIT_TEST( testPointAndName );
 	CPPUNIT_TEST_SUITE_END();
 	
 public:
@@ -61,6 +65,7 @@ public:
 	void testExactInterpolation();
 	void testNearestInterpolation();
 	void testSurroundInterpolation();
+	void testSurroundInterpolationWithExplicitParameter();
 	void testImplicitInterpolation();
 	void testInvalidInterpolationPlaceLocation();
 	void testInvalidInterpolationGeometryLocation();
@@ -71,7 +76,10 @@ public:
 	void testPolygonImplicitInterpolation();
 	void testFreeTextPlace();
 	void testFreeTextPlaceImplicitInterpolation();
+	void testRejectMultiPoint();
+	void testRejectMultiPolygon();
 	void testSpaceInWkt();
+//	void testPointAndName();
 };
 
 #endif /*LOCATIONTEST_H_*/

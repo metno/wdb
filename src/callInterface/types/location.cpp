@@ -33,6 +33,7 @@
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/spirit/include/classic.hpp>
 #include "location.h"
 #include "getPlaceQuery.h"
 #include <vector>
@@ -48,11 +49,9 @@ namespace
 const string reFloat = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 }
 
-Location::Location(const std::string & location)
+void Location::parseWithRegex_(const std::string & location)
 {
-	geomType_ = GEOM_UNKNOWN;
-	interpolationParameter_ = 0;
-    // match surround\\s*(\\s*[0-9]+\\s*)|
+	// match surround\\s*(\\s*[0-9]+\\s*)|
     static regex re("^(((?i)exact|nearest|surround|surround\\s*\\(\\s*[1-9]\\s*\\)|bilinear)\\s+)?" // Interpolation
 					"((" // Plain geometries
 					"(POINT)\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
@@ -78,8 +77,7 @@ Location::Location(const std::string & location)
 	// Extract location (if geometry)
 	if ( !match[4].str().empty() )
 	{
-		location_ = match[4];
-		isGeometry_ = true;
+		geometry_ = match[4];
 		if ( !match[5].str().empty())
 			geomType_ = GEOM_POINT;
 		if ( !match[8].str().empty())
@@ -88,13 +86,72 @@ Location::Location(const std::string & location)
 	// Extract location (if name)
 	else if ( !match[14].str().empty() )
 	{
-		location_ = match[14];
-		isGeometry_ = false;
-	    transform( location_.begin(), location_.end(), location_.begin(), lower );
+		placeName_ = match[14];
+	    transform( placeName_.begin(), placeName_.end(), placeName_.begin(), lower );
 	}
 	else
 		throw InvalidSpecification("Unable to extract a valid location");
-	determineInterpolation();
+}
+
+namespace
+{
+struct throw_InvalidSpecification
+{
+template<typename Iterator>
+void operator()(Iterator start, Iterator stop) const
+{
+	std::string message = "Invalid specification: ";
+	message.append(start, stop);
+	throw Location::InvalidSpecification(message.c_str());
+}
+};
+}
+
+void Location::parseWithSpirit_(const std::string & location)
+{
+	using namespace boost::spirit::classic;
+
+	bool fullMatch = parse(location.c_str(),
+			as_lower_d[(!(
+							str_p("exact")[assign_a(interpolationType_, Exact)]
+							| str_p("nearest")[assign_a(interpolationType_, Nearest)]
+							| ("surround" >> ! (ch_p('(') >> int_p[assign_a(interpolationParameter_)] >> ')'))[assign_a(interpolationType_, Surround)]
+							| str_p("bilinear")[assign_a(interpolationType_, Bilinear)]
+							))]
+							[assign_a(interpolation_)]
+			>>
+			(
+				(
+					(str_p("POINT") >> '(' >> real_p >> real_p >> ')')[assign_a(geomType_, GEOM_POINT)] |
+					(str_p("POLYGON") >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')' >> ')')[assign_a(geomType_, GEOM_POLYGON)]
+				)[assign_a(geometry_)]
+			| // change to || to allow both geometry and placename
+			((alpha_p >> * print_p) - (*(lower_p|'('|')') >> (str_p("POINT") | "POLYGON" | "MULTIPOINT" | "MULTIPOLYGON") >> * anychar_p))[assign_a(placeName_)]
+			)
+			, space_p).full;
+
+	if ( not fullMatch )
+	{
+		std::string msg = "Invalid place specification: " + location;
+		throw InvalidSpecification( msg.c_str() );
+	}
+
+	// lower case the string
+	typedef int ( *f_lower ) ( int );
+	f_lower lower = tolower;
+
+	std::transform(interpolation_.begin(), interpolation_.end(), interpolation_.begin(), lower);
+	std::transform(placeName_.begin(), placeName_.end(), placeName_.begin(), lower);
+}
+
+Location::Location(const std::string & location) :
+		interpolationType_(Exact),
+		interpolationParameter_(1),
+		geomType_(GEOM_UNKNOWN)
+{
+	parseWithSpirit_(location);
+//	parseWithRegex_(location);
+//	determineInterpolation();
 }
 
 Location::~Location()
@@ -144,15 +201,15 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 	switch ( returnType )
 	{
 	case RETURN_OID:
-		if ( isGeometry() )
+		if ( hasGeometry() )
 		{
 			switch (interpolationType_) {
 			case Exact:
-				q << "( equals ( geomfromtext( '" << location() << "', 4030 ), v.placegeometry ) )";
+				q << "( equals ( geomfromtext( '" << geometry() << "', 4030 ), v.placegeometry ) )";
 				break;
 			default:
 				q 	<< WCI_SCHEMA << ".dwithin( "
-					<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+					<< "transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 					<< "transform( v.placegeometry, v.originalsrid ), "
 					<< "1 )";
 				// See notes on transform below
@@ -163,34 +220,39 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 		else
 		{
 			// This corresponds to an "exact" query - just much faster
-			q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << location() << "')";
+			q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << placeName() << "')";
 		}
 		break;
 	case RETURN_FLOAT:
 		// This code is only relevant for retrieving point-value data from a point-valued table.
 		switch (interpolationType_) {
 		case Exact:
-			if ( isGeometry() )
+			q << '(';
+			if ( hasGeometry() )
 			{
 				if ( geomType_ == GEOM_POINT ) {
-					q << "equals( geomfromtext('" << location() << "', 4030 ), v.placegeometry )";
+					q << "equals( geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
 				}
 				else if ( geomType_ == GEOM_POLYGON ) {
 					q 	<< WCI_SCHEMA << ".dwithin( "
 						<< "transform( v.placegeometry, v.originalsrid ), "
-						<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+						<< "transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 						<< "1 )";
 				}
 			}
-			else {
-				q << "v.placename = '" << location() << "'";
+			if ( hasPlaceName() )
+			{
+				if ( hasGeometry() )
+					q << " AND ";
+				q << "v.placename = '" << placeName() << "'";
 			}
+			q << ')';
 			break;
 		case Nearest:
-			if ( isGeometry() )
-				myGeometry = "geomfromtext('" + location() + "', 4030 )";
+			if ( hasGeometry() )
+				myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
 			else
-				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
+				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
 			// Create query
 			q 	<<  "v.placeid IN "
 				<<	"(SELECT nn_gid FROM "
@@ -205,10 +267,10 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				<< "'placegeometry' ))";
 			break;
 		case Surround:
-			if ( isGeometry() )
-				myGeometry = "geomfromtext('" + location() + "', 4030 )";
+			if ( hasGeometry() )
+				myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
 			else
-				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + location() + "')";
+				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
 			// Create query
 			q 	<<  "v.valueid IN "
 				<<	"(SELECT nn_gid FROM "
@@ -231,5 +293,6 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 	default:
 		throw InvalidSpecification("The return type specified for the location query is unsupported");
 	}
+	std::cout << q.str() << std::endl;
 	return q.str();
 }
