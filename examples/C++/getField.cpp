@@ -33,12 +33,16 @@
 #include <sstream>
 #include <iostream>
 
-int main()
+int main(int argc, char ** argv)
 {
+	std::string databaseConnectionString = "dbname=wdb";
+	if ( argc > 1 )
+		databaseConnectionString = argv[1];
+
 	try
 	{
 		// connect to database
-		pqxx::connection connection("dbname=wdb");
+		pqxx::connection connection(databaseConnectionString);
 
 		// Create a transaction.
 		pqxx::work transaction(connection);

@@ -13,11 +13,6 @@ exampleGetPoint_LDADD = -lpqxx
 exampleGetField_SOURCES = examples/C++/getField.cpp
 exampleGetField_LDADD = -lpqxx
 
-run_examples: exampleGetPoint exampleGetField
-	@echo
-	./exampleGetPoint
-	./exampleGetField
-
 
 all_cpp_examples:   		$(CPP_EXAMPLES)
 

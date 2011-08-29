@@ -2,28 +2,20 @@
 # WDB example programs
 #-----------------------------------------------------------------------------
 
-INSTALLTESTS += test_examples
+INSTALLTESTS += test_examples.sh
 
-examples/setupExamples.sh: examples/setupExamples.in.sh testWrite
-
-test_examples: examples/setupExamples.sh examples
-	@echo '#!/bin/sh' > $@.tmp
-	@echo 'set -e' > $@.tmp
-	@echo "./examples/setupExamples.sh" >> $@.tmp
-	@for T in $(CPP_EXAMPLES); do echo "echo $$T && ./$$T >> /dev/null" >> $@.tmp; done
-	@for T in $(SQL_EXAMPLES); do echo "echo $$T && psql $(DATABASE_NAME) < $(top_srcdir)/$$T >> /dev/null" >> $@.tmp; done
-	@echo 'psql `./wdbConfiguration --psqlArgs` -c "SELECT cleanupdb()" >> /dev/null' >> $@.tmp
-	@mv $@.tmp $@
-	@chmod 774 $@
+test_examples.sh: examples/test_examples.in.sh
+	$(SH_COMPILE)
 
 examples:   			all_cpp_examples
 
-EXTRA_DIST +=   		examples/setupExamples.in.sh \
+EXTRA_DIST +=   		examples/test_examples.in.sh \
+						examples/setupExamples.in.sh \
 						examples/wdb.mk \
 		                examples/Makefile.am \
 		                examples/Makefile.in
 
-CLEANFILES += test_examples examples/setupExamples.sh
+CLEANFILES += test_examples examples/setupExamples.sh test_examples.sh
  
 
 DISTCLEANFILES +=       examples/Makefile
