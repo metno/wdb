@@ -156,14 +156,14 @@ void PlaceGeometryTest::testG1_04B_InvalidPolygon()
 
 void PlaceGeometryTest::testG2_01A_NoGeometry()
 {
-    CPPUNIT_ASSERT_THROW( t->exec( statement_( "", 1 ) ), data_exception );
+    CPPUNIT_ASSERT_THROW( t->exec( statement_( "", 1 ) ), sql_error );
     //startNewTransaction();
     //CPPUNIT_ASSERT_THROW( t->exec( statement_( "POINT()" ) ), sql_error );
 }
 
 void PlaceGeometryTest::testG2_01B_NoGeometry()
 {
-    CPPUNIT_ASSERT_THROW( t->exec( statement_( "" , 1 ) ), data_exception );
+    CPPUNIT_ASSERT_THROW( t->exec( statement_( "" , 1 ) ), sql_error );
     //startNewTransaction();
     //CPPUNIT_ASSERT_THROW( t->exec( statement_( "POINT()" ) ), sql_error );
 }

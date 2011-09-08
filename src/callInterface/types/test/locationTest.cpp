@@ -49,6 +49,11 @@ void LocationTest::tearDown()
 {
 }
 
+void LocationTest::testEmptyLocation()
+{
+	CPPUNIT_ASSERT_THROW(Location l(""), Location::InvalidSpecification);
+}
+
 void LocationTest::testExactInterpolation()
 {
 	Location l("Exact foo");
@@ -167,6 +172,16 @@ void LocationTest::testFreeTextPlaceImplicitInterpolation()
 	Location l("foo Bar");
 	
 	CPPUNIT_ASSERT_EQUAL(std::string("foo bar"), l.placeName());
+	CPPUNIT_ASSERT(l.interpolation().empty());
+	CPPUNIT_ASSERT( ! l.hasGeometry() );
+}
+
+void LocationTest::testSpecialCharacterInPlaceName()
+{
+	// This should not throw
+	Location l("sært sted i østfåld");
+
+	CPPUNIT_ASSERT_EQUAL(std::string("sært sted i østfåld"), l.placeName());
 	CPPUNIT_ASSERT(l.interpolation().empty());
 	CPPUNIT_ASSERT( ! l.hasGeometry() );
 }

@@ -126,7 +126,7 @@ void Location::parseWithSpirit_(const std::string & location)
 					(str_p("POLYGON") >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')' >> ')')[assign_a(geomType_, GEOM_POLYGON)]
 				)[assign_a(geometry_)]
 			| // change to || to allow both geometry and placename
-			((alpha_p >> * print_p) - (*(lower_p|'('|')') >> (str_p("POINT") | "POLYGON" | "MULTIPOINT" | "MULTIPOLYGON") >> * anychar_p))[assign_a(placeName_)]
+			((+ anychar_p) - (*(lower_p|'('|')') >> (str_p("POINT") | "POLYGON" | "MULTIPOINT" | "MULTIPOLYGON") >> * anychar_p))[assign_a(placeName_)]
 			)
 			, space_p).full;
 

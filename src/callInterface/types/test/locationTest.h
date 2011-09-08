@@ -36,6 +36,7 @@
 class LocationTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE( LocationTest );
+	CPPUNIT_TEST( testEmptyLocation );
 	CPPUNIT_TEST( testExactInterpolation );
 	CPPUNIT_TEST( testNearestInterpolation );
 	CPPUNIT_TEST( testSurroundInterpolation );
@@ -49,6 +50,7 @@ class LocationTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testPolygonImplicitInterpolation );
 	CPPUNIT_TEST( testFreeTextPlace );
 	CPPUNIT_TEST( testFreeTextPlaceImplicitInterpolation );
+	CPPUNIT_TEST( testSpecialCharacterInPlaceName );
 	CPPUNIT_TEST( testRejectMultiPoint );
 	CPPUNIT_TEST( testRejectMultiPolygon );
 	CPPUNIT_TEST( testSpaceInWkt );
@@ -61,6 +63,8 @@ public:
 	
 	virtual void setUp();
 	virtual void tearDown();
+
+	void testEmptyLocation();
 
 	void testExactInterpolation();
 	void testNearestInterpolation();
@@ -76,6 +80,7 @@ public:
 	void testPolygonImplicitInterpolation();
 	void testFreeTextPlace();
 	void testFreeTextPlaceImplicitInterpolation();
+	void testSpecialCharacterInPlaceName();
 	void testRejectMultiPoint();
 	void testRejectMultiPolygon();
 	void testSpaceInWkt();
