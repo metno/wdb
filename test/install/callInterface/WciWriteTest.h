@@ -49,7 +49,7 @@ class wciWriteTest : public AbstractWciTestFixture
 	CPPUNIT_TEST(testCanInsert1);			// Natural Language (limited spec) - grid
 	CPPUNIT_TEST(testCanInsert2); 			// Natural Language - grid
 	CPPUNIT_TEST(testCanInsert3);			// Codes - grid
-	CPPUNIT_TEST(testCanInsert3);			// returnGid
+	CPPUNIT_TEST(testCanInsert4);			// returnGid
 	CPPUNIT_TEST(testMultipleInserts);
 	CPPUNIT_TEST(testVersionZeroOnNewData);
 	CPPUNIT_TEST(testAutoIncrementVersion);

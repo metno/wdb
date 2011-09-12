@@ -22,23 +22,28 @@
 -- Verify that the size of a blob is equal to the corresponding 
 -- placeregulargrid entry.
 --
--- TODO: This is not adapted to wci.write with bytea instead of oid
---
 CREATE OR REPLACE FUNCTION 
 verifyBlobSize(
-	value_ oid,
-	placeid_ bigint
+	value bytea,
+	placename_ text
 )
 RETURNS void AS
 $BODY$
 DECLARE
-	blobSize int;
+	blobSize real := length(value) / 4.0;
 	specSize int;
 BEGIN
-	SELECT sum(length(data)) INTO blobSize FROM pg_largeobject WHERE loid=value_;
-	SELECT numberX*numberY*4 INTO specSize FROM __WCI_SCHEMA__.placespec WHERE placeid_=placeid;
+	SELECT 
+		g.numberx*g.numbery INTO specSize
+	FROM 
+		__WCI_SCHEMA__.placeregulargrid g, 
+		__WCI_SCHEMA__.getSessionData() s
+	WHERE
+		g.placename = placename_ AND
+		g.placenamespaceid = s.placenamespaceid;
+
 	IF blobSize != specSize THEN
-		RAISE WARNING 'verifyBlobSize(%, %), Missized data field (size=%, should be %)', value_, placeid_, blobSize, specSize;
+		RAISE EXCEPTION 'verifyBlobSize: Wrong size of data field (size=%, should be %)', blobSize, specSize;
 	END IF;
 END;
 $BODY$

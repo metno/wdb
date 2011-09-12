@@ -45,7 +45,7 @@ DECLARE
 	dataId bigint;
 BEGIN
 	
-	--PERFORM verifyBlobSize(data, placeid_);
+	PERFORM verifyBlobSize(data, placename_);
 
 	-- Determine dataversion
 	SELECT 
@@ -166,7 +166,8 @@ DECLARE
 	
 	dataId bigint;
 BEGIN
-	--PERFORM verifyBlobSize(data, placeid_);
+	PERFORM verifyBlobSize(data, placename_);
+	
 	-- Determine dataversion
 	IF (currentVersion_ IS NULL OR currentVersion_ < 0) THEN
 		SELECT 

@@ -60,8 +60,10 @@ void TransactionCorrectnessTest::tearDown()
 
 void TransactionCorrectnessTest::testDeleteMakesFileUnreadable()
 {
+	std::string data(99200*4, 'a');
+
 	const string write = "SELECT wci.write("
-		"E'aaaa'::bytea, "
+		"E'"+data+"'::bytea, "
 		"'hirlam 10 grid',"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"

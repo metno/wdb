@@ -71,8 +71,10 @@ void wciWriteTest::testCanInsert1()
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
 
+	std::string data(99200*4, 'a');
+
 	const string write = "SELECT wci.write("
-		"E'aaaa'::bytea, "
+		"E'" + data + "'::bytea, "
 		"'hirlam 10 grid',"
 		"'2006-04-21 07:00:00+00',"
 		"'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
@@ -101,8 +103,10 @@ void wciWriteTest::testCanInsert2()
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
 
+	std::string data(99200*4, 'a');
+
 	const string write = "SELECT wci.write("
-		"E'aaaa'::bytea, "
+		"E'"+data+"'::bytea, "
 		"'test wci 0'::text,"
 		"'hirlam 10 grid',"
 		"'2006-04-21 07:00:00+00',"
@@ -133,8 +137,10 @@ void wciWriteTest::testCanInsert3()
 	result r = t->exec(select);
 	size_t rowsBefore = r.size();
 
+	std::string data(99200*4, 'a');
+
 	const string write = "SELECT wci.write("
-						 "E'aaaa'::bytea, "
+						 "E'"+data+"'::bytea, "
 					     "'test wci 3', "
 						 "'hirlam 10 grid', "
 						 "'2006-04-21 07:00:00+00', "
@@ -166,16 +172,16 @@ void wciWriteTest::testCanInsert4()
 	size_t rowsBefore = r.size();
 
 	const string write = "SELECT wci.write( ROW("
-						 "E'aaaa'::bytea, "
+						 "42, "
 						 "'test wci 1',"
 						 "'hirlam 10 grid',"
 						 "'',"
 						 "'2006-04-21 07:00:00+00',"
 						 "'2006-04-01 06:00:00+00', '2006-04-01 06:00:00+00',"
-						 "'air potential temperature', 'K',"
-						 "'height above ground','m', 0,100,"
+						 "0, 'air potential temperature', 'K',"
+						 "'height above ground','m', 0,100,0,"
 						 "0,0,"
-						 "'2006-04-01 06:00:00+00', 1, 'grid')::wci.returnGid )";
+						 "'2006-04-01 06:00:00+00', 1, 0)::wci.returnGid )";
 	t->exec(write);
 
 	r = t->exec(select);
@@ -447,7 +453,7 @@ string wciWriteTest::statement_(const string & referenceTime) const
 {
 	ostringstream ret;
 	ret << "SELECT wci.write( "
-		<< "E'aaaa'::bytea, "
+		<< "E'aaaabbbbccccdddd'::bytea, "
 		<< "'test grid, rotated', "
 		<< "'"<< referenceTime << "', "
 		<< "'today', 'today', "
@@ -461,7 +467,7 @@ std::string wciWriteTest::statementWithParameter_(const std::string parameter) c
 {
 	ostringstream ret;
 	ret << "SELECT wci.write( "
-		<< "E'aaaa'::bytea, "
+		<< "E'aaaabbbbccccdddd'::bytea, "
 		<< "'test grid, rotated', "
 		<< "'2004-12-24 07:00:00+00', "
 		<< "'today', 'today', "
