@@ -58,6 +58,9 @@ PG_FUNCTION_INFO_V1(write_file);
  */
 Datum write_file(PG_FUNCTION_ARGS)
 {
+	if ( PG_ARGISNULL(0) or PG_ARGISNULL(1) )
+		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("NULL argument not allowed")));
+
 	int64 id = PG_GETARG_INT64(0);
 	bytea * data = PG_GETARG_BYTEA_P(1);
 
@@ -81,6 +84,9 @@ PG_FUNCTION_INFO_V1(drop_file);
  */
 Datum drop_file(PG_FUNCTION_ARGS)
 {
+	if ( PG_ARGISNULL(0) )
+		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("NULL argument not allowed")));
+
 	int64 id = PG_GETARG_INT64(0);
 
 	std::string warning;
@@ -129,6 +135,9 @@ PG_FUNCTION_INFO_V1(read_file);
  */
 Datum read_file(PG_FUNCTION_ARGS)
 {
+	if ( PG_ARGISNULL(0) )
+		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("NULL argument not allowed")));
+
 	int64 id = PG_GETARG_INT64(0);
 
 	// Making this static will reduce chances of memory leak in case something
@@ -166,6 +175,9 @@ PG_FUNCTION_INFO_V1(read_float_from_file);
  */
 Datum read_float_from_file(PG_FUNCTION_ARGS)
 {
+	if ( PG_ARGISNULL(0) or PG_ARGISNULL(1) )
+		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("NULL argument not allowed")));
+
 	int64 id = PG_GETARG_INT64(0);
 	int position = PG_GETARG_INT32(1);
 
@@ -186,6 +198,9 @@ PG_FUNCTION_INFO_V1(cache_file);
  */
 Datum cache_file(PG_FUNCTION_ARGS)
 {
+	if ( PG_ARGISNULL(0) )
+		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("NULL argument not allowed")));
+
 	int64 id = PG_GETARG_INT64(0);
 
 	// WARNING:
