@@ -64,6 +64,14 @@ DECLARE
 BEGIN
 	-- Get FileID
 	SELECT value INTO val1 FROM test.gridvalue WHERE dataprovidername=''test cleandb'' LIMIT 1;
+
+	-- Verify that exists_file function returns true when the file is there
+	SELECT __WCI_SCHEMA__.exists_file( val1 ) INTO res;
+	IF  res = false THEN
+		ret:=''ERROR: exists_file function does not work as expected'';
+		RETURN ret;
+	END IF;
+
 	-- Clean Files
 	PERFORM cleanupdb();
 	-- Check for File
