@@ -152,8 +152,8 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				break;
 			default:
 				q 	<< WCI_SCHEMA << ".dwithin( "
-					<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
-					<< "transform( v.placegeometry, v.originalsrid ), "
+					<< "st_transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+					<< "st_transform( v.placegeometry, v.originalsrid ), "
 					<< "1 )";
 				// See notes on transform below
 				break;
@@ -177,8 +177,8 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				}
 				else if ( geomType_ == GEOM_POLYGON ) {
 					q 	<< WCI_SCHEMA << ".dwithin( "
-						<< "transform( v.placegeometry, v.originalsrid ), "
-						<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+						<< "st_transform( v.placegeometry, v.originalsrid ), "
+						<< "st_transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
 						<< "1 )";
 				}
 			}
@@ -196,7 +196,7 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				<<	"(SELECT nn_gid FROM "
 				<< WCI_SCHEMA << ".nearestneighbor( "
 				<< myGeometry << ", "   // geometry
-				<< "1, "				// distance to nearest
+				<< "1, "				// st_distance to nearest
 				<< "1, "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "
@@ -214,7 +214,7 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				<<	"(SELECT nn_gid FROM "
 				<< WCI_SCHEMA << ".nearestneighbor( "
 				<< myGeometry << ", "   // geometry
-				<< "1, "				// distance to nearest
+				<< "1, "				// st_distance to nearest
 				<< interpolationParameter_ << ", "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "

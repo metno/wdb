@@ -119,18 +119,18 @@ WdbProjection::datumTransform(const WdbProjection & dest, size_t size, double * 
 
 // Transform to default
 void
-WdbProjection::transformToDefault(size_t size, double * lon, double * lat) const
+WdbProjection::transformToDefault(size_t size, double * x, double * y) const
 {
 	WdbProjection dest( DEFAULT_PROJECTION );
-	transform( dest, size, lon, lat );
+	transform( dest, size, x, y );
 }
 
 // Transform from default
 void
-WdbProjection::transformFromDefault(size_t size, double * lon, double * lat) const
+WdbProjection::transformFromDefault(size_t size, double * x, double * y) const
 {
 	WdbProjection dest( DEFAULT_PROJECTION );
-	dest.transform( *this, size, lon, lat );
+	dest.transform( *this, size, x, y );
 }
 
 

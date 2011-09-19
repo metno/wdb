@@ -237,7 +237,7 @@ WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
 export $WDB_NAME
 
 # Check that the database exists
-echo -n "checking whether database $WDB_NAME exists... "
+echo -n "checking whether database $WDB_NAME exists on $WDB_INSTALL_PORT... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
 # grab first line (name) | trim whitesoace
 DB_CHECK=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
@@ -349,6 +349,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i $POSTGIS_DIR/$POSTGIS_FILE
 \i $POSTGIS_DIR/spatial_ref_sys.sql
+\i $POSTGIS_DIR/rtpostgis.sql
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR"

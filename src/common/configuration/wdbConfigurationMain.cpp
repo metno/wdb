@@ -185,6 +185,7 @@ int main( int argc, char ** argv )
 		help( allowedOptions, clog );
 		return 1;
 	}
+	return 0;
 }
 
 /**

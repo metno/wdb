@@ -62,7 +62,7 @@ public:
 	void operator()(argument_type &T)
   	{
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['test wci'], "; // DataProvider
     	queryStr << "'POLYGON((2 52, 6 64, 17 67, 14 56, 2 52))', "; // Place
@@ -131,7 +131,7 @@ public:
 	void operator()(argument_type &T)
   	{
         std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validfrom, validto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
     	queryStr << "ARRAY['test wci'], "; // DataProvider
     	queryStr << "'POLYGON((49.265755 -22.12439, 43.716816 23.955116, 65.035385 57.317749, 76.134499 -43.483479, 49.265755 -22.12439))', "; // Place

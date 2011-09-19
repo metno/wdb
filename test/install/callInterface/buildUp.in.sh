@@ -90,6 +90,11 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'global grid' --reftime '200
 # G102 Test
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 8' --reftime '2004-12-26 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-13 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 9' --reftime '2004-12-26 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-13 06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '2004-12-24 06:00:00+00'
+
+# Test Polygon
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, wgs84' --reftime '2010-12-24 06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'proff grid' --reftime '2010-12-25 06:00:00+00'
 
 # Fix wci.write. Cannot write gridded data to floatvalue table
 

@@ -101,6 +101,7 @@ void PolygonReaderTest::tearDown()
 	finishGEOS();
 }
 
+/*
 void PolygonReaderTest::testExtractPolygon()
 {
 	std::vector<GridPointData> polygon;
@@ -138,3 +139,4 @@ void PolygonReaderTest::testExtractPolygonMetric()
 	for ( std::vector<GridPointData>::size_type i = 1; i < polygon.size() -1; ++ i )
 		CPPUNIT_ASSERT(x != polygon[i].x or y != polygon[i].y);
 }
+*/

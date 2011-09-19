@@ -183,7 +183,7 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 char * build_placeSpecQuery(long long placeid)
 {
 	std::ostringstream query;
-	query << "SELECT startx, starty, numberx, numbery, incrementx, incrementy, projdefinition "
+	query << "SELECT startx, starty, numberx, numbery, incrementx, incrementy, originalsrid, projdefinition "
 			"FROM " << WCI_SCHEMA << ".placespec "
 			"WHERE placeid=" << placeid;
 
@@ -194,7 +194,7 @@ char * build_placeSpecQuery(long long placeid)
 char * build_placeNameQuery(const char * placeName)
 {
 	std::ostringstream query;
-	query << "SELECT astext(placegeometry) "
+	query << "SELECT st_astext(placegeometry) "
 			"FROM " << WCI_SCHEMA << ".placedefinition p, "<< WCI_SCHEMA << ".getSessionData() s "
 			"WHERE p.placenamespaceid = s.placenamespaceid "
 			"AND placename ILIKE '" << placeName <<"'";

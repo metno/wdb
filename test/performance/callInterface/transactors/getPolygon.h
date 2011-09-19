@@ -62,9 +62,9 @@ public:
 	void operator()(argument_type &T)
   	{
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
-    	queryStr << "ARRAY['test wci'], "; // DataProvider
+    	queryStr << "ARRAY['test wci 0'], "; // DataProvider
     	queryStr << "'POLYGON((2 52, 6 64, 17 67, 14 56, 2 52))', "; // Place
     	queryStr << "'1980-01-01 12:00:00z', "; // Reference Time
     	queryStr << "'1980-01-01 13:00:00z',  "; // Valid Time
@@ -88,10 +88,10 @@ public:
 			R.at(i).at(6).to(ret->validTo_);
 			R.at(i).at(7).to(ret->parameter_);
 			R.at(i).at(8).to(ret->parameterUnit_);
-			R.at(i).at(9).to(ret->levelFrom_);
-			R.at(i).at(10).to(ret->levelTo_);
-			R.at(i).at(11).to(ret->levelParameter_);
-			R.at(i).at(12).to(ret->levelUnit_);
+			R.at(i).at(9).to(ret->levelParameter_);
+			R.at(i).at(10).to(ret->levelUnit_);
+			R.at(i).at(11).to(ret->levelFrom_);
+			R.at(i).at(12).to(ret->levelTo_);
 			R.at(i).at(13).to(ret->dataVersion_);
 			R.at(i).at(14).to(ret->quality_);
 			R.at(i).at(15).to(ret->storeTime_);
@@ -131,10 +131,12 @@ public:
 	void operator()(argument_type &T)
   	{
         std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype ";
         queryStr << "from wci.read (";
-    	queryStr << "ARRAY['test wci'], "; // DataProvider
-    	queryStr << "'POLYGON((49.265755 -22.12439, 43.716816 23.955116, 65.035385 57.317749, 76.134499 -43.483479, 49.265755 -22.12439))', "; // Place
+    	queryStr << "ARRAY['test wci 0'], "; // DataProvider
+    	queryStr << "'POLYGON((2 52, 6 64, -17 67, -14 56, 2 52))', ";
+    	// "POLYGON((49.265755 -22.12439, 43.716816 23.955116, 65.035385 57.317749, 76.134499 -43.483479, 49.265755 -22.12439))', "; // Place
+    	// POLYGON ((35 10, 10 20, 15 40, 45 45, 35 10),(20 30, 35 35, 30 20, 20 30))
     	queryStr << "'1980-01-01 12:00:00z', "; // Reference Time
     	queryStr << "'1980-01-01 13:00:00z', "; // Valid Time
     	queryStr << "ARRAY['air temperature'], "; // Parameter
@@ -157,10 +159,10 @@ public:
 			R.at(i).at(6).to(ret->validTo_);
 			R.at(i).at(7).to(ret->parameter_);
 			R.at(i).at(8).to(ret->parameterUnit_);
-			R.at(i).at(9).to(ret->levelFrom_);
-			R.at(i).at(10).to(ret->levelTo_);
-			R.at(i).at(11).to(ret->levelParameter_);
-			R.at(i).at(12).to(ret->levelUnit_);
+			R.at(i).at(9).to(ret->levelParameter_);
+			R.at(i).at(10).to(ret->levelUnit_);
+			R.at(i).at(11).to(ret->levelFrom_);
+			R.at(i).at(12).to(ret->levelTo_);
 			R.at(i).at(13).to(ret->dataVersion_);
 			R.at(i).at(14).to(ret->quality_);
 			R.at(i).at(15).to(ret->storeTime_);
