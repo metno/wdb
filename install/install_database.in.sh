@@ -349,7 +349,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \i $POSTGIS_DIR/$POSTGIS_FILE
 \i $POSTGIS_DIR/spatial_ref_sys.sql
-\i $POSTGIS_DIR/rtpostgis.sql
+--\i $POSTGIS_DIR/rtpostgis.sql
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR"
