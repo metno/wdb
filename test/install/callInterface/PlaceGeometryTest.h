@@ -124,6 +124,9 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG11_02_1CrossingPoint );
 	CPPUNIT_TEST( testG11_03_MoreThan1CrossingPoint );
 
+	CPPUNIT_TEST( testG12_01_PolygonWith1Hole );
+	CPPUNIT_TEST( testG12_02_PolygonWith2Holes );
+	CPPUNIT_TEST( testG12_03_PolygonWithSeveralHoles );
 	/*
 	CPPUNIT_TEST( testG12_01_AnglePerpendicular );
 	CPPUNIT_TEST( testG12_02_AcuteAngle );
@@ -291,17 +294,18 @@ public:
 	void testG11_02_1CrossingPoint();
 	void testG11_03_MoreThan1CrossingPoint();
 
+	// Holes
+	void testG12_01_PolygonWith1Hole();
+	void testG12_02_PolygonWith2Holes();
+	void testG12_03_PolygonWithSeveralHoles();
+
+	/*
 	// Angles in polygon
 	void testG12_01_AnglePerpendicular();
 	void testG12_02_AcuteAngle();
 	void testG12_03_ObtuseAngle();
 	void testG12_04_StraightAngle();
 	void testG12_05_ReflexAngle();
-
-	// Scan segments for polygons
-	void testG13_01_FewLongSegments();
-	void testG13_02_ManyShortSegments();
-	void testG13_03_MixedSegments();
 
 	// Offset
 	void testG14_01_AllRequestedPointsOnGrid();
@@ -317,6 +321,7 @@ public:
 	void testG16_01_CompleteIntersection();
 	void testG16_02_PartialIntersection();
 	void testG16_03_NoIntersection();
+		*/
 
 	// Syntax
 	void testG17_01_CorrectPointSyntax();

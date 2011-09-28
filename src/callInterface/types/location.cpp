@@ -57,9 +57,11 @@ Location::Location(const std::string & location)
 					"((" // Plain geometries
 					"(POINT)\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
 					"(POLYGON)\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
-						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
+						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)"
+						"(\\s*,\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\))*"
+						"\\s*\\)"
 					")|"
-					"([\\w�����][\\w\\d\\s,._�����]*))$"); // freetext location
+					"([\\w][\\w\\d\\s,._]*))$"); // freetext location
 	smatch match;
 	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
@@ -86,9 +88,9 @@ Location::Location(const std::string & location)
 			geomType_ = GEOM_POLYGON;
 	}
 	// Extract location (if name)
-	else if ( !match[14].str().empty() )
+	else if ( !match[20].str().empty() )
 	{
-		location_ = match[14];
+		location_ = match[20];
 		isGeometry_ = false;
 	    transform( location_.begin(), location_.end(), location_.begin(), lower );
 	}

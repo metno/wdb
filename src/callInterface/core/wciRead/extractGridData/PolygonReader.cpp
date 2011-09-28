@@ -87,7 +87,7 @@ GridPointDataList * PolygonReader::read( const GEOSGeom location, InterpolationT
 
 bool
 PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pos,
-										 const GEOSGeom polygon )
+									const GEOSGeom polygon )
 {
 	setBounds( polygon );
 	//elog(DEBUG1, GEOSGeomToWKT(polygon) );
@@ -118,7 +118,6 @@ PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pos,
 				x *= RAD_TO_DEG;
 				y *= RAD_TO_DEG;
 			}
-
 			// Intersects
 			seq = GEOSCoordSeq_create(1, 2);
 			GEOSCoordSeq_setX(seq, 0, x);

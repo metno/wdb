@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script Information
 export TESTCASE="P001_21"
-export TEST_DESCRIPTION="Single thread, individual bilinear point retrieval"
+export TEST_DESCRIPTION="Single thread, simple polygon retrieval"
 export TEST_PATH=__WDB_BUILDDIR__/test/performance/callInterface
 
 # Test Environment

@@ -658,7 +658,7 @@ void PlaceGeometryTest::testG11_01_NoCrossingPoints()
 
     result r = t->exec( statement_( polygon, 15 ) );
 
-    CPPUNIT_ASSERT( (result::size_type( 25 ) == r.size())||(result::size_type( 29 ) == r.size()) );
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 25 ), r.size() );
     int count = 0;
     for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
     	if ( 2 == ( *it ) [ "value" ].as<int>() )
@@ -716,6 +716,108 @@ void PlaceGeometryTest::testG11_03_MoreThan1CrossingPoint()
     }
     // Actually 28, but we cut one
     CPPUNIT_ASSERT_EQUAL( 24, count );
+}
+
+
+void PlaceGeometryTest::testG12_01_PolygonWith1Hole()
+{
+	double lon = 5.750 + (167 * 0.1);
+	double lat = -13.250 + (163 * 0.1);
+	pointToWgs84( lon, lat );
+	ostringstream pol;
+	pol << "POLYGON(( 11.34 60.75, "
+                     "12.34 60.75, "
+                     "12.34 61.25, "
+                     "11.34 61.25, "
+                     "11.34 60.75 ), "
+		<< "(" << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) - 0.05) << ", "
+			   << (wdb::round(lon,4) + 0.05) << " " << (wdb::round(lat,4) - 0.05) << ", "
+			   << (wdb::round(lon,4) + 0.05) << " " << (wdb::round(lat,4) + 0.05) << ", "
+			   << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) + 0.05) << ", "
+			   << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) - 0.05) << "))";
+    result r = t->exec( statement_( pol.str(), 17 ) );
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 24 ), r.size() );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 24, count );
+}
+
+
+void PlaceGeometryTest::testG12_02_PolygonWith2Holes()
+{
+	double lon = 5.750 + (167 * 0.1);
+	double lat = -13.250 + (163 * 0.1);
+	pointToWgs84( lon, lat );
+	double lon2 = 5.750 + (169 * 0.1);
+	double lat2 = -13.250 + (161 * 0.1);
+	pointToWgs84( lon2, lat2 );
+	ostringstream pol;
+	pol << "POLYGON(( 11.34 60.75, "
+                     "12.34 60.75, "
+                     "12.34 61.25, "
+                     "11.34 61.25, "
+                     "11.34 60.75 ), "
+		<< "(" << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) - 0.05) << ", "
+			   << (wdb::round(lon,4) + 0.05) << " " << (wdb::round(lat,4) - 0.05) << ", "
+			   << (wdb::round(lon,4) + 0.05) << " " << (wdb::round(lat,4) + 0.05) << ", "
+			   << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) + 0.05) << ", "
+			   << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) - 0.05) << "),"
+		<< "(" << (wdb::round(lon2,4) - 0.05) << " " << (wdb::round(lat2,4) - 0.05) << ", "
+			   << (wdb::round(lon2,4) + 0.05) << " " << (wdb::round(lat2,4) - 0.05) << ", "
+			   << (wdb::round(lon2,4) + 0.05) << " " << (wdb::round(lat2,4) + 0.05) << ", "
+			   << (wdb::round(lon2,4) - 0.05) << " " << (wdb::round(lat2,4) + 0.05) << ", "
+			   << (wdb::round(lon2,4) - 0.05) << " " << (wdb::round(lat2,4) - 0.05) << ")"
+		<< " )";
+    result r = t->exec( statement_( pol.str(), 18 ) );
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 23 ), r.size() );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 23, count );
+}
+
+
+void PlaceGeometryTest::testG12_03_PolygonWithSeveralHoles()
+{
+	double lon = 5.750 + (167 * 0.1);
+	double lat = -13.250 + (163 * 0.1);
+	pointToWgs84( lon, lat );
+	double lon2 = 5.750 + (169 * 0.1);
+	double lat2 = -13.250 + (161 * 0.1);
+	pointToWgs84( lon2, lat2 );
+	ostringstream pol;
+	pol << "POLYGON(( 11.34 60.75, "
+                     "12.34 60.75, "
+                     "12.34 61.25, "
+                     "11.34 61.25, "
+                     "11.34 60.75 ), "
+		<< "(" << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) - 0.05) << ", "
+			   << (wdb::round(lon,4) + 0.05) << " " << (wdb::round(lat,4) - 0.05) << ", "
+			   << (wdb::round(lon,4) + 0.05) << " " << (wdb::round(lat,4) + 0.05) << ", "
+			   << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) + 0.05) << ", "
+			   << (wdb::round(lon,4) - 0.05) << " " << (wdb::round(lat,4) - 0.05) << "),"
+		<< "(" << (wdb::round(lon2,4) - 0.05) << " " << (wdb::round(lat2,4) - 0.05) << ", "
+			   << (wdb::round(lon2,4) + 0.05) << " " << (wdb::round(lat2,4) - 0.05) << ", "
+			   << (wdb::round(lon2,4) + 0.05) << " " << (wdb::round(lat2,4) + 0.05) << ", "
+			   << (wdb::round(lon2,4) - 0.05) << " " << (wdb::round(lat2,4) + 0.05) << ", "
+			   << (wdb::round(lon2,4) - 0.05) << " " << (wdb::round(lat2,4) - 0.05) << "),"
+		<< "(10.3 45.1, 10.4 45.1, 10.4 45.2, 10.3 45.2, 10.3 45.1),"
+		<< "(15.3 45.1, 15.4 45.1, 15.4 45.2, 15.3 45.2, 15.3 45.1),"
+		<< "(25.6 33.0, 25.7 33.0, 25.7 33.1, 25.6 33.1, 25.6 33.0)"
+		<< " )";
+    result r = t->exec( statement_( pol.str(), 18 ) );
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 23 ), r.size() );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 23, count );
 }
 
 /*
@@ -1400,6 +1502,8 @@ map<int, string> getSpecFromParamNumber()
     ret[ 11 ] = "air temperature";
     ret[ 15 ] = "max air temperature";
     ret[ 16 ] = "min air temperature";
+    ret[ 17 ] = "convective precipitation amount";
+    ret[ 18 ] = "convective snowfall amount";
     ret[ 32 ] = "altitude";
     ret[ 33 ] = "x wind";
     ret[ 34 ] = "y wind";

@@ -99,7 +99,6 @@ public:
 			R.at(i).at(17).to(ret->valueType_);
 			rows_.push_back(ret);
 		}
-		std::cerr << "queryStr" << std::endl;
 	}
 
   	void on_abort(const char Reason[]) throw ()
