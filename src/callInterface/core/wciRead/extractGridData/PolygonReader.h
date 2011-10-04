@@ -53,25 +53,19 @@ public:
 private:
 	/// The Base Data Reader, used to read the data from disk
 	const BaseDataReader & reader_;
-	// Proj Definition Stats
-	float startX_;
-	float startY_;
-	float incX_;
-	float incY_;
-	int numX_;
-	int numY_;
 	// Bounds of the Polygon in the Grid SRID
-	float left_;
-	float bottom_;
-	float top_;
-	float right_;
+	struct BoundingBox {
+		float left_;
+		float bottom_;
+		float top_;
+		float right_;
+	};
 	// Set X/Y Bounds for Data Retrieval
-	void setBounds( const GEOSGeom polygon );
+	BoundingBox getBounds( const GEOSGeom polygon );
 	// Extract the Grid Points in Polygon
-	bool gridPointsInPolygon( std::vector<GridPointData> & pos,
-							  const GEOSGeom polygon );
+	bool gridPointsInPolygon( std::vector<GridPointData> & pointsInPolygon, const GEOSGeom polygon );
 	/// Read the polygon from the data file
-	GridPointDataList * readPolygon( std::vector<GridPointData> & points, FileId dataId ) const;
+	GridPointDataList * readPolygon( const std::vector<GridPointData> & points, FileId dataId ) const;
 
 	friend class PolygonReaderTest; // for testing
 };

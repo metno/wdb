@@ -45,7 +45,7 @@ PolygonReader::~PolygonReader()
 	// NOOP
 }
 
-GridPointDataList * PolygonReader::readPolygon(	std::vector<GridPointData> & points, FileId dataId ) const
+GridPointDataList * PolygonReader::readPolygon(	const std::vector<GridPointData> & points, FileId dataId ) const
 {
 	size_t noOfPointsToReturn = 0;
 	for (std::vector<GridPointData>::const_iterator it = points.begin(); it != points.end(); ++it)
@@ -64,7 +64,7 @@ GridPointDataList * PolygonReader::readPolygon(	std::vector<GridPointData> & poi
 	GridPointDataList * ret = GridPointDataListNew(noOfPointsToReturn);
 
 	unsigned pos = 0;
-	for (std::vector<GridPointData>::iterator it = points.begin(); it
+	for (std::vector<GridPointData>::const_iterator it = points.begin(); it
 			!= points.end() and pos < noOfPointsToReturn; ++it)
 		if (reader_.readPoint(ret->data[pos], it->x, it->y, dataId))
 			++pos;
@@ -86,28 +86,27 @@ GridPointDataList * PolygonReader::read( const GEOSGeom location, InterpolationT
 }
 
 bool
-PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pos,
-									const GEOSGeom polygon )
+PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pointsInPolygon, const GEOSGeom polygon )
 {
-	setBounds( polygon );
+	BoundingBox bounds = getBounds( polygon );
 	//elog(DEBUG1, GEOSGeomToWKT(polygon) );
-	double x;
-	double y;
-	int startI = (left_ - startX_) / incX_;
+	int startI = (bounds.left_ - reader_.placeSpecification().startX_) / reader_.placeSpecification().xIncrement_;
 	if (startI < 0) startI = 0;
-	int endI = ((right_ - startX_) / incX_) + 1;
-	if (endI > numX_) endI = numX_;
-	int startJ = (bottom_ - startY_) / incY_;
+	int endI = ((bounds.right_ - reader_.placeSpecification().startX_) / reader_.placeSpecification().xIncrement_) + 1;
+	if (endI > reader_.placeSpecification().xNumber_) endI = reader_.placeSpecification().xNumber_;
+	int startJ = (bounds.bottom_ - reader_.placeSpecification().startY_) / reader_.placeSpecification().yIncrement_;
 	if (startJ < 0) startJ = 0;
-	int endJ = ((top_ - startY_) / incY_) + 1;
-	if (endJ > numY_) endJ = numY_;
+	int endJ = ((bounds.top_ - reader_.placeSpecification().startY_) / reader_.placeSpecification().yIncrement_) + 1;
+	if (endJ > reader_.placeSpecification().yNumber_) endJ = reader_.placeSpecification().yNumber_;
 	char res = 0;
 	GEOSCoordSequence * seq;
 	GEOSGeom point;
+	double x;
+	double y;
 	for (int j = startJ; j < endJ; j++ ) {
 		for (int i = startI; i < endI; i++) {
-			x = startX_ + (i * incX_);
-			y = startY_ + (j * incY_);
+			x = reader_.placeSpecification().startX_ + (i * reader_.placeSpecification().xIncrement_);
+			y = reader_.placeSpecification().startY_ + (j * reader_.placeSpecification().yIncrement_);
 			WdbProjection prj( reader_.placeSpecification().projDefinition_ );
 			if ( ! isMetric( reader_.placeSpecification().projDefinition_ ) ) {
 				x *= DEG_TO_RAD;
@@ -129,24 +128,18 @@ PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pos,
 				GridPointData posPt;
 				posPt.x = i;
 				posPt.y = j;
-				pos.push_back(posPt);
+				pointsInPolygon.push_back(posPt);
 			}
 			GEOSGeom_destroy(point);
 		}
 	}
 	// Return
-	return ( pos.size() > 0 );
+	return ( pointsInPolygon.size() > 0 );
 }
 
-void
-PolygonReader::setBounds( const GEOSGeom polygon )
+PolygonReader::BoundingBox
+PolygonReader::getBounds( const GEOSGeom polygon )
 {
-	startX_ = reader_.placeSpecification().startX_;
-	startY_ = reader_.placeSpecification().startY_;
-	incX_   = reader_.placeSpecification().xIncrement_;
-	incY_   = reader_.placeSpecification().yIncrement_;
-	numX_  	= reader_.placeSpecification().xNumber_;
-	numY_  	= reader_.placeSpecification().yNumber_;
 	GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( polygon ));
 	if ( outerRing == NULL )
 		throw std::runtime_error( "Outer ring of polygon/shape is NULL" );
@@ -171,10 +164,11 @@ PolygonReader::setBounds( const GEOSGeom polygon )
 		coord.lon *= RAD_TO_DEG;
 		coord.lat *= RAD_TO_DEG;
 	}
-	left_ = coord.lon;
-	top_ = coord.lat;
-	right_ = coord.lon;
-	bottom_ = coord.lat;
+	BoundingBox ret;;
+	ret.left_ = coord.lon;
+	ret.top_ = coord.lat;
+	ret.right_ = coord.lon;
+	ret.bottom_ = coord.lat;
 	for ( unsigned int i = 1; i < size; i++ ) {
 		GEOSCoordSeq_getX( coordSeq, i, &coord.lon );
 		GEOSCoordSeq_getY( coordSeq, i, &coord.lat );
@@ -187,15 +181,16 @@ PolygonReader::setBounds( const GEOSGeom polygon )
 			coord.lon *= RAD_TO_DEG;
 			coord.lat *= RAD_TO_DEG;
 		}
-		if (coord.lon < left_)
-			left_ = coord.lon;
+		if (coord.lon < ret.left_)
+			ret.left_ = coord.lon;
 		else
-		if (coord.lon > right_)
-			right_ = coord.lon;
-		if (coord.lat < bottom_)
-			bottom_ = coord.lat;
+		if (coord.lon > ret.right_)
+			ret.right_ = coord.lon;
+		if (coord.lat < ret.bottom_)
+			ret.bottom_ = coord.lat;
 		else
-		if (coord.lat > top_ )
-			top_ = coord.lat;
+		if (coord.lat > ret.top_ )
+			ret.top_ = coord.lat;
 	}
+	return ret;
 }
