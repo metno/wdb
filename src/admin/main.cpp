@@ -101,5 +101,5 @@ int main(int argc, char ** argv)
 		clog << e.what() << endl;
 		return 1;
 	}
-
+	return 0;
 }

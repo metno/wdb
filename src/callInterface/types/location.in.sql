@@ -24,7 +24,7 @@
 -- (the release on Debian Etch)
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.dwithin(geometry, geometry, float8)
     RETURNS boolean
-    AS 'SELECT $1 && expand($2,$3) AND $2 && expand($1,$3) AND distance($1, $2) < $3'
+    AS 'SELECT $1 && st_expand($2,$3) AND $2 && st_expand($1,$3) AND st_distance($1, $2) < $3'
     LANGUAGE 'SQL' IMMUTABLE; -- WITH (iscachable);
 
 

@@ -317,7 +317,7 @@ SELECT
 	pd.placegeometry,
 	pd.placeindeterminatecode,
 	0 AS placenamespaceid,
-	lower(astext( pd.placegeometry )) as placename,
+	lower(st_astext( pd.placegeometry )) as placename,
 	__WDB_SRID__ as originalsrid,
 	pd.placestoretime	
 FROM 	

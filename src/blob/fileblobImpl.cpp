@@ -213,6 +213,7 @@ float readFloat_(std::istream & s, int position)
 		throw end_of_file(msg.str());
 	}
 }
+
 }
 
 BOOST_STATIC_ASSERT(sizeof(float) == 4);

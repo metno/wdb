@@ -316,7 +316,7 @@ void SurroundInterpolationTest::testG03_04_SurroundFarOutsideGrid()
 std::string SurroundInterpolationTest::statement_( const std::string & geo, int paramid ) const
 {
     ostringstream st;
-    st << "SELECT *, astext(placegeometry) AS geometry_as_text FROM wci.read( ARRAY['test group'], ";
+    st << "SELECT *, st_astext(placegeometry) AS geometry_as_text FROM wci.read( ARRAY['test group'], ";
     if ( "NULL" == geo ) {
         st << "NULL";
     }

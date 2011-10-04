@@ -67,6 +67,9 @@ struct PlaceSpecification
 	/// y(j) direction increment
 	double yIncrement_;
 
+	// Spatial Reference Id
+	int srid_;
+
 	/// Grid projection information, as a proj string
 	char * projDefinition_;
 };

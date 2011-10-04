@@ -57,9 +57,11 @@ Location::Location(const std::string & location)
 					"((" // Plain geometries
 					"(POINT)\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
 					"(POLYGON)\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
-						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
+						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)"
+						"(\\s*,\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\))*"
+						"\\s*\\)"
 					")|"
-					"([\\w�����][\\w\\d\\s,._�����]*))$"); // freetext location
+					"([\\w][\\w\\d\\s,._]*))$"); // freetext location
 	smatch match;
 	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
@@ -86,9 +88,9 @@ Location::Location(const std::string & location)
 			geomType_ = GEOM_POLYGON;
 	}
 	// Extract location (if name)
-	else if ( !match[14].str().empty() )
+	else if ( !match[20].str().empty() )
 	{
-		location_ = match[14];
+		location_ = match[20];
 		isGeometry_ = false;
 	    transform( location_.begin(), location_.end(), location_.begin(), lower );
 	}
@@ -152,8 +154,8 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				break;
 			default:
 				q 	<< WCI_SCHEMA << ".dwithin( "
-					<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
-					<< "transform( v.placegeometry, v.originalsrid ), "
+					<< "st_transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+					<< "st_transform( v.placegeometry, v.originalsrid ), "
 					<< "1 )";
 				// See notes on transform below
 				break;
@@ -177,8 +179,8 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				}
 				else if ( geomType_ == GEOM_POLYGON ) {
 					q 	<< WCI_SCHEMA << ".dwithin( "
-						<< "transform( v.placegeometry, v.originalsrid ), "
-						<< "transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
+						<< "st_transform( v.placegeometry, v.originalsrid ), "
+						<< "st_transform( geomfromtext( '" << location() << "', 4030), v.originalsrid ), "
 						<< "1 )";
 				}
 			}
@@ -196,7 +198,7 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				<<	"(SELECT nn_gid FROM "
 				<< WCI_SCHEMA << ".nearestneighbor( "
 				<< myGeometry << ", "   // geometry
-				<< "1, "				// distance to nearest
+				<< "1, "				// st_distance to nearest
 				<< "1, "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "
@@ -214,7 +216,7 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				<<	"(SELECT nn_gid FROM "
 				<< WCI_SCHEMA << ".nearestneighbor( "
 				<< myGeometry << ", "   // geometry
-				<< "1, "				// distance to nearest
+				<< "1, "				// st_distance to nearest
 				<< interpolationParameter_ << ", "				// number of points
 				<< "180, "				// iterations
 				<< "'" << WCI_SCHEMA << ".floatvalue', "

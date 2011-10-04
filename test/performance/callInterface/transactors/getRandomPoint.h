@@ -159,7 +159,7 @@ public:
 		std::string valTime;
 		randomTimes(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << randomDataProvider() << ", "
 				 << randomPoint() << ", "
@@ -236,7 +236,7 @@ public:
 		std::string valTime;
 		randomTimeSpan(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << randomDataProvider() << ", "
 				 << randomPoint() << ", "
@@ -313,7 +313,7 @@ public:
 		std::string valTime;
 		randomTimeSpan(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << randomDataProvider() << ", "
 				 << randomPoint() << ", "
@@ -398,14 +398,19 @@ public:
 		switch (paramN) {
 		case 0:
 			param = "air pressure";
+			break;
 		case 1:
 			param = "air pressure at sea level";
+			break;
 		case 2:
 			param = "air temperature";
+			break;
 		case 3:
 			param = "max air temperature";
+			break;
 		case 4:
 			param = "min air temperature";
+			break;
 		}
 
 		pqxx::result R;
@@ -478,7 +483,7 @@ public:
 		std::string valTime;
 		randomTimes(refTime, valTime);
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname, levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 				 << "from wci.read ( "
 				 << randomDataProvider() << ", "
 				 << randomPoint() << ", "

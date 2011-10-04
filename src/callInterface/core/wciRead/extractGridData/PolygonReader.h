@@ -30,7 +30,6 @@
 #define POLYGONREADER_H_
 
 #include "BaseDataReader.h"
-#include "PolygonGridExtract.h"
 #include <interpolationType.h>
 #include <vector>
 
@@ -48,19 +47,25 @@ class PolygonReader
 public:
 	PolygonReader(const BaseDataReader & reader);
 	~PolygonReader();
-
 	/// Execute the PolygonReader
-	GridPointDataList * read(const GEOSGeom location, InterpolationType interpolation, FileId dataId) const;
+	GridPointDataList * read(const GEOSGeom location, InterpolationType interpolation, FileId dataId);
 
 private:
 	/// The Base Data Reader, used to read the data from disk
 	const BaseDataReader & reader_;
-
-	/// Extract the polygon (as GridPoints) from the GEOS geometry
-	void extractPolygon( std::vector<GridPointData> & polygon, const GEOSGeom location, InterpolationType interpolation ) const;
-
+	// Bounds of the Polygon in the Grid SRID
+	struct BoundingBox {
+		float left_;
+		float bottom_;
+		float top_;
+		float right_;
+	};
+	// Set X/Y Bounds for Data Retrieval
+	BoundingBox getBounds( const GEOSGeom polygon );
+	// Extract the Grid Points in Polygon
+	bool gridPointsInPolygon( std::vector<GridPointData> & pointsInPolygon, const GEOSGeom polygon );
 	/// Read the polygon from the data file
-	GridPointDataList * readPolygon( std::vector<GridPointData> & points, FileId dataId ) const;
+	GridPointDataList * readPolygon( const std::vector<GridPointData> & points, FileId dataId ) const;
 
 	friend class PolygonReaderTest; // for testing
 };

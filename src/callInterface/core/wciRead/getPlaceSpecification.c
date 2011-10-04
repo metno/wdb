@@ -56,8 +56,8 @@ struct PlaceSpecification * getPlaceSpecificationFromDatabase(long long placeid)
 	ret->yNumber_ = DatumGetInt32( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 4, NULL) );
 	ret->xIncrement_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 5, NULL) );
 	ret->yIncrement_ = DatumGetFloat4( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 6, NULL) );
-
-	char * projDef = SPI_getvalue(placeRow, SPI_tuptable->tupdesc, 7);
+	ret->srid_ = DatumGetInt32( SPI_getbinval(placeRow, SPI_tuptable->tupdesc, 7, NULL) );
+	char * projDef = SPI_getvalue(placeRow, SPI_tuptable->tupdesc, 8);
 	ret->projDefinition_ = strdup(projDef);
 	pfree(projDef);
 

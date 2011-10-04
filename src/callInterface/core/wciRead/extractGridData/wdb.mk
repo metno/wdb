@@ -16,8 +16,6 @@ libwciCoreNoPostgres_la_SOURCES += \
 						src/callInterface/core/wciRead/extractGridData/BaseDataReader.cpp \
 						src/callInterface/core/wciRead/extractGridData/PolygonReader.h \
 						src/callInterface/core/wciRead/extractGridData/PolygonReader.cpp \
-						src/callInterface/core/wciRead/extractGridData/PolygonGridExtract.cpp \
-						src/callInterface/core/wciRead/extractGridData/PolygonGridExtract.h \
 						src/callInterface/core/wciRead/extractGridData/readCache.h \
 						src/callInterface/core/wciRead/extractGridData/readCache.cpp \
 						src/callInterface/core/wciRead/extractGridData/GeometryCache.h \
