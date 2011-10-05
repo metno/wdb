@@ -14,7 +14,7 @@ wdb-1.0 (1.0.2-1) lucid; urgency=medium
     
   * Parts per thousand [ppth] added as a base unit.
 
- -- Michael Akinde <wdb@met.no>  Oct, 05 May 2011 16:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Wed, 05 Oct 2011 16:00:00 +0000
 
 wdb-1.0 (1.0.1-1) lucid; urgency=medium
 
