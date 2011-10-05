@@ -4,11 +4,14 @@
 #-----------------------------------------------------------------------------
 
 CLEANDBTEST_SOURCES =	test/install/cleaningProgram/caseF001.in.test \
-						test/install/cleaningProgram/caseF002.in.test \
 						test/install/cleaningProgram/caseF003.in.test \
 						test/install/cleaningProgram/caseF004.in.test \
 						test/install/cleaningProgram/caseF005.in.test \
 						test/install/cleaningProgram/caseF006.in.test 
+
+# Useless test removed:
+# test/install/cleaningProgram/caseF002.in.test
+
 
 CLEANDBTEST_SUPPORT =	test/install/cleaningProgram/tearDown.in.sh \
 						test/install/cleaningProgram/testEnvironment.in.sh

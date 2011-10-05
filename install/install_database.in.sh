@@ -434,6 +434,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciVersion.sql
 \i $WCI_DIR/api/wciAdmin.sql
 \i $WCI_DIR/api/wciWrite.sql
+\i $WCI_DIR/api/wciRemove.sql
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR: Installation of WDB Call Interface failed"; exit 1
@@ -475,6 +476,7 @@ EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_cleanDb.log
+\i $WDB_CLEANUP_PATH/cleaning/remove_old_referencetimes.sql
 \i $WDB_CLEANUP_PATH/cleanDb.sql
 EOF
 	if [ 0 != $? ]; then

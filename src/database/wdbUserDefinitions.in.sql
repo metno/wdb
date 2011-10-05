@@ -53,7 +53,7 @@ CREATE ROLE wdb_xml NOLOGIN IN ROLE wdb_write;
 
 --- Create the wdb_test role
 --- Role is required by all users that need to read test views from the database
-CREATE ROLE wdb_test NOLOGIN;
+CREATE ROLE wdb_test NOLOGIN IN ROLE wdb_read;
 
 --- Create the gribLoad user
 CREATE ROLE gribload INHERIT LOGIN IN ROLE wdb_grib;

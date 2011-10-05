@@ -73,6 +73,7 @@ fi
 # Run Cleaner
 $PSQL -q <<EOF
 \o __WDB_LOGDIR__/$TESTCASE_FILE.tmp
+select wci.begin('cleantest', 999, 999, 999);
 select cleanupDb();
 EOF
 

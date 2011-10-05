@@ -9,6 +9,9 @@ sql_DATA += 			$(CLEANER_SOURCES:.in.sql=.sql)
 
 CLEANFILES +=			$(CLEANER_SOURCES:.in.sql=.sql)
 
+cleansqldir = $(sqldir)/cleaning
+cleansql_DATA =
+
 EXTRA_DIST +=			$(CLEANER_SOURCES) \
 						src/cleaningProgram/wdb.mk \
 						src/cleaningProgram/Makefile.am \
@@ -37,3 +40,5 @@ DISTCLEANFILES +=		src/cleaningProgram/Makefile
 src/cleaningProgram/all: $(CLEANER_SOURCES:.in.sql=.sql)
 
 src/cleaningProgram/clean: clean
+
+include src/cleaningProgram/remove_old_referencetimes/wdb.mk

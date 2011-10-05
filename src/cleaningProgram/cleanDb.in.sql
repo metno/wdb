@@ -24,31 +24,19 @@
  */
 CREATE OR REPLACE FUNCTION cleanupdb() RETURNS void AS 
 $$
-DECLARE 
-	-- The rows in __WDB_SCHEMA__.dataprovider - to be iterated over
-	provider __WDB_SCHEMA__.dataprovider%ROWTYPE;
 BEGIN
-	RAISE DEBUG 'Deleting old data from the database';
-	FOR provider IN SELECT * FROM __WDB_SCHEMA__.dataprovider LOOP
-		DECLARE
-			-- A dataprovider's Time To Live
-			ttl INTERVAL := provider.dataproviderlife;
-			-- Maximum allowed age for a given dataprovider
-			oldest_allowed TIMESTAMP := TIMESTAMP 'today' - ttl;
-		BEGIN
-			RAISE LOG 'GridValue: Deleting all data for data provider % from before %', provider.dataproviderid, oldest_allowed::date;
-			DELETE FROM __WDB_SCHEMA__.gridvalue 
-			WHERE dataproviderid = provider.dataproviderid AND referencetime < oldest_allowed;
-			DELETE FROM __WDB_SCHEMA__.floatvalue 
-			WHERE dataproviderid = provider.dataproviderid AND referencetime < oldest_allowed;
-		END;
-	END LOOP;
-
-	RAISE DEBUG 'Removed old table entries Starting delete of unused field files.';
+	PERFORM clean_referencetime.clean();
+	
+	RAISE DEBUG 'Starting delete of unused field files.';
 	PERFORM __WDB_SCHEMA__.vacuum_file_blob();
 	PERFORM __WDB_SCHEMA__.remove_unreferenced_files();
-	
 	RAISE DEBUG 'Done';
 END;
 $$ 
+SECURITY DEFINER
 LANGUAGE plpgsql;
+
+REVOKE ALL ON FUNCTION cleanupdb() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION cleanupdb() TO wdb_clean;
+
+-- Tester mangler tilgang til wdb_clean-rollen

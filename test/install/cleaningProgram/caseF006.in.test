@@ -54,6 +54,9 @@ ${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} 
 
 $PSQL -q -o $LOGFILE << EOF 
 \set ON_ERROR_STOP
+
+select wci.begin('cleantest', 999, 999, 999);
+
 -- Test Function
 CREATE OR REPLACE FUNCTION check_for_files()
 RETURNS text AS '
