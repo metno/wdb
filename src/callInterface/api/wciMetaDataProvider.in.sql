@@ -204,6 +204,32 @@ SECURITY DEFINER
 LANGUAGE sql STABLE;
 
 
+--
+-- Get a list of all sub-dataproviders for the given data provider name.
+--
+CREATE OR REPLACE FUNCTION
+wci.getdataprovidersingroup(dataprovidername text)
+RETURNS SETOF text AS
+$BODY$
+	SELECT 
+		p.dataprovidername 
+	FROM 
+		wdb_int.dataprovidername p, 
+		wdb_int.dataprovidername pb, 
+		wci_int.getsessiondata() s 
+	WHERE 
+		p.dataprovidernamespaceid = s.dataprovidernamespaceid AND 
+		pb.dataprovidernamespaceid = s.dataprovidernamespaceid AND 
+		p.dataprovidernameleftset >= pb.dataprovidernameleftset AND 
+		p.dataprovidernamerightset <= pb.dataprovidernamerightset AND
+		pb.dataprovidername=$1
+	ORDER BY 
+		p.dataproviderid;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STRICT;
+
+
 
 --
 -- add new data provider name in namespace
