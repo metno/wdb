@@ -1,4 +1,4 @@
-wdb-1.0 (1.0.2~rc1-1) lucid; urgency=medium
+wdb-1.0 (1.0.2-1) lucid; urgency=medium
   
   * Fixed a bug in the WDB projection libraries whereby a re-projection
     error on any grid in the selected data set would throw an exception,
@@ -14,7 +14,7 @@ wdb-1.0 (1.0.2~rc1-1) lucid; urgency=medium
     
   * Parts per thousand [ppth] added as a base unit.
 
- -- Michael Akinde <wdb@met.no>  Thu, 05 May 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Oct, 05 May 2011 16:00:00 +0000
 
 wdb-1.0 (1.0.1-1) lucid; urgency=medium
 
