@@ -179,7 +179,7 @@ public:
 		log.infoStream() << "ValueParameter Selected: " << parameter.c_str();
 		
 		std::stringstream queryStr;
-        queryStr << "select value, dataprovidername, placename, astext(placegeometry), "
+        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), "
         		 << "referencetime, validfrom, validto, valueparametername, valueparameterunit, "
         		 << "levelparametername, levelunitname, levelfrom, levelto, dataversion, "
         		 << "confidencecode, storetime, valueid, valuetype ";

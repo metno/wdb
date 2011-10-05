@@ -1,4 +1,5 @@
 select wci.begin( 'wdb', 999, 999, 999 );
+select wci.addplaceregulargrid('test grid, wgs84',100,100,0.100,0.100,5.0000,55.0000,'+proj=longlat +ellps=WGS84 +no_defs');
 select wci.addplaceregulargrid('test grid, regular',2,2,0.100,0.100,0.0000,0.0000,'+proj=longlat +a=6367470.0 +towgs84=0,0,0 +no_defs');
 select wci.addplaceregulargrid('test grid, rotated',2,2,0.100,0.100,0.0000,0.0000,'+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs');
 select wci.addplaceregulargrid('hirlam 10 grid',248,400,0.100,0.100,5.7500,-13.2500,'+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs');

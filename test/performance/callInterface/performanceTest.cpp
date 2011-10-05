@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 			case 8: // Prepared Random Point retrieval - individual points
 				isFloat = true;
 				C.prepare("ReadRandom1",
-						  "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
+						  "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
 						  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
 						  "'exact 0 height', "
 						  "ARRAY[-1], NULL::wci.returnFloat	)" )
@@ -342,7 +342,7 @@ int main(int argc, char *argv[])
 				std::string valTime;
 				randomTimesG(refTime, valTime);
 				std::stringstream queryStr;
-				queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+				queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 						 << "from wci.read ("
 						 << "ARRAY['test wci 0'], " // DataProvider
 						 << "'hirlam 10 grid', " // Place
@@ -423,7 +423,7 @@ int main(int argc, char *argv[])
 				std::string valTime;
 				randomTimesG(refTime, valTime);
 				std::stringstream queryStr;
-		        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+		        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 		        		 << "from wci.read ("
 		        		 << "ARRAY['test wci 0'], " // DataProvider
 		        		 << "'hirlam 10 grid', " // Place
@@ -504,7 +504,7 @@ int main(int argc, char *argv[])
 				std::string valTime;
 				randomTimesG(refTime, valTime);
 				std::stringstream queryStr;
-		        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+		        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 		        		 << "from wci.read ("
 		        		 << "ARRAY['test wci 0'], " // DataProvider
 		        		 << "'hirlam 10 grid', " // Place
@@ -584,7 +584,7 @@ int main(int argc, char *argv[])
 				std::string valTime;
 				randomTimesG(refTime, valTime);
 				std::stringstream queryStr;
-		        queryStr << "select value, dataprovidername, placename, astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
+		        queryStr << "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype "
 		        		 << "from wci.read ("
 		        		 << "ARRAY['test wci 0'], " // DataProvider
 		        		 << randomPointF() << ", " // Place

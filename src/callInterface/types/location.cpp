@@ -56,9 +56,11 @@ void Location::parseWithRegex_(const std::string & location)
 					"((" // Plain geometries
 					"(POINT)\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*\\)|"
 					"(POLYGON)\\s*\\(\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*"
-						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)\\s*\\)"
+						"(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\)"
+						"(\\s*,\\s*\\(\\s*"+reFloat+"\\s+"+reFloat+"\\s*(,\\s*"+reFloat+"\\s*"+reFloat+"\\s*)*\\))*"
+						"\\s*\\)"
 					")|"
-					"([\\w�����][\\w\\d\\s,._�����]*))$"); // freetext location
+					"([\\w][\\w\\d\\s,._]*))$"); // freetext location
 	smatch match;
 	if ( !regex_match(location, match, re) ) {
 		std::string msg = "Invalid place specification: ";
@@ -84,9 +86,9 @@ void Location::parseWithRegex_(const std::string & location)
 			geomType_ = GEOM_POLYGON;
 	}
 	// Extract location (if name)
-	else if ( !match[14].str().empty() )
+	else if ( !match[20].str().empty() )
 	{
-		placeName_ = match[14];
+		placeName_ = match[20];
 	    transform( placeName_.begin(), placeName_.end(), placeName_.begin(), lower );
 	}
 	else
@@ -123,12 +125,16 @@ void Location::parseWithSpirit_(const std::string & location)
 			(
 				(
 					(str_p("POINT") >> '(' >> real_p >> real_p >> ')')[assign_a(geomType_, GEOM_POINT)] |
-					(str_p("POLYGON") >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')' >> ')')[assign_a(geomType_, GEOM_POLYGON)]
+					(str_p("POLYGON") >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
+									  >> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')'))
+									  >> ')')[assign_a(geomType_, GEOM_POLYGON)]
 				)[assign_a(geometry_)]
 			| // change to || to allow both geometry and placename
 			((+ anychar_p) - (*(lower_p|'('|')') >> (str_p("POINT") | "POLYGON" | "MULTIPOINT" | "MULTIPOLYGON") >> * anychar_p))[assign_a(placeName_)]
 			)
 			, space_p).full;
+
+	//*(',' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')') >>
 
 	if ( not fullMatch )
 	{
@@ -209,8 +215,8 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				break;
 			default:
 				q 	<< WCI_SCHEMA << ".dwithin( "
-					<< "transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
-					<< "transform( v.placegeometry, v.originalsrid ), "
+					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+					<< "st_transform( v.placegeometry, v.originalsrid ), "
 					<< "1 )";
 				// See notes on transform below
 				break;
@@ -235,8 +241,8 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 				}
 				else if ( geomType_ == GEOM_POLYGON ) {
 					q 	<< WCI_SCHEMA << ".dwithin( "
-						<< "transform( v.placegeometry, v.originalsrid ), "
-						<< "transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+						<< "st_transform( v.placegeometry, v.originalsrid ), "
+						<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 						<< "1 )";
 				}
 			}

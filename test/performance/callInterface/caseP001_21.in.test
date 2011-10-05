@@ -1,0 +1,54 @@
+#!/bin/sh
+# Script Information
+export TESTCASE="P001_21"
+export TEST_DESCRIPTION="Single thread, simple polygon retrieval"
+export TEST_PATH=__WDB_BUILDDIR__/test/performance/callInterface
+
+# Test Environment
+$TEST_PATH/testEnvironment.sh
+
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+esac
+
+# Prepare Test
+EXECUTE="./wciPerformanceTester 11" 
+totalTime=0
+
+# Execute Test 1
+startTime=`date +%s%N`
+$EXECUTE > ${TMP_PATH}/$TESTCASE_FILE.out
+endTime=`date +%s%N`
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
+
+# Repeat Test 2
+startTime=`date +%s%N`
+$EXECUTE >> ${TMP_PATH}/$TESTCASE_FILE.out
+endTime=`date +%s%N`
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
+
+# Repeat Test 3
+startTime=`date +%s%N`
+$EXECUTE >> ${TMP_PATH}/$TESTCASE_FILE.out
+endTime=`date +%s%N`
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
+
+averageTimeRetrieval=$(echo "$totalTime / 3000000000.0" | bc -l)
+averageRows=$(echo "1000.0 / $averageTimeRetrieval" | bc -l)
+
+echo "Average Time: $averageTimeRetrieval seconds"
+echo "Rows Returned: $averageRows per second"
+
+if cat ${TMP_PATH}/$TESTCASE_FILE.out | grep -qE 'Error'
+then
+    echo -e "not ok - `basename $0`\t$TEST_DESCRIPTION (incomplete output)"
+    exit 1
+fi
+
+# Exit
+echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+exit 0

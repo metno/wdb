@@ -29,6 +29,8 @@ WCIPERFTEST_SOURCES =	test/performance/callInterface/caseP001_01.in.test \
 						test/performance/callInterface/caseP001_11.in.test \
 						test/performance/callInterface/caseP001_12.in.test \
 						test/performance/callInterface/caseP001_13.in.test \
+						test/performance/callInterface/caseP001_21.in.test \
+						test/performance/callInterface/caseP001_22.in.test \
 						test/performance/callInterface/caseP002_01.in.test \
 						test/performance/callInterface/caseP002_02.in.test \
 						test/performance/callInterface/caseP003_01.in.test \

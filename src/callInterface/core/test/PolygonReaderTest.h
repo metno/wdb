@@ -36,8 +36,8 @@
 class PolygonReaderTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE( PolygonReaderTest );
-	CPPUNIT_TEST( testExtractPolygon );
-	CPPUNIT_TEST( testExtractPolygonMetric );
+	//CPPUNIT_TEST( testExtractPolygon );
+	//CPPUNIT_TEST( testExtractPolygonMetric );
 	CPPUNIT_TEST_SUITE_END( );
 public:
 	PolygonReaderTest();
