@@ -157,7 +157,7 @@ void WciFetchTest::testFetchFloatGrid()
 	const pqxx::binarystring res_str = binarystring(f[0]["grid"]);
 	int nX = f[0]["numberX"].as<int>();
 	int nY = f[0]["numberY"].as<int>();
-	const float * res_data = reinterpret_cast<const float *>( res_str.get( ) );
+	const float * res_data = reinterpret_cast<const float *>( res_str.data() );
 	for (int i = 0; i < nX; i++) {
 		for (int j = 0; j < nY; j++ ) {
 			CPPUNIT_ASSERT_EQUAL(data[ i + (j * nX) ], res_data[ i + (j * nX) ] );

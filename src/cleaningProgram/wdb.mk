@@ -13,6 +13,7 @@ cleansqldir = $(sqldir)/cleaning
 cleansql_DATA =
 
 EXTRA_DIST +=			$(CLEANER_SOURCES) \
+						$(cleansql_DATA) \
 						src/cleaningProgram/wdb.mk \
 						src/cleaningProgram/Makefile.am \
 						src/cleaningProgram/Makefile.in

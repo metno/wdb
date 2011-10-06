@@ -158,7 +158,7 @@ public:
 			pqxx::binarystring grid = pqxx::binarystring(G[0]["grid"]);
 	    	log.infoStream() <<  "Read " << grid.size() << " bytes";
 	    	// Memcpy
-	    	memcpy( &ret->grid_[0], grid.get(), grid.size());
+	    	memcpy( &ret->grid_[0], grid.data(), grid.size());
 			//ret->const float * res_data = reinterpret_cast<const float *>( res_str.get( ) );
 			rows_.push_back(ret);
 		}
@@ -249,7 +249,7 @@ public:
 			pqxx::binarystring grid = pqxx::binarystring(G[0]["grid"]);
 	    	log.infoStream() <<  "Read " << grid.size() << " bytes";
 	    	// Memcpy
-	    	memcpy( &ret->grid_[0], grid.get(), grid.size());
+	    	memcpy( &ret->grid_[0], grid.data(), grid.size());
 			//ret->const float * res_data = reinterpret_cast<const float *>( res_str.get( ) );
 			rows_.push_back(ret);
 		}
