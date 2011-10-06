@@ -63,6 +63,13 @@ CREATE TYPE wci.browselevelparameter AS
 	numberoftuples 		integer
 );
 
+CREATE TYPE wci.browsedataversion AS
+(
+	dataversion integer,
+	numberoftuples integer
+);
+
+
 
 CREATE OR REPLACE FUNCTION 
 wci.browse( dataprovider 		text[],
@@ -329,3 +336,52 @@ $BODY$
 	FROM wci.browse( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.browselevelparameter );
 $BODY$
 LANGUAGE 'sql' STABLE;
+
+
+--CREATE TYPE wci.browsedataversion AS
+--(
+--	dataversion integer,
+--	numberoftuples integer
+--);
+
+-- listing available data versions
+-- returns wci.browsedataversion
+--   version number
+--   count 
+CREATE OR REPLACE FUNCTION 
+wci.browse( dataprovider 		text[],
+		    location 			text,
+		    referencetime 		text,
+		    validtime 			text,
+		    parameter 			text[],
+		    level 				text,
+		    dataversion 		integer[],
+		    returntype 			wci.browsedataversion
+)
+RETURNS SETOF wci.browsedataversion
+AS 
+$BODY$
+DECLARE
+	query 	text;
+	ret 	wci.browsedataversion;
+BEGIN
+	query := __WCI_SCHEMA__.getBrowseDataVersionQuery(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	RAISE DEBUG '%', query;
+
+	FOR ret IN EXECUTE query LOOP
+		RETURN NEXT ret;
+	END LOOP;
+END;
+$BODY$
+LANGUAGE 'plpgsql' STABLE;
+
+
+
+CREATE OR REPLACE FUNCTION
+wci.browse(returntype wci.browsedataversion)
+RETURNS SETOF wci.browsedataversion AS
+$BODY$
+	SELECT *
+	FROM wci.browse( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.browsedataversion);
+$BODY$
+LANGUAGE sql STABLE;

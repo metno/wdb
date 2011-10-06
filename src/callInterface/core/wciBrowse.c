@@ -125,3 +125,18 @@ Datum getWciBrowseLevelParameterQuery(PG_FUNCTION_ARGS)
 
 	PG_RETURN_TEXT_P(ret);
 }
+
+PG_FUNCTION_INFO_V1(getWciBrowseDataVersionQuery);
+Datum getWciBrowseDataVersionQuery(PG_FUNCTION_ARGS)
+{
+	struct WciReadParameterCollection p;
+	parseReadParameters(& p, fcinfo);
+
+	const char * query = build_query(& p, GridTable, OutputGid,
+			"dataversion, count(*)",
+			"GROUP BY 1 ORDER BY 1");
+
+	text * ret = CStringGetTextP(query);
+
+	PG_RETURN_TEXT_P(ret);
+}
