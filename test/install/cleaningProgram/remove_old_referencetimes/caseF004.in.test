@@ -18,10 +18,11 @@
 #  (at your option) any later version.
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # Setup environment
-export TESTCASE="F005"
-export TEST_DESCRIPTION="Deleting multiple rows of old data"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
+export TESTCASE="F004"
+export TEST_DESCRIPTION="Does not delete future data"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram/remove_old_referencetimes/
 
 # Test Environment
 $TEST_PATH/testEnvironment.sh
@@ -40,17 +41,23 @@ esac
 
 # Timing
 startTime=`date +%s%N`
+# Parse command line
+case $1 in
+    --help) 
+    echo "$SCRIPT_USAGE"; exit 0;;
+    --version) 
+    echo "$0 $SCRIPT_VERSION"; exit 0;;
+esac
+
 # Calculate Test time
-TESTTIME=$(date +%FT%R:%S --date "3 days ago")
+TESTTIME=$(date +%FT%R:%S --date "tomorrow")
 
 # Clean out database
 $TEST_PATH/tearDown.sh
 
 # Generate Test Data
-# Should generate two rows in database:
-${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} --valueparameter 'air pressure'
-${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} --valueparameter 'air temperature'
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "2"
+${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME}
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
@@ -72,12 +79,12 @@ EOF
 
 # Check Result
 # - Expected Result: Data should be deleted
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "0"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
-    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data does not appear to have been deleted\">\n\t</failure>\n</testcase>"
+    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Future data appears to have been deleted\">\n\t</failure>\n</testcase>"
 	else
     	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
@@ -86,7 +93,7 @@ then
 fi
 
 # Clean Up and Exit
-$TEST_PATH/tearDown.sh
+#$TEST_PATH/tearDown.sh
 endTime=`date +%s%N`
 totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 if test "$XML_OPT" = "-x"; then

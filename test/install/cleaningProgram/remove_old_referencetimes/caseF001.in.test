@@ -19,11 +19,12 @@
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Setup environment
-export TESTCASE="F006"
-export TEST_DESCRIPTION="Verify that files are removed"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
+export TESTCASE="F001"
+export TEST_DESCRIPTION="Deleting old data"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram/remove_old_referencetimes/
 
 # Test Environment
+echo $TEST_PATH/testEnvironment.sh
 $TEST_PATH/testEnvironment.sh
 
 # Parse command line
@@ -42,66 +43,42 @@ esac
 startTime=`date +%s%N`
 # Calculate Test time
 TESTTIME=$(date +%FT%R:%S --date "3 days ago")
-# Log
-LOGFILE=$LOG_PATH/$TESTCASE_FILE-cleandb.log
 
 # Clean out database
 $TEST_PATH/tearDown.sh
 
 # Generate Test Data
-# Should generate two rows in database:
-${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} --valueparameter 'min air temperature'
-
-$PSQL -q -o $LOGFILE << EOF 
-\set ON_ERROR_STOP
-
-select wci.begin('cleantest', 999, 999, 999);
-
--- Test Function
-CREATE OR REPLACE FUNCTION check_for_files()
-RETURNS text AS '
-DECLARE
-	val1 bigint;
-	res bool;
-	ret text;
-BEGIN
-	-- Get FileID
-	SELECT value INTO val1 FROM test.gridvalue WHERE dataprovidername=''test cleandb'' LIMIT 1;
-
-	-- Verify that exists_file function returns true when the file is there
-	SELECT __WCI_SCHEMA__.exists_file( val1 ) INTO res;
-	IF  res = false THEN
-		ret:=''ERROR: exists_file function does not work as expected'';
-		RETURN ret;
-	END IF;
-
-	-- Clean Files
-	PERFORM cleanupdb();
-	-- Check for File
-	SELECT __WCI_SCHEMA__.exists_file( val1 ) INTO res;
-	-- Verify
-	IF res = true THEN
-		ret:=''ERROR: File was found when it should have been deleted'';
-		RETURN ret;
-	END IF;
-	RETURN ''File deleted correctly'';
-END; 
-'
-LANGUAGE plpgsql VOLATILE;
--- Run Function
-SELECT check_for_files();
--- Clean Up
-DROP FUNCTION check_for_files();
-EOF
-
-if cat $LOGFILE | grep -qE "ERROR"
+${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime=${TESTTIME}
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
-    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data file was not deleted\">\n\t</failure>\n</testcase>"
+    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data was not inserted for test\">\n\t</failure>\n</testcase>"
 	else
-    	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data file was not deleted)"
+    	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not inserted)"
+	fi
+    $TEST_PATH/tearDown.sh
+    exit 1
+fi
+
+# Run Cleaner
+$PSQL -q <<EOF
+\o __WDB_LOGDIR__/$TESTCASE_FILE.tmp
+select wci.begin('cleantest', 999, 999, 999);
+select cleanupDb();
+EOF
+
+# Check Result
+# - Expected Result: Data should be deleted
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "0"
+then
+	endTime=`date +%s%N`
+	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
+	if test "$XML_OPT" = "-x"; then
+    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Data does not appear to have been deleted\">\n\t</failure>\n</testcase>"
+	else
+    	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (data was not deleted from WDB)"
 	fi
     $TEST_PATH/tearDown.sh
     exit 1

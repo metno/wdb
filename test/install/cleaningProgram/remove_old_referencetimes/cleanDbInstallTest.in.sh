@@ -19,7 +19,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 # Setup environment
-source __WDB_BUILDDIR__/test/install/cleaningProgram/testEnvironment.sh
+source __WDB_BUILDDIR__/test/install/cleaningProgram/remove_old_referencetimes/testEnvironment.sh
 
 # Parse command line
 while test -n "$1"; do
@@ -53,7 +53,7 @@ ERROR_TESTS=0
 # Timing
 startTime=`date +%s%N`
 
-list=`ls -1 __WDB_BUILDDIR__/test/install/cleaningProgram/*.test | grep -v [.]in[.]test`;
+list=`ls -1 __WDB_BUILDDIR__/test/install/cleaningProgram/remove_old_referencetimes/*.test | grep -v [.]in[.]test`;
 
 # Count Tests
 for tst in $list; do

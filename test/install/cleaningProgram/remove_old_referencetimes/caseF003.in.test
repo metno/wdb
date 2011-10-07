@@ -20,9 +20,9 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Setup environment
-export TESTCASE="F004"
-export TEST_DESCRIPTION="Does not delete future data"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram
+export TESTCASE="F003"
+export TEST_DESCRIPTION="Does not delete current data"
+export TEST_PATH=__WDB_BUILDDIR__/test/install/cleaningProgram/remove_old_referencetimes/
 
 # Test Environment
 $TEST_PATH/testEnvironment.sh
@@ -50,7 +50,7 @@ case $1 in
 esac
 
 # Calculate Test time
-TESTTIME=$(date +%FT%R:%S --date "tomorrow")
+TESTTIME=$(date +%FT%R:%S)
 
 # Clean out database
 $TEST_PATH/tearDown.sh
@@ -78,13 +78,13 @@ select cleanupDb();
 EOF
 
 # Check Result
-# - Expected Result: Data should be deleted
+# - Expected Result: Data should not be deleted
 if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "1"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
-    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Future data appears to have been deleted\">\n\t</failure>\n</testcase>"
+    	echo "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Current data appears to have been deleted\">\n\t</failure>\n</testcase>"
 	else
     	echo "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
@@ -93,7 +93,7 @@ then
 fi
 
 # Clean Up and Exit
-#$TEST_PATH/tearDown.sh
+$TEST_PATH/tearDown.sh
 endTime=`date +%s%N`
 totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 if test "$XML_OPT" = "-x"; then
