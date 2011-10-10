@@ -54,7 +54,8 @@ CREATE TABLE __WDB_SCHEMA__.placedefinition (
     CONSTRAINT placedefinition_placegeometrytype_check 
 	CHECK (	((placegeometrytype)::text = 'grid'::text) OR
 			((placegeometrytype)::text = 'line'::text) OR
-			((placegeometrytype)::text = 'point'::text) )
+			((placegeometrytype)::text = 'point'::text) OR
+			((placegeometrytype)::text = 'polygon'::text) )
 );
 SELECT AddGeometryColumn('__WDB_SCHEMA__', 'placedefinition', 'placegeometry', 4030, 'GEOMETRY', 2);
 --ALTER SEQUENCE __WDB_SCHEMA__.placedefinition_placeid_seq RESTART WITH 100000;
