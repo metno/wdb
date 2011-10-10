@@ -29,23 +29,9 @@ CLEANFILES +=			cleanDbInstallTest.sh \
 
 EXTRA_DIST +=			test/install/cleaningProgram/remove_old_referencetimes/cleanDbInstallTest.in.sh \
 						$(CLEANDBTEST_SOURCES) \
-						$(CLEANDBTEST_SUPPORT) \
-						test/install/cleaningProgram/remove_old_referencetimes/wdb.mk \
-						test/install/cleaningProgram/remove_old_referencetimes/Makefile.am \
-						test/install/cleaningProgram/remove_old_referencetimes/Makefile.in
-
-DISTCLEANFILES +=		test/install/cleaningProgram/Makefile
+						$(CLEANDBTEST_SUPPORT)
 
 cleanDbInstallTest.sh:	test/install/cleaningProgram/remove_old_referencetimes/cleanDbInstallTest.in.sh test/install/cleaningProgram/remove_old_referencetimes/
 						mkdir -p test/install/cleaningProgram/remove_old_referencetimes/
 						$(SED_SUBSTITUTION);\
 						chmod 754 $@
-
-
-
-# Local Makefile Targets
-#-----------------------------------------------------------------------------
-
-test/install/cleaningProgram/all: $(CLEANDBTEST_SOURCES:.in.test=.test) $(CLEANDBTEST_SUPPORT:.in.sh=.sh)
-
-test/install/cleaningProgram/clean: clean

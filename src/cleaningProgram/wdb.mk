@@ -43,3 +43,4 @@ src/cleaningProgram/all: $(CLEANER_SOURCES:.in.sql=.sql)
 src/cleaningProgram/clean: clean
 
 include src/cleaningProgram/remove_old_referencetimes/wdb.mk
+include src/cleaningProgram/remove_low_dataversions/wdb.mk
