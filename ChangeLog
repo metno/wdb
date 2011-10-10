@@ -1,4 +1,4 @@
 WDB GNU ChangeLog
 
 This file is not maintained. To get a GNU-style ChangeLog for WDB, use
-svn log on the WDB system's subversion repository.
+git log on the WDB system's git repository.

@@ -79,6 +79,68 @@ SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
+
+--
+-- add New Place Definition
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addPlacePolygon(
+	placeName_ 		text,
+	placeGeometry_ 	geometry
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	placeId_ 	bigint;
+	namespace_	int;
+	newname_	text;
+	indCode_ 	int;
+BEGIN
+	-- Get namespace
+	SELECT placenamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Indeterminate Code 1 = Exact
+	indCode_ := 1;	
+	-- Check that geometry is POINT
+	IF GeometryType( placeGeometry_ ) <> 'POLYGON' THEN
+		RAISE EXCEPTION 'Place geometry passed to function is not a WKB polygon';
+	END IF;	
+	-- Get placedef
+	SELECT placeid INTO placeId_ 
+	FROM  __WCI_SCHEMA__.placedefinition
+	WHERE st_equals( placegeometry, placeGeometry_) AND
+		  placenamespaceid = 0;
+	-- Add dataprovider
+	IF NOT FOUND THEN
+		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
+		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
+		( placeId_, indCode_, 'polygon', 'now', placeGeometry_ );
+		IF namespace_ <> 0 THEN
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+			( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+		END IF;
+	ELSE
+		IF namespace_ <> 0 THEN
+			PERFORM * 
+			FROM  __WDB_SCHEMA__.placename
+			WHERE placenamespaceid = namespace_;
+			IF NOT FOUND THEN
+				INSERT INTO __WDB_SCHEMA__.placename VALUES
+				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+			ELSE
+				UPDATE __WDB_SCHEMA__.placename 
+				SET placename = lower(placeName_)
+				WHERE placeid = placeId_;
+			END IF;
+		END IF;
+	END IF;
+	RETURN placeId_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+
 --
 -- add New Place Definition (Regular Grid)
 -- 

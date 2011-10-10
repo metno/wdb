@@ -37,6 +37,7 @@ SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', __SCHEMA_VERSION__ );
 
 -- PlaceId (wci.addplace...)
 \i __WDB_DATADIR__/sql/wdb_placepoint.sql
+\i __WDB_DATADIR__/sql/wdb_placepolygon.sql
 \i __WDB_DATADIR__/sql/wdb_placeregulargrid.sql
 
 -- Parameters & Units (wci.addparamater...)

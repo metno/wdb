@@ -266,6 +266,61 @@ void PlaceNameTest::testL5_03_PointDataByName_FloatOnly()
 }
 
 
+void PlaceNameTest::testL6_01_PolygonDataByName_Mixed()
+{
+    result r = t->exec( statementPolygon_( "test polygon 0", 14 ) );
+
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 25 ), r.size() );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 25, count );
+    /*
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 20 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "oslo" ) );
+    */
+}
+
+void PlaceNameTest::testL6_02_PolygonDataByName_GridOnly()
+{
+    result r = t->exec( statementPolygon_( "test polygon 0", 15 ) );
+
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 25 ), r.size() );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 25, count );
+    /*
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 20 grid" ) );
+    */
+}
+
+void PlaceNameTest::testL6_03_PolygonDataByName_FloatOnly()
+{
+    result r = t->exec( statementPolygon_( "test polygon 0", 16 ) );
+
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 25 ), r.size() );
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 25, count );
+    /*
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), count_val( r, "placename", "test point 1" ) );
+    */
+}
+
+
 std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 {
 	ostringstream st;
@@ -310,3 +365,49 @@ std::string PlaceNameTest::statementFloatOnly_( const std::string & placeDef ) c
 
 	return st.str();
 }
+
+std::string PlaceNameTest::statementPolygon_( const std::string & placeDef, int paramid ) const
+{
+	ostringstream st;
+	st << "SELECT *, st_astext(placegeometry) FROM wci.read( ARRAY['test group'], ";
+	if ( "NULL" == placeDef )
+		st << "NULL";
+	else
+		st << "'" << placeDef << "'";
+	st << ", '2004-12-25 06:00:00+00', NULL, ";
+	st << "'{\"" << specFromParamNumber_.find( paramid )->second << "\"}', ";
+	st << "NULL, NULL, NULL::wci.returnfloat )";
+
+	return st.str();
+}
+
+namespace
+{
+
+map<int, string> getSpecFromParamNumber()
+{
+    map<int, string> ret;
+
+    ret[ 1 ] = "air pressure";
+    ret[ 3 ] = "tendency of surface air pressure";
+    ret[ 10 ] = "snowfall amount";
+    ret[ 11 ] = "air temperature";
+    ret[ 14 ] = "dew point temperature";
+    ret[ 15 ] = "max air temperature";
+    ret[ 16 ] = "min air temperature";
+    ret[ 17 ] = "convective precipitation amount";
+    ret[ 18 ] = "convective snowfall amount";
+    ret[ 32 ] = "altitude";
+    ret[ 33 ] = "x wind";
+    ret[ 34 ] = "y wind";
+    ret[ 66 ] = "surface roughness length";
+    ret[ 100 ] = "cloud area fraction";
+    ret[ 101 ] = "land area fraction";
+    ret[ 999 ] = "geopotential";
+
+    return ret;
+}
+
+}
+
+const map<int, string> PlaceNameTest::specFromParamNumber_ = getSpecFromParamNumber();
