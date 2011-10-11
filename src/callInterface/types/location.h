@@ -65,7 +65,6 @@ public:
 	 */
 	const std::string & placeName() const { return placeName_; }
 
-
 	/**
 	 * Does this location contain a geometry specification?
 	 *
@@ -95,7 +94,7 @@ public:
 
 	/**
 	 * Get an "x=y" part of an sql query selecting the correct tuple from
-	 * wci(internal).gridvalue
+	 * the internal WCI views.
 	 *
 	 * @param returnType	The query constructed is partially dependent on
 	 * the return type that is required by the wci_read query.
@@ -113,6 +112,9 @@ public:
 private:
 	void parseWithRegex_(const std::string & location);
 	void parseWithSpirit_(const std::string & location);
+
+	std::string queryReturnGrid( ) const;
+	std::string queryReturnFloat( std::string where ) const;
 
 	std::string interpolation_;
 	InterpolationType interpolationType_;

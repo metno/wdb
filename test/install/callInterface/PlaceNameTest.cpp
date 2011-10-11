@@ -270,13 +270,13 @@ void PlaceNameTest::testL6_01_PolygonDataByName_Mixed()
 {
     result r = t->exec( statementPolygon_( "test polygon 0", 14 ) );
 
-    CPPUNIT_ASSERT_EQUAL( result::size_type( 25 ), r.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 30 ), r.size() );
     int count = 0;
     for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
     	if ( 2 == ( *it ) [ "value" ].as<int>() )
     		count++;
     }
-    CPPUNIT_ASSERT_EQUAL( 25, count );
+    CPPUNIT_ASSERT_EQUAL( 30, count );
     /*
     CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 10 grid" ) );
@@ -307,13 +307,13 @@ void PlaceNameTest::testL6_03_PolygonDataByName_FloatOnly()
 {
     result r = t->exec( statementPolygon_( "test polygon 0", 16 ) );
 
-    CPPUNIT_ASSERT_EQUAL( result::size_type( 25 ), r.size() );
+    CPPUNIT_ASSERT_EQUAL( result::size_type( 5 ), r.size() );
     int count = 0;
     for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
     	if ( 2 == ( *it ) [ "value" ].as<int>() )
     		count++;
     }
-    CPPUNIT_ASSERT_EQUAL( 25, count );
+    CPPUNIT_ASSERT_EQUAL( 5, count );
     /*
     CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 3 ), count_val( r, "placename", "test point 1" ) );

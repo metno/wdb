@@ -195,8 +195,6 @@ void Location::determineInterpolation() {
 
 string Location::query( std::ostringstream & w, Location::QueryReturnType returnType ) const
 {
-	ostringstream q;
-	std::string myGeometry;
 	std::string where = w.str();
 	size_t found = where.find("'");
 	while (found!=string::npos) {
@@ -207,98 +205,120 @@ string Location::query( std::ostringstream & w, Location::QueryReturnType return
 	switch ( returnType )
 	{
 	case RETURN_OID:
-		if ( hasGeometry() )
-		{
-			switch (interpolationType_) {
-			case Exact:
-				q << "( equals ( geomfromtext( '" << geometry() << "', 4030 ), v.placegeometry ) )";
-				break;
-			default:
-				q 	<< WCI_SCHEMA << ".dwithin( "
-					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
-					<< "st_transform( v.placegeometry, v.originalsrid ), "
-					<< "1 )";
-				// See notes on transform below
-				break;
-			}
-			//throw InvalidSpecification("The return type specified for the location query is unsupported");
-		}
-		else
-		{
-			// This corresponds to an "exact" query - just much faster
-			q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << placeName() << "')";
-		}
-		break;
+		return queryReturnGrid();
 	case RETURN_FLOAT:
-		// This code is only relevant for retrieving point-value data from a point-valued table.
-		switch (interpolationType_) {
-		case Exact:
-			q << '(';
-			if ( hasGeometry() )
-			{
-				if ( geomType_ == GEOM_POINT ) {
-					q << "equals( geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
-				}
-				else if ( geomType_ == GEOM_POLYGON ) {
-					q 	<< WCI_SCHEMA << ".dwithin( "
-						<< "st_transform( v.placegeometry, v.originalsrid ), "
-						<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
-						<< "1 )";
-				}
-			}
-			if ( hasPlaceName() )
-			{
-				if ( hasGeometry() )
-					q << " AND ";
-				q << "v.placename = '" << placeName() << "'";
-			}
-			q << ')';
-			break;
-		case Nearest:
-			if ( hasGeometry() )
-				myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
-			else
-				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-			// Create query
-			q 	<<  "v.placeid IN "
-				<<	"(SELECT nn_gid FROM "
-				<< WCI_SCHEMA << ".nearestneighbor( "
-				<< myGeometry << ", "   // geometry
-				<< "1, "				// distance to nearest
-				<< "1, "				// number of points
-				<< "180, "				// iterations
-				<< "'" << WCI_SCHEMA << ".floatvalue', "
-				<< "'" << where << "', "
-				<< "'placeid', "
-				<< "'placegeometry' ))";
-			break;
-		case Surround:
-			if ( hasGeometry() )
-				myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
-			else
-				myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-			// Create query
-			q 	<<  "v.valueid IN "
-				<<	"(SELECT nn_gid FROM "
-				<< WCI_SCHEMA << ".nearestneighbor( "
-				<< myGeometry << ", "   // geometry
-				<< "1, "				// distance to nearest
-				<< interpolationParameter_ << ", "				// number of points
-				<< "180, "				// iterations
-				<< "'" << WCI_SCHEMA << ".floatvalue', "
-				<< "'" << where << "', "
-				<< "'valueid', "
-				<< "'placegeometry' ))";
-			break;
-		case Bilinear:
-		default:
-			q << "FALSE";
-			break;
-		}
-		break;
+		return queryReturnFloat( where );
 	default:
 		throw InvalidSpecification("The return type specified for the location query is unsupported");
 	}
+}
+
+string Location::queryReturnGrid( ) const
+{
+	ostringstream q;
+
+	if ( hasGeometry() )
+	{
+		switch (interpolationType_) {
+		case Exact:
+			q << "( equals ( geomfromtext( '" << geometry() << "', 4030 ), v.placegeometry ) )";
+			break;
+		default:
+			q 	<< WCI_SCHEMA << ".dwithin( "
+				<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+				<< "st_transform( v.placegeometry, v.originalsrid ), "
+				<< "1 )";
+			// See notes on transform below
+			break;
+		}
+		//throw InvalidSpecification("The return type specified for the location query is unsupported");
+	}
+	else
+	{
+		// This corresponds to an "exact" query - just much faster
+		q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << placeName() << "')";
+	}
+
+	std::cout << q.str() << std::endl;
+	return q.str();
+}
+
+
+string Location::queryReturnFloat( std::string where ) const
+{
+	ostringstream q;
+	std::string myGeometry;
+
+	// This code is only relevant for retrieving point-value data from a point-valued table.
+	switch (interpolationType_) {
+	case Exact:
+		q << '(';
+		if ( hasGeometry() )
+		{
+			if ( geomType_ == GEOM_POINT ) {
+				q << "equals( geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
+			}
+			else if ( geomType_ == GEOM_POLYGON ) {
+				q 	<< WCI_SCHEMA << ".dwithin( "
+					<< "st_transform( v.placegeometry, v.originalsrid ), "
+					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+					<< "1 )";
+			}
+		}
+		if ( hasPlaceName() )
+		{
+			/*
+			if ( hasGeometry() )
+				q << " AND ";
+			q << "v.placename = '" << placeName() << "'";
+			*/
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+			q << "st_intersects( " << myGeometry << ", v.placegeometry )";
+		}
+		q << ')';
+		break;
+	case Nearest:
+		if ( hasGeometry() )
+			myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
+		else
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+		// Create query
+		q 	<<  "v.placeid IN "
+			<<	"(SELECT nn_gid FROM "
+			<< WCI_SCHEMA << ".nearestneighbor( "
+			<< myGeometry << ", "   // geometry
+			<< "1, "				// distance to nearest
+			<< "1, "				// number of points
+			<< "180, "				// iterations
+			<< "'" << WCI_SCHEMA << ".floatvalue', "
+			<< "'" << where << "', "
+			<< "'placeid', "
+			<< "'placegeometry' ))";
+		break;
+	case Surround:
+		if ( hasGeometry() )
+			myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
+		else
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+		// Create query
+		q 	<<  "v.valueid IN "
+			<<	"(SELECT nn_gid FROM "
+			<< WCI_SCHEMA << ".nearestneighbor( "
+			<< myGeometry << ", "   // geometry
+			<< "1, "				// distance to nearest
+			<< interpolationParameter_ << ", "				// number of points
+			<< "180, "				// iterations
+			<< "'" << WCI_SCHEMA << ".floatvalue', "
+			<< "'" << where << "', "
+			<< "'valueid', "
+			<< "'placegeometry' ))";
+		break;
+	case Bilinear:
+	default:
+		q << "FALSE";
+		break;
+	}
+
 	std::cout << q.str() << std::endl;
 	return q.str();
 }
