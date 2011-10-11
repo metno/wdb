@@ -3,14 +3,20 @@
 # WDB Cleaner
 #-----------------------------------------------------------------------------
 
-CLEANER_SOURCES =		src/cleaningProgram/cleanDb.in.sql
+wdb_la_SOURCES += src/cleaningProgram/cleanDb.c
+
+
+CLEANER_SOURCES =		src/cleaningProgram/cleanDb.in.sql \
+						src/cleaningProgram/default_cleaning_setup.in.sql
 
 sql_DATA += 			$(CLEANER_SOURCES:.in.sql=.sql)
+
 
 CLEANFILES +=			$(CLEANER_SOURCES:.in.sql=.sql)
 
 cleansqldir = $(sqldir)/cleaning
 cleansql_DATA =
+
 
 EXTRA_DIST +=			$(CLEANER_SOURCES) \
 						$(cleansql_DATA) \

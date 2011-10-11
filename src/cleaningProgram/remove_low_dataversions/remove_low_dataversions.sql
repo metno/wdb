@@ -1,11 +1,6 @@
 BEGIN;
 
-CREATE SCHEMA clean_dataversions;
-REVOKE ALL ON SCHEMA clean_dataversions FROM PUBLIC;
-GRANT ALL ON SCHEMA clean_dataversions TO wdb_admin;
-GRANT ALL ON SCHEMA clean_dataversions TO wdb_clean;
-
-CREATE OR REPLACE FUNCTION clean_dataversions.clean()
+CREATE OR REPLACE FUNCTION clean.clean_dataversions()
 RETURNS void AS
 $BODY$
 DECLARE

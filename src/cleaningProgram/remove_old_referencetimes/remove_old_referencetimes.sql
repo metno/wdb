@@ -20,27 +20,18 @@
 
 BEGIN;
 
-CREATE SCHEMA clean_referencetime;
-REVOKE ALL ON SCHEMA clean_referencetime FROM PUBLIC;
-GRANT ALL ON SCHEMA clean_referencetime TO wdb_admin;
-GRANT ALL ON SCHEMA clean_referencetime TO wdb_clean;
-
 --
 -- Lifetime table. A single NULL dataprovider can (and probably should) exist 
 -- in this table. That entry marks the default lifetime for data. All data 
 -- providers in the database that does not have an entry in this table will 
 -- get the NULL dataprovider's lifetime. 
 --
-CREATE TABLE clean_referencetime.lifetime (
+CREATE TABLE clean.referencetime_lifetime (
 	dataprovidername text UNIQUE,
 	oldest_lifetime interval NOT NULL
 );
 
-INSERT INTO clean_referencetime.lifetime VALUES (NULL, '1 day');
-INSERT INTO clean_referencetime.lifetime VALUES ('statkart.no', '10000 years');
-
-
-CREATE OR REPLACE FUNCTION clean_referencetime.clean()
+CREATE OR REPLACE FUNCTION clean.clean_referencetimes()
 RETURNS void AS
 $BODY$
 DECLARE
@@ -53,7 +44,7 @@ BEGIN
 		SELECT 
 			oldest_lifetime INTO lifetime 
 		FROM 
-			clean_referencetime.lifetime 
+			clean.referencetime_lifetime 
 		WHERE 
 			dataprovidername = dataprovider OR 
 			dataprovidername IS NULL

@@ -1,0 +1,1 @@
+cleansql_DATA += src/cleaningProgram/remove_low_dataversions/remove_low_dataversions.sql

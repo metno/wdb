@@ -18,25 +18,20 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/**
- * Cleans up the database. Deletes all entries older than their dataprovider
- * dataproviderlifecycle, in days.
- */
-CREATE OR REPLACE FUNCTION cleanupdb() RETURNS void AS 
-$$
-BEGIN
-	PERFORM clean_referencetime.clean();
-	
-	RAISE DEBUG 'Starting delete of unused field files.';
-	PERFORM __WDB_SCHEMA__.vacuum_file_blob();
-	PERFORM __WDB_SCHEMA__.remove_unreferenced_files();
-	RAISE DEBUG 'Done';
-END;
-$$ 
-SECURITY DEFINER
-LANGUAGE plpgsql;
 
+CREATE SCHEMA clean;
+REVOKE ALL ON SCHEMA clean FROM PUBLIC;
+GRANT ALL ON SCHEMA clean TO wdb_admin;
+GRANT USAGE ON SCHEMA clean TO wdb_clean;
+
+CREATE OR REPLACE FUNCTION cleanupdb() RETURNS void AS 
+'__WDB_LIBDIR__/__WCI_LIB__', 'cleanupdb'
+SECURITY DEFINER
+LANGUAGE c;
 REVOKE ALL ON FUNCTION cleanupdb() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION cleanupdb() TO wdb_clean;
 
--- Tester mangler tilgang til wdb_clean-rollen
+CREATE TABLE clean.strategies (
+	call_order INTEGER NOT NULL UNIQUE,  
+	function text NOT NULL UNIQUE
+);
