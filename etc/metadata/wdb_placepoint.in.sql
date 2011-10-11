@@ -11,3 +11,10 @@ select wci.addplacepoint('test point 6',geomfromtext('POINT(17 55.97)',4030));
 select wci.addplacepoint('test point 7',geomfromtext('POINT(5 56)',4030));
 select wci.addplacepoint('test point 8',geomfromtext('POINT(15 60.2)',4030));
 select wci.addplacepoint('test point 9',geomfromtext('POINT(15 60)',4030));
+select wci.addplacepoint('test point 10',geomfromtext('POINT(12.0 61.0)',4030));
+select wci.addplacepoint('test point 11',geomfromtext('POINT(11.5 60.8)',4030));
+select wci.addplacepoint('test point 12',geomfromtext('POINT(11.6 60.9)',4030));
+select wci.addplacepoint('test point 13',geomfromtext('POINT(12.1 61.1)',4030));
+select wci.addplacepoint('test point 14',geomfromtext('POINT(11.9 60.9)',4030));
+
+
