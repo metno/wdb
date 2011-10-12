@@ -9,7 +9,7 @@ db_get wdb/database_admin && DB_USER="$RET"
 
 case "$1" in
     configure)
-    	/usr/lib/wdb/install_remove_old_referencetimes.sh install
+    	su $DB_USER -c "/usr/lib/wdb/install_remove_old_referencetimes.sh install"
     ;;
     abort-upgrade)
     ;;
