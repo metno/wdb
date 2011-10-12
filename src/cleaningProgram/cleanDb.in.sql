@@ -32,6 +32,6 @@ REVOKE ALL ON FUNCTION cleanupdb() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION cleanupdb() TO wdb_clean;
 
 CREATE TABLE clean.strategies (
-	call_order INTEGER NOT NULL UNIQUE,  
+	call_order SERIAL NOT NULL UNIQUE,  
 	function text NOT NULL UNIQUE
 );
