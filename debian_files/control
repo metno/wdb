@@ -59,3 +59,12 @@ Description: This meta-package installs the latest WDB database.
  providing a complete, flexible, and effective data storage solution
  for real-time and archive data.
   
+Package: wdb-referencetime-based-cleaning
+Architecture: all
+Depends: wdb-1.0
+Description: Installs cleaning based on reference times into a wdb database.
+ Installing this package will attach an extra cleaning function to wdb's 
+ cleaner cron-job. The job will clean all data from the database with a 
+ reference time older that 24 hours. Special rules for special data providers 
+ may be provided by adding entries in the clean.referencetime_lifetime table.
+ Default lifetimes may be modified in a similar way.

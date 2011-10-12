@@ -477,9 +477,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_cleanDb.log
 \i $WDB_CLEANUP_PATH/cleanDb.sql
-\i $WDB_CLEANUP_PATH/cleaning/remove_old_referencetimes.sql
-\i $WDB_CLEANUP_PATH/cleaning/remove_low_dataversions.sql
-\i $WDB_CLEANUP_PATH/default_cleaning_setup.sql
 EOF
 	if [ 0 != $? ]; then
 	    echo "ERROR: Installation of WDB cleanup script failed"; exit 1
@@ -489,6 +486,7 @@ EOF
 
 # End Clean Install
 fi
+
 
 
 while [ $current_version -lt $version_number ]

@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+# Source debconf library
+. /usr/share/debconf/confmodule
+
+# Get database information
+db_get wdb/database_name && DB_NAME="$RET"
+
+case "$1" in
+    remove)
+    	/usr/lib/wdb/install_remove_old_referencetimes.sh uninstall
+    ;;
+    upgrade|deconfigure|failed-upgrade)
+    ;;
+    *)
+        echo "prerm called with unknown argument '$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+
+

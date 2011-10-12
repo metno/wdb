@@ -18,7 +18,11 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+\set ON_ERROR_STOP
+
 BEGIN;
+
+SET client_min_messages TO error;
 
 --
 -- Lifetime table. A single NULL dataprovider can (and probably should) exist 

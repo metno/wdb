@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+case "$1" in
+    purge)
+    	# for now this works, since the file is installed as a part of wdb
+    	/usr/lib/wdb/install_remove_old_referencetimes.sh purge
+	;;
+esac
+
+#DEBHELPER#
+
+exit 0
