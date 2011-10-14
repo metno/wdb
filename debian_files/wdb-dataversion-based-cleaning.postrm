@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+# Source debconf library
+. /usr/share/debconf/confmodule
+
+# Get database information
+db_get wdb/database_admin && DB_USER="$RET"
+
+case "$1" in
+    purge)
+		  su postgres -c "psql `/usr/bin/wdbConfiguration --psqlArgs` -Upostgres -c 'DELETE FROM clean.strategies WHERE function = \$\$clean_dataversions\$\$; DROP FUNCTION clean.clean_dataversions()'"
+	;;
+esac
+
+#DEBHELPER#
+
+exit 0

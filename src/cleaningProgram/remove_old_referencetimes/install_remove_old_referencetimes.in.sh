@@ -5,7 +5,7 @@ PSQL="psql `__WDB_BINDIR__/wdbConfiguration --psqlArgs`"
 case "$1" in
 	install)
 		$PSQL < __WDB_DATADIR__/sql/cleaning/remove_old_referencetimes.sql >> /dev/null 2>&1 
-		$PSQL < __WDB_DATADIR__/sql/default_cleaning_setup.sql >> /dev/null
+		$PSQL < __WDB_DATADIR__/sql/cleaning/default_cleaning_setup.sql >> /dev/null
 	;;
 	uninstall)
 		$PSQL -c "DELETE FROM clean.strategies WHERE function = 'clean_referencetimes'"  >> /dev/null

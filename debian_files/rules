@@ -86,7 +86,7 @@ binary-arch: build install
 	dh_installchangelogs #ChangeLog
 	dh_installdocs
 	dh_installexamples
-	dh_install --autodest --sourcedir=$(CURDIR)/debian/tmp --list-missing
+	dh_install --autodest --sourcedir=$(CURDIR)/debian/tmp --fail-missing
 #	dh_installmenu
 	dh_installdebconf	
 #	dh_installlogrotate

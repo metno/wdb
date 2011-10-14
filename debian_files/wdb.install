@@ -1,6 +1,15 @@
 usr/bin/*
 usr/include/*
-usr/lib/*
+usr/lib/lib*.a
+usr/lib/wdb*.so
+usr/lib/wdb.*
+usr/lib/wdb/clean_wdb.sh
+usr/lib/wdb/install_database
+usr/lib/wdb/install_remove_low_dataversions.sh
+usr/lib/wdb/move_database
+usr/lib/wdb/uninstall_database
+usr/lib/wdb/upgrade_test.sh
+usr/lib/wdb/wdbConfiguration
 usr/share/doc/wdb/*
 usr/share/man/man?/*
 usr/share/wdb/wdb.conf.ex

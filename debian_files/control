@@ -54,3 +54,11 @@ Description: Installs cleaning based on reference times into a wdb database.
  reference time older that 24 hours. Special rules for special data providers 
  may be provided by adding entries in the clean.referencetime_lifetime table.
  Default lifetimes may be modified in a similar way.
+
+Package: wdb-dataversion-based-cleaning
+Architecture: all
+Depends: wdb
+Description: Installs cleaning based on data versions into a wdb database.
+ Installing this package will attach an extra cleaning function to wdb's 
+ cleaner cron-job. The job will clean only allow the latest data version for
+ each piece of data to live.

@@ -1,0 +1,27 @@
+#!/bin/sh -e
+
+# Source debconf library
+. /usr/share/debconf/confmodule
+
+# Get database information
+db_get wdb/database_name && DB_NAME="$RET"
+db_get wdb/database_admin && DB_USER="$RET"
+
+
+case "$1" in
+    remove)
+    	su $DB_USER -c "/usr/lib/wdb/install_remove_low_dataversions.sh uninstall"
+    ;;
+    upgrade|deconfigure|failed-upgrade)
+    ;;
+    *)
+        echo "prerm called with unknown argument '$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+
+
