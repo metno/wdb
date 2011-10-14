@@ -19,6 +19,6 @@ SELECT setup_referencetime_cleanig();
 
 DROP FUNCTION setup_referencetime_cleanig();
 
-INSERT INTO clean.strategies VALUES(1, 'clean_referencetimes');
+INSERT INTO clean.strategies VALUES(DEFAULT, 'clean_referencetimes');
 
 END;
