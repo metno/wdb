@@ -47,7 +47,7 @@ Description: A database designed to store MHO data.
 
 Package: wdb-referencetime-based-cleaning
 Architecture: all
-Depends: wdb
+Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on reference times into a wdb database.
  Installing this package will attach an extra cleaning function to wdb's 
  cleaner cron-job. The job will clean all data from the database with a 
@@ -57,7 +57,7 @@ Description: Installs cleaning based on reference times into a wdb database.
 
 Package: wdb-dataversion-based-cleaning
 Architecture: all
-Depends: wdb
+Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on data versions into a wdb database.
  Installing this package will attach an extra cleaning function to wdb's 
  cleaner cron-job. The job will clean only allow the latest data version for
