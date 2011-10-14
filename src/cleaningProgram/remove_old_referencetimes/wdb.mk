@@ -1,4 +1,5 @@
-cleansql_DATA += src/cleaningProgram/remove_old_referencetimes/remove_old_referencetimes.sql
+cleansql_DATA += src/cleaningProgram/remove_old_referencetimes/remove_old_referencetimes.sql \
+	src/cleaningProgram/remove_old_referencetimes/default_cleaning_setup.sql
 
 pkglib_SCRIPTS += src/cleaningProgram/remove_old_referencetimes/install_remove_old_referencetimes.sh
 

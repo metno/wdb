@@ -8,7 +8,9 @@ db_get wdb/database_admin && DB_USER="$RET"
 
 case "$1" in
     purge)
-    	su $DB_USER -c "/usr/lib/wdb/install_remove_old_referencetimes.sh purge"
+    	#su $DB_USER -c "/usr/lib/wdb/install_remove_old_referencetimes.sh purge"
+    	su postgres -c "psql `/usr/bin/wdbConfiguration --psqlArgs` -c 'DELETE FROM clean.strategies WHERE function = \'clean_dataversions\'; DROP FUNCTION clean.clean_dataversions()'"
+    	
 	;;
 esac
 

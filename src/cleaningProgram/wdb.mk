@@ -6,8 +6,7 @@
 wdb_la_SOURCES += src/cleaningProgram/cleanDb.c
 
 
-CLEANER_SOURCES =		src/cleaningProgram/cleanDb.in.sql \
-						src/cleaningProgram/default_cleaning_setup.in.sql
+CLEANER_SOURCES =		src/cleaningProgram/cleanDb.in.sql
 
 sql_DATA += 			$(CLEANER_SOURCES:.in.sql=.sql)
 
