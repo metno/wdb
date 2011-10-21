@@ -1972,6 +1972,7 @@ SELECT wci.addplacepoint ( 'karasjok', geomfromtext('POINT( 25.51 69.47 )') );
 				<title>See Also</title>
 				
 				<itemizedlist>
+					<listitem><para>wci.addplacepolygon</para></listitem>
 					<listitem><para>wci.addplaceregulargrid</para></listitem>
 					<listitem><para>wci.addsrid</para></listitem>
 					<listitem><para>wci.getplacedefinition</para></listitem>
@@ -1984,6 +1985,111 @@ SELECT wci.addplacepoint ( 'karasjok', geomfromtext('POINT( 25.51 69.47 )') );
 			</sect2>
 			
 		</sect1>
+
+		<sect1 id="sec:wci.addplacepolygon">
+			<title>wci.addPlacePolygon</title>
+			
+			<para>The function wci.addPlacePolygon allows an administrator to add a new 
+			place definition for a polygon to the WDB system.</para>
+			
+			<sect2 id="sec:wci.addplacepolygon.prereq">
+				<title>Prerequisites</title>
+				
+				<itemizedlist>
+					<listitem>
+						<para>The user must have write privileges on the database.</para>
+					</listitem>
+				</itemizedlist>
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepolygon.syntax">
+				<title>Syntax</title>
+								
+				<programlisting>
+wci.addplacepolygon
+(
+	placeName				text,
+	placeGeometry 			text
+)
+</programlisting>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepolygon.parameters">
+				<title>Parameters</title>
+				
+				<table frame="all">
+					<title>wci.addPlacePolygon parameters</title>
+					<tgroup cols="2">
+						<colspec align="left"/>
+						<colspec align="left"/>
+						<thead>
+							<row>
+								<entry> Parameter </entry>
+								<entry> Description </entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>placeName</entry>
+								<entry>The name (in the defined namespace) of the Polygon to be insered into the database. 
+								Note that the placeName will be replaced by a canonical placeName if the currently selected
+								place name space is the zero (WDB core) name space.</entry>
+							</row>
+							<row>
+								<entry>placeGeometry</entry>
+								<entry>The point geometry to be inserted into the place definition tables.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepolygon.result">
+				<title>Expected Result</title>
+				
+				<para>The PlaceId (key reference number).</para>
+				
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepolygon.example">
+				<title>Example</title>
+				
+				<para>An example setting up a polygon for "square at nowhere":</para>
+				
+				<programlisting>
+SELECT wci.addplaceplygon ( 'square at nowhere',
+                            geomfromtext('POLYGON(() 10.0 61.3, 10.1 61.3, 10.1 61.4, 10.0 61.4, 10.0 61.3 ))') );
+</programlisting>
+	
+				<para>Adding this polygon to the database while logged into a place 
+				name space other than zero, will add a point with the place name
+				of 'square at nowhere' to the database and a canonical name in the zero
+				name space. If the user was logged into the zero name space, 
+				only the canonical name would be added to the database.  
+				</para>
+								
+			</sect2>
+			
+			<sect2 id="sec:wci.addplacepolygon.see">
+				<title>See Also</title>
+				
+				<itemizedlist>
+					<listitem><para>wci.addplacepoint</para></listitem>
+					<listitem><para>wci.addplaceregulargrid</para></listitem>
+					<listitem><para>wci.addsrid</para></listitem>
+					<listitem><para>wci.getplacedefinition</para></listitem>
+					<listitem><para>wci.getplacename</para></listitem>
+					<listitem><para>wci.getplacepoint</para></listitem>
+					<listitem><para>wci.getplaceregulargrid</para></listitem>
+					<listitem><para>wci.getsrid</para></listitem>
+					<listitem><para>wci.setplacename</para></listitem>
+				</itemizedlist>
+			</sect2>
+			
+		</sect1>
+
 
 		<sect1 id="sec:wci.addplaceregulargrid">
 			<title>wci.addPlacerRegularGrid</title>
