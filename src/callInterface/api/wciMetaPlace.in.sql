@@ -122,7 +122,7 @@ BEGIN
 	ELSE
 		IF namespace_ <> 0 THEN
 			PERFORM * 
-			FROM  __WDB_SCHEMA__.placename
+				FROM  __WDB_SCHEMA__.placename
 			WHERE placenamespaceid = namespace_;
 			IF NOT FOUND THEN
 				INSERT INTO __WDB_SCHEMA__.placename VALUES

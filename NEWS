@@ -1,3 +1,9 @@
+wdb-1.1 (1.1.0~rc2-1) lucid; urgency=medium
+  
+  * Added median function to the database.
+
+ -- Michael Akinde <wdb@met.no>  Wed, 19 Oct 2011 15:00:00 +0000
+
 wdb-1.1 (1.1.0~rc1-1) lucid; urgency=medium
   
   * Improved the Polygon from Raster retrieval algorithm and implemented
