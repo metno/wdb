@@ -124,10 +124,18 @@ void Location::parseWithSpirit_(const std::string & location)
 			>>
 			(
 				(
-					(str_p("POINT") >> '(' >> real_p >> real_p >> ')')[assign_a(geomType_, GEOM_POINT)] |
-					(str_p("POLYGON") >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
-									  >> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')'))
-									  >> ')')[assign_a(geomType_, GEOM_POLYGON)]
+					(str_p("POINT")   		>> '(' >> real_p >> real_p >> ')')[assign_a(geomType_, GEOM_POINT)] |
+					(str_p("POLYGON") 		>> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
+									  	    >> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')'))
+									  	    >> ')')[assign_a(geomType_, GEOM_POLYGON)] |
+					(str_p("MULTIPOLYGON")	>> '('
+											>> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
+									  	  	>> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')'))
+									  	  	>> ')'
+											>> *(ch_p(',') >> ch_p('(') >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
+									  	  	>> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')'))
+									  	  	>> ')')
+									  	  	>> ')')[assign_a(geomType_, GEOM_MULTIPOLYGON)]
 				)[assign_a(geometry_)]
 			| // change to || to allow both geometry and placename
 			((+ anychar_p) - (*(lower_p|'('|')') >> (str_p("POINT") | "POLYGON" | "MULTIPOINT" | "MULTIPOLYGON") >> * anychar_p))[assign_a(placeName_)]

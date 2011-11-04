@@ -83,7 +83,8 @@ public:
 	{
 		GEOM_UNKNOWN,
 		GEOM_POINT,
-		GEOM_POLYGON
+		GEOM_POLYGON,
+		GEOM_MULTIPOLYGON
 	};
 
 	enum QueryReturnType
