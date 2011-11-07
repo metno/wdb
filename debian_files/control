@@ -45,7 +45,7 @@ Description: A database designed to store MHO data.
   production by providing a complete, flexible, and effective data storage
   solution for real-time and archive data.
 
-Package: wdb-referencetime-based-cleaning
+Package: wdb-clean-referencetime
 Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on reference times into a wdb database.
@@ -55,7 +55,7 @@ Description: Installs cleaning based on reference times into a wdb database.
  may be provided by adding entries in the clean.referencetime_lifetime table.
  Default lifetimes may be modified in a similar way.
 
-Package: wdb-dataversion-based-cleaning
+Package: wdb-clean-dataversion
 Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on data versions into a wdb database.

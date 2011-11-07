@@ -70,8 +70,9 @@ AdminOperations::performCreateUser( const string & username, bool admin, bool re
 			CreateUser( wciUser_, to_lower_copy(username), admin, read, write )
 	 	);
 	}
-	catch ( std::exception & )
+	catch ( std::exception & e )
 	{
+		cerr << e.what();
 		return false;
 	}
 	return true;

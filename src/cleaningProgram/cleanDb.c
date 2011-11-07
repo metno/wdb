@@ -32,7 +32,7 @@
 #include <executor/spi.h>
 #include <stdio.h>
 
-// Only allow latters and underscore
+// Only allow letters and underscore
 bool is_valid_function_name(const char * function_name)
 {
 	const char * name_iterator = function_name;
