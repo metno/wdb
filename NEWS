@@ -1,4 +1,8 @@
-wdb (1.1.0~rc1-1) lucid; urgency=medium
+wdb (1.1.0~rc2-1) lucid; urgency=medium
+  
+  * Extracted the cleaning functionality of wdb into their own packages.
+  
+  * Added median function to the database.
   
   * Improved the Polygon from Raster retrieval algorithm and implemented
     full support for WKT polygons.

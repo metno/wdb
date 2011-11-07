@@ -435,6 +435,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciAdmin.sql
 \i $WCI_DIR/api/wciWrite.sql
 \i $WCI_DIR/api/wciRemove.sql
+\i $WCI_DIR/api/wciAggregate.sql
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR: Installation of WDB Call Interface failed"; exit 1

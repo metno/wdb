@@ -27,6 +27,8 @@ libwciInstallTestBase_la_LIBS = \
 
 wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/SqlInjectionTest.cpp \
+							test/install/callInterface/AggregateTest.h \
+							test/install/callInterface/AggregateTest.cpp \
 							test/install/callInterface/DataProviderTest.h \
 							test/install/callInterface/DataProviderTest.cpp \
 							test/install/callInterface/PlaceGeometryTest.h \

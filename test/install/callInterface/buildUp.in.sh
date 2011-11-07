@@ -201,9 +201,51 @@ $TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --refti
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'x wind' -P 150,0=2 -P 150,1=2 -P 151,0=2 -P 151,1=2
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-26 12:00:00+00' --valueparameter 'y wind' -P 119,99=2 -P 119,100=2 -P 119,101=2 -P 119,102=2 -P 120,99=2 -P 120,100=2 -P 120,101=2 -P 120,102=2 -P 121,99=2 -P 121,100=2 -P 121,101=2 -P 121,102=2 -P 122,99=2 -P 122,100=2 -P 122,101=2 -P 122,102=2
 
-
 #wciOutputTest
 $TEST_WRITE  --reftime '2008-04-21 06:00:00+00' -P0,0=NaN
+
+# Aggregate Test
+# A01
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 06:00:00+00' --value="2" 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 07:00:00+00' --value="1"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 08:00:00+00' --value="3"
+# A01
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 06:00:00+00' --value="2.7" 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 07:00:00+00' --value="1.1"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 08:00:00+00' --value="4.9"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'snowfall amount' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 09:00:00+00' --value="3.1"
+# A02_01
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 06:00:00+00' --value="1" 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 07:00:00+00' --value="3"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 08:00:00+00' --value="2"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 09:00:00+00' --value="4"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 10:00:00+00' --value="3"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 11:00:00+00' --value="5"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 12:00:00+00' --value="3"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 13:00:00+00' --value="6"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'air pressure' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 14:00:00+00' --value="4"
+# A02_2
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 06:00:00+00' --value="1" 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 07:00:00+00' --value="3"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 08:00:00+00' --value="2"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 09:00:00+00' --value="2"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 10:00:00+00' --value="7"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 11:00:00+00' --value="5"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 12:00:00+00' --value="2"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 13:00:00+00' --value="6"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'max air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 14:00:00+00' --value="4"
+# A02_3
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 06:00:00+00' --value="1" 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 07:00:00+00' --value="3"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 08:00:00+00' --value="2"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 09:00:00+00' --value="4"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 10:00:00+00' --value="7"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 11:00:00+00' --value="6"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 12:00:00+00' --value="6"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 13:00:00+00' --value="6"
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 14:00:00+00' --value="5"
+
+
 
 # Exit
 echo -e "# Generated test data..."
