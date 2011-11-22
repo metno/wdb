@@ -34,6 +34,7 @@ $$
 $$
 LANGUAGE 'sql' IMMUTABLE strict;
 
+DROP AGGREGATE IF EXISTS wci.median(float) CASCADE;
 CREATE AGGREGATE wci.median( float ) (
 	SFUNC=array_append,
 	STYPE=float[],

@@ -1,5 +1,5 @@
 --BEGIN;
-
+DROP TYPE IF EXISTS remove_stats CASCADE;
 CREATE TYPE remove_stats AS (grids_removed integer, floats_removed integer);
 
 CREATE OR REPLACE FUNCTION 
@@ -45,32 +45,3 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE
 SECURITY INVOKER;
-
-
-
---CREATE OR REPLACE FUNCTION
---remove_blobs()
---RETURNS trigger AS
---$BODY$
---DECLARE
---	noOfRows integer;	
---BEGIN
---	SELECT count(*) INTO noOfRows FROM wdb_int.gridvalue WHERE value=OLD.value;
---	IF noOfRows = 0 THEN
---		BEGIN
---			PERFORM wdb_int.drop_file(OLD.value);
---			--RAISE INFO 'Dropped %', OLD.value;
---		END;
---	END IF;
---	RETURN NULL;
---END;
---$BODY$
---LANGUAGE plpgsql;
---
---CREATE CONSTRAINT TRIGGER remove_file_on_delete
---AFTER DELETE ON wdb_int.gridvalue
---DEFERRABLE INITIALLY DEFERRED
---FOR EACH ROW
---EXECUTE PROCEDURE remove_blobs();
-
---COMMIT;

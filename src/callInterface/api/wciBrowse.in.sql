@@ -18,6 +18,7 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+DROP TYPE IF EXISTS wci.browsedataprovider CASCADE;
 CREATE TYPE wci.browsedataprovider AS 
 (
 	dataprovidername	text,
@@ -26,6 +27,7 @@ CREATE TYPE wci.browsedataprovider AS
 	numberoftuples 		integer
 );
 
+DROP TYPE IF EXISTS wci.browseplace CASCADE;
 CREATE TYPE wci.browseplace AS 
 (
 	placename			text,
@@ -34,12 +36,14 @@ CREATE TYPE wci.browseplace AS
 	numberoftuples 		integer
 );
 
+DROP TYPE IF EXISTS wci.browsereferencetime CASCADE;
 CREATE TYPE wci.browsereferencetime AS 
 (
 	referencetime	 	timestamp with time zone,
 	numberoftuples 		integer
 );
 
+DROP TYPE IF EXISTS wci.browsevalidtime CASCADE;
 CREATE TYPE wci.browsevalidtime AS 
 (
 	validtimefrom 		timestamp with time zone,
@@ -47,6 +51,7 @@ CREATE TYPE wci.browsevalidtime AS
 	numberoftuples 		integer
 );
 
+DROP TYPE IF EXISTS wci.browsevalueparameter CASCADE;
 CREATE TYPE wci.browsevalueparameter AS 
 (
 	valueparametername	text,
@@ -54,6 +59,7 @@ CREATE TYPE wci.browsevalueparameter AS
 	numberoftuples 		integer
 );
 
+DROP TYPE IF EXISTS wci.browselevelparameter CASCADE;
 CREATE TYPE wci.browselevelparameter AS 
 (
 	levelparametername	text,
@@ -63,6 +69,7 @@ CREATE TYPE wci.browselevelparameter AS
 	numberoftuples 		integer
 );
 
+DROP TYPE IF EXISTS wci.browsedataversion CASCADE;
 CREATE TYPE wci.browsedataversion AS
 (
 	dataversion integer,

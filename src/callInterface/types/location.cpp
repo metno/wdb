@@ -127,14 +127,24 @@ void Location::parseWithSpirit_(const std::string & location)
 					(str_p("POINT") >> '(' >> real_p >> real_p >> ')')[assign_a(geomType_, GEOM_POINT)] |
 					(str_p("POLYGON") >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
 									  >> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')'))
-									  >> ')')[assign_a(geomType_, GEOM_POLYGON)]
+									  >> ')')[assign_a(geomType_, GEOM_POLYGON)] |
+					(str_p("MULTIPOLYGON") >> '('
+									       >> '(' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')'
+									       >> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')')) >> ch_p(')')
+									       >> *(',' >> ch_p('(') >> ch_p('(') >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')')
+									       >> *(ch_p(',') >> ch_p('(') >> real_p >> real_p >> *(',' >> real_p >> real_p) >> ch_p(')')) >> ch_p(')'))
+									       >> ')')[assign_a(geomType_, GEOM_MPOLYGON)]
 				)[assign_a(geometry_)]
 			| // change to || to allow both geometry and placename
 			((+ anychar_p) - (*(lower_p|'('|')') >> (str_p("POINT") | "POLYGON" | "MULTIPOINT" | "MULTIPOLYGON") >> * anychar_p))[assign_a(placeName_)]
 			)
 			, space_p).full;
 
-	//*(',' >> '(' >>  real_p >> real_p >> *(',' >> real_p >> real_p) >> ')') >>
+	/*
+    |
+
+
+	*/
 
 	if ( not fullMatch )
 	{
@@ -259,6 +269,12 @@ string Location::queryReturnFloat( std::string where ) const
 				q << "equals( geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
 			}
 			else if ( geomType_ == GEOM_POLYGON ) {
+				q 	<< WCI_SCHEMA << ".dwithin( "
+					<< "st_transform( v.placegeometry, v.originalsrid ), "
+					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+					<< "1 )";
+			}
+			else if ( geomType_ == GEOM_MPOLYGON ) {
 				q 	<< WCI_SCHEMA << ".dwithin( "
 					<< "st_transform( v.placegeometry, v.originalsrid ), "
 					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "

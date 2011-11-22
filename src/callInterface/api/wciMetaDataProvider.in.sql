@@ -89,6 +89,8 @@ $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
+
+
 --
 -- add New Data Provider
 -- 
@@ -152,6 +154,7 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
+
 
 
 
@@ -266,7 +269,8 @@ BEGIN
 		  dataproviderid = dataProviderId_;
 	-- Get Group ID
 	SELECT max(dataprovidernamerightset) INTO gpid_ 
-	FROM   __WCI_SCHEMA__.dataprovider;
+	FROM   __WCI_SCHEMA__.dataprovider
+	WHERE  dataprovidernamespaceid = namespace_;
 	-- Insert new name
 	INSERT INTO __WDB_SCHEMA__.dataprovidername
 	VALUES ( dataProviderId_,

@@ -19,6 +19,53 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+
+
+CREATE OR REPLACE FUNCTION
+wci.setConfiguration( name_				varchar(80),
+				  	  code_				varchar(80),
+				  	  versionNumber_	integer )
+RETURNS VOID AS
+$BODY$
+DECLARE
+	sid_		int;
+BEGIN
+	-- Get OwnerID
+	SELECT partyid INTO sid_
+	FROM __WCI_SCHEMA__.softwareversion
+	WHERE softwarename = name_ AND
+		  softwareversioncode = code_;
+	-- Update or INSERT
+	IF NOT FOUND THEN
+		sid_ := nextval('__WDB_SCHEMA__.party_partyid_seq'::regclass);
+		
+		INSERT INTO __WDB_SCHEMA__.party( PartyId, PartyType, PartyValidFrom, PartyValidTo ) 
+			VALUES ( sid_, 'software', 'now',  'infinity' );
+	
+		INSERT INTO __WDB_SCHEMA__.softwareversion VALUES
+		( sid_, name_, code_ );
+		
+		INSERT INTO __WDB_SCHEMA__.configuration
+		VALUES ( sid_,
+				 versionNumber_,
+				 'now' );
+	ELSE
+		PERFORM *
+		FROM __WDB_SCHEMA__.configuration
+		WHERE softwareversionpartyid = sid_;
+		IF NOT FOUND THEN
+			INSERT INTO __WDB_SCHEMA__.configuration
+			VALUES ( sid_,
+					 versionNumber_,
+					 'now' );
+		END IF;
+	END IF;
+END;
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE;
+
+
+
 --
 -- add New Organization
 -- 

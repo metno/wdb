@@ -15,6 +15,7 @@ END;
 $BODY$
 LANGUAGE 'plpgsql' IMMUTABLE;
 
+DROP TYPE IF EXISTS __WCI_SCHEMA__.pgis_nn CASCADE;
 CREATE TYPE __WCI_SCHEMA__.pgis_nn AS (nn_gid integer, nn_dist numeric(16,5));
    
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__._pgis_fn_nn(geom1 geometry,

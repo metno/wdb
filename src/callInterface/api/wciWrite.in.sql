@@ -20,7 +20,7 @@
 
 -- Write GRID Value
 -- Limited Specification
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.write(
 	data 			bytea,
 	placename_ 		text,
@@ -137,7 +137,7 @@ LANGUAGE 'plpgsql';
 
 -- Write GRID Value
 -- All parameter specified
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.write(
 	data bytea,
 	dataproviderName_ text,
@@ -261,7 +261,7 @@ LANGUAGE 'plpgsql';
 
 -- Write GRID Value
 -- All parameter specified
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.write(
 	gridId_ bigint,
 	dataproviderName_ text,
@@ -380,7 +380,7 @@ LANGUAGE 'plpgsql';
 
 -- Write GRID Value
 -- All parameter specified
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.writed(
 	data bytea,
 	dataproviderid_ bigint,
@@ -469,7 +469,7 @@ LANGUAGE 'plpgsql';
 
 
 -- Write GRID Value
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.write(
 	what wci.returnGid
 )
@@ -581,7 +581,7 @@ LANGUAGE 'plpgsql';
 
 -- Write Float Value
 -- Limited Specification
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.write(
 	value_ 			float,
 	placename_ 		text,
@@ -691,7 +691,7 @@ LANGUAGE 'plpgsql';
 
 
 -- Write OID Value
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.write(
 	what wci.returnFloat
 )
@@ -797,7 +797,7 @@ LANGUAGE 'plpgsql';
 -- Write Float Value
 -- Explicit data specification
 --
-CREATE FUNCTION 
+CREATE OR REPLACE FUNCTION 
 wci.writed(
 	value_ 			float,
 	dataproviderid_ bigint,

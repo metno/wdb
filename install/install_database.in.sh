@@ -489,20 +489,14 @@ EOF
 fi
 
 
-
 while [ $current_version -lt $version_number ]
 do
 	current_version=`expr $current_version + 1`
 	echo -n "installing WDB schema package $current_version... "
 	vn=$(printf "%.4d" "$current_version")
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
-SET CLIENT_MIN_MESSAGES TO "WARNING";
-\set ON_ERROR_STOP
-\o $LOGDIR/wdb_upgrade_datamodel.log
-\i $WDB_DATAMODEL_PATH/wdbUpgrade$vn.sql
-EOF
+	__WDB_PKGLIBDIR__/wdbUpgrade$vn.sh $WDB_NAME $WDB_INSTALL_USER $WDB_INSTALL_PORT $WDB_DATAMODEL_PATH __WDB_DATADIR__/sql/wci $LOGDIR
 	if [ 0 != $? ]; then
-		echo "ERROR: Installation of wdbUpgrade$vn.sql failed"
+		echo "ERROR: Installation of wdbUpgrade$vn.sh failed"
 		exit 1
 	fi
 	echo "done"

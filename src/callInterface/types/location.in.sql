@@ -27,7 +27,7 @@ CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.dwithin(geometry, geometry, float8)
     AS 'SELECT $1 && st_expand($2,$3) AND $2 && st_expand($1,$3) AND st_distance($1, $2) < $3'
     LANGUAGE 'SQL' IMMUTABLE; -- WITH (iscachable);
 
-
+DROP TYPE IF EXISTS __WCI_SCHEMA__.location CASCADE;
 CREATE TYPE  __WCI_SCHEMA__.location AS (
 	interpolation 	text,
 	location 		text,

@@ -66,12 +66,17 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG1_03B_ValidPolygon );
 	CPPUNIT_TEST( testG1_04A_InvalidPolygon );
 	CPPUNIT_TEST( testG1_04B_InvalidPolygon );
+	CPPUNIT_TEST( testG1_07A_ValidMultiPolygon );
+	CPPUNIT_TEST( testG1_07B_ValidMultiPolygon );
+	CPPUNIT_TEST( testG1_08A_InvalidMultiPolygon );
+	CPPUNIT_TEST( testG1_08B_InvalidMultiPolygon );
 
 	CPPUNIT_TEST( testG2_01A_NoGeometry );
 	CPPUNIT_TEST( testG2_01B_NoGeometry );
 	CPPUNIT_TEST( testG2_02A_OneGeometry );
 	CPPUNIT_TEST( testG2_02B_OneGeometry );
-	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG2_03_MultipleGeometry );
+	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG2_03A_MultipleGeometry );
+	CPPUNIT_TEST( testG2_03B_MultipleGeometry );
 	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG2_04_MoreThan255Geometries );
 	CPPUNIT_TEST( testG2_05A_NullGeometry );
 	CPPUNIT_TEST( testG2_05B_NullGeometry );
@@ -106,7 +111,7 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG7_01_OnePoint );
 	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG7_02_SetOfPoints );
 	CPPUNIT_TEST( testG7_03_OnePolygon );
-	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG7_04_SetOfPolygons );
+	CPPUNIT_TEST( testG7_04_SetOfPolygons );
 
 	CPPUNIT_TEST( testG8_01_NullArea );
 	CPPUNIT_TEST( testG8_02_AreaSizeLtProjPrecision );
@@ -115,7 +120,7 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG9_01_4PointsInPolygon );
 	CPPUNIT_TEST( testG9_02_SeveralPointsInPolygon );
 	//CPPUNIT_TEST( testG9_03_MoreThan1000PointsInPolygon );
-	CPPUNIT_TEST( testG9_02_LongPolygonSpecification );
+	CPPUNIT_TEST( testG9_04_LongPolygonSpecification );
 
 	//CPPUNIT_TEST( testG10_01_ConvexPolygon );
 	//CPPUNIT_TEST( testG10_02_ConcavePolygon );
@@ -237,13 +242,18 @@ public:
 	void testG1_03B_ValidPolygon();
 	void testG1_04A_InvalidPolygon();
 	void testG1_04B_InvalidPolygon();
+	void testG1_07A_ValidMultiPolygon();
+	void testG1_07B_ValidMultiPolygon();
+	void testG1_08A_InvalidMultiPolygon();
+	void testG1_08B_InvalidMultiPolygon();
 
 	// Number of points/polygons
 	void testG2_01A_NoGeometry();
 	void testG2_01B_NoGeometry();
 	void testG2_02A_OneGeometry();
 	void testG2_02B_OneGeometry();
-	void testG2_03_MultipleGeometry();
+	void testG2_03A_MultipleGeometry();
+	void testG2_03B_MultipleGeometry();
 	void testG2_04_MoreThan255Geometries();
 	void testG2_05A_NullGeometry();
 	void testG2_05B_NullGeometry();
@@ -293,7 +303,7 @@ public:
 	void testG9_01_4PointsInPolygon();
 	void testG9_02_SeveralPointsInPolygon();
 	void testG9_03_MoreThan1000PointsInPolygon();
-	void testG9_02_LongPolygonSpecification();
+	void testG9_04_LongPolygonSpecification();
 
 	// Convexity
 	void testG10_01_ConvexPolygon();
@@ -316,6 +326,14 @@ public:
 	void testG12_03_ObtuseAngle();
 	void testG12_04_StraightAngle();
 	void testG12_05_ReflexAngle();
+//    const char * polygon = "POLYGON(( "
+//                           "11.34 60.75, "
+//						   "11.84 60.75, "
+//                           "12.34 60.75, "
+//						   "12.34 61.00, "
+//                           "12.34 61.25, "
+//                           "11.34 61.25, "
+//                           "11.34 60.75 ))";
 
 	// Offset
 	void testG14_01_AllRequestedPointsOnGrid();
@@ -332,6 +350,7 @@ public:
 	void testG16_02_PartialIntersection();
 	void testG16_03_NoIntersection();
 		*/
+
 
 	// Syntax
 	void testG17_01_CorrectPointSyntax();

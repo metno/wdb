@@ -138,40 +138,27 @@ PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pointsInPolygon
 }
 
 PolygonReader::BoundingBox
-PolygonReader::getBounds( const GEOSGeom polygon )
+PolygonReader::getBounds( const GEOSGeom polygons )
 {
-	GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( polygon ));
-	if ( outerRing == NULL )
-		throw std::runtime_error( "Outer ring of polygon/shape is NULL" );
-	GEOSCoordSeq coordSeq = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq( outerRing ));
-	if ( coordSeq == NULL )
-		throw std::runtime_error( "Coordinate sequence of polygon/shape returned NULL" );
-	unsigned int size;
-	if ( GEOSCoordSeq_getSize( coordSeq, &size ) == 0 )
-		throw std::runtime_error( "Error when getting size of outer ring of polygon/shape" );
-	// Calculate Bounds
-	WdbProjection prj( reader_.placeSpecification().projDefinition_ );
-	lonlat coord;
-	// Initialize
-	GEOSCoordSeq_getX( coordSeq, 0, &coord.lon );
-	GEOSCoordSeq_getY( coordSeq, 0, &coord.lat );
-	if ( ! isMetric( DEFAULT_PROJECTION ) ) {
-		coord.lon *=  DEG_TO_RAD;
-		coord.lat *= DEG_TO_RAD;
-	}
-	prj.transformFromDefault( 1, &coord.lon, &coord.lat );
-	if ( ! isMetric( reader_.placeSpecification().projDefinition_ ) ) {
-		coord.lon *= RAD_TO_DEG;
-		coord.lat *= RAD_TO_DEG;
-	}
-	BoundingBox ret;;
-	ret.left_ = coord.lon;
-	ret.top_ = coord.lat;
-	ret.right_ = coord.lon;
-	ret.bottom_ = coord.lat;
-	for ( unsigned int i = 1; i < size; i++ ) {
-		GEOSCoordSeq_getX( coordSeq, i, &coord.lon );
-		GEOSCoordSeq_getY( coordSeq, i, &coord.lat );
+	BoundingBox ret;
+	int geomNumber = GEOSGetNumGeometries(polygons);
+	for (int n=0; n<geomNumber; n++) {
+		GEOSGeom polygon = const_cast<GEOSGeom>(GEOSGetGeometryN( polygons, n ));
+		GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( polygon ));
+		if ( outerRing == NULL )
+			throw std::runtime_error( "Outer ring of polygon/shape is NULL" );
+		GEOSCoordSeq coordSeq = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq( outerRing ));
+		if ( coordSeq == NULL )
+			throw std::runtime_error( "Coordinate sequence of polygon/shape returned NULL" );
+		unsigned int size;
+		if ( GEOSCoordSeq_getSize( coordSeq, &size ) == 0 )
+			throw std::runtime_error( "Error when getting size of outer ring of polygon/shape" );
+		// Calculate Bounds
+		WdbProjection prj( reader_.placeSpecification().projDefinition_ );
+		lonlat coord;
+		// Initialize
+		GEOSCoordSeq_getX( coordSeq, 0, &coord.lon );
+		GEOSCoordSeq_getY( coordSeq, 0, &coord.lat );
 		if ( ! isMetric( DEFAULT_PROJECTION ) ) {
 			coord.lon *=  DEG_TO_RAD;
 			coord.lat *= DEG_TO_RAD;
@@ -181,16 +168,35 @@ PolygonReader::getBounds( const GEOSGeom polygon )
 			coord.lon *= RAD_TO_DEG;
 			coord.lat *= RAD_TO_DEG;
 		}
-		if (coord.lon < ret.left_)
+		if (n == 0) {
 			ret.left_ = coord.lon;
-		else
-		if (coord.lon > ret.right_)
-			ret.right_ = coord.lon;
-		if (coord.lat < ret.bottom_)
-			ret.bottom_ = coord.lat;
-		else
-		if (coord.lat > ret.top_ )
 			ret.top_ = coord.lat;
+			ret.right_ = coord.lon;
+			ret.bottom_ = coord.lat;
+		}
+		for ( unsigned int i = 1; i < size; i++ ) {
+			GEOSCoordSeq_getX( coordSeq, i, &coord.lon );
+			GEOSCoordSeq_getY( coordSeq, i, &coord.lat );
+			if ( ! isMetric( DEFAULT_PROJECTION ) ) {
+				coord.lon *=  DEG_TO_RAD;
+				coord.lat *= DEG_TO_RAD;
+			}
+			prj.transformFromDefault( 1, &coord.lon, &coord.lat );
+			if ( ! isMetric( reader_.placeSpecification().projDefinition_ ) ) {
+				coord.lon *= RAD_TO_DEG;
+				coord.lat *= RAD_TO_DEG;
+			}
+			if (coord.lon < ret.left_)
+				ret.left_ = coord.lon;
+			else
+			if (coord.lon > ret.right_)
+				ret.right_ = coord.lon;
+			if (coord.lat < ret.bottom_)
+				ret.bottom_ = coord.lat;
+			else
+			if (coord.lat > ret.top_ )
+				ret.top_ = coord.lat;
+		}
 	}
 	return ret;
 }

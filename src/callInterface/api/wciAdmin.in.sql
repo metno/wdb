@@ -219,6 +219,11 @@ BEGIN
 			VALUES ( sid_,
 					 versionNumber_,
 					 'now' );
+		ELSE
+			UPDATE  __WDB_SCHEMA__.configuration
+			SET packageversion = versionNumber_;
+			UPDATE  __WDB_SCHEMA__.configuration
+			SET installtime = 'now';
 		END IF;
 	END IF;
 END;

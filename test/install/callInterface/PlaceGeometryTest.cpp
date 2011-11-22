@@ -154,6 +154,29 @@ void PlaceGeometryTest::testG1_04B_InvalidPolygon()
     NOT_FINISHED();
 }
 
+void PlaceGeometryTest::testG1_07A_ValidMultiPolygon()
+{
+    // We expect an exception if this is invalid
+    t->exec( statement_( "MULTIPOLYGON( ( ( 11.34 60.75, 11.34 62.75, 13.34 62.75, 11.34 60.75 ) ) )" ) );
+}
+
+
+void PlaceGeometryTest::testG1_07B_ValidMultiPolygon()
+{
+    // We expect an exception if this is invalid
+    t->exec( statement_( "MULTIPOLYGON( ( ( 11.34 60.75, 11.34 62.75, 13.34 62.75, 11.34 60.75 ) ) )" ) );
+}
+
+void PlaceGeometryTest::testG1_08A_InvalidMultiPolygon()
+{
+    CPPUNIT_ASSERT_THROW( t->exec( statement_( "MULTIPOLYGON( ( 11.34 60.75, 11.34 92.75, 13.34 62.75, 11.34 60.75 ) )" ) ), sql_error );
+}
+
+void PlaceGeometryTest::testG1_08B_InvalidMultiPolygon()
+{
+    CPPUNIT_ASSERT_THROW( t->exec( statement_( "MULTIPOLYGON( ( ( 11.34 60.75, 11.34 92.75, 13.34 62.75, 11.34 60.75 ), (( 11.34 60.75 11.34 )) ) )" ) ), sql_error );
+}
+
 void PlaceGeometryTest::testG2_01A_NoGeometry()
 {
     CPPUNIT_ASSERT_THROW( t->exec( statement_( "", 1 ) ), sql_error );
@@ -178,11 +201,16 @@ void PlaceGeometryTest::testG2_02B_OneGeometry()
     t->exec( statement_( "POINT( 11.34 60.75 )" ) );
 }
 
-void PlaceGeometryTest::testG2_03_MultipleGeometry()
+void PlaceGeometryTest::testG2_03A_MultipleGeometry()
 {
     result r = t->exec( statement_( "MULTIPOINT( 11.34 60.75, 13.72 68.09 )" ) );
 
     NOT_FINISHED();
+}
+
+void PlaceGeometryTest::testG2_03B_MultipleGeometry()
+{
+    result r = t->exec( statement_( "MULTIPOLYGON( ( ( 11.34 60.75, 13.72 68.09, 14 65, 11.34 60.75)), ( ( 10 70, 11 71, 11 70.5, 10 70)))" ) );
 }
 
 void PlaceGeometryTest::testG2_04_MoreThan255Geometries()
@@ -445,13 +473,13 @@ void PlaceGeometryTest::testG7_04_SetOfPolygons()
                                     "(11.34 60.75, "
                                     "11.34 62.75, "
                                     "13.34 62.75, "
-                                    "11.34 60.75),"
-                                    "(11.34 60.75, "
+                                    "11.34 60.75) ),"
+                                    "( (11.34 60.75, "
                                     "11.34 62.75, "
                                     "13.34 62.75, "
                                     "11.34 60.75)"
                                     " ) )" ) );
-    NOT_FINISHED();
+	CPPUNIT_ASSERT( r.size() );
 }
 
 void PlaceGeometryTest::testG8_01_NullArea()
@@ -566,17 +594,8 @@ void PlaceGeometryTest::testG9_03_MoreThan1000PointsInPolygon()
 	NOT_FINISHED();
 }
 
-void PlaceGeometryTest::testG9_02_LongPolygonSpecification()
+void PlaceGeometryTest::testG9_04_LongPolygonSpecification()
 {
-//    const char * polygon = "POLYGON(( "
-//                           "11.34 60.75, "
-//						   "11.84 60.75, "
-//                           "12.34 60.75, "
-//						   "12.34 61.00, "
-//                           "12.34 61.25, "
-//                           "11.34 61.25, "
-//                           "11.34 60.75 ))";
-
     double lon = 11.34;
     double lat = 60.75;
     std::ostringstream p;
