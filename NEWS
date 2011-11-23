@@ -1,4 +1,4 @@
-wdb (1.1.0~rc3-1) lucid; urgency=low
+wdb (1.1.0~rc4-1) lucid; urgency=low
   
   * Fixed upgrade scripting in the wdb install.
 
