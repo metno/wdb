@@ -3,8 +3,7 @@
 # WDB Cleaner
 #-----------------------------------------------------------------------------
 
-wdb_la_SOURCES += src/cleaningProgram/cleanDb.c
-
+wdb_la_SOURCES += 		src/cleaningProgram/cleanDb.c
 
 CLEANER_SOURCES =		src/cleaningProgram/cleanDb.in.sql
 
@@ -13,9 +12,9 @@ sql_DATA += 			$(CLEANER_SOURCES:.in.sql=.sql)
 
 CLEANFILES +=			$(CLEANER_SOURCES:.in.sql=.sql)
 
-cleansqldir = $(sqldir)/cleaning
-cleansql_DATA =
+cleansqldir = 			$(sqldir)/cleaning
 
+cleansql_DATA =
 
 EXTRA_DIST +=			$(CLEANER_SOURCES) \
 						$(cleansql_DATA) \
@@ -26,15 +25,15 @@ EXTRA_DIST +=			$(CLEANER_SOURCES) \
 DISTCLEANFILES +=		src/cleaningProgram/Makefile
 
 
-pkglib_SCRIPTS += src/cleaningProgram/clean_wdb.sh
+pkglib_SCRIPTS += 		src/cleaningProgram/clean_wdb.sh
 
 src/cleaningProgram/clean_wdb.sh: src/cleaningProgram/clean_wdb.in.sh
-	$(SED_SUBSTITUTION)
+						$(SED_SUBSTITUTION)
 
-EXTRA_DIST += src/cleaningProgram/clean_wdb.in.sh
-CLEANFILES += src/cleaningProgram/clean_wdb.sh
+CLEANFILES += 			src/cleaningProgram/clean_wdb.sh
 
-EXTRA_DIST +=			src/cleaningProgram/wdb.mk \
+EXTRA_DIST +=			src/cleaningProgram/clean_wdb.in.sh \
+						src/cleaningProgram/wdb.mk \
 						src/cleaningProgram/Makefile.am \
 						src/cleaningProgram/Makefile.in
 

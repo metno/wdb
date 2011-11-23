@@ -10,6 +10,8 @@ usr/lib/wdb/move_database
 usr/lib/wdb/uninstall_database
 usr/lib/wdb/upgrade_test.sh
 usr/lib/wdb/wdbConfiguration
+usr/lib/wdb/wdbUpgrade0001.sh
+usr/lib/wdb/wdbUpgrade0002.sh
 usr/share/doc/wdb/*
 usr/share/man/man?/*
 usr/share/wdb/wdb.conf.ex
