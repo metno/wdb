@@ -1,8 +1,8 @@
-wdb (1.1.0~rc4-1) lucid; urgency=low
+wdb (1.1.0~rc6-1) lucid; urgency=low
   
   * Fixed upgrade scripting in the wdb install.
 
- -- Michael Akinde <wdb@met.no>  Mon, 23 Nov 2011 13:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Mon, 24 Nov 2011 11:00:00 +0000
 
 wdb (1.1.0~rc2-1) lucid; urgency=medium
   
