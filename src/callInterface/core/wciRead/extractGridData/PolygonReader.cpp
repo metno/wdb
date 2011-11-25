@@ -143,10 +143,18 @@ PolygonReader::getBounds( const GEOSGeom polygons )
 	BoundingBox ret;
 	int geomNumber = GEOSGetNumGeometries(polygons);
 	for (int n=0; n<geomNumber; n++) {
-		GEOSGeom polygon = const_cast<GEOSGeom>(GEOSGetGeometryN( polygons, n ));
-		GEOSGeom outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( polygon ));
+		GEOSGeom outerRing;
+		if (geomNumber > 1) {
+			GEOSGeom polygon = const_cast<GEOSGeom>(GEOSGetGeometryN( polygons, n ));
+			if (polygon == NULL)
+				throw std::runtime_error( "Multigeometry returned is NULL" );
+			outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( polygon ));
+		}
+		else {
+			outerRing = const_cast<GEOSGeom>(GEOSGetExteriorRing( polygons ));
+		}
 		if ( outerRing == NULL )
-			throw std::runtime_error( "Outer ring of polygon/shape is NULL" );
+			throw std::runtime_error( "Outer ring of polygon/shape is NULL." );
 		GEOSCoordSeq coordSeq = const_cast<GEOSCoordSeq>(GEOSGeom_getCoordSeq( outerRing ));
 		if ( coordSeq == NULL )
 			throw std::runtime_error( "Coordinate sequence of polygon/shape returned NULL" );

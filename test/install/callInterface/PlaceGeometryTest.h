@@ -66,8 +66,8 @@ class PlaceGeometryTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testG1_03B_ValidPolygon );
 	CPPUNIT_TEST( testG1_04A_InvalidPolygon );
 	CPPUNIT_TEST( testG1_04B_InvalidPolygon );
-	CPPUNIT_TEST( testG1_07A_ValidMultiPolygon );
-	CPPUNIT_TEST( testG1_07B_ValidMultiPolygon );
+	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG1_07A_ValidMultiPolygon );
+	CPPUNIT_TEST_FAIL_MULTIGEOMETRY( testG1_07B_ValidMultiPolygon );
 	CPPUNIT_TEST( testG1_08A_InvalidMultiPolygon );
 	CPPUNIT_TEST( testG1_08B_InvalidMultiPolygon );
 
