@@ -71,7 +71,7 @@ GRANT SELECT ON spatial_ref_sys TO wdb_read;
 CREATE ROLE writetest INHERIT LOGIN IN ROLE wdb_read, wdb_write, wdb_clean, wdb_test;
 
 --- Create the test user
-CREATE ROLE cleantest INHERIT LOGIN IN ROLE wdb_clean, wdb_test;
+CREATE ROLE cleantest INHERIT LOGIN IN ROLE wdb_read, wdb_clean, wdb_test;
 
 --- Create the test user
 CREATE ROLE gribtest INHERIT LOGIN IN ROLE wdb_read, wdb_write, wdb_clean, wdb_test;
