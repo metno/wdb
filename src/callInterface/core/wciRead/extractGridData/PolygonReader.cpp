@@ -88,6 +88,28 @@ GridPointDataList * PolygonReader::read( const GEOSGeom location, InterpolationT
 bool
 PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pointsInPolygon, const GEOSGeom polygon )
 {
+	/*
+	WdbProjectionPtr getWdbProjection(const std::string & def)
+	{
+		typedef std::map<std::string, WdbProjectionPtr> ProjectionMap;
+		static ProjectionMap projections;
+
+		ProjectionMap::iterator ret = projections.find(def);
+		if ( ret == projections.end() ) // not found
+		{
+			// ensure that cache does not grow to ridiculous size
+			if ( projections.size() > 512 )
+				projections.clear();
+
+			std::pair<ProjectionMap::iterator, bool> result =
+					projections.insert(std::make_pair(def, WdbProjectionPtr(new WdbProjection(def))));
+			ret = result.first;
+		}
+		return ret->second;
+	}
+	*/
+
+
 	BoundingBox bounds = getBounds( polygon );
 	//elog(DEBUG1, GEOSGeomToWKT(polygon) );
 	int startI = (bounds.left_ - reader_.placeSpecification().startX_) / reader_.placeSpecification().xIncrement_;

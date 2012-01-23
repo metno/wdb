@@ -118,11 +118,12 @@ GRANT SELECT, DELETE ON __WDB_SCHEMA__.placeregulargrid TO wdb_clean;
 
 -- Place Names
 CREATE TABLE __WDB_SCHEMA__.placename (
-    placeid 					bigint NOT NULL,
+    placeid 				bigint NOT NULL,
     placenamespaceid 			integer NOT NULL,
-    placename 					character varying(255) NOT NULL,
+    placename 				character varying(255) NOT NULL,
     placenamevalidfrom 			timestamp with time zone NOT NULL,
-    placenamevalidto 			timestamp with time zone NOT NULL
+    placenamevalidto 			timestamp with time zone NOT NULL,
+    placenameupdatetime			timestamp with time zone NOT NULL
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placename

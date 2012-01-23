@@ -24,7 +24,7 @@
 CREATE OR REPLACE FUNCTION
 wci.addPlacePoint(
 	placeName_ 		text,
-	placeGeometry_ 	geometry
+	placeGeometry_ 		geometry
 )
 RETURNS bigint AS
 $BODY$
@@ -55,22 +55,10 @@ BEGIN
 		( placeId_, indCode_, 'point', 'now', placeGeometry_ );
 		IF namespace_ <> 0 THEN
 			INSERT INTO __WDB_SCHEMA__.placename VALUES
-			( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+			( placeId_, namespace_, lower(placeName_), 'today', 'infinity', 'now' );
 		END IF;
 	ELSE
-		IF namespace_ <> 0 THEN
-			PERFORM * 
-			FROM  __WDB_SCHEMA__.placename
-			WHERE placenamespaceid = namespace_;
-			IF NOT FOUND THEN
-				INSERT INTO __WDB_SCHEMA__.placename VALUES
-				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
-			ELSE
-				UPDATE __WDB_SCHEMA__.placename 
-				SET placename = lower(placeName_)
-				WHERE placeid = placeId_;
-			END IF;
-		END IF;
+		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
 	END IF;
 	RETURN placeId_;
 END;
@@ -79,6 +67,171 @@ SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
+
+--
+-- add New Place Definition
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addPlacePoint(
+	placeName_ 		text,
+	placeGeometry_ 		geometry,
+	placevalidfrom_		timestamp,
+	placevalidto_		timestamp
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	placeId_ 	bigint;
+	namespace_	int;
+	newname_	text;
+	indCode_ 	int;
+BEGIN
+	-- Get namespace
+	SELECT placenamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Indeterminate Code 1 = Exact
+	indCode_ := 1;	
+	-- Check that geometry is POINT
+	IF GeometryType( placeGeometry_ ) <> 'POINT' THEN
+		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
+	END IF;	
+	-- Get placedef
+	SELECT	placeid INTO placeId_ 
+	FROM	__WCI_SCHEMA__.placedefinition
+	WHERE	st_equals( placegeometry, placeGeometry_) AND
+		placenamespaceid = 0;
+	-- Add dataprovider
+	IF NOT FOUND THEN
+		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
+		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
+			( placeId_, indCode_, 'point', 'now', placeGeometry_ );
+		IF namespace_ <> 0 THEN
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+				( placeId_,
+				  namespace_,
+				  lower(placeName_),
+				  placevalidfrom_,
+				  placevalidto_, 
+				  'now' );
+		END IF;
+	ELSE
+		RAISE EXCEPTION 'Place point already exists in database. Use addOrUpdatePlacePoint to update existing place point.';
+	END IF;
+	RETURN placeId_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+
+
+--
+-- add New Place Definition
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addOrUpdatePlacePoint(
+	placeName_ 		text,
+	placeGeometry_ 		geometry,
+	placevalidfrom_		timestamp,
+	placevalidto_		timestamp
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	placeId_ 	bigint;
+	namespace_	int;
+	newname_	text;
+	indCode_ 	int;
+BEGIN
+	-- Get namespace
+	SELECT placenamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Indeterminate Code 1 = Exact
+	indCode_ := 1;	
+	-- Check that geometry is POINT
+	IF GeometryType( placeGeometry_ ) <> 'POINT' THEN
+		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
+	END IF;	
+	-- Get placedef
+	SELECT	placeid INTO placeId_
+	FROM	__WCI_SCHEMA__.placedefinition
+	WHERE	st_equals( placegeometry, placeGeometry_ ) AND
+		placenamespaceid = 0;
+	-- Add dataprovider
+	IF NOT FOUND THEN
+		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
+		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
+			( placeId_, indCode_, 'point', 'now', placeGeometry_ );
+		IF namespace_ <> 0 THEN
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+				placenamespaceid = namespace_ AND
+				placevalidfrom_ < placenamevalidto;
+			IF FOUND THEN 
+				UPDATE	__WDB_SCHEMA__.placename 
+				SET	placevalidto = placevalidfrom_
+				WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placevalidfrom_ < placenamevalidto;
+			END IF;
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+				( placeId_,
+				  namespace_,
+				  lower(placeName_),
+				  placevalidfrom_,
+				  placevalidto_, 
+				  'now' );
+		END IF;
+	ELSE
+		IF namespace_ <> 0 THEN
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+				placenamespaceid = namespace_ AND
+				placeid <> placeId_ AND
+				placevalidfrom_ < placenamevalidto;
+			IF FOUND THEN
+				-- Other placeIds with same name 
+				UPDATE	__WDB_SCHEMA__.placename 
+				SET	placenamevalidto = placevalidfrom_,
+					placenameupdatetime = 'now'
+				WHERE	placeid <> placeId_ AND
+					placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placevalidfrom_ < placenamevalidto;
+			END IF;
+			-- Update for same placeid, if exists
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+				placenamespaceid = namespace_ AND
+				placeId = placeId_ AND
+				placevalidfrom_ < placenamevalidto;
+			IF NOT FOUND THEN
+				INSERT INTO __WDB_SCHEMA__.placename VALUES
+					( placeId_,
+					  namespace_,
+					  lower(placeName_),
+					  placevalidfrom_,
+					  placevalidto_,
+					  'now' );
+			ELSE
+				UPDATE	__WDB_SCHEMA__.placename 
+				SET	placenamevalidfrom = placevalidfrom_,
+					placenamevalidto = placevalidto_,
+					placenameupdatetime = 'now'
+				WHERE	placeid = placeId_ AND
+					placename = lower(placeName_) AND
+					placenamespaceid = namespace_;
+			END IF;
+		END IF;
+	END IF;
+	RETURN placeId_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
 
 --
 -- add New Place Definition
@@ -106,31 +259,134 @@ BEGIN
 		RAISE EXCEPTION 'Place geometry passed to function is not a WKB polygon';
 	END IF;	
 	-- Get placedef
-	SELECT placeid INTO placeId_ 
-	FROM  __WCI_SCHEMA__.placedefinition
-	WHERE st_equals( placegeometry, placeGeometry_) AND
-		  placenamespaceid = 0;
+	SELECT	placeid INTO placeId_ 
+	FROM	__WCI_SCHEMA__.placedefinition
+	WHERE	st_equals( placegeometry, placeGeometry_) AND
+		placenamespaceid = 0;
 	-- Add dataprovider
 	IF NOT FOUND THEN
 		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
-		( placeId_, indCode_, 'polygon', 'now', placeGeometry_ );
+			( placeId_, indCode_, 'polygon', 'now', placeGeometry_ );
 		IF namespace_ <> 0 THEN
 			INSERT INTO __WDB_SCHEMA__.placename VALUES
-			( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+				( placeId_,
+				  namespace_,
+				  lower(placeName_),
+				  placevalidfrom_,
+				  placevalidto_,
+				  'now' );
+		END IF;
+	ELSE
+		RAISE EXCEPTION 'Place polygon already exists in database. Use addOrUpdatePlacePolygon to update existing place polygon.';
+	END IF;
+	RETURN placeId_;
+END;
+$BODY$
+SECURITY DEFINER
+LANGUAGE plpgsql VOLATILE;
+
+
+--
+-- add New Place Definition
+-- 
+CREATE OR REPLACE FUNCTION
+wci.addOrUpdatePlacePolygon(
+	placeName_ 		text,
+	placeGeometry_ 		geometry,
+	placevalidfrom_		timestamp,
+	placevalidto_		timestamp
+)
+RETURNS bigint AS
+$BODY$
+DECLARE
+	placeId_ 	bigint;
+	namespace_	int;
+	newname_	text;
+	indCode_ 	int;
+BEGIN
+	-- Get namespace
+	SELECT placenamespaceid INTO namespace_
+	FROM __WCI_SCHEMA__.getSessionData();
+	-- Indeterminate Code 1 = Exact
+	indCode_ := 1;	
+	-- Check that geometry is POINT
+	IF GeometryType( placeGeometry_ ) <> 'POLYGON' THEN
+		RAISE EXCEPTION 'Place geometry passed to function is not a WKB polygon';
+	END IF;	
+	-- Get placedef
+	SELECT	placeid INTO placeId_
+	FROM	__WCI_SCHEMA__.placedefinition
+	WHERE	st_equals( placegeometry, placeGeometry_ ) AND
+		placenamespaceid = 0;
+	-- Add dataprovider
+	IF NOT FOUND THEN
+		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
+		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
+			( placeId_, indCode_, 'polygon', 'now', placeGeometry_ );
+		IF namespace_ <> 0 THEN
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+				placenamespaceid = namespace_ AND
+				placevalidfrom_ < placenamevalidto;
+			IF FOUND THEN 
+				UPDATE	__WDB_SCHEMA__.placename 
+				SET	placevalidto = placevalidfrom_,
+					placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placevalidfrom_ < placenamevalidto;
+			END IF;
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+				( placeId_,
+				  namespace_,
+				  lower(placeName_),
+				  placevalidfrom_,
+				  placevalidto_,
+				  'now' );
 		END IF;
 	ELSE
 		IF namespace_ <> 0 THEN
-			PERFORM * 
-			FROM  __WDB_SCHEMA__.placename
-			WHERE placenamespaceid = namespace_;
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+				placenamespaceid = namespace_ AND
+				placeid <> placeId_ AND
+				placevalidfrom_ < placenamevalidto;
+			IF FOUND THEN
+				-- Other placeIds with same name 
+				UPDATE	__WDB_SCHEMA__.placename 
+				SET	placenamevalidto = placevalidfrom_,
+					placenameupdatetime = 'now'
+				WHERE	placeid <> placeId_ AND
+					placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placevalidfrom_ < placenamevalidto;
+			END IF;
+			-- Update for same placeid, if exists
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+				placenamespaceid = namespace_ AND
+				placeId = placeId_ AND
+				placevalidfrom_ < placenamevalidto;
 			IF NOT FOUND THEN
 				INSERT INTO __WDB_SCHEMA__.placename VALUES
-				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+					( placeId_,
+					  namespace_,
+					  lower(placeName_),
+					  placevalidfrom_,
+					  placevalidto_,
+					  'now' );
 			ELSE
-				UPDATE __WDB_SCHEMA__.placename 
-				SET placename = lower(placeName_)
-				WHERE placeid = placeId_;
+				UPDATE	__WDB_SCHEMA__.placename 
+				SET	placenamevalidfrom = placevalidfrom_,
+					placenamevalidto = placevalidto_,
+					placenameupdatetime = 'now'
+				WHERE	placeid = placeId_ AND
+					placename = lower(placeName_) AND
+					placenamespaceid = namespace_;
 			END IF;
 		END IF;
 	END IF;
@@ -139,6 +395,7 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
+
 
 
 --
@@ -205,7 +462,8 @@ BEGIN
 					 nameSpace_,
 					 lower(placeName_),
 					 'today'::TIMESTAMP WITH TIME ZONE,
-					 'infinity'::TIMESTAMP WITH TIME ZONE );
+					 'infinity'::TIMESTAMP WITH TIME ZONE,
+					 'now' );
 		END IF;
 	ELSE
 		IF namespace_ <> 0 THEN
@@ -215,10 +473,11 @@ BEGIN
 				  placenamespaceid = namespace_;
 			IF NOT FOUND THEN
 				INSERT INTO __WDB_SCHEMA__.placename VALUES
-				( placeId_, namespace_, lower(placeName_), 'today', 'infinity' );
+				( placeId_, namespace_, lower(placeName_), 'today', 'infinity', 'now' );
 			ELSE
 				UPDATE __WDB_SCHEMA__.placename 
-				SET placename = lower(placeName_)
+				SET placename = lower(placeName_), 
+					placenameupdatetime = 'now'
 				WHERE placeid = placeId_ AND
 					  placenamespaceid = namespace_;
 			END IF;
@@ -410,7 +669,8 @@ BEGIN
 			 namespace_,
 			 lower(placeName_),
 			  'today'::TIMESTAMP WITH TIME ZONE, 
-			  'infinity'::TIMESTAMP WITH TIME ZONE );
+			  'infinity'::TIMESTAMP WITH TIME ZONE,
+			   'now' );
 END;
 $BODY$
 SECURITY DEFINER
@@ -418,7 +678,7 @@ LANGUAGE plpgsql VOLATILE;
 
 
 --
--- Get DataProviderName
+-- Get PlaceName
 --
 CREATE OR REPLACE FUNCTION 
 wci.getPlaceName(
@@ -434,6 +694,30 @@ $BODY$
 		  ( SELECT placeid 
 		    FROM   __WCI_SCHEMA__.placename p
 		    WHERE  ( p.placename LIKE $1 OR $1 IS NULL ) );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql VOLATILE;
+
+
+--
+-- Get DataProviderName
+-- Using valid times
+CREATE OR REPLACE FUNCTION 
+wci.getPlaceName(
+	name_	text,
+	valid_	timestamp with time zone
+		
+)
+RETURNS SETOF __WCI_SCHEMA__.placename_valid_v AS
+$BODY$
+	SELECT
+		*
+	FROM
+		__WCI_SCHEMA__.placename_valid_v
+	WHERE
+		( placename LIKE $1 OR $1 IS NULL ) AND
+		( $2 IS NULL OR 
+		 ( $2 >= placenamevalidfrom AND $2 <= placenamevalidto ) );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
