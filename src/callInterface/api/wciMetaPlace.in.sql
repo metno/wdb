@@ -41,7 +41,7 @@ BEGIN
 	indCode_ := 1;	
 	-- Check that geometry is POINT
 	IF GeometryType( placeGeometry_ ) <> 'POINT' THEN
-		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
+		RAISE EXCEPTION 'Place geometry passed to function is not a point (it was a %)';--, GeometryType(placeGeometry_);
 	END IF;	
 	-- Get placedef
 	SELECT placeid INTO placeId_ 
@@ -58,7 +58,7 @@ BEGIN
 			( placeId_, namespace_, lower(placeName_), 'today', 'infinity', 'now' );
 		END IF;
 	ELSE
-		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
+		RAISE EXCEPTION 'Place geometry already existed in database';
 	END IF;
 	RETURN placeId_;
 END;
@@ -751,3 +751,40 @@ $BODY$
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION
+wci.getNameforGeometry(
+	location GEOMETRY
+)
+RETURNS SETOF text AS
+$BODY$
+	SELECT 
+		placename 
+	FROM 
+		wci_int.placedefinition p, 
+		wci_int.getsessiondata() s 
+	WHERE 
+		placegeometry = $1 AND 
+		p.placenamespaceid = s.placenamespaceid;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
+
+CREATE OR REPLACE FUNCTION
+wci.getNameforGeometry(
+	location text
+)
+RETURNS SETOF text AS
+$BODY$
+	SELECT 
+		placename 
+	FROM 
+		wci_int.placedefinition p, 
+		wci_int.getsessiondata() s 
+	WHERE 
+		placegeometry = st_geomfromtext($1, 4030) AND 
+		p.placenamespaceid = s.placenamespaceid;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
