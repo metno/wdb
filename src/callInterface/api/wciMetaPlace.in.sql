@@ -23,7 +23,7 @@
 -- 
 CREATE OR REPLACE FUNCTION
 wci.addPlacePoint(
-	placeName_ 		text,
+	placeName_ 			text,
 	placeGeometry_ 		geometry
 )
 RETURNS bigint AS
@@ -34,32 +34,7 @@ DECLARE
 	newname_	text;
 	indCode_ 	int;
 BEGIN
-	-- Get namespace
-	SELECT placenamespaceid INTO namespace_
-	FROM __WCI_SCHEMA__.getSessionData();
-	-- Indeterminate Code 1 = Exact
-	indCode_ := 1;	
-	-- Check that geometry is POINT
-	IF GeometryType( placeGeometry_ ) <> 'POINT' THEN
-		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
-	END IF;	
-	-- Get placedef
-	SELECT placeid INTO placeId_ 
-	FROM  __WCI_SCHEMA__.placedefinition
-	WHERE st_equals( placegeometry, placeGeometry_) AND
-		  placenamespaceid = 0;
-	-- Add dataprovider
-	IF NOT FOUND THEN
-		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
-		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
-		( placeId_, indCode_, 'point', 'now', placeGeometry_ );
-		IF namespace_ <> 0 THEN
-			INSERT INTO __WDB_SCHEMA__.placename VALUES
-			( placeId_, namespace_, lower(placeName_), 'today', 'infinity', 'now' );
-		END IF;
-	ELSE
-		RAISE EXCEPTION 'Place geometry passed to function is not a WKB point';
-	END IF;
+	SELECT wci.addPlacePoint(placeName_, placeGeometry_, 'today'::timestamp with time zone, 'infinity'::timestamp with time zone ) INTO placeId_;
 	RETURN placeId_;
 END;
 $BODY$
@@ -73,10 +48,10 @@ LANGUAGE plpgsql VOLATILE;
 -- 
 CREATE OR REPLACE FUNCTION
 wci.addPlacePoint(
-	placeName_ 		text,
+	placeName_ 			text,
 	placeGeometry_ 		geometry,
-	placevalidfrom_		timestamp,
-	placevalidto_		timestamp
+	placevalidfrom_		timestamp with time zone,
+	placevalidto_		timestamp with time zone
 )
 RETURNS bigint AS
 $BODY$
@@ -132,8 +107,8 @@ CREATE OR REPLACE FUNCTION
 wci.addOrUpdatePlacePoint(
 	placeName_ 		text,
 	placeGeometry_ 		geometry,
-	placevalidfrom_		timestamp,
-	placevalidto_		timestamp
+	placevalidfrom_		timestamp with time zone,
+	placevalidto_		timestamp with time zone
 )
 RETURNS bigint AS
 $BODY$
@@ -170,7 +145,7 @@ BEGIN
 				placevalidfrom_ < placenamevalidto;
 			IF FOUND THEN 
 				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placevalidto = placevalidfrom_
+				SET	placenamevalidto = placevalidfrom_
 				WHERE	placename = lower(placeName_) AND
 					placenamespaceid = namespace_ AND
 					placevalidfrom_ < placenamevalidto;
@@ -294,8 +269,8 @@ CREATE OR REPLACE FUNCTION
 wci.addOrUpdatePlacePolygon(
 	placeName_ 		text,
 	placeGeometry_ 		geometry,
-	placevalidfrom_		timestamp,
-	placevalidto_		timestamp
+	placevalidfrom_		timestamp with time zone,
+	placevalidto_		timestamp with time zone
 )
 RETURNS bigint AS
 $BODY$
@@ -332,7 +307,7 @@ BEGIN
 				placevalidfrom_ < placenamevalidto;
 			IF FOUND THEN 
 				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placevalidto = placevalidfrom_,
+				SET	placenamevalidto = placevalidfrom_,
 					placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 					placenamespaceid = namespace_ AND
@@ -693,7 +668,7 @@ $BODY$
 	WHERE placeid = SOME
 		  ( SELECT placeid 
 		    FROM   __WCI_SCHEMA__.placename p
-		    WHERE  ( p.placename LIKE $1 OR $1 IS NULL ) );
+		    WHERE  ( p.placename LIKE lower($1) OR $1 IS NULL ) );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
@@ -715,7 +690,7 @@ $BODY$
 	FROM
 		__WCI_SCHEMA__.placename_valid_v
 	WHERE
-		( placename LIKE $1 OR $1 IS NULL ) AND
+		( placename LIKE lower($1) OR $1 IS NULL ) AND
 		( $2 IS NULL OR 
 		 ( $2 >= placenamevalidfrom AND $2 <= placenamevalidto ) );
 $BODY$
