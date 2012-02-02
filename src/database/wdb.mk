@@ -23,7 +23,8 @@ DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
 
 UPGRADE_SOURCES =		src/database/wdbUpgrade0001.in.sh \
-						src/database/wdbUpgrade0002.in.sh
+						src/database/wdbUpgrade0002.in.sh \
+						src/database/wdbUpgrade0003.in.sh
 
 nodist_pkglib_SCRIPTS += $(UPGRADE_SOURCES:.in.sh=.sh)
 
