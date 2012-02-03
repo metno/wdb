@@ -53,6 +53,9 @@ SELECT wci.addparameter( 'thunderstorm probability', null, null, null, null, nul
 SELECT wci.addparameter( 'visibility', null, null, 'air', null, null, null, 'm' );
 SELECT wci.addparameter( 'wind', null, 'x', null, null, null, null, 'm/s' );
 SELECT wci.addparameter( 'wind', null, 'y', null, null, null, null, 'm/s' );
+SELECT wci.addparameter( 'wind speed', null, null, null, null, null, null, 'm/s' );
+SELECT wci.addparameter( 'wind from direction', null, null, null, null, null, null, 'rad' );
+SELECT wci.addparameter( 'wind to direction', null, null, null, null, null, null, 'rad' );
 
 
 -- Level Parameters

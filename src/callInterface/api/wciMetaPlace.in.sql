@@ -30,9 +30,6 @@ RETURNS bigint AS
 $BODY$
 DECLARE
 	placeId_ 	bigint;
-	namespace_	int;
-	newname_	text;
-	indCode_ 	int;
 BEGIN
 	SELECT wci.addPlacePoint(placeName_, placeGeometry_, 'today'::timestamp with time zone, 'infinity'::timestamp with time zone ) INTO placeId_;
 	RETURN placeId_;
@@ -726,3 +723,40 @@ $BODY$
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION
+wci.getNameforGeometry(
+	location GEOMETRY
+)
+RETURNS SETOF text AS
+$BODY$
+	SELECT 
+		placename 
+	FROM 
+		wci_int.placedefinition p, 
+		wci_int.getsessiondata() s 
+	WHERE 
+		placegeometry = $1 AND 
+		p.placenamespaceid = s.placenamespaceid;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
+
+CREATE OR REPLACE FUNCTION
+wci.getNameforGeometry(
+	location text
+)
+RETURNS SETOF text AS
+$BODY$
+	SELECT 
+		placename 
+	FROM 
+		wci_int.placedefinition p, 
+		wci_int.getsessiondata() s 
+	WHERE 
+		placegeometry = st_geomfromtext($1, 4030) AND 
+		p.placenamespaceid = s.placenamespaceid;
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql;
