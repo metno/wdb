@@ -16,10 +16,10 @@ pkginclude_HEADERS += \
 libwciInstallTestBase_la_CPPFLAGS = $(AM_CPPFLAGS) \
 	$(cppunit_CFLAGS) -I$(srcdir)/test/utility/configuration \
 	-I$(srcdir)/test/install/callInterface
-	
+
 libwciInstallTestBase_la_LIBS = \
 	-lwdbTest -lwdbConfig
-	
+
 
 #-----------------------------------------------------------------------------
 # WDB callInterface Install Tests
@@ -67,7 +67,7 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 
 # These functions only work with pqxx 3.0. Need to test with 2.6.9
 #							test/install/callInterface/MetaPlaceTest.h \
-#							test/install/callInterface/MetaPlaceTest.cpp \
+#							test/install/callInterface/MetaPlaceTest.cpp
 
 wciInstallTester_CPPFLAGS =	$(AM_CPPFLAGS) $(CPPUNIT_CFLAGS) -I$(srcdir)/test/utility/configuration -I$(srcdir)/test/install/callInterface
 
