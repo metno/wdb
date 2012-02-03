@@ -79,6 +79,22 @@ std::ostream & addReferenceTimeQuery(std::ostream & q, const char * timeSpec)
 	return q;
 }
 
+namespace
+{
+bool isSpecialValue(const std::string & time)
+{
+	return time == "referencetime" or
+			time == "NULL";
+}
+
+std::string quote(const std::string & validTime)
+{
+	if ( isSpecialValue(validTime) )
+		return validTime;
+	return '\'' + validTime + '\'';
+}
+}
+
 std::ostream & addValidTimeQuery(std::ostream & q, const char * timeSpec)
 {
 	if ( ! timeSpec )
@@ -89,27 +105,31 @@ std::ostream & addValidTimeQuery(std::ostream & q, const char * timeSpec)
 	std::string spec(timeSpec);
 	TimeSpecification ts(spec);
 
-	const std::string timeFrom = ts.from();
-	const std::string timeTo = ts.intervalInsteadOfTo() ? timeFrom + "'::timestamp with time zone+'" + ts.interval() : ts.to();
+	const std::string timeFrom = quote(ts.from());
+	std::string timeTo;
+	if ( ts.intervalInsteadOfTo() )
+		timeTo = timeFrom + "::timestamp with time zone+'" + ts.interval() + "'";
+	else
+		timeTo = quote(ts.to());
 
 	if (ts.indeterminate() == "exact") {
-    	q << "validtimefrom = '" << timeFrom << "' AND validtimeto = '" << timeTo << "'";
+    	q << "validtimefrom = " << timeFrom << " AND validtimeto = " << timeTo;
     }
     else
     if (ts.indeterminate() == "inside") {
-    	q << "validtimefrom >= '" << timeFrom << "' AND validtimeto <= '" << timeTo << "'";
+    	q << "validtimefrom >= " << timeFrom << " AND validtimeto <= " << timeTo;
 	}
     else
     if (ts.indeterminate() == "contains") {
-    	q << "validtimefrom <= '" << timeFrom << "' AND validtimeto >= '" << timeTo << "'";
+    	q << "validtimefrom <= " << timeFrom << " AND validtimeto >= " << timeTo;
     }
     else
     if (ts.indeterminate() == "before") {
-    	q << "validtimefrom < '" << timeFrom << "'";
+    	q << "validtimefrom < " << timeFrom;
     }
     else
     if (ts.indeterminate() == "after") {
-    	q << "validtimeto > '" << timeTo << "'";
+    	q << "validtimeto > " << timeTo;
     }
     else
     if (ts.indeterminate() == "any") {
