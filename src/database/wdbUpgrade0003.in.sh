@@ -71,6 +71,7 @@ GRANT SELECT ON __WCI_SCHEMA__.placename_valid_V TO wdb_read, wdb_write;
 
 
 
+
 --
 -- add New Place Definition
 -- 
@@ -609,6 +610,6 @@ RETURNS SETOF __WCI_SCHEMA__.placename_valid_v AS
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
 
-
+SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', 3 );
 
 EOF

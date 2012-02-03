@@ -701,4 +701,6 @@ LANGUAGE 'plpgsql';
 -- Clean out a redundant function (removed in WDB 1.0.2)
 DROP FUNCTION IF EXISTS __WCI_SCHEMA__.getPlaceQuery( spec TEXT, returnType INTEGER );
 
+SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', 2 );
+
 EOF

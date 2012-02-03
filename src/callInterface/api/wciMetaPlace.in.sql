@@ -656,7 +656,7 @@ CREATE OR REPLACE FUNCTION
 wci.getPlaceName(
 	name_	text
 )
-RETURNS SETOF __WCI_SCHEMA__.placename_V AS
+RETURNS SETOF __WCI_SCHEMA__.placename_v AS
 $BODY$
 	SELECT
 		*
@@ -666,30 +666,6 @@ $BODY$
 		  ( SELECT placeid 
 		    FROM   __WCI_SCHEMA__.placename p
 		    WHERE  ( p.placename LIKE lower($1) OR $1 IS NULL ) );
-$BODY$
-SECURITY DEFINER
-LANGUAGE sql VOLATILE;
-
-
---
--- Get DataProviderName
--- Using valid times
-CREATE OR REPLACE FUNCTION 
-wci.getPlaceName(
-	name_	text,
-	valid_	timestamp with time zone
-		
-)
-RETURNS SETOF __WCI_SCHEMA__.placename_valid_v AS
-$BODY$
-	SELECT
-		*
-	FROM
-		__WCI_SCHEMA__.placename_valid_v
-	WHERE
-		( placename LIKE lower($1) OR $1 IS NULL ) AND
-		( $2 IS NULL OR 
-		 ( $2 >= placenamevalidfrom AND $2 <= placenamevalidto ) );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;

@@ -245,23 +245,6 @@ GRANT SELECT ON __WCI_SCHEMA__.placename_v TO wdb_read, wdb_write;
 
 
 
-CREATE VIEW __WCI_SCHEMA__.placename_valid_v AS
-SELECT
-    p.placeid,
-    p.placename,
-    p.placenamevalidfrom,
-    p.placenamevalidto
-FROM
-	__WDB_SCHEMA__.placename p,
-	__WCI_SCHEMA__.getSessionData() s
-WHERE
-	p.placenamespaceid = s.placenamespaceid;
-
-REVOKE ALL ON __WCI_SCHEMA__.placename_valid_v FROM public;
-GRANT ALL ON __WCI_SCHEMA__.placename_valid_v TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.placename_valid_V TO wdb_read, wdb_write;
-
-
 
 CREATE VIEW __WCI_SCHEMA__.placename AS
 SELECT

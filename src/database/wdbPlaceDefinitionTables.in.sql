@@ -122,8 +122,7 @@ CREATE TABLE __WDB_SCHEMA__.placename (
     placenamespaceid 			integer NOT NULL,
     placename 					character varying(255) NOT NULL,
     placenamevalidfrom 			timestamp with time zone NOT NULL,
-    placenamevalidto 			timestamp with time zone NOT NULL,
-    placenameupdatetime			timestamp with time zone NOT NULL
+    placenamevalidto 			timestamp with time zone NOT NULL
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placename
