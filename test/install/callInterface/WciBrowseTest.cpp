@@ -65,12 +65,10 @@ void WciBrowseTest::tearDown()
 }
 
 
-// Todo: Reestablish Info Tests
-
-void WciBrowseTest::testBrowseDataProvider()
+void WciBrowseTest::testBrowseDataProviderGrid()
 {
 	const string select0 = "SELECT * "
-						   "FROM wci.browse( ARRAY['test group'],"
+						   "FROM wci.browse( ARRAY['test wci 0', 'test wci 1'],"
 										    "NULL,"
 										    "NULL,"
 										    "NULL,"
@@ -85,14 +83,51 @@ void WciBrowseTest::testBrowseDataProvider()
 	// One of each test wci provider
     CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 0" ) );
     CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 1" ) );
-    CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 2" ) );
-
 }
 
-void WciBrowseTest::testBrowsePlace()
+void WciBrowseTest::testBrowseDataProviderFloat()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsedataprovider )";
+	result rS = t->exec(select0);
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+}
+
+void WciBrowseTest::testBrowseDataProviderAll()
 {
 	const string select0 = "SELECT * "
 						   "FROM wci.browse( ARRAY['test group'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsedataprovider )";
+	result rS = t->exec(select0);
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+	// One of each test wci provider
+    CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 0" ) );
+    CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 1" ) );
+    CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 2" ) );
+    CPPUNIT_ASSERT( count_val( rS, "dataprovidername", "test wci 4" ) );
+
+}
+
+void WciBrowseTest::testBrowsePlaceGrid()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0', 'test wci 1'],"
 										    "NULL,"
 										    "NULL,"
 										    "NULL,"
@@ -111,7 +146,50 @@ void WciBrowseTest::testBrowsePlace()
 
 }
 
-void WciBrowseTest::testBrowseReferenceTime()
+void WciBrowseTest::testBrowsePlaceFloat()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browseplace )";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+	// Check various places used
+    CPPUNIT_ASSERT( count_val( rS, "placename", "test point 0" ) );
+
+}
+
+void WciBrowseTest::testBrowsePlaceAll()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test group'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browseplace )";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+	// Check various places used
+    CPPUNIT_ASSERT( count_val( rS, "placename", "test grid, rotated" ) );
+    CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 10 grid" ) );
+    CPPUNIT_ASSERT( count_val( rS, "placename", "hirlam 20 grid" ) );
+    CPPUNIT_ASSERT( count_val( rS, "placename", "test point 0" ) );
+
+}
+
+void WciBrowseTest::testBrowseReferenceTimeGrid()
 {
 	const string select0 = "SELECT * "
 						   "FROM wci.browse( ARRAY['test group'],"
@@ -130,10 +208,48 @@ void WciBrowseTest::testBrowseReferenceTime()
 
 }
 
-void WciBrowseTest::testBrowseValidTime()
+void WciBrowseTest::testBrowseReferenceTimeFloat()
 {
 	const string select0 = "SELECT * "
 						   "FROM wci.browse( ARRAY['test group'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsereferencetime ) "
+						   "WHERE referencetime = '2005-01-01 06:00:00+00'";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+}
+
+
+void WciBrowseTest::testBrowseReferenceTimeAll()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test group'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsereferencetime ) "
+						   "WHERE referencetime = '2005-01-01 06:00:00+00' "
+						   "OR referencetime = '2004-12-24 06:00:00+00'";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT_EQUAL( result::size_type(2), rS.size() );
+}
+
+void WciBrowseTest::testBrowseValidTimeGrid()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0'],"
 										    "NULL,"
 										    "NULL,"
 										    "NULL,"
@@ -145,13 +261,58 @@ void WciBrowseTest::testBrowseValidTime()
 
 	// There is at least one browse row
 	CPPUNIT_ASSERT( rS.size() );
-
 }
 
-void WciBrowseTest::testBrowseValueParameter()
+void WciBrowseTest::testBrowseValidTimeFloat()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalidtime )";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+}
+
+void WciBrowseTest::testBrowseValidTimeAll()
 {
 	const string select0 = "SELECT * "
 						   "FROM wci.browse( ARRAY['test group'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalidtime )";
+	result rS = t->exec( select0 );
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+
+	const string selectG = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalidtime )";
+	result rG = t->exec( selectG );
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() > rG.size() );
+}
+
+void WciBrowseTest::testBrowseValueParameterGrid()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0'],"
 										    "NULL,"
 										    "NULL,"
 										    "NULL,"
@@ -164,15 +325,73 @@ void WciBrowseTest::testBrowseValueParameter()
 	// There is at least one browse row
 	CPPUNIT_ASSERT( rS.size() );
 	// Check base valparam
-    //CPPUNIT_ASSERT( count_val( rS, "valueparametername", "instant pressure of air" ) );
-    //CPPUNIT_ASSERT( count_val( rS, "valueparametername", "instant temperature of air, anomaly" ) );
-    //CPPUNIT_ASSERT( count_val( rS, "valueparametername", "instant temperature of air" ) );
+    CPPUNIT_ASSERT( count_val( rS, "valueparametername", "air pressure" ) );
 }
 
-void WciBrowseTest::testBrowseLevelParameter()
+void WciBrowseTest::testBrowseValueParameterFloat()
 {
 	const string select0 = "SELECT * "
-						   "FROM wci.browse( ARRAY['test group'],"
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalueparameter )";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+	// Check base valparam
+    CPPUNIT_ASSERT( count_val( rS, "valueparametername", "max air temperature" ) );
+}
+
+void WciBrowseTest::testBrowseValueParameterAll()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0', 'test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalueparameter )";
+	result rS = t->exec( select0 );
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+
+	const string selectG = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalueparameter )";
+	result rG = t->exec( selectG );
+	const string selectF = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browsevalueparameter )";
+	result rF = t->exec( selectF );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT_EQUAL( rS.size(), (rG.size() + rF.size()) );
+
+}
+
+void WciBrowseTest::testBrowseLevelParameterGrid()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0'],"
 										    "NULL,"
 										    "NULL,"
 										    "NULL,"
@@ -187,4 +406,67 @@ void WciBrowseTest::testBrowseLevelParameter()
 	// Check base valparam
     CPPUNIT_ASSERT( count_val( rS, "levelparametername", "height above reference ellipsoid" ) );
 }
+
+void WciBrowseTest::testBrowseLevelParameterFloat()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browselevelparameter )";
+	result rS = t->exec( select0 );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+	// Check base valparam
+    CPPUNIT_ASSERT( count_val( rS, "levelparametername", "height above ground" ) );
+}
+
+void WciBrowseTest::testBrowseLevelParameterAll()
+{
+	const string select0 = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0', 'test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browselevelparameter )";
+	result rS = t->exec( select0 );
+	// There is at least one browse row
+	CPPUNIT_ASSERT( rS.size() );
+	// Check base valparam
+    CPPUNIT_ASSERT( count_val( rS, "levelparametername", "height above reference ellipsoid" ) );
+
+	const string selectG = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 0'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browselevelparameter )";
+	result rG = t->exec( selectG );
+	const string selectF = "SELECT * "
+						   "FROM wci.browse( ARRAY['test wci 4'],"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL,"
+										    "NULL::wci.browselevelparameter )";
+	result rF = t->exec( selectF );
+
+	// There is at least one browse row
+	CPPUNIT_ASSERT_EQUAL( rS.size(), (rG.size() + rF.size()) );
+
+}
+
 
