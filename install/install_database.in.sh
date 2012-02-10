@@ -311,23 +311,6 @@ else
 	fi
 fi
 
-# Check if autovacuum is on
-PSQL_VALUES_OK_REG="^(on|1|t|true)$"
-TEST_VALUES="autovacuum"
-for VAL in $TEST_VALUES; do
-    echo -n "checking the database configuration of $VAL... "
-    if ! psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -Pformat=unaligned -Pt -c "show $VAL" | grep -qiE $PSQL_VALUES_OK_REG; then
-	echo "off"
-	echo "Error: Value $VAL must be set to on in postgresql.conf"
-	echo -n "$VAL is set to "
-	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -Pformat=unaligned -Pt -c "show $VAL"
-	echo "Unable to proceed"
-	exit 1
-    else
-	echo "on"
-    fi
-done
-
 # Get current version of database schema
 if test "$DATABASE_CLEAN" = "no"; then
 	echo -n "current schema version of WDB... "
