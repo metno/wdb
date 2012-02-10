@@ -45,12 +45,24 @@
 class WciBrowseTest : public AbstractWciTestFixture
 {
 	CPPUNIT_TEST_SUITE(WciBrowseTest);
-	CPPUNIT_TEST(testBrowseDataProvider);
-	CPPUNIT_TEST(testBrowsePlace);
-	CPPUNIT_TEST(testBrowseReferenceTime);
-	CPPUNIT_TEST(testBrowseValidTime);
-	CPPUNIT_TEST(testBrowseValueParameter);
-	CPPUNIT_TEST(testBrowseLevelParameter);
+	CPPUNIT_TEST(testBrowseDataProviderGrid);
+	CPPUNIT_TEST(testBrowseDataProviderFloat);
+	CPPUNIT_TEST(testBrowseDataProviderAll);
+	CPPUNIT_TEST(testBrowsePlaceGrid);
+	CPPUNIT_TEST(testBrowsePlaceFloat);
+	CPPUNIT_TEST(testBrowsePlaceAll);
+	CPPUNIT_TEST(testBrowseReferenceTimeGrid);
+	CPPUNIT_TEST(testBrowseReferenceTimeFloat);
+	CPPUNIT_TEST(testBrowseReferenceTimeAll);
+	CPPUNIT_TEST(testBrowseValidTimeGrid);
+	CPPUNIT_TEST(testBrowseValidTimeFloat);
+	CPPUNIT_TEST(testBrowseValidTimeAll);
+	CPPUNIT_TEST(testBrowseValueParameterGrid);
+	CPPUNIT_TEST(testBrowseValueParameterFloat);
+	CPPUNIT_TEST(testBrowseValueParameterAll);
+	CPPUNIT_TEST(testBrowseLevelParameterGrid);
+	CPPUNIT_TEST(testBrowseLevelParameterFloat);
+	CPPUNIT_TEST(testBrowseLevelParameterAll);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -64,17 +76,41 @@ public:
 	virtual void tearDown();
 
 	/// Test Info Return: DataProvider
-	void testBrowseDataProvider();
+	void testBrowseDataProviderGrid();
+	/// Test Info Return: DataProvider
+	void testBrowseDataProviderFloat();
+	/// Test Info Return: DataProvider
+	void testBrowseDataProviderAll();
 	/// Test Info Return: Place
-	void testBrowsePlace();
+	void testBrowsePlaceGrid();
 	/// Test Info Return: Place
-	void testBrowseReferenceTime();
+	void testBrowsePlaceFloat();
 	/// Test Info Return: Place
-	void testBrowseValidTime();
+	void testBrowsePlaceAll();
+	/// Test Info Return: Place
+	void testBrowseReferenceTimeGrid();
+	/// Test Info Return: Place
+	void testBrowseReferenceTimeFloat();
+	/// Test Info Return: Place
+	void testBrowseReferenceTimeAll();
+	/// Test Info Return: Place
+	void testBrowseValidTimeGrid();
+	/// Test Info Return: Place
+	void testBrowseValidTimeFloat();
+	/// Test Info Return: Place
+	void testBrowseValidTimeAll();
 	/// Test Info Return: Parameter
-	void testBrowseValueParameter();
+	void testBrowseValueParameterGrid();
+	/// Test Info Return: Parameter
+	void testBrowseValueParameterFloat();
+	/// Test Info Return: Parameter
+	void testBrowseValueParameterAll();
 	/// Test Info Return: Level
-	void testBrowseLevelParameter();
+	void testBrowseLevelParameterGrid();
+	/// Test Info Return: Level
+	void testBrowseLevelParameterFloat();
+	/// Test Info Return: Level
+	void testBrowseLevelParameterAll();
 
 private:
 
