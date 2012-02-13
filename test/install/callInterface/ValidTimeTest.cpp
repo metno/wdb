@@ -156,6 +156,30 @@ void ValidTimeTest::testR1_05B_NotATimestamp()
 	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_("hallo? TO 2007-02-12 06:00:00+00") ), data_exception );
 }
 
+void ValidTimeTest::testValidTimeIsReferenceTimeGrid()
+{
+	result r = t->exec( statementOid_("referencetime", "2007-02-12 06:00:00+00") );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
+
+	const std::string expectedTime = "2007-02-12 06:00:00+00";
+
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "referencetime",  expectedTime) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", expectedTime ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimeto", expectedTime ) );
+}
+
+void ValidTimeTest::testValidTimeIsReferenceTimeFloat()
+{
+	result r = t->exec( statementFloat_("referencetime", "2007-02-12 06:00:00+00") );
+	CPPUNIT_ASSERT_EQUAL( result::size_type(1), r.size() );
+
+	const std::string expectedTime = "2007-02-12 06:00:00+00";
+
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "referencetime",  expectedTime) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimefrom", expectedTime ) );
+	CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "validtimeto", expectedTime ) );
+}
+
 void ValidTimeTest::testR1_06A_Null()
 {
 	result r = t->exec( statementOid_( "NULL" ) );
@@ -239,11 +263,17 @@ std::string getTimeSpec(const std::string & from, const std::string & to, const 
 }
 }
 
-std::string ValidTimeTest::statementOid_( const std::string & timeSpec ) const
+std::string ValidTimeTest::statementOid_( const std::string & timeSpec, const std::string & referenceTime ) const
 {
 	ostringstream ss;
 	ss << "set time zone 'UTC'; "
-	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, NULL, ";
+	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, ";
+
+	if ( referenceTime != "NULL" )
+		ss << "'" << referenceTime << "', ";
+	else
+		ss << referenceTime << ", ";
+
 	if ( timeSpec != "NULL" )
 		ss << "'" << timeSpec << "', ";
 	else
@@ -254,11 +284,17 @@ std::string ValidTimeTest::statementOid_( const std::string & timeSpec ) const
 	return ss.str();
 }
 
-std::string ValidTimeTest::statementFloat_( const std::string & timeSpec ) const
+std::string ValidTimeTest::statementFloat_( const std::string & timeSpec, const std::string & referenceTime ) const
 {
 	ostringstream ss;
 	ss << "set time zone 'UTC'; "
-	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, NULL, ";
+	   << "SELECT * FROM wci.read( ARRAY['test group'], NULL, ";
+
+	if ( referenceTime != "NULL" )
+		ss << "'" << referenceTime << "', ";
+	else
+		ss << referenceTime << ", ";
+
 	if ( timeSpec != "NULL" )
 		ss << "'" << timeSpec << "', ";
 	else

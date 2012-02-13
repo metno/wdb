@@ -65,6 +65,8 @@ class ValidTimeTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testR1_04B_InvalidTime );
 	CPPUNIT_TEST( testR1_05A_NotATimestamp );
 	CPPUNIT_TEST( testR1_05B_NotATimestamp );
+	CPPUNIT_TEST( testValidTimeIsReferenceTimeGrid);
+	//CPPUNIT_TEST( testValidTimeIsReferenceTimeFloat);
 	CPPUNIT_TEST( testR1_06A_Null );
 	//CPPUNIT_TEST( testR1_06B_Null );
 
@@ -96,6 +98,8 @@ public:
 	void testR1_04B_InvalidTime();
 	void testR1_05A_NotATimestamp();
 	void testR1_05B_NotATimestamp();
+	void testValidTimeIsReferenceTimeGrid();
+	void testValidTimeIsReferenceTimeFloat();
 	void testR1_06A_Null();
 	void testR1_06B_Null();
 
@@ -108,8 +112,8 @@ public:
 	void testR2_03B_Future();
 
 private:
-	std::string statementOid_( const std::string & timeSpec ) const;
-	std::string statementFloat_( const std::string & timeSpec ) const;
+	std::string statementOid_( const std::string & timeSpec, const std::string & referenceTime = "NULL" ) const;
+	std::string statementFloat_( const std::string & timeSpec, const std::string & referenceTime = "NULL" ) const;
 };
 
 /**
