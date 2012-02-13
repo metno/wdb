@@ -1,4 +1,15 @@
-wdb (1.2.0~rc1-1) lucid; urgency=medium
+wdb (1.2.0~rc2-1) lucid; urgency=low
+  
+  * Added wci.prognosishour function to the database.
+  
+  * Improved the loading performance for place definitions.
+  
+  * Fixed wci.browse such that it also retrieves data from the float value
+    tables.
+
+ -- Michael Akinde <wdb@met.no>  Thu, 13 Feb 2012 11:00:00 +0000
+
+wdb (1.2.0~rc1-1) lucid; urgency=low
   
   * Created addOrUpdate function for placenames. Modified the datamodel for
     placenames.
