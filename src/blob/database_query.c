@@ -45,11 +45,9 @@ static char * performSimpleQuery_(const char * query)
 
 	SPI_connect();
 	int result = SPI_exec(query, 1);
-	ret = strdup(SPI_getvalue(* SPI_tuptable->vals, SPI_tuptable->tupdesc, 1));
+	if ( result >= 0 )
+		ret = strdup(SPI_getvalue(* SPI_tuptable->vals, SPI_tuptable->tupdesc, 1));
 	SPI_finish();
-
-	if ( result < 0 )
-		return NULL;
 
 	return ret;
 }
