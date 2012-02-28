@@ -1,3 +1,11 @@
+wdb (1.2.0~rc3-1) lucid; urgency=low
+  
+  * Changed the placedefinition view.
+  
+  * Restructured the source file structure for schema upgrades.
+
+ -- Michael Akinde <wdb@met.no>  Thu, 28 Feb 2012 17:00:00 +0000
+
 wdb (1.2.0~rc2-1) lucid; urgency=low
   
   * Added wci.prognosishour function to the database.
