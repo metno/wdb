@@ -48,3 +48,6 @@ DISTCLEANFILES +=		src/database/Makefile
 src/database/all: $(DATABASE_SOURCES:.in.sql=.sql)
 
 src/database/clean: clean
+
+include src/database/upgrade0003/wdb.mk
+ 
