@@ -19,8 +19,7 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 --
 -- Update Schema to use Place Definition with Valid Times
--- 
-
+--
 SET SESSION client_min_messages TO 'warning';
 
 --
@@ -224,10 +223,191 @@ LANGUAGE sql STABLE;
 
 
 
-
 -- Replace view wci_int.floatvalue;
+CREATE VIEW __WCI_SCHEMA__.floatvalue AS
+SELECT	
+	val.value,
+	dp.dataproviderid,
+	dp.dataprovidername,
+	dp.dataprovidernameleftset,
+	dp.dataprovidernamerightset,
+	pl.placename,
+	pl.placeid, 
+	pl.placegeometry,
+	pl.placeindeterminatecode,
+	pl.originalsrid,
+	val.referencetime, 
+	val.validtimefrom, 
+	val.validtimeto,
+	val.validtimeindeterminatecode,
+	val.valueparameterid,
+	vp.parametername AS valueparametername, 
+	vp.unitname AS valueunitname,
+	val.levelparameterid,
+	lp.parametername AS levelparametername,
+	lp.unitname AS levelunitname,
+	val.levelFrom, 
+	val.levelTo,
+	val.levelindeterminatecode,
+	val.dataversion,
+	val.maxdataversion,
+	val.confidencecode, 
+	val.valuestoretime,
+	val.valueid,
+	val.valuetype
+FROM 	
+	__WDB_SCHEMA__.floatvalue val,
+	__WCI_SCHEMA__.dataprovider_mv dp,
+	__WCI_SCHEMA__.placedefinition_mv pl,
+	__WCI_SCHEMA__.parameter_mv vp,
+	__WCI_SCHEMA__.parameter_mv lp,
+	__WCI_SCHEMA__.getSessionData() s
+WHERE
+	dp.dataprovidernamespaceid = s.dataprovidernamespaceid
+	AND pl.placenamespaceid = s.placenamespaceid
+	AND vp.parameternamespaceid = s.parameternamespaceid
+	AND lp.parameternamespaceid = s.parameternamespaceid
+	AND val.dataproviderid = dp.dataproviderid 
+	AND val.placeid = pl.placeid
+	AND val.valueparameterid = vp.parameterid
+	AND val.levelparameterid = lp.parameterid ;
+
+REVOKE ALL ON __WCI_SCHEMA__.floatValue FROM public;
+GRANT ALL ON __WCI_SCHEMA__.floatValue TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.floatValue TO wdb_read;
+GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatValue TO wdb_write;
+
+
+
 -- Replace view wci_int.gridvalue;
+CREATE VIEW __WCI_SCHEMA__.gridvalue AS
+SELECT	
+	val.value,
+	dp.dataproviderid,
+	dp.dataprovidername,
+	dp.dataprovidernameleftset,
+	dp.dataprovidernamerightset,
+	pl.placename,
+	pl.placeid, 
+	pl.placegeometry,
+	pl.placeindeterminatecode,
+	pl.originalsrid,
+	val.referencetime, 
+	val.validtimefrom, 
+	val.validtimeto,
+	val.validtimeindeterminatecode,
+	val.valueparameterid,
+	vp.parametername as valueparametername, 
+	vp.unitname as valueunitname,
+	val.levelparameterid,
+	lp.parametername as levelparametername,
+	lp.unitname as levelunitname,
+	val.levelFrom,
+	val.levelTo,
+	val.levelindeterminatecode,
+	val.dataversion,
+	val.maxdataversion,
+	val.confidencecode, 
+	val.valuestoretime,
+	val.valueid,
+	val.valuetype
+FROM 	
+	__WDB_SCHEMA__.gridvalue val,
+	__WCI_SCHEMA__.dataprovider_mv dp,
+	__WCI_SCHEMA__.placedefinition_mv pl,
+	__WCI_SCHEMA__.parameter_mv vp,
+	__WCI_SCHEMA__.parameter_mv lp,
+	__WCI_SCHEMA__.getSessionData() s
+WHERE
+	dp.dataprovidernamespaceid = s.dataprovidernamespaceid
+	AND pl.placenamespaceid = s.placenamespaceid
+	AND vp.parameternamespaceid = s.parameternamespaceid
+	AND lp.parameternamespaceid = s.parameternamespaceid
+	AND val.dataproviderid = dp.dataproviderid 
+	AND val.placeid = pl.placeid
+	AND val.valueparameterid = vp.parameterid
+	AND val.levelparameterid = lp.parameterid ;
+
+REVOKE ALL ON __WCI_SCHEMA__.gridvalue FROM public;
+GRANT ALL ON __WCI_SCHEMA__.gridvalue TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.gridvalue TO wdb_read;
+GRANT SELECT, INSERT ON __WCI_SCHEMA__.gridvalue TO wdb_write;
+
+CREATE OR REPLACE RULE 
+wci_internal_gridvalue_insert
+AS ON INSERT TO __WCI_SCHEMA__.gridvalue
+DO INSTEAD 
+SELECT
+__WCI_SCHEMA__.write(
+	NEW.dataproviderid, 
+	NEW.placeid, 
+	NEW.referencetime, 
+	NEW.validtimefrom, 
+	NEW.validtimeto,
+	NEW.validtimeindeterminatecode,
+	NEW.valueparameterid, 
+	NEW.levelparameterid, 
+	NEW.levelfrom, 
+	NEW.levelto,
+	NEW.levelindeterminatecode,
+	NEW.dataversion,
+	NEW.confidencecode,
+	NEW.value );
+
+
+
 -- Replace function wci_int.getparametername(wci_int.gridvalue);
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getParameterName( data __WCI_SCHEMA__.gridvalue )
+RETURNS text AS
+$BODY$
+DECLARE
+	ret text;
+BEGIN
+	ret := data.valueparametername;
+	RETURN ret;
+END;
+$BODY$
+LANGUAGE 'plpgsql' IMMUTABLE STRICT;
+
+
+
 -- Replace function wci_int.lp_matches(wci_int.gridvalue,text[]);
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.lp_matches( val __WCI_SCHEMA__.gridvalue, param text[] )
+RETURNS boolean AS
+$BODY$
+DECLARE
+	currentParam __WCI_SCHEMA__.levelParameterTuple;
+	item text;
+	i int;
+BEGIN
+	-- Not implemented yet
+	RETURN false;
+END;
+$BODY$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+
+
+
 -- Replace function wci_int.getlevelparametername(wci_int.gridvalue);
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLevelParameterName( data __WCI_SCHEMA__.gridvalue )
+RETURNS text AS
+$BODY$
+DECLARE
+	ret text;
+BEGIN
+	ret := data.levelparametername;
+	RETURN ret;
+END;
+$BODY$
+LANGUAGE 'plpgsql' IMMUTABLE STRICT;
+
+
+
 -- Replace view wci_int.floatgridvalue;
+CREATE VIEW __WCI_SCHEMA__.floatgridvalue AS SELECT * FROM __WCI_SCHEMA__.gridvalue;
+
+REVOKE ALL ON __WCI_SCHEMA__.floatGridValue FROM public;
+GRANT ALL ON __WCI_SCHEMA__.floatGridValue TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.floatGridValue TO wdb_read;
+GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatGridValue TO wdb_write;

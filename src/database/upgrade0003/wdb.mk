@@ -11,7 +11,8 @@ upgrade0003_DATA = 			$(UPGRADE0003_SOURCES:.in.sql=.sql)
 
 CLEANFILES +=				$(UPGRADE0003_SOURCES:.in.sql=.sql)
 
-EXTRA_DIST +=				src/database/upgrade0003/wdb.mk \
+EXTRA_DIST +=				$(UPGRADE0003_SOURCES) \
+							src/database/upgrade0003/wdb.mk \
 							src/database/upgrade0003/Makefile.am \
 							src/database/upgrade0003/Makefile.in
 

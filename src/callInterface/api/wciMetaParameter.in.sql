@@ -36,7 +36,7 @@ LANGUAGE sql STABLE;
 
 -- Add CF-metadata for Surface  
 CREATE OR REPLACE FUNCTION
-wci.addCfSurface
+wci.addcfSurface
 (
 	surface_ 			text,
 	comment_			text
@@ -87,7 +87,7 @@ LANGUAGE sql STABLE;
 
 -- Add CF-metadata for component  
 CREATE OR REPLACE FUNCTION
-wci.addCfcomponent
+wci.addcfcomponent
 (
 	component_ 			text,
 	comment_			text
