@@ -202,7 +202,7 @@ Datum wciReadFloat(PG_FUNCTION_ARGS)
 		SRF_RETURN_NEXT(funcctx, result);
 	}
 	// Never reached
-	elog(ERROR, "Code flow reached an unexpeced point: %s:%d", __FILE__, __LINE__);
+	elog(ERROR, "Code flow reached an unexpected point: %s:%d", __FILE__, __LINE__);
 	SRF_RETURN_DONE(funcctx);
 }
 

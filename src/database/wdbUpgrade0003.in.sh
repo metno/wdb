@@ -45,7 +45,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_PATH/upgrade0003/placeDefinition.sql
 \i $WDB_PATH/upgrade0003/wciBrowse.sql
 
-
 SELECT wci.setConfiguration( 'WDB', '__WDB_VERSION__', 3 );
 
 VACUUM ANALYZE;

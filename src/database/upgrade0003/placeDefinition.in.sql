@@ -148,6 +148,7 @@ CREATE INDEX XIE2wci_placedefinition_mv ON wci_int.placedefinition_mv
 );
 
 
+
 --
 -- New/Replacement WCI Functions
 --
@@ -385,7 +386,6 @@ BEGIN
 END;
 $BODY$
 LANGUAGE 'plpgsql' IMMUTABLE;
-
 
 
 

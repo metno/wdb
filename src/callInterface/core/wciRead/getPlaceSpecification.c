@@ -43,7 +43,8 @@ struct PlaceSpecification * getPlaceSpecificationFromDatabase(long long placeid)
 	if ( SPI_processed < 1 )
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(
 						"unable to find placespecification")));
-	else if ( SPI_processed > 1 )
+	else
+	if ( SPI_processed > 1 )
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(
 						"too many placespecifications returned!")));
 
