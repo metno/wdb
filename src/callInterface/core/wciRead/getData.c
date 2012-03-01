@@ -41,6 +41,7 @@
 static struct GridPointDataListIterator * getValues(long long placeid, long long dataid, struct ReadStore * store)
 {
 	const struct PlaceSpecification * ps = getPlaceSpecification(placeid);
+	if (ps == NULL) return NULL;
 
     // The code below is developed independently of the rest, and uses SPI for
     // its own purposes. Therefore push and pop.
@@ -104,6 +105,8 @@ static void getNextSetOfValues(struct ReadStore * store)
 	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, & isnull));
 
 	store->pointData = getValues(placeid, dataid, store);
+	if (store->pointData == NULL)
+		return;
 
 	getCommonValues(store);
 
@@ -118,6 +121,9 @@ bool getNextRowFromGridTable(struct ReadStore * store)
 		if ( ! ReadStoreHasMoreTuples(store) )
 			return false;
 		getNextSetOfValues(store);
+	}
+	if (store->pointData == NULL) {
+		return false;
 	}
 
 	while ( GridPointDataListIteratorAtEnd(store->pointData) )

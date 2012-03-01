@@ -278,6 +278,27 @@ GRANT ALL ON __WCI_SCHEMA__.floatValue TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.floatValue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatValue TO wdb_write;
 
+CREATE OR REPLACE RULE 
+wci_internal_floatvalue_insert
+AS ON INSERT TO __WCI_SCHEMA__.floatvalue
+DO INSTEAD 
+SELECT
+__WCI_SCHEMA__.write(
+	NEW.dataproviderid, 
+	NEW.placeid, 
+	NEW.referencetime, 
+	NEW.validtimefrom, 
+	NEW.validtimeto,
+	NEW.validtimeindeterminatecode,
+	NEW.valueparameterid, 
+	NEW.levelparameterid, 
+	NEW.levelfrom, 
+	NEW.levelto,
+	NEW.levelindeterminatecode,
+	NEW.dataversion,
+	NEW.confidencecode,
+	NEW.value );
+
 
 
 -- Replace view wci_int.gridvalue;
