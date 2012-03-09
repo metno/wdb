@@ -150,6 +150,7 @@ SECURITY DEFINER
 LANGUAGE 'plpgsql';
 
 
+
 --
 -- This rule permits INSERT statements on __WCI_SCHEMA__.gridvalue
 -- The insert is then redirected to the appropriate write function
@@ -176,6 +177,7 @@ __WCI_SCHEMA__.write(
 	NEW.value );
 
 
+	
 --
 -- __WCI_SCHEMA__.write
 -- This is the main work function of the wci.write call (for FLOAT)
@@ -275,6 +277,7 @@ SECURITY DEFINER
 LANGUAGE 'plpgsql';
 
 
+
 --
 -- This rule permits INSERT statements on __WCI_SCHEMA__.floatvalue
 -- The insert is then redirected to the appropriate write function
@@ -299,8 +302,6 @@ __WCI_SCHEMA__.write(
 	NEW.dataversion,
 	NEW.confidencecode,
 	NEW.value );
-
-
 
 
 
@@ -331,6 +332,8 @@ BEGIN
 END;
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
+
+
 
 -- 
 -- Get dataproviderids from the given dataprovidername 

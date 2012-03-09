@@ -499,7 +499,7 @@ if [ 0 != $? ]; then
 else
     echo "done"
 fi
-	
+
 # Update Materialized View
 echo -n "updating materialized view base... "
 psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF 

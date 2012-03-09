@@ -73,6 +73,7 @@ build_subdirs="			doc \
 						src/common/projection \
 						src/common/projection/test \
 						src/database \
+						src/database/upgrade0003 \
 						src/cleaningProgram \
 			    		src/admin \
 			    		src/admin/operations \
@@ -218,6 +219,7 @@ AC_CONFIG_FILES([Makefile
 				 src/callInterface/util/Makefile
 				 src/cleaningProgram/Makefile
 				 src/database/Makefile
+				 src/database/upgrade0003/Makefile
 				 src/admin/Makefile
 		   	 	 src/admin/operations/Makefile
 		   	 	 src/admin/ui/cmdLine/Makefile

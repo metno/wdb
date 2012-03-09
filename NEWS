@@ -1,3 +1,18 @@
+wdb (1.2.0~rc4-1) lucid; urgency=low
+  
+  * Fixed a bug where a missing placedefinition caused an
+    SQL exception to be thrown. 
+
+ -- Michael Akinde <wdb@met.no>  Fri, 02 Mar 2012 17:00:00 +0000
+
+wdb (1.2.0~rc3-1) lucid; urgency=low
+  
+  * Changed the placedefinition view.
+  
+  * Restructured the source file structure for schema upgrades.
+
+ -- Michael Akinde <wdb@met.no>  Wed, 28 Feb 2012 17:00:00 +0000
+
 wdb (1.2.0~rc2-1) lucid; urgency=low
   
   * Added wci.prognosishour function to the database.

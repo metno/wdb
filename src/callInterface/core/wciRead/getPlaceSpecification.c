@@ -41,9 +41,9 @@ struct PlaceSpecification * getPlaceSpecificationFromDatabase(long long placeid)
 				"Error when performing placeid query")));
 
 	if ( SPI_processed < 1 )
-		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(
-						"unable to find placespecification")));
-	else if ( SPI_processed > 1 )
+		return NULL;
+	else
+	if ( SPI_processed > 1 )
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(
 						"too many placespecifications returned!")));
 
@@ -90,6 +90,7 @@ struct PlaceSpecification * getPlaceSpecification(long long placeid)
 	if ( ! ps )
 	{
 		ps = getPlaceSpecificationFromDatabase(placeid);
+		if (ps == NULL) return NULL;
 		long long * key = (long long *) malloc(sizeof(long long));
 		* key = placeid;
 		g_hash_table_insert(psList, key, ps);
