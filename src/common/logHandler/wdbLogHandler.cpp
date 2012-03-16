@@ -71,7 +71,7 @@ WdbLogHandler::WdbLogHandler( int loglevel, const std::string & fileName ) :
 	log4cpp::Appender * appender;
 	if (fileName == "") {
 		// log to stdout
-		appender = new OstreamAppender( "TheLogger", & std::cout );
+		appender = new OstreamAppender( "TheLogger", & std::clog );
 	}
 	else {
 	    appender = new RollingFileAppender( "TheLogger", fileName, 1024 * 1024, 10 );
