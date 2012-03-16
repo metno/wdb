@@ -1,3 +1,11 @@
+wdb (1.2.0~rc5-1) lucid; urgency=low
+  
+  * Fixed a bug in wdbLogHandler.
+
+  * Removed indexes on floatvalue table.  
+
+ -- Michael Akinde <wdb@met.no>  Fri, 16 Mar 2012 15:00:00 +0000
+
 wdb (1.2.0~rc4-1) lucid; urgency=low
   
   * Fixed a bug where a missing placedefinition caused an
