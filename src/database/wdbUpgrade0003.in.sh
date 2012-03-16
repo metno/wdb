@@ -38,6 +38,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 
 \o $WDB_LOGS/wdb_upgrade_datamodel.log
 
+\i $WDB_PATH/upgrade0003/indexDefinition.sql
 \i $WDB_PATH/upgrade0003/prognosisTime.sql
 \i $WDB_PATH/upgrade0003/placeName.sql
 \i $WDB_PATH/upgrade0003/placeFunction.sql

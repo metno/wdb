@@ -104,7 +104,6 @@ CREATE UNIQUE INDEX XAK1Wdb_TimeIndeterminateType ON __WDB_SCHEMA__.TimeIndeterm
 );
 
 
-
 CREATE INDEX XIE1Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
 (
        DataProviderId,

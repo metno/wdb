@@ -2,6 +2,7 @@ UPGRADE0003_SOURCES =		src/database/upgrade0003/placeDefinition.in.sql \
 							src/database/upgrade0003/placeFunction.in.sql \
 							src/database/upgrade0003/placeName.in.sql \
 							src/database/upgrade0003/placeTrigger.in.sql \
+							src/database/upgrade0003/indexDefinition.in.sql \
 							src/database/upgrade0003/prognosisTime.in.sql \
 							src/database/upgrade0003/wciBrowse.in.sql
 
