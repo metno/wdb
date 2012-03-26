@@ -690,6 +690,123 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
+
+CREATE OR REPLACE FUNCTION 
+wci.write(
+	value_ float,
+	dataproviderName_ text,
+	placeName_ text,
+	referencetime_ timestamp with time zone,
+	validfrom_ timestamp with time zone,
+	validto_ timestamp with time zone,
+	valueParameterName_ text,
+	levelParameterName_ text,
+	levelfrom_ real,
+	levelto_ real,
+	dataVersion_ integer,
+	setConfidenceCode_ integer
+)
+RETURNS void AS
+$BODY$
+DECLARE
+	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( dataProviderName_ );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_ );
+	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueParameterName_ );
+	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
+	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelParameterName_ );
+	levelParameterId_      	  integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
+	currentVersion_ 		  integer := dataVersion_;
+	confidenceCode_			  integer := setConfidenceCode_;
+	
+	dataId bigint;
+BEGIN
+	-- Determine dataversion
+	IF (currentVersion_ IS NULL OR currentVersion_ < 0) THEN
+		SELECT 
+			max(dataversion) INTO currentVersion_ 
+		FROM 
+			__WCI_SCHEMA__.floatvalue v
+		WHERE
+			v.dataproviderid = dataProviderId_ AND
+			v.referencetime = referencetime_ AND
+			v.placeid = placeid_ AND
+			v.valueparameterid = valueParameterId_ AND
+			v.levelparameterid = levelParameterId_ AND
+			v.levelFrom = levelFrom_ AND
+			v.levelTo = levelTo_ AND
+			v.validtimeFrom = validFrom_ AND
+			v.validtimeTo = validTo_;
+		RAISE DEBUG 'WCI.WRITE.CurrentVersion: %', currentVersion_;  
+		IF currentVersion_ IS NULL THEN
+			currentVersion_ := 0;
+		ELSE
+			currentVersion_ := currentVersion_ + 1;
+		END IF;
+	END IF;
+	IF confidenceCode_ IS NULL THEN
+		confidenceCode_ := 0;
+	END IF;
+
+	INSERT INTO __WCI_SCHEMA__.floatvalue 
+	(
+		value,
+		dataproviderid,
+		dataprovidername,
+		placeid, 
+		placegeometry,
+		placeindeterminatecode,
+		referencetime, 
+		validtimefrom, 
+		validtimeto,
+		validtimeindeterminatecode,
+		valueparameterid,
+		valueparametername, 
+		valueunitname,
+		levelparameterid,
+		levelparametername,
+		levelunitname,
+		levelFrom, 
+		levelTo,
+		levelindeterminatecode,
+		dataversion,
+		maxdataversion,
+		confidencecode, 
+		valuestoretime,
+		valueid,
+		valuetype
+	) 
+	VALUES
+	(
+		value_,
+		dataproviderid_,
+		NULL,
+		placeid_,
+		NULL,
+		NULL,
+		referencetime_,
+		validfrom_,
+		validto_,
+		0,   -- Exact
+		valueparameterId_,
+		NULL, NULL,
+		levelparameterId_,
+		NULL, NULL, 
+		levelfrom_,
+		levelto_,
+		0, --Exact
+		currentVersion_,
+		NULL,
+		confidenceCode_,
+		NULL,
+		NULL,
+		NULL
+	);
+END 
+$BODY$
+LANGUAGE 'plpgsql';
+
+
+
 -- Write OID Value
 CREATE OR REPLACE FUNCTION 
 wci.write(
