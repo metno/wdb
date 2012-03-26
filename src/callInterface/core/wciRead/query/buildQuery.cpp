@@ -45,8 +45,6 @@ extern "C"
  * @{
  */
 
-
-
 /**
  * Create the part of a wci.read base query related to data provider. If no
  * data provider have been specified, add a simple TRUE condition to the
