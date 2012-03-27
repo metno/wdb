@@ -35,6 +35,8 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/PlaceGeometryTest.cpp \
 							test/install/callInterface/PlaceNameTest.h \
 							test/install/callInterface/PlaceNameTest.cpp \
+							test/install/callInterface/PlaceArrayTest.h \
+							test/install/callInterface/PlaceArrayTest.cpp \
 							test/install/callInterface/SurroundInterpolationTest.h \
 							test/install/callInterface/SurroundInterpolationTest.cpp \
 							test/install/callInterface/ReferenceTimeTest.h \

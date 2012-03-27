@@ -35,6 +35,7 @@
 #include "levelQuery.h"
 #include "dataversionQuery.h"
 #include "util.h"
+#include <vector>
 extern "C"
 {
 #include <utils/palloc.h>
@@ -101,7 +102,7 @@ std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray *
  *                    vary, depending on which table is chosen.
  * @return the given stream.
  */
-std::ostream & addLocationQuery(std::ostringstream & q, const char * location, DataSource sourceTable, enum OutputType output)
+std::string getLocationQuery(std::ostringstream & q, const char * location, DataSource sourceTable, enum OutputType output)
 {
 	if ( location )
 	{
@@ -110,15 +111,15 @@ std::ostream & addLocationQuery(std::ostringstream & q, const char * location, D
 			if ( sourceTable == FloatTable )
 			{
 				Location loc(location);
-				q << "AND " << loc.query(q, Location::RETURN_FLOAT) << " ";
+				return loc.query(q, Location::RETURN_FLOAT);
 			}
-			else if ( sourceTable == GridTable )
+			else // if ( sourceTable == GridTable )
 			{
 				Location loc(location);
 				if ( output == OutputGid )
-					q << "AND " << loc.query(q, Location::RETURN_OID) << " ";
-				//else // OutputFloat
-				//	q << "AND " << loc.query(Location::RETURN_OID_FLOAT);
+					return loc.query(q, Location::RETURN_OID);
+				else
+					return std::string();
 			}
 		}
 		catch(Location::InvalidSpecification & e)
@@ -128,8 +129,35 @@ std::ostream & addLocationQuery(std::ostringstream & q, const char * location, D
 					   errmsg( e.what() ) ) );
 		}
 	}
+	return std::string();
+}
+
+std::ostream & addLocationQuery(std::ostringstream & q, const struct StringArray * location, DataSource sourceTable, enum OutputType output)
+{
+	if ( location and location->size )
+	{
+		std::vector<std::string> locationQueryParts;
+		for ( int i = 0; i < location->size; ++ i )
+		{
+			std::string spec = getLocationQuery(q, location->data[i], sourceTable, output);
+			if ( not spec.empty() )
+				locationQueryParts.push_back(spec);
+		}
+
+		if ( not locationQueryParts.empty() )
+		{
+			q << " AND (" << locationQueryParts.front();
+			for ( int i = 1; i < locationQueryParts.size(); ++ i )
+				q << " OR " << locationQueryParts[i];
+			q << ")";
+		}
+	}
+
+	//elog(WARNING, q.str().c_str());
+
 	return q;
 }
+
 
 char * build_query(const struct WciReadParameterCollection * parameters,
 		enum DataSource dataSource, enum OutputType output,

@@ -27,6 +27,7 @@
 */
 
 #include "query/plan.h"
+#include "parse_location.h"
 #include <funcapi.h>
 #include <tsearch/ts_utils.h>
 #include <wdb_geos.h>
@@ -101,13 +102,12 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 
 	if ( PG_ARGISNULL(1) )
 	{
-		ReadStoreGridReturnInit(out, SPI_tuptable, SPI_processed, NULL);
+		ReadStoreGridReturnInit(out, SPI_tuptable, SPI_processed, NULL, 0);
 	}
 	else
 	{
-		text * location_t = PG_GETARG_TEXT_P(1);
-		const char * location = TextPGetCString(location_t);
-		ReadStoreGridReturnInit(out, SPI_tuptable, SPI_processed, location);
+		struct StringArray * locations = get_location(fcinfo);
+		ReadStoreGridReturnInit(out, SPI_tuptable, SPI_processed, locations->data, locations->size);
 	}
 	MemoryContextSwitchTo(oldcontext);
 }

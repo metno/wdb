@@ -38,10 +38,11 @@
 #include "extractGridData/readPoints.h"
 #include "extractGridData/readCache.h"
 
-static struct GridPointDataListIterator * getValues(long long placeid, long long dataid, struct ReadStore * store)
+static struct GridPointDataListIterator * getValues(long long placeid, long long dataid, struct LocationData * store)
 {
 	const struct PlaceSpecification * ps = getPlaceSpecification(placeid);
-	if (ps == NULL) return NULL;
+	if ( ! ps || ! store )
+		return NULL;
 
     // The code below is developed independently of the rest, and uses SPI for
     // its own purposes. Therefore push and pop.
@@ -74,8 +75,10 @@ static void getCommonValues(struct ReadStore * store)
 	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex];
 	TupleDesc tupdesc = store->tuples->tupdesc;
 
+	const char * locationString = store->locationData ? store->locationData->locationString : NULL;
+
 	store->values[WCI_READ_DATAPROVIDERNAME] = SPI_getbinval(currentTuple, tupdesc, 2, & store->isNull[WCI_READ_DATAPROVIDERNAME]); // varchar( 255 )
-	store->values[WCI_READ_PLACENAME] = getLocationString(store->locationString, currentTuple, tupdesc, store->isNull + WCI_READ_PLACENAME);
+	store->values[WCI_READ_PLACENAME] = getLocationString(locationString, currentTuple, tupdesc, store->isNull + WCI_READ_PLACENAME);
 	store->values[WCI_READ_REFERENCETIME] = SPI_getbinval(currentTuple, tupdesc, 5, store->isNull + WCI_READ_REFERENCETIME); // timestamp with time zone
 	store->values[WCI_READ_VALIDTIMEFROM] = SPI_getbinval(currentTuple, tupdesc, 6, store->isNull + WCI_READ_VALIDTIMEFROM); // timestamp with time zone
 	store->values[WCI_READ_VALIDTIMETO] = SPI_getbinval(currentTuple, tupdesc, 7, store->isNull + WCI_READ_VALIDTIMETO); // timestamp with time zone
@@ -104,7 +107,7 @@ static void getNextSetOfValues(struct ReadStore * store)
 	long long placeid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 21, & isnull));
 	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, & isnull));
 
-	store->pointData = getValues(placeid, dataid, store);
+	store->pointData = getValues(placeid, dataid, store->locationData);
 	if (store->pointData == NULL)
 		return;
 

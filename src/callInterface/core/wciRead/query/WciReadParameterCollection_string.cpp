@@ -92,7 +92,10 @@ const char * stringFromWciReadParameterCollection(const struct WciReadParameterC
 
 	std::ostringstream s;
 	s << "wci.read(" << stringFromStringArray(collection->dataProvider) << ", ";
-	s << stringFromString(collection->location) << ", ";
+	if ( collection->location->size == 1 )
+		s << stringFromString(collection->location->data[0]) << ", ";
+	else
+		s << stringFromStringArray(collection->location) << ", ";
 	s << stringFromString(collection->referenceTime) << ", ";
 	s << stringFromString(collection->validTime) << ", ";
 	s << stringFromStringArray(collection->parameter) << ", ";

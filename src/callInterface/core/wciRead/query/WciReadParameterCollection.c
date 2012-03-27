@@ -27,9 +27,11 @@
 */
 
 #include "WciReadParameterCollection.h"
+#include "../parse_location.h"
 #include <postgres.h>
 #include <fmgr.h>
 #include <funcapi.h>
+#include <catalog/pg_type.h>
 #include <utils/array.h>
 #include <utils/builtins.h>
 #include <tsearch/ts_utils.h>
@@ -69,6 +71,19 @@ struct StringArray * stringArrayFromDatum(Datum d)
 
 		ret->data[i -1] = TextPGetCString(var);
 	}
+	return ret;
+}
+
+struct StringArray * singleElementStringArrayFromDatum(Datum d)
+{
+	if ( d == 0 )
+		return NULL;
+
+	struct StringArray * ret = (struct StringArray *) palloc(sizeof(struct StringArray));
+	ret->size = 1;
+	ret->data = (char **) palloc(sizeof(char *));
+	ret->data[0] = TextPGetCString(DatumGetTextP(d));
+
 	return ret;
 }
 
@@ -120,8 +135,8 @@ char * charStringFromDatum(Datum d)
 
 void parseReadParameters(struct WciReadParameterCollection * out, PG_FUNCTION_ARGS)
 {
+	out->location = get_location(fcinfo);
 	out->dataProvider = stringArrayFromDatum(PG_GETARG_DATUM(0));
-	out->location = charStringFromDatum(PG_GETARG_DATUM(1));
 	out->referenceTime = charStringFromDatum(PG_GETARG_DATUM(2));
 	out->validTime = charStringFromDatum(PG_GETARG_DATUM(3));
 	out->parameter = stringArrayFromDatum(PG_GETARG_DATUM(4));

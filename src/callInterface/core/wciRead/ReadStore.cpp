@@ -63,7 +63,7 @@ extern "C"
 {
 #include <postgres.h>
 
-void setReadStoreGeometry(struct ReadStore * out, SPITupleTable * tuples, const char * location)
+void setReadStoreGeometry(struct LocationData * out, SPITupleTable * tuples, const char * location)
 {
 	out->location = NULL;
 	out->interpolation = Exact;
@@ -97,18 +97,25 @@ void ReadStoreFloatReturnInit(struct ReadStore * out)
 	out->returnMode = ReturningFromFloatTable;
 }
 
-void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char * location)
+void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char ** locations, int locationCount)
 {
 	out->tuples = tuples;
 	out->currentTupleIndex = 0;
 	out->tupleCount = tupleCount;
+	if ( locationCount == 0 )
+		out->locationData = NULL;
+	else
+		out->locationData = (struct LocationData *) palloc(sizeof(struct LocationData) * locationCount);
+	out->locationCount = locationCount;
+	for ( int i = 0; i < locationCount; ++ i )
+		out->locationData[i].locationString = locations[i];
 	out->returnMode = ReturningFromGridTable;
-	out->locationString = location;
 	out->pointData = NULL;
 
 	try
 	{
-		setReadStoreGeometry(out, tuples, location);
+		for ( int i = 0; i < locationCount; ++ i )
+			setReadStoreGeometry(& out->locationData[i], tuples, locations[i]);
 	}
 	catch ( std::exception & e )
 	{
@@ -118,8 +125,12 @@ void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int
 
 void ReadStoreDelete(struct ReadStore * store)
 {
-	if ( store->location != NULL )
-		GEOSGeom_destroy(store->location);
+	if ( store->locationData )
+	{
+		if ( store->locationData->location != NULL )
+			GEOSGeom_destroy(store->locationData->location);
+		pfree(store->locationData);
+	}
 	pfree(store);
 }
 

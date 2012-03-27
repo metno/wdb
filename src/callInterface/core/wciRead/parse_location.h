@@ -1,7 +1,7 @@
 /*
     wdb
 
-    Copyright (C) 2009 met.no
+    Copyright (C) 2012 met.no
 
     Contact information:
     Norwegian Meteorological Institute
@@ -27,8 +27,10 @@
 */
 
 
-#ifndef WCIREADPARAMETERCOLLECTION_H_
-#define WCIREADPARAMETERCOLLECTION_H_
+#ifndef PARSE_LOCATION_H_
+#define PARSE_LOCATION_H_
+
+#include "query/WciReadParameterCollection.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,60 +40,13 @@ extern "C" {
 #include <fmgr.h>
 
 
-/**
- * @addtogroup wci
- * @{
- */
+struct StringArray * get_location(PG_FUNCTION_ARGS);
 
-
-/**
- * An array of strings, with a length field
- */
-struct StringArray
-{
-	int size;
-	char ** data;
-};
-
-
-/**
- * An array of ints, with a length field
- */
-struct IntegerArray
-{
-	int size;
-	int * data;
-};
-
-
-/**
- * Internal representation of arguments to a wci.read call.
- */
-struct WciReadParameterCollection
-{
-	struct StringArray * dataProvider;
-	struct StringArray * location;
-	char * referenceTime;
-	char * validTime;
-	struct StringArray * parameter;
-	char * level;
-	struct IntegerArray * dataVersion;
-};
-
-
-/**
- * Transform postgres arguments into a WciReadParameterCollection.
- */
-extern void parseReadParameters(struct WciReadParameterCollection * out, PG_FUNCTION_ARGS);
-
-
-/**
- * @}
- */
 
 #ifdef __cplusplus
 }
 #endif
 
 
-#endif /* WCIREADPARAMETERCOLLECTION_H_ */
+
+#endif /* PARSE_LOCATION_H_ */

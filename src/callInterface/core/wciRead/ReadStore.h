@@ -56,6 +56,14 @@ enum ReadStoreMode
 	ReturningFromGridTable
 };
 
+struct LocationData
+{
+	enum InterpolationType interpolation;
+	int interpolationParameter;
+	const char * locationString;
+	GEOSGeom location;
+};
+
 /**
  * This data is stored between invocations of wciReadFloat. It contains all
  * necessary data to generate all return rows from a call to that function.
@@ -68,10 +76,8 @@ struct ReadStore
 
 	enum ReadStoreMode returnMode;
 
-	enum InterpolationType interpolation;
-	int interpolationParameter;
-	const char * locationString;
-	GEOSGeom location;
+	struct LocationData * locationData;
+	int locationCount;
 
 	// Return data
 	Datum values[20];
@@ -87,7 +93,7 @@ void ReadStoreFloatReturnInit(struct ReadStore * out);
 /**
  * Initialize the given ReadStore with the given data
  */
-void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char * location);
+void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int tupleCount, const char ** locations, int locationCount);
 
 /**
  * Free all memory related to the given readStore, including the ReadStore

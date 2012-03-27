@@ -203,21 +203,28 @@ void Location::determineInterpolation() {
 		interpolationType_ = find->second;
 }
 
+namespace
+{
+std::string escape(const std::string & what)
+{
+	std::string ret = what;
+	size_t found = ret.find("'");
+	while (found!=string::npos) {
+		ret.replace(found, 1, "''");
+		found = ret.find("'", found + 2);
+	}
+	return ret;
+}
+}
+
 string Location::query( std::ostringstream & w, Location::QueryReturnType returnType ) const
 {
-	std::string where = w.str();
-	size_t found = where.find("'");
-	while (found!=string::npos) {
-		where.replace(found, 1, "''");
-		found = where.find("'", found + 2);
-	}
-
 	switch ( returnType )
 	{
 	case RETURN_OID:
 		return queryReturnGrid();
 	case RETURN_FLOAT:
-		return queryReturnFloat( where );
+		return queryReturnFloat( escape(w.str()) );
 	default:
 		throw InvalidSpecification("The return type specified for the location query is unsupported");
 	}
