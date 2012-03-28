@@ -47,8 +47,7 @@ static struct GridPointDataListIterator * getValues(long long placeid, long long
     // The code below is developed independently of the rest, and uses SPI for
     // its own purposes. Therefore push and pop.
     SPI_push();
-    struct GridPointDataListIterator * ret = readPoints(ps, store->location, store->interpolation,
-														store->interpolationParameter, dataid);
+    struct GridPointDataListIterator * ret = readPoints(ps, store, dataid);
     SPI_pop();
 
     return ret;
@@ -136,7 +135,7 @@ bool getNextRowFromGridTable(struct ReadStore * store)
 		getNextSetOfValues(store);
 	}
 
-	struct GridPointData * ret = GridPointDataListIteratorNext(store->pointData);
+	const struct GridPointData * ret = GridPointDataListIteratorNext(store->pointData);
 
 	store->values[WCI_READ_VALUE] = Float8GetDatum(ret->value); // float (8 bytes)
 	if ( ret->value != ret->value ) // This means the value is NaN

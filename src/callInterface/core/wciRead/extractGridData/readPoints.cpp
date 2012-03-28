@@ -39,15 +39,16 @@ extern "C"
 #include <postgres.h>
 
 struct GridPointDataListIterator * readPoints(
-		const struct PlaceSpecification * ps, GEOSGeom location,
-		enum InterpolationType interpolation, int interpolationParam, FileId dataId)
+		const struct PlaceSpecification * ps,
+		const struct LocationData * locationData,
+		FileId dataId)
 {
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
 
 	GridPointDataListIterator * ret = NULL;
 	try
 	{
-		if ( ! location )
+		if ( ! locationData->location )
 		{
 			//AllPointsReader reader(dataReader);
 			//struct GridPointDataList * list = reader.read(dataId);
@@ -58,19 +59,19 @@ struct GridPointDataListIterator * readPoints(
 		}
 		else
 		{
-			int geometryType = GEOSGeomTypeId(location);
+			int geometryType = GEOSGeomTypeId(locationData->location);
 			if (geometryType == GEOS_POINT)
 			{
 				SinglePointReader reader(dataReader);
 
-				GridPointDataList * list = reader.read(location, interpolation, interpolationParam, dataId);
+				GridPointDataList * list = reader.read(locationData->location, locationData->interpolation, locationData->interpolationParameter, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else if ((geometryType == GEOS_POLYGON)||
 					 (geometryType == GEOS_MULTIPOLYGON))
 			{
 				PolygonReader reader(dataReader);
-				GridPointDataList * list = reader.read(location, interpolation, dataId);
+				GridPointDataList * list = reader.read(locationData->location, locationData->interpolation, dataId);
 				ret = GridPointDataListIteratorNew(list);
 			}
 			else

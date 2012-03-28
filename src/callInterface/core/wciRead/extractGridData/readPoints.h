@@ -30,6 +30,7 @@
 #define READPOINTS_H_
 
 #include <types/interpolationType.h>
+#include "../ReadStore.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,9 +57,8 @@ extern "C" {
  * @return The list of values/geometries that were retrieved from the blob
  */
 struct GridPointDataListIterator * readPoints(
-		const struct PlaceSpecification * ps, GEOSGeom location,
-		enum InterpolationType interpolation,
-		int interpolationParam,
+		const struct PlaceSpecification * ps,
+		const struct LocationData * locationData,
 		FileId dataId);
 
 
