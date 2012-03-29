@@ -46,6 +46,35 @@ struct GridPointDataList * GridPointDataListNew(size_t size)
 	return dl;
 }
 
+struct GridPointDataList * GridPointDataListMerge(struct GridPointDataList * a, struct GridPointDataList * b)
+{
+	if ( ! a )
+		return b;
+	if ( ! b )
+		return a;
+
+	if ( a->count == 0 )
+	{
+		GridPointDataListDelete(a, false);
+		return b;
+	}
+	if ( b->count == 0 )
+	{
+		GridPointDataListDelete(b, false);
+		return a;
+	}
+
+	int newSize = a->count + b->count;
+
+	a->data = (struct GridPointData *) repalloc(a->data, sizeof(struct GridPointData) * newSize);
+	memcpy(& a->data[a->count], b->data, b->count * sizeof(struct GridPointData));
+	a->count = newSize;
+
+	GridPointDataListDelete(b, false);
+
+	return a;
+}
+
 void GridPointDataListDelete(struct GridPointDataList * list, int alsoDestroyPoints)
 {
 	int i;

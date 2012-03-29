@@ -38,7 +38,7 @@
 #include "extractGridData/readPoints.h"
 #include "extractGridData/readCache.h"
 
-static struct GridPointDataListIterator * getValues(long long placeid, long long dataid, struct LocationData * store)
+static struct GridPointDataListIterator * getValues(long long placeid, long long dataid, struct LocationData * store, int locationCount)
 {
 	const struct PlaceSpecification * ps = getPlaceSpecification(placeid);
 	if ( ! ps || ! store )
@@ -47,7 +47,12 @@ static struct GridPointDataListIterator * getValues(long long placeid, long long
     // The code below is developed independently of the rest, and uses SPI for
     // its own purposes. Therefore push and pop.
     SPI_push();
-    struct GridPointDataListIterator * ret = readPoints(ps, store, dataid);
+    struct GridPointDataList * list = NULL;
+    int i;
+    for ( i = 0; i < locationCount; ++ i )
+    	list = GridPointDataListMerge(list, readPoints(ps, & store[i], dataid));
+    //struct GridPointDataList * list = readPoints(ps, store, dataid);
+    struct GridPointDataListIterator * ret = GridPointDataListIteratorNew(list);
     SPI_pop();
 
     return ret;
@@ -106,7 +111,7 @@ static void getNextSetOfValues(struct ReadStore * store)
 	long long placeid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 21, & isnull));
 	long long dataid = DatumGetInt64(SPI_getbinval(currentTuple, tupdesc, 1, & isnull));
 
-	store->pointData = getValues(placeid, dataid, store->locationData);
+	store->pointData = getValues(placeid, dataid, store->locationData, store->locationCount);
 	if (store->pointData == NULL)
 		return;
 
@@ -132,7 +137,7 @@ bool getNextRowFromGridTable(struct ReadStore * store)
 	{
 		if ( ! ReadStoreHasMoreTuples(store) )
 			return false;
-		getNextSetOfValues(store);
+		getNextSetOfValues(store);	//	const char * locationString = store->locationData ? store->locationData->locationString : NULL;
 	}
 
 	const struct GridPointData * ret = GridPointDataListIteratorNext(store->pointData);

@@ -56,7 +56,7 @@ extern "C" {
  *
  * @return The list of values/geometries that were retrieved from the blob
  */
-struct GridPointDataListIterator * readPoints(
+struct GridPointDataList * readPoints(
 		const struct PlaceSpecification * ps,
 		const struct LocationData * locationData,
 		FileId dataId);

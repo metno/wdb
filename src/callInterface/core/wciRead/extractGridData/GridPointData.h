@@ -63,6 +63,8 @@ struct GridPointData
 	/// The location on a WGS84 earth, in lon/lat
 	GEOSGeom location;
 
+	const char * locationName;
+
 	/// Value of whatever parameter this refers to
 	float value;
 
@@ -105,6 +107,7 @@ struct GridPointDataList
  */
 struct GridPointDataList * GridPointDataListNew(size_t size);
 
+struct GridPointDataList * GridPointDataListMerge(struct GridPointDataList * a, struct GridPointDataList * b);
 
 /**
  * Delete all memory pointed to by the given list. This optionally includes

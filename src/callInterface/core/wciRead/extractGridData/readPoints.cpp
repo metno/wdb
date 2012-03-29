@@ -38,14 +38,13 @@ extern "C"
 {
 #include <postgres.h>
 
-struct GridPointDataListIterator * readPoints(
+struct GridPointDataList * readPoints(
 		const struct PlaceSpecification * ps,
 		const struct LocationData * locationData,
 		FileId dataId)
 {
 	const BaseDataReader & dataReader = BaseDataReader::getInstance(* ps);
-
-	GridPointDataListIterator * ret = NULL;
+	struct GridPointDataList * list = NULL;
 	try
 	{
 		if ( ! locationData->location )
@@ -54,8 +53,7 @@ struct GridPointDataListIterator * readPoints(
 			//struct GridPointDataList * list = reader.read(dataId);
 
 			// On NULL geometries we won't return anything
-			struct GridPointDataList * list = GridPointDataListNew(0);
-			ret = GridPointDataListIteratorNew(list);
+			list = GridPointDataListNew(0);
 		}
 		else
 		{
@@ -64,15 +62,13 @@ struct GridPointDataListIterator * readPoints(
 			{
 				SinglePointReader reader(dataReader);
 
-				GridPointDataList * list = reader.read(locationData->location, locationData->interpolation, locationData->interpolationParameter, dataId);
-				ret = GridPointDataListIteratorNew(list);
+				list = reader.read(locationData->location, locationData->interpolation, locationData->interpolationParameter, dataId);
 			}
 			else if ((geometryType == GEOS_POLYGON)||
 					 (geometryType == GEOS_MULTIPOLYGON))
 			{
 				PolygonReader reader(dataReader);
-				GridPointDataList * list = reader.read(locationData->location, locationData->interpolation, dataId);
-				ret = GridPointDataListIteratorNew(list);
+				list = reader.read(locationData->location, locationData->interpolation, dataId);
 			}
 			else
 				throw std::runtime_error("This geometry type is not supported");
@@ -80,19 +76,19 @@ struct GridPointDataListIterator * readPoints(
 	}
 	catch (std::exception & e)
 	{
-		if ( ret )
-			GridPointDataListDelete(ret->list, false);
+		if ( list )
+			GridPointDataListDelete(list, false);
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(e.what())));
 	}
 	catch (...)
 	{
 		// This should never happen, but just in case...
-		if ( ret )
-			GridPointDataListDelete(ret->list, false);
+		if ( list )
+			GridPointDataListDelete(list, false);
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), "Unknown error when fetching point data. Please tell someone about this"));
 	}
 
-	return ret;
+	return list;
 }
 
 }
