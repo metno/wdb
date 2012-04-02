@@ -106,7 +106,32 @@ void PlaceArrayTest::twoNamedNearestPoints2()
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20 grid" ) );
 }
 
-std::string PlaceArrayTest::getQuery_(const std::string & place) const
+void PlaceArrayTest::polygonAndPoint()
+{
+    const std::string polygon = "POLYGON(( "
+                           "11.34 60.75, "
+                           "12.34 60.75, "
+                           "12.34 61.25, "
+                           "11.34 61.25, "
+                           "11.34 60.75 ))";
+    std::string point = "bilinear POINT(11.84 61)";
+    std::string geometry = "ARRAY['" + polygon + "', '" + point + "']";
+
+    result r = t->exec( getQuery_( geometry, "2004-12-26 06:00:00+00", "air temperature" ) );
+
+    CPPUNIT_ASSERT_EQUAL(result::size_type( 26 ), r.size());
+    int count = 0;
+    for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
+    	if ( 2 == ( *it ) [ "value" ].as<int>() )
+    		count++;
+    }
+    CPPUNIT_ASSERT_EQUAL( 26, count );
+
+    CPPUNIT_ASSERT_EQUAL( size_t(25), count_val( r, "placename", "POLYGON(( 11.34 60.75, 12.34 60.75, 12.34 61.25, 11.34 61.25, 11.34 60.75 )) hirlam 10 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t(1), count_val( r, "placename", "bilinear POINT(11.84 61) hirlam 10 grid" ) );
+}
+
+std::string PlaceArrayTest::getQuery_(const std::string & place, const std::string & referenceTime, const std::string & parameter) const
 {
 	if ( place.empty() or place == "NULL" )
 		return "NULL";
@@ -115,18 +140,17 @@ std::string PlaceArrayTest::getQuery_(const std::string & place) const
 	size_t lastpos = placeSpec.size() -1;
 	if ( placeSpec[0] == '{' and placeSpec[lastpos] == '}')
 		placeSpec = "'" + placeSpec + "'::text[]";
-	else if ( placeSpec[lastpos] != ']' or placeSpec.substr(6) != "ARRAY[" )
+	else if ( placeSpec[lastpos] != ']' or placeSpec.substr(0,6) != "ARRAY[" )
 		placeSpec = "'" + placeSpec + "'";
 
-
 	std::ostringstream st;
-	st << "SELECT placename FROM wci.read( ARRAY['test group'], ";
+	st << "SELECT * FROM wci.read( ARRAY['test group'], ";
 	if ( "NULL" == place )
 		st << "NULL";
 	else
 		st << placeSpec;
-	st << ", '2004-12-25 06:00:00+00', NULL, ";
-	st << "'{\"" << defaultParameter << "\"}', ";
+	st << ", '" << referenceTime << "', NULL, ";
+	st << "'{\"" << parameter << "\"}', ";
 	st << "NULL, NULL, NULL::wci.returnfloat )";
 
 	return st.str();

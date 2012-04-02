@@ -42,6 +42,7 @@ class PlaceArrayTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( twoNamedNearestPointsFromGridTable );
 	CPPUNIT_TEST( twoNamedNearestPoints1 );
 	CPPUNIT_TEST( twoNamedNearestPoints2 );
+	CPPUNIT_TEST( polygonAndPoint );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -51,14 +52,15 @@ public:
 	void oneNamedExactPoint1();
 	void oneNamedExactPoint2();
 
-
 	void twoNamedExactPointsFromFloatTable();
 	void twoNamedNearestPointsFromGridTable();
 	void twoNamedNearestPoints1();
 	void twoNamedNearestPoints2();
 
+	void polygonAndPoint();
+
 private:
-	std::string getQuery_(const std::string & place) const;
+	std::string getQuery_(const std::string & place, const std::string & referenceTime = "2004-12-25 06:00:00+00", const std::string & parameter = defaultParameter) const;
 };
 
 #endif /* PLACEARRAYTEST_H_ */
