@@ -33,19 +33,20 @@ RETURNS SETOF wci.returnGid AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wciReadGid'
 LANGUAGE 'c' STABLE;
 
-CREATE OR REPLACE FUNCTION 
-wci.read( dataprovider 		text[],
-		  location 			text[],
-		  referencetime 	text,
-		  validtime 		text,
-		  parameter 		text[],
-		  level 			text,
-		  dataversion 		integer[],
-		  returntype 		wci.returnGid
-)	
-RETURNS SETOF wci.returnGid AS
-'__WDB_LIBDIR__/__WCI_LIB__', 'wciReadGid'
-LANGUAGE 'c' STABLE;
+-- Not implemented yet
+--CREATE OR REPLACE FUNCTION 
+--wci.read( dataprovider 		text[],
+--		  location 			text[],
+--		  referencetime 	text,
+--		  validtime 		text,
+--		  parameter 		text[],
+--		  level 			text,
+--		  dataversion 		integer[],
+--		  returntype 		wci.returnGid
+--)	
+--RETURNS SETOF wci.returnGid AS
+--'__WDB_LIBDIR__/__WCI_LIB__', 'wciReadGid'
+--LANGUAGE 'c' STABLE;
 
 
 CREATE OR REPLACE FUNCTION 
