@@ -88,6 +88,10 @@ struct GridPointDataList * readPoints(
 		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), "Unknown error when fetching point data. Please tell someone about this"));
 	}
 
+	int i;
+	for ( i = 0; i < list->count; ++ i )
+		list->data->locationName = locationData->locationString;
+
 	return list;
 }
 

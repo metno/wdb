@@ -136,6 +136,7 @@ bool BaseDataReader::readPoint(GridPointData & out, int x, int y, FileId dataId)
 	out.x = x;
 	out.y = y;
 	out.location = getGeometry( x, y );
+	out.locationName = NULL;
 	out.value = readFloatFromFile(dataId, indexFromXy(x, y, ps_) );
 
 	return true;

@@ -116,7 +116,6 @@ static void getNextSetOfValues(struct ReadStore * store)
 		return;
 
 	getCommonValues(store);
-
 	++ store->currentTupleIndex;
 }
 
@@ -166,6 +165,18 @@ bool getNextRowFromGridTable(struct ReadStore * store)
 		elog(WARNING, "No location in return value");
 		store->values[WCI_READ_PLACEGEOMETRY] = PointerGetDatum(NULL);
 		store->isNull[WCI_READ_PLACEGEOMETRY] = true;
+	}
+
+	if ( ret->locationName != NULL )
+	{
+		HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex -1];
+		TupleDesc tupdesc = store->tuples->tupdesc;
+		const char * gridName = SPI_getvalue(currentTuple, tupdesc, 3);
+		char buffer[512];
+		snprintf(buffer, 512, "%s %s", ret->locationName, gridName);
+		store->values[WCI_READ_PLACENAME] = CStringGetTextDatum(pstrdup(buffer));
+		store->isNull[WCI_READ_PLACENAME] = false;
+				//getLocationString(ret->locationName, currentTuple, tupdesc, store->isNull[WCI_READ_PLACENAME]);
 	}
 
 	return true;

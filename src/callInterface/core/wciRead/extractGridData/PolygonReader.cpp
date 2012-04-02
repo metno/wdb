@@ -150,6 +150,7 @@ PolygonReader::gridPointsInPolygon( std::vector<GridPointData> & pointsInPolygon
 				GridPointData posPt;
 				posPt.x = i;
 				posPt.y = j;
+				posPt.locationName = NULL;
 				pointsInPolygon.push_back(posPt);
 			}
 			GEOSGeom_destroy(point);

@@ -102,6 +102,7 @@ GridPointDataList * SinglePointReader::readNearest_(const GEOSGeom location, dou
 	GridPointData data;
 	int x = math::round(exactX);
 	int y = math::round(exactY);
+	data.locationName = NULL;
 	if ( reader_.readPoint(data, x, y, dataId) )
 	{
 		GridPointDataList * list = GridPointDataListNew(1);
@@ -179,6 +180,7 @@ GridPointDataList * SinglePointReader::readBilinear_(const GEOSGeom location, do
 	data.y = exactY;
 	data.value = interpolate::bilinear(surroundingPoints, exactX, exactY);
 	data.location = GEOSGeom_clone(location);
+	data.locationName = NULL;
 
 	// Delete intermediate data, but don't touch te stored geometry objects,
 	// since they are in the cache.

@@ -43,6 +43,10 @@ struct GridPointDataList * GridPointDataListNew(size_t size)
 	else
 		dl->data = NULL;
 
+	int i;
+	for ( i = 0; i < size; ++ i )
+		dl->data[i].locationName = NULL;
+
 	return dl;
 }
 
@@ -100,7 +104,6 @@ void GridPointDataListIteratorDelete(struct GridPointDataListIterator * iterator
 {
 	pfree(iterator);
 }
-
 
 struct GridPointData * GridPointDataListIteratorNext(struct GridPointDataListIterator * iterator)
 {
