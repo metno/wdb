@@ -195,7 +195,7 @@ char * build_placeNameQuery(const char * placeName)
 {
 	std::ostringstream query;
 	query << "SELECT st_astext(placegeometry) "
-			"FROM " << WCI_SCHEMA << ".placedefinition p, "<< WCI_SCHEMA << ".getSessionData() s "
+			"FROM " << WCI_SCHEMA << ".placedefinition_mv p, "<< WCI_SCHEMA << ".getSessionData() s "
 			"WHERE p.placenamespaceid = s.placenamespaceid "
 			"AND placename ILIKE '" << placeName <<"'";
 
