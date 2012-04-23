@@ -45,8 +45,8 @@ HindcastGribFile::HindcastGribFile(const path & file)
 {
 	static const boost::regex re("^(.*/)?fc(\\d{10})\\.grb(\\d\\d)p(4)$");
 	
-	if ( ! regex_match(file.native_file_string(), match_, re) )
-		throw std::logic_error("Invalid file name: " + file.native_file_string());
+	if ( ! regex_match(file.string(), match_, re) )
+		throw std::logic_error("Invalid file name: " + file.string());
 }
 
 HindcastGribFile::~HindcastGribFile()

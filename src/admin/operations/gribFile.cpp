@@ -37,9 +37,9 @@ GribFile::GribFile(const path & file)
 	: file_(file)
 {
 	if ( is_directory(file) )
-		throw std::logic_error(file.native_directory_string() + " is a directory");
+		throw std::logic_error(file.string() + " is a directory");
 	if ( ! exists(file) )
-		throw std::runtime_error("Cannot find file " + file.native_file_string());
+		throw std::runtime_error("Cannot find file " + file.string());
 }
 
 GribFile::~GribFile()

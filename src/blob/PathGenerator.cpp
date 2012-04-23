@@ -46,7 +46,7 @@ PathGenerator::PathGenerator(const boost::filesystem::path & baseDirectory)
 	: basePath_(baseDirectory)
 {
 	if ( fs::exists(basePath_) and not fs::is_directory(basePath_) )
-		throw std::runtime_error("Given directory <" + basePath_.native_file_string() + "> is a file (should be a directory)");
+		throw std::runtime_error("Given directory <" + basePath_.string() + "> is a file (should be a directory)");
 
 	fs::create_directories(basePath_);
 }
@@ -67,9 +67,9 @@ FileId PathGenerator::reverse(const boost::filesystem::path & blobFileName) cons
 {
 	const fs::path givenBranch = blobFileName.branch_path();
 	if ( givenBranch != basePath_ )
-		throw std::logic_error(blobFileName.native_file_string() + " is not a blob file for this database");
+		throw std::logic_error(blobFileName.string() + " is not a blob file for this database");
 
-	std::string f = blobFileName.leaf();
+	std::string f = blobFileName.filename().string();
 
 	static const boost::regex re("([0-9a-fA-F]{16})[.]dat");
 	boost::smatch match;

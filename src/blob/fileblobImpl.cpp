@@ -109,7 +109,7 @@ int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::str
 
 			if ( ! std::binary_search(referencedFiles, & referencedFiles[refFileCount], fileId) )
 			{
-				const std::string fileName = it->string();
+				const std::string fileName = it->path().string();
 				fs::remove(* it);
 				++ unreferencedFiles;
 			}
