@@ -88,8 +88,8 @@ SUFFIXES = 				.in.cron .cron \
 # Setting Targets
 bin_PROGRAMS =
 bin_SCRIPTS =
-pkglib_PROGRAMS =
-pkglib_SCRIPTS =
+pkglibexec_PROGRAMS =
+pkglibexec_SCRIPTS =
 pkginclude_HEADERS =
 lib_LTLIBRARIES = 
 sysconf_DATA =
@@ -160,9 +160,9 @@ include src/common/projection/wdb.mk
 include src/database/wdb.mk
 include src/blob/wdb.mk
 
-include src/admin/wdb.mk
-include src/admin/operations/wdb.mk
-include src/admin/ui/cmdLine/wdb.mk
+#include src/admin/wdb.mk
+#include src/admin/operations/wdb.mk
+#include src/admin/ui/cmdLine/wdb.mk
 
 include test/install/callInterface/wdb.mk
 include test/install/cleaningProgram/wdb.mk

@@ -168,6 +168,7 @@ AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +ellps=WGS84 +no_defs"],[The defaul
 WDB_DATABASE_NAME
 WDB_DATABASE_INSTALL
 
+AC_DEFINE(BOOST_FILESYSTEM_VERSION,[2],[Boost::filesystem version])
 
 #-----------------------------------------------------------------------------
 # Setup CPP linking

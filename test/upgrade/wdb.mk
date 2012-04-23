@@ -11,7 +11,7 @@ UPGRADE_NOINSTALL_SOURCES =		test/upgrade/upgrade_test.in.sh
 
 #pkglib_SCRIPTS += 		$(INSTALL_SOURCES:.in.sh=)
 
-nodist_pkglib_SCRIPTS += $(UPGRADE_NOINSTALL_SOURCES:.in.sh=.sh)
+nodist_pkglibexec_SCRIPTS += $(UPGRADE_NOINSTALL_SOURCES:.in.sh=.sh)
 
 #sql_DATA += 			$(INSTALL_SQL:.in.sql=.sql)
 	
