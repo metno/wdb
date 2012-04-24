@@ -66,9 +66,9 @@ CREATE INDEX cascadingDeleteOids_gridvalue ON __WDB_SCHEMA__.gridvalue
 
 CREATE UNIQUE INDEX XAK1Wdb_FloatValue ON wdb_int.FloatValue
 (
+       PlaceId,
        ValueParameterId,
        DataProviderId,
-       PlaceId,
        ReferenceTime,
        DataVersion,
        ValidTimeFrom,

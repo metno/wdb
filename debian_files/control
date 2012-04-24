@@ -11,19 +11,19 @@ Build-Depends: debhelper (>= 5),
  autoconf (>=2.61),
  automake,
  xmlto,
- libboost-filesystem-dev (>=1.33.1), 
- libboost-program-options-dev (>=1.33.1), 
- libboost-regex-dev (>=1.33.1), 
- libboost-date-time-dev (>=1.33.1),
- libboost-thread-dev (>=1.33.1),
+ libboost-filesystem-dev (>=1.46.1), 
+ libboost-program-options-dev (>=1.46.1), 
+ libboost-regex-dev (>=1.46.1), 
+ libboost-date-time-dev (>=1.46.1),
+ libboost-thread-dev (>=1.46.1),
  libreadline-dev (>=5.2),
  libcppunit-dev (>=1.12.1),
  libproj-dev (>=4.6.0), 
  libgeos-dev (>=3.1.0),
- libpqxx-dev (>= 2.6.8), 
+ libpqxx3-dev (>= 3.0.0), 
  liblog4cpp5-dev (>=1.0), 
  libglib2.0-dev (>=2.24.0),
- postgresql-server-dev-8.4
+ postgresql-server-dev-9.1
 Standards-Version: 3.9.1
 
 Package: wdb
@@ -32,9 +32,9 @@ Depends: ${misc:Depends},
  ${shlibs:Depends},
  adduser, 
  python (>=2.4),
- postgresql-8.4,
- postgresql-8.4-postgis,
- postgresql-client (>=8.4.0),
+ postgresql-9.1,
+ postgresql-9.1-postgis,
+ postgresql-client (>=9.1.0),
  proj (>=4.6.0)
 Breaks: wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2)
 Replaces: wdb-0.9, wdb-1.0
