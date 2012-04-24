@@ -27,7 +27,7 @@ libwdbConfig_a_CPPFLAGS =	$(AM_CPPFLAGS) -fPIC
 
 bin_PROGRAMS +=				wdbConfiguration
 
-pkglibexec_PROGRAMS += 		wdbConfiguration # this allows database to be uninstalled during make uninstall
+pkglib_PROGRAMS += 		wdbConfiguration # this allows database to be uninstalled during make uninstall
 
 wdbConfiguration_SOURCES = 	src/common/configuration/wdbConfigurationMain.cpp
 

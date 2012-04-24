@@ -24,7 +24,7 @@ EXTRA_DIST +=			$(CLEANER_SOURCES) \
 DISTCLEANFILES +=		src/cleaningProgram/Makefile
 
 
-pkglibexec_SCRIPTS += 	src/cleaningProgram/clean_wdb.sh
+pkglib_SCRIPTS += 	src/cleaningProgram/clean_wdb.sh
 
 src/cleaningProgram/clean_wdb.sh: src/cleaningProgram/clean_wdb.in.sh
 						$(SED_SUBSTITUTION)
