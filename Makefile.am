@@ -168,7 +168,7 @@ include test/install/callInterface/wdb.mk
 include test/install/cleaningProgram/wdb.mk
 #include test/performance/callInterface/wdb.mk
 #include test/stability/callInterface/wdb.mk
-include test/upgrade/wdb.mk
+#include test/upgrade/wdb.mk
 include test/utility/configuration/wdb.mk
 include test/utility/testWrite/wdb.mk
 

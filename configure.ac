@@ -227,9 +227,6 @@ AC_CONFIG_FILES([Makefile
 		   	 	 src/admin/ui/cmdLine/Makefile
 				 test/install/callInterface/Makefile
 				 test/install/cleaningProgram/Makefile 
-				 test/performance/callInterface/Makefile
-				 test/stability/callInterface/Makefile
-				 test/upgrade/Makefile
 				 test/utility/configuration/Makefile
 				 test/utility/testWrite/Makefile
 		 		 test/unit/Makefile
@@ -238,6 +235,9 @@ AC_CONFIG_FILES([Makefile
 		 		 examples/sql/Makefile
 		 		 doc/doxygen/Doxyfile
 		])
+#				 test/performance/callInterface/Makefile
+#				 test/stability/callInterface/Makefile
+#				 test/upgrade/Makefile
 AC_OUTPUT
 
 # Print Out Summary of Configuration
