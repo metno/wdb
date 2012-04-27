@@ -112,7 +112,7 @@ void ReadStoreGridReturnInit(struct ReadStore * out, SPITupleTable * tuples, int
 	}
 	catch ( std::exception & e )
 	{
-		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(e.what())));
+		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg("%s", e.what())));
 	}
 }
 
