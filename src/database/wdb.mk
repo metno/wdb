@@ -26,7 +26,7 @@ UPGRADE_SOURCES =		src/database/wdbUpgrade0001.in.sh \
 						src/database/wdbUpgrade0002.in.sh \
 						src/database/wdbUpgrade0003.in.sh
 
-nodist_pkglib_SCRIPTS += $(UPGRADE_SOURCES:.in.sh=.sh)
+nodist_pkglibexec_SCRIPTS += $(UPGRADE_SOURCES:.in.sh=.sh)
 
 sql_DATA += 			$(DATABASE_SOURCES:.in.sql=.sql)
 

@@ -8,9 +8,9 @@ INSTALL_SOURCES =		install/install_database.in.sh \
 				
 NOINSTALL_SOURCES = 	install/move_database.in.sh
 
-nodist_pkglib_SCRIPTS =	$(INSTALL_SOURCES:.in.sh=)
+nodist_pkglibexec_SCRIPTS =	$(INSTALL_SOURCES:.in.sh=)
 
-nodist_pkglib_SCRIPTS += $(NOINSTALL_SOURCES:.in.sh=)
+nodist_pkglibexec_SCRIPTS += $(NOINSTALL_SOURCES:.in.sh=)
 
 EXTRA_DIST +=			$(INSTALL_SOURCES) \
 						$(NOINSTALL_SOURCES) \
