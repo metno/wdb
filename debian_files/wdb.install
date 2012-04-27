@@ -3,16 +3,16 @@ usr/include/*
 usr/lib/lib*.a
 usr/lib/wdb*.so
 usr/lib/wdb.*
-usr/libexec/clean_wdb.sh usr/lib/wdb
-usr/libexec/install_database usr/lib/wdb
-usr/libexec/install_remove_low_dataversions.sh  usr/lib/wdb
-usr/libexec/move_database  usr/lib/wdb
-usr/libexec/uninstall_database  usr/lib/wdb
-usr/libexec/upgrade_test.sh  usr/lib/wdb
-usr/libexec/wdbConfiguration  usr/lib/wdb
-usr/libexec/wdbUpgrade0001.sh  usr/lib/wdb
-usr/libexec/wdbUpgrade0002.sh  usr/lib/wdb
-usr/libexec/wdbUpgrade0003.sh  usr/lib/wdb
+usr/libexec/wdb/clean_wdb.sh usr/lib/wdb
+usr/libexec/wdb/install_database usr/lib/wdb
+usr/libexec/wdb/install_remove_low_dataversions.sh  usr/lib/wdb
+usr/libexec/wdb/move_database  usr/lib/wdb
+usr/libexec/wdb/uninstall_database  usr/lib/wdb
+usr/libexec/wdb/upgrade_test.sh  usr/lib/wdb
+usr/libexec/wdb/wdbConfiguration  usr/lib/wdb
+usr/libexec/wdb/wdbUpgrade0001.sh  usr/lib/wdb
+usr/libexec/wdb/wdbUpgrade0002.sh  usr/lib/wdb
+usr/libexec/wdb/wdbUpgrade0003.sh  usr/lib/wdb
 usr/share/doc/wdb/*
 usr/share/man/man?/*
 usr/share/wdb/wdb.conf.ex
