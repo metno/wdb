@@ -192,7 +192,6 @@ Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, i
 
 void setRole( const char * user )
 {
-    int ret;
     const int bufferSize = 128;
     char command[ bufferSize ];
 
@@ -206,7 +205,7 @@ void setRole( const char * user )
                    errmsg( "Unable to create SPI connection to database." ) ) );
     }
 
-    ret = SPI_execute( command, false, 0 );
+    SPI_execute( command, false, 0 );
     SPI_finish();
 }
 
@@ -234,7 +233,7 @@ char * extractText( HeapTupleHeader row, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     char * ret = DatumGetCString( DirectFunctionCall1(textout, var ) );
     return ret;
@@ -252,7 +251,7 @@ float extractFloat( HeapTupleHeader row, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     float ret = DatumGetFloat4( var );
     return ret;
@@ -269,7 +268,7 @@ int extractInt(HeapTupleHeader row, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     int ret = DatumGetInt64( var );
     return ret;
@@ -288,7 +287,7 @@ char * extractTimestamp( HeapTupleHeader row, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     char * ret = DatumGetCString( DirectFunctionCall1(timestamptz_out, var ) );
     return ret;
@@ -305,7 +304,7 @@ char * extractTimeIndeterminateCode( HeapTupleHeader row, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     char * ret = DatumGetCString( DirectFunctionCall1(timeIndeterminateType_out, var ) );
     return ret;
@@ -322,7 +321,7 @@ char * extractLevelIndeterminateCode( HeapTupleHeader row, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     char * ret = DatumGetCString( DirectFunctionCall1(levelIndeterminateType_out, var ) );
     return ret;
