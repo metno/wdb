@@ -81,7 +81,7 @@ struct GridPointDataListIterator * readPoints(
 	{
 		if ( ret )
 			GridPointDataListDelete(ret->list, false);
-		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(e.what())));
+		ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg("%s", e.what())));
 	}
 	catch (...)
 	{
