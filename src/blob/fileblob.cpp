@@ -97,7 +97,7 @@ Datum drop_file(PG_FUNCTION_ARGS)
 	HANDLE_EXCEPTIONS(dropFile(id, warning));
 
 	if ( not warning.empty() )
-		elog(WARNING, warning.c_str());
+		elog(WARNING, "%s", warning.c_str());
 
 	PG_RETURN_NULL();
 }
@@ -118,7 +118,7 @@ Datum remove_unreferenced_files()
 	HANDLE_EXCEPTIONS(unreferencedFiles = removeUnreferencedFiles(refFiles, count, warning));
 
 	if ( not warning.empty() )
-		elog(WARNING, warning.c_str());
+		elog(WARNING, "%s", warning.c_str());
 
 	PG_RETURN_INT32(unreferencedFiles);
 }
