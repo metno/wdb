@@ -70,7 +70,7 @@ extern "C"
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         PG_RETURN_NULL();
     }

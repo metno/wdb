@@ -65,13 +65,13 @@ extern "C"
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         catch ( std::runtime_error & e )
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         PG_RETURN_NULL();
     }
@@ -97,13 +97,13 @@ extern "C"
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         catch ( std::runtime_error & e )
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_INVALID_TEXT_REPRESENTATION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         // Return
 	    int32 size = VARHDRSZ + str.size();

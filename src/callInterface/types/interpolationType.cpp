@@ -57,7 +57,7 @@ Datum interpolationType_in( PG_FUNCTION_ARGS )
 	{
 		ereport( ERROR,
 	             ( errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
-	               errmsg( e.what() )));
+	               errmsg( "%s", e.what() )));
 	}
 	PG_RETURN_NULL(); // Never reached
 }
@@ -77,7 +77,7 @@ Datum interpolationType_out( PG_FUNCTION_ARGS )
 	{
 		ereport( ERROR,
 	             ( errcode(ERRCODE_INVALID_BINARY_REPRESENTATION),
-	               errmsg( e.what() )));
+	               errmsg( "%s", e.what() )));
 	}          
    PG_RETURN_NULL(); // Never reached
 }
