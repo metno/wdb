@@ -65,8 +65,7 @@ Datum levelSpec(PG_FUNCTION_ARGS)
 	}
 	catch (std::exception & e)
 	{
-		ereport(ERROR, (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION), errmsg(
-				e.what())));
+		ereport(ERROR, (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION), errmsg( "%s", e.what())));
 	}
 	PG_RETURN_NULL(); // Never reached
 }
