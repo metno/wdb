@@ -31,12 +31,12 @@
 
 void geosLogInfo(const char *fmt, ...)
 {
-	elog(INFO, fmt);
+	elog(INFO, "%s", fmt);
 }
 
 void geosLogError(const char *fmt, ...)
 {
-	ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg(fmt)));
+	ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg("%s", fmt)));
 }
 
 static int geosInitialized = 0;
