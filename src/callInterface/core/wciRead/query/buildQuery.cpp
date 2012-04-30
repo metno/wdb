@@ -123,7 +123,7 @@ std::ostream & addLocationQuery(std::ostringstream & q, const char * location, D
 		{
 			ereport( ERROR,
 					 ( errcode( ERRCODE_DATA_EXCEPTION ),
-					   errmsg( e.what() ) ) );
+					   errmsg( "%s", e.what() ) ) );
 		}
 	}
 	return q;
@@ -166,7 +166,7 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 	{
 		ereport( ERROR,
 				 ( errcode( ERRCODE_DATA_EXCEPTION ),
-				   errmsg( pstrdup(e.what()) ) ) );
+				   errmsg( "%s",  pstrdup(e.what()) ) ) );
 	}
 	catch ( ... )
 	{
