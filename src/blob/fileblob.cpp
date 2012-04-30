@@ -41,7 +41,7 @@ extern "C"
 		statement; \
 	} \
 	catch (std::exception & e) { \
-		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg(e.what()))); \
+		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ),	errmsg("%s", e.what()))); \
 	} \
 	catch (...) { \
 		ereport(ERROR, (errcode( ERRCODE_RAISE_EXCEPTION ), errmsg("Error, reason unknown"))); \
