@@ -42,12 +42,12 @@
 
 void logInfo(const char *fmt, ...)
 {
-	elog(INFO, fmt);
+	elog(INFO, "%s", fmt);
 }
 
 void logError(const char *fmt, ...)
 {
-	elog(WARNING, fmt);
+	elog(WARNING, "%s", fmt);
 }
 
 struct GridPointDataListIterator * getExtractGridDataReturnValues(FunctionCallInfo fcinfo)

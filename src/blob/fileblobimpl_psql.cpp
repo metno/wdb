@@ -60,7 +60,7 @@ void dropFile_(FileId id)
 	std::string warning;
 	HANDLE_EXCEPTIONS(dropFile(id, warning));
 	if ( not warning.empty() )
-		elog(WARNING, warning.c_str());
+		elog(WARNING, "%s", warning.c_str());
 }
 
 void readFile_(FileId id, char * out, int readSize)
@@ -117,7 +117,7 @@ bool doInitializeFileStorage()
 		std::ostringstream errMsg;
 		errMsg << "Unable to initialize data storage for files: " << e.what();
 		const std::string errStr = errMsg.str();
-		elog(FATAL, errStr.c_str());
+		elog(FATAL, "%s", errStr.c_str());
 		return false;
 	}
 	catch(...)
