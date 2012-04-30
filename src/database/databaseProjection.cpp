@@ -30,7 +30,7 @@ Datum createGeometryText(PG_FUNCTION_ARGS)
 	}
 	catch ( std::exception & e )
 	{
-		ereport(ERROR, (errcode(ERRCODE_NULL_VALUE_NOT_ALLOWED), errmsg(e.what())));
+		ereport(ERROR, (errcode(ERRCODE_NULL_VALUE_NOT_ALLOWED), errmsg("%s", e.what())));
 	}
 
     int32 size = VARHDRSZ + geoText.size();
