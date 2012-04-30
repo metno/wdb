@@ -54,7 +54,7 @@ static Datum extractDatum_( const HeapTupleHeader * t, const char * name )
         snprintf( errMsg, 64, "NULL value in %s", name );
         ereport( ERROR,
                  ( errcode( ERRCODE_NULL_VALUE_NOT_ALLOWED ),
-                   errmsg( errMsg ) ) );
+                   errmsg( "%s", errMsg ) ) );
     }
     return extracted;
 }
