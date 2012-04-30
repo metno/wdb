@@ -73,7 +73,7 @@ extern "C"
 			std::string sMsg = msg.str();
 			ereport(ERROR,
                     ( errcode( ERRCODE_INVALID_ROLE_SPECIFICATION),
-                      errmsg( sMsg.c_str() ) ) );
+                      errmsg( "%s", sMsg.c_str() ) ) );
 		}
 		setRole(sRole.c_str());
 
@@ -100,7 +100,7 @@ extern "C"
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_RAISE_EXCEPTION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         PG_RETURN_NULL();
     }
@@ -118,7 +118,7 @@ extern "C"
         {
             ereport( ERROR,
                      ( errcode( ERRCODE_RAISE_EXCEPTION ),
-                       errmsg( e.what() ) ) );
+                       errmsg( "%s", e.what() ) ) );
         }
         PG_RETURN_NULL();
     }
