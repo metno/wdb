@@ -55,14 +55,14 @@ case "$1" in
 		# Grant administrator rights to user	
 		su postgres -c "psql -c \"GRANT wdb_admin TO $DB_USER WITH ADMIN OPTION\"" >> /dev/null 2>&1
     ;;
-
     abort-upgrade)
     	# success: We have successfully aborted an upgrade
     ;;
     abort-remove|abort-deconfigure)
+		# weird stuff happening
     ;;
-
     *)
+    	# really weird stuff happening
         echo "postinst called with unknown argument '$1'" >&2
         exit 1
     ;;

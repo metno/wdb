@@ -40,7 +40,7 @@ Depends: ${misc:Depends},
 Breaks: wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2)
 Replaces: wdb-0.9, wdb-1.0
 Description: A database designed to store MHO data.
- The server is designed to store MHO (Meteorological, Hydrological and
+ Database system designed to store MHO (Meteorological, Hydrological and
  Oceanographic) data in a postgresql database. The purpose of the system 
   is to improve the quality and effectiveness of IT systems for MHO 
   production by providing a complete, flexible, and effective data storage
