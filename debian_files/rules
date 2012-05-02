@@ -4,6 +4,6 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
 install/wdb::
-        for file in $(CURDIR)/debian/wdb/usr/lib/*.la; do \
-                sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
-        done
+	for file in $(CURDIR)/debian/wdb/usr/lib/*.la; do \
+		sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
+	done
