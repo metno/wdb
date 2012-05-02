@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 5),
  debconf,
  po-debconf,
  devscripts,
+ cdbs,
  pkg-config (>=0.22),
  autotools-dev,
  autoconf (>=2.61),
@@ -24,7 +25,7 @@ Build-Depends: debhelper (>= 5),
  liblog4cpp5-dev (>=1.0), 
  libglib2.0-dev (>=2.24.0),
  postgresql-server-dev-9.1
-Standards-Version: 3.9.1
+Standards-Version: 3.9.3
 
 Package: wdb
 Architecture: any
