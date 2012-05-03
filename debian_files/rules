@@ -9,3 +9,5 @@ install/wdb::
 	for file in $(CURDIR)/debian/wdb/usr/lib/*.la; do \
 		sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
 	done
+	mv $(CURDIR)/debian/wdb/usr/lib/wdb/wdb/* $(CURDIR)/debian/wdb/usr/lib/wdb/
+	rm -rf $(CURDIR)/debian/wdb/usr/lib/wdb/wdb/
