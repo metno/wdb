@@ -1,3 +1,0 @@
-usr/share/wdb/sql/cleaning/remove_old_referencetimes.sql
-usr/share/wdb/sql/cleaning/default_cleaning_setup.sql
-usr/libexec/wdb/install_remove_old_referencetimes.sh
