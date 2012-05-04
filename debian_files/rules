@@ -3,11 +3,11 @@
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
-DEB_DESTDIR = $(CURDIR)/debian/wdb
+#DEB_DESTDIR = $(CURDIR)/debian/wdb
 
 install/wdb::
-	for file in $(CURDIR)/debian/wdb/usr/lib/*.la; do \
-		sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
-	done
-	mv $(CURDIR)/debian/wdb/usr/lib/wdb/wdb/* $(CURDIR)/debian/wdb/usr/lib/wdb/
-	rm -rf $(CURDIR)/debian/wdb/usr/lib/wdb/wdb/
+        for file in $(CURDIR)/debian/tmp/usr/lib/*.la; do \
+                sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
+        done
+        mv $(CURDIR)/debian/tmp/usr/lib/wdb/wdb/* $(CURDIR)/debian/tmp/usr/lib/wdb/
+        rm -rf $(CURDIR)/debian/tmp/usr/lib/wdb/wdb/
