@@ -1,7 +1,8 @@
 Source: wdb
 Section: devel
 Priority: extra
-Maintainer: Vegard Bønes <wdb@met.no>
+Maintainer: WDB Group, Meteorologisk institutt <wdb@met.no>
+Uploaders: Michael O. Akinde <michael.akinde@met.no>
 Build-Depends: debhelper (>= 5),
  debconf,
  po-debconf,
