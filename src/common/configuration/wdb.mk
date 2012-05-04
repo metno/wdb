@@ -6,7 +6,7 @@
 # Library
 #-----------------------------------------------------------------------------
 
-lib_LIBRARIES = libwdbConfig.a
+lib_LIBRARIES = 			libwdbConfig.a
 
 libwdbConfig_a_SOURCES = 	src/common/configuration/wdbConfiguration.cpp \
 							src/common/configuration/WdbDataConfiguration.cpp \

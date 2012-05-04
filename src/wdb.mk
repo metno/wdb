@@ -1,4 +1,4 @@
-lib_LTLIBRARIES +=		wdb.la
+lib_LTLIBRARIES +=	wdb.la
 
 wdb_la_SOURCES =
 
