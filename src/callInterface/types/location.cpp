@@ -288,8 +288,9 @@ string Location::queryReturnFloat( std::string where ) const
 				q << " AND ";
 			q << "v.placename = '" << placeName() << "'";
 			*/
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-			q << "st_intersects( " << myGeometry << ", v.placegeometry )";
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+			//q << "st_intersects( " << myGeometry << ", v.placegeometry )";
+			q << myGeometry << " && v.placegeometry AND _ST_Intersects(" << myGeometry << ", v.placegeometry)";
 		}
 		q << ')';
 		break;
@@ -297,7 +298,7 @@ string Location::queryReturnFloat( std::string where ) const
 		if ( hasGeometry() )
 			myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
 		else
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
 		// Create query
 		q 	<<  "v.placeid IN "
 			<<	"(SELECT nn_gid FROM "
@@ -315,7 +316,7 @@ string Location::queryReturnFloat( std::string where ) const
 		if ( hasGeometry() )
 			myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
 		else
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
 		// Create query
 		q 	<<  "v.valueid IN "
 			<<	"(SELECT nn_gid FROM "
