@@ -56,7 +56,7 @@ boost::filesystem::path PathGenerator::operator() (FileId id) const
 	using namespace std;
 
 	ostringstream fname;
-	fname << basePath_ << '/';
+	fname << basePath_.string() << '/';
 
 	fname << setfill('0') << setw(16) << hex << id << ".dat";
 

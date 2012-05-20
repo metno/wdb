@@ -167,7 +167,7 @@ public:
 		// Write to database
 		std::ostringstream writeQuery;
 		writeQuery << "SELECT wci.write( "
-				  << "E'" << escapedData << "'::bytea, "
+				  << "'" << escapedData << "'::bytea, "
 				  << "'" << conf_.dataDefinitions().dataProvider << "', "
 				  << "'" << conf_.dataDefinitions().placeName << "', "
 				  << "'" << conf_.dataDefinitions().referenceTime << "', "
