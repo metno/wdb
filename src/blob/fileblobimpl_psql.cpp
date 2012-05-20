@@ -89,6 +89,7 @@ std::string verify(char * what)
 		throw std::runtime_error("Unable to find base data directory");
 	const std::string ret(what);
 	free(what);
+	//const std::string ret;
 	return ret;
 }
 

@@ -49,15 +49,20 @@
 #include <WdbProjection.h>
 
 // SYSTEM INCLUDES
+
+#include "libpq-fe.h"
+
 #include <pqxx/transactor>
 #include <pqxx/result>
 #include <pqxx/largeobject>
-#include <string>
+#include <iostream>
+#include <sstream>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <vector>
 #include <exception>
 #include <cassert>
-
 
 // FORWARD REFERENCES
 //
@@ -68,17 +73,14 @@ namespace wdb {
 namespace database {
 
 /**
- * Transactor to write grid information defined in testWrite to the
- * database
- *
- * @see GridWriter
+ * Transactor to write a binary value. If the transaction fails,
+ * it logs the error and throws a pqxx exception.
  */
 class GridWriteTransactor : public pqxx::transactor<>
 {
 public:
 	/**
 	 * Default constructor.
-	 * @param	refTime		Query parameter
 	 */
 	GridWriteTransactor( TestWriteConfiguration & conf ) :
     	pqxx::transactor<>("GridWriteTransactor"),
@@ -92,13 +94,10 @@ public:
 	 */
 	void operator()(argument_type &T)
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-
 		// WCI Begin
 		std::ostringstream beginQuery;
 		beginQuery << "SELECT wci.begin( 'writetest', 999, 999, 999 );";
 		T.exec( beginQuery.str() );
-
 		// Get Grid Dimensions
 		std::ostringstream gridQuery;
 		gridQuery << "SELECT * FROM test.placeregulargrid WHERE placename = "
@@ -159,37 +158,34 @@ public:
             values[ index ] = it->val();
         }
 
-
-		// Load Values Blob
-		const unsigned char * rawData = reinterpret_cast<const unsigned char *>(& values[0]);
-		std::string escapedData = T.esc_raw(rawData, values.size() * sizeof(float));
-
-		// Write to database
-		std::ostringstream writeQuery;
-		writeQuery << "SELECT wci.write( "
-				  << "E'" << escapedData << "'::bytea, "
-				  << "'" << conf_.dataDefinitions().dataProvider << "', "
-				  << "'" << conf_.dataDefinitions().placeName << "', "
-				  << "'" << conf_.dataDefinitions().referenceTime << "', "
-				  << "'" << conf_.dataDefinitions().validTimeFrom << "', "
-				  << "'" << conf_.dataDefinitions().validTimeTo << "', "
-				  << "'" << conf_.dataDefinitions().valueParameter << "', "
-				  << "'" << conf_.dataDefinitions().levelParameter << "', "
-				  << conf_.dataDefinitions().levelFrom << ","
-				  << conf_.dataDefinitions().levelTo << ","
-				  << "NULL, NULL )";
-		log.infoStream() << "Writing: " << writeQuery.str();
-		T.exec( writeQuery.str() );
-
-	}
+        // Binary Data
+		const char * rawData = reinterpret_cast<const char *>(& values[0]);
+		size_t binarySize = values.size() * sizeof(float) / sizeof(char);
+		const std::string binaryData(rawData, binarySize);
+		// Write
+		R = T.prepared("WCIWriteByteA")
+					  (binaryData)
+					  (conf_.dataDefinitions().dataProvider)
+					  (conf_.dataDefinitions().placeName)
+					  (conf_.dataDefinitions().referenceTime)
+					  (conf_.dataDefinitions().validTimeFrom)
+					  (conf_.dataDefinitions().validTimeTo)
+					  (conf_.dataDefinitions().valueParameter)
+					  (conf_.dataDefinitions().levelParameter)
+					  (conf_.dataDefinitions().levelFrom)
+					  (conf_.dataDefinitions().levelTo)
+					  (s)
+					  (0).exec();
+  	}
 
 	/**
 	 * Commit handler. This is called if the transaction succeeds.
 	 */
   	void on_commit()
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-		log.infoStream() << "Transaction " << Name() << " completed";
+  		// Log
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.baseload" );
+		log.infoStream() << "Value inserted in database";
   	}
 
 	/**
@@ -198,9 +194,21 @@ public:
 	 */
   	void on_abort(const char Reason[]) throw ()
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-		log.errorStream() << "Transaction " << Name() << " failed "
-				  		  << Reason;
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.baseload" );
+		log.warnStream()  << "Transaction " << Name()
+						  << " failed while trying wci.write ( "
+						  << " binary-data, "
+						  << conf_.dataDefinitions().dataProvider << ", "
+						  << conf_.dataDefinitions().placeName << ", "
+						  << conf_.dataDefinitions().referenceTime << ", "
+						  << conf_.dataDefinitions().validTimeFrom << ", "
+						  << conf_.dataDefinitions().validTimeTo << ", "
+						  << conf_.dataDefinitions().valueParameter << ", "
+						  << conf_.dataDefinitions().levelParameter << ", "
+						  << conf_.dataDefinitions().levelFrom << ", "
+						  << conf_.dataDefinitions().levelTo << ", "
+						  << "0" << ", "
+						  << "0" << ")";
   	}
 
 	/**
@@ -210,19 +218,16 @@ public:
   	void on_doubt() throw ()
   	{
 		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-		log.errorStream() << "Transaction " << Name() << " in indeterminate state";
+		log.warnStream() << "Transaction " << Name() << " in indeterminate state";
   	}
 
 private:
 	/// Test Write Configuration
 	TestWriteConfiguration & conf_;
-
-	/**
-	 * Explicitly grid type
-	 */
+	
+	/// Explicitly grid type
 	typedef std::vector<float> GridType;
-
-
+	
 	/// Fill a vector<double> with data read from the given stream.
 	std::istream & fillVector( GridType & out, std::istream & in )
 	{
@@ -230,7 +235,12 @@ private:
 	                    out.size() * sizeof( GridType::value_type ) );
 	}
 
+	/// Result
+   	pqxx::result R;
+
 };
+
+
 
 } // namespace database
 

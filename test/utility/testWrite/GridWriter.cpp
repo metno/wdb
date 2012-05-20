@@ -59,6 +59,7 @@
 
 using namespace std;
 using namespace pqxx;
+using namespace pqxx::prepare;
 using namespace wdb;
 using namespace wdb::database;
 
@@ -73,6 +74,35 @@ GridWriter::GridWriter( const std::string & target )
 		: pqxx::connection( target.c_str() )
 {
 	// NOOP
+	// Statement Insert value
+	prepare("WCIWriteByteA",
+			"select "
+			"wci.write ("
+			"$1::bytea,"
+			"$2::text,"
+			"$3::text,"
+			"$4::timestamp with time zone,"
+			"$5::timestamp with time zone,"
+			"$6::timestamp with time zone,"
+			"$7::text,"
+			"$8::text,"
+			"$9::real,"
+			"$10::real,"
+			"$11::integer,"
+			"$12::integer"
+			")" )
+			("bytea", treat_binary )
+			("varchar", treat_direct )
+			("varchar", treat_direct )
+			("varchar", treat_direct )
+			("varchar", treat_direct )
+			("varchar", treat_direct )
+			("varchar", treat_direct )
+			("varchar", treat_direct )
+			("real", treat_direct )
+			("real", treat_direct )
+			("int4", treat_direct )
+			("int4", treat_direct );
 }
 
 GridWriter::~GridWriter()
