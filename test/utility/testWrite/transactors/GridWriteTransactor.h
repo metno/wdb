@@ -179,7 +179,6 @@ public:
 				  << conf_.dataDefinitions().levelFrom << ","
 				  << conf_.dataDefinitions().levelTo << ","
 				  << "NULL, NULL )";
-		log.infoStream() << "Writing: " << writeQuery.str();
 		T.exec( writeQuery.str() );
 
 	}
