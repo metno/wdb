@@ -27,16 +27,18 @@ libwciInstallTestBase_la_LIBS = \
 
 wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/SqlInjectionTest.cpp \
-							test/install/callInterface/AggregateTest.h \
-							test/install/callInterface/AggregateTest.cpp \
 							test/install/callInterface/DataProviderTest.h \
 							test/install/callInterface/DataProviderTest.cpp \
-							test/install/callInterface/PlaceGeometryTest.h \
-							test/install/callInterface/PlaceGeometryTest.cpp \
-							test/install/callInterface/PlaceNameTest.h \
-							test/install/callInterface/PlaceNameTest.cpp \
 							test/install/callInterface/SurroundInterpolationTest.h \
 							test/install/callInterface/SurroundInterpolationTest.cpp \
+							test/install/callInterface/PlaceNameTest.h \
+							test/install/callInterface/PlaceNameTest.cpp \
+							test/install/callInterface/PlaceGeometryTest.h \
+							test/install/callInterface/PlaceGeometryTest.cpp \
+							test/install/callInterface/AggregateTest.h \
+							test/install/callInterface/AggregateTest.cpp \
+							test/install/callInterface/DataVersionTest.h \
+							test/install/callInterface/DataVersionTest.cpp \
 							test/install/callInterface/ReferenceTimeTest.h \
 							test/install/callInterface/ReferenceTimeTest.cpp \
 							test/install/callInterface/ValidTimeTest.h \
@@ -45,8 +47,6 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/ValueParameterTest.cpp \
 							test/install/callInterface/LevelTest.h \
 							test/install/callInterface/LevelTest.cpp \
-							test/install/callInterface/DataVersionTest.h \
-							test/install/callInterface/DataVersionTest.cpp \
 							test/install/callInterface/WciBeginTest.h \
 							test/install/callInterface/WciBeginTest.cpp \
 							test/install/callInterface/WciEndTest.h \
@@ -65,6 +65,7 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/TransactionCorrectnessTest.cpp \
 							test/install/callInterface/main.cpp
 
+#
 # These functions only work with pqxx 3.0. Need to test with 2.6.9
 #							test/install/callInterface/MetaPlaceTest.h \
 #							test/install/callInterface/MetaPlaceTest.cpp

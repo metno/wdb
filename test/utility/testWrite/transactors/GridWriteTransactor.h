@@ -49,15 +49,21 @@
 #include <WdbProjection.h>
 
 // SYSTEM INCLUDES
+
+#include "libpq-fe.h"
+
 #include <pqxx/transactor>
 #include <pqxx/result>
 #include <pqxx/largeobject>
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <iostream>
 #include <fstream>
+#include <string>
+#include <vector>
 #include <exception>
 #include <cassert>
-
 
 // FORWARD REFERENCES
 //
@@ -68,17 +74,14 @@ namespace wdb {
 namespace database {
 
 /**
- * Transactor to write grid information defined in testWrite to the
- * database
- *
- * @see GridWriter
+ * Transactor to write a binary value. If the transaction fails,
+ * it logs the error and throws a pqxx exception.
  */
 class GridWriteTransactor : public pqxx::transactor<>
 {
 public:
 	/**
 	 * Default constructor.
-	 * @param	refTime		Query parameter
 	 */
 	GridWriteTransactor( TestWriteConfiguration & conf ) :
     	pqxx::transactor<>("GridWriteTransactor"),
@@ -92,8 +95,6 @@ public:
 	 */
 	void operator()(argument_type &T)
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-
 		// WCI Begin
 		std::ostringstream beginQuery;
 		beginQuery << "SELECT wci.begin( 'writetest', 999, 999, 999 );";
@@ -198,9 +199,21 @@ public:
 	 */
   	void on_abort(const char Reason[]) throw ()
   	{
-		WDB_LOG & log = WDB_LOG::getInstance( "wdb.testWrite.transactor" );
-		log.errorStream() << "Transaction " << Name() << " failed "
-				  		  << Reason;
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.baseload" );
+		log.errorStream()  << "Transaction " << Name()
+						  << " failed while trying wci.write ( "
+						  << " binary-data, "
+						  << conf_.dataDefinitions().dataProvider << ", "
+						  << conf_.dataDefinitions().placeName << ", "
+						  << conf_.dataDefinitions().referenceTime << ", "
+						  << conf_.dataDefinitions().validTimeFrom << ", "
+						  << conf_.dataDefinitions().validTimeTo << ", "
+						  << conf_.dataDefinitions().valueParameter << ", "
+						  << conf_.dataDefinitions().levelParameter << ", "
+						  << conf_.dataDefinitions().levelFrom << ", "
+						  << conf_.dataDefinitions().levelTo << ", "
+						  << "0" << ", "
+						  << "0" << ")";
   	}
 
 	/**
@@ -216,13 +229,10 @@ public:
 private:
 	/// Test Write Configuration
 	TestWriteConfiguration & conf_;
-
-	/**
-	 * Explicitly grid type
-	 */
+	
+	/// Explicitly grid type
 	typedef std::vector<float> GridType;
-
-
+	
 	/// Fill a vector<double> with data read from the given stream.
 	std::istream & fillVector( GridType & out, std::istream & in )
 	{
@@ -230,7 +240,12 @@ private:
 	                    out.size() * sizeof( GridType::value_type ) );
 	}
 
+	/// Result
+   	pqxx::result R;
+
 };
+
+
 
 } // namespace database
 

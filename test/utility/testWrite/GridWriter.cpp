@@ -59,6 +59,7 @@
 
 using namespace std;
 using namespace pqxx;
+using namespace pqxx::prepare;
 using namespace wdb;
 using namespace wdb::database;
 

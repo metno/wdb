@@ -4,7 +4,8 @@ UPGRADE0003_SOURCES =		src/database/upgrade0003/placeDefinition.in.sql \
 							src/database/upgrade0003/placeTrigger.in.sql \
 							src/database/upgrade0003/indexDefinition.in.sql \
 							src/database/upgrade0003/prognosisTime.in.sql \
-							src/database/upgrade0003/wciBrowse.in.sql
+							src/database/upgrade0003/wciBrowse.in.sql \
+							src/database/upgrade0003/floatValue.in.sql
 
 upgrade0003dir =			$(sqldir)/upgrade0003
 

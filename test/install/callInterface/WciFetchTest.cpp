@@ -65,7 +65,7 @@ void WciFetchTest::testFetchBinaryData()
 	CPPUNIT_ASSERT(bin_data[2] == '\0');
 	CPPUNIT_ASSERT(bin_data[bin_data.size()-1] != '\0');
 	stringstream wrQ;
-	wrQ << "SELECT wci.write( E'" << t->esc_raw(bin_data)
+	wrQ << "SELECT wci.write( '" << t->esc_raw(bin_data)
 		<< "'::bytea, 'test grid, rotated', "
 		<< "'2006-04-23 07:00:00+00', "
 		<< "'2006-04-01 06:00:00+00', "
@@ -76,8 +76,6 @@ void WciFetchTest::testFetchBinaryData()
 		<< "100)";
 	const string write = wrQ.str();
 	t->exec(write);
-
-	//t->exec("SELECT wci.begin('" + defaultUser_ + "')");
 
 	// Read
 	const string read = "SELECT value FROM wci.read("
@@ -117,7 +115,7 @@ void WciFetchTest::testFetchFloatGrid()
 	const unsigned char * rawData = reinterpret_cast<const unsigned char *>(& data[0]);
 	const string bin_data = t->esc_raw(rawData, data.size() * sizeof(float));
 	stringstream wrQ;
-	wrQ << "SELECT wci.write( E'" << bin_data
+	wrQ << "SELECT wci.write( '" << bin_data
 		<< "'::bytea, 'test grid, rotated', "
 		<< "'2006-04-23 08:00:00+00', "
 		<< "'2006-04-01 06:00:00+00', "
