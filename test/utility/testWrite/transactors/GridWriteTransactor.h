@@ -174,7 +174,7 @@ public:
 					  (conf_.dataDefinitions().levelParameter)
 					  (conf_.dataDefinitions().levelFrom)
 					  (conf_.dataDefinitions().levelTo)
-					  (s)
+					  ()
 					  (0).exec();
   	}
 

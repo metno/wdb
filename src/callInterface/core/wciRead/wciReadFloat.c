@@ -98,7 +98,6 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 	}
 	MemoryContext oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-
 	if ( PG_ARGISNULL(1) )
 	{
 		ReadStoreGridReturnInit(out, SPI_tuptable, SPI_processed, NULL);
@@ -110,6 +109,7 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 		ReadStoreGridReturnInit(out, SPI_tuptable, SPI_processed, location);
 	}
 	MemoryContextSwitchTo(oldcontext);
+
 }
 
 PG_FUNCTION_INFO_V1(wciReadCachePurge);

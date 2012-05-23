@@ -169,7 +169,6 @@ bool getNextRowFromFloatTable(struct ReadStore * store)
 	if ( store->currentTupleIndex >= store->tupleCount )
 		return false;
 
-
 	HeapTuple currentTuple = store->tuples->vals[store->currentTupleIndex];
 	TupleDesc tupdesc = store->tuples->tupdesc;
 	getCommonValues(store);
