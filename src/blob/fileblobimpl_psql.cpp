@@ -105,7 +105,7 @@ bool doInitializeFileStorage()
 {
 	try
 	{
-		std::string basePath = getStorageDirectory();
+		std::string basePath = "/var/lib/postgresql/9.1/main"; // HACK getStorageDirectory();
 		std::string databaseName = verify(database_name());
 
 		boost::filesystem::path baseDirectory(basePath);
