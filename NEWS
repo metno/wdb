@@ -1,49 +1,20 @@
-wdb (1.2.0~rc6-1) lucid; urgency=low
+wdb (1.5.0~a1-1) lucid; urgency=low
   
   * Upgraded WDB to be compatible with Precise Pangolin.
-
- -- Michael Akinde <wdb@met.no>  Fri, 27 Apr 2012 15:00:00 +0000
-
-wdb (1.2.0~rc5-1) lucid; urgency=low
-  
-  * Fixed a bug in wdbLogHandler.
-
-  * Removed indexes on floatvalue table.  
-
- -- Michael Akinde <wdb@met.no>  Fri, 16 Mar 2012 15:00:00 +0000
-
-wdb (1.2.0~rc4-1) lucid; urgency=low
-  
-  * Fixed a bug where a missing placedefinition caused an
-    SQL exception to be thrown. 
-
- -- Michael Akinde <wdb@met.no>  Fri, 02 Mar 2012 17:00:00 +0000
-
-wdb (1.2.0~rc3-1) lucid; urgency=low
-  
-  * Changed the placedefinition view.
-  
-  * Restructured the source file structure for schema upgrades.
-
- -- Michael Akinde <wdb@met.no>  Wed, 28 Feb 2012 17:00:00 +0000
-
-wdb (1.2.0~rc2-1) lucid; urgency=low
-  
   * Added wci.prognosishour function to the database.
-  
   * Improved the loading performance for place definitions.
-  
   * Fixed wci.browse such that it also retrieves data from the float value
     tables.
-
- -- Michael Akinde <wdb@met.no>  Thu, 13 Feb 2012 11:00:00 +0000
-
-wdb (1.2.0~rc1-1) lucid; urgency=low
-  
   * Created addOrUpdate function for placenames. Modified the datamodel for
     placenames.
+  * Improved and fixed bugs in the Place Definition funcitons and views.
+  * Fixed a bug where a missing placedefinition caused an
+    SQL exception to be thrown. 
+  * Fixed a bug in wdbLogHandler.
+  * Restructured the source file structure for schema upgrades.
+  * Removed indexes on floatvalue table.  
 
- -- Michael Akinde <wdb@met.no>  Thu, 2 Feb 2012 16:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Thu, 24 May 2012 20:00:00 +0000
 
 wdb (1.1.0-1) lucid; urgency=medium
   

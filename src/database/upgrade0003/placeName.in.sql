@@ -26,7 +26,10 @@ SET SESSION client_min_messages TO 'warning';
 -- Place Name Table
 ALTER TABLE __WDB_SCHEMA__.placename ADD COLUMN 
     placenameupdatetime	timestamp with time zone NOT NULL default 'now';
-
+ALTER TABLE  __WDB_SCHEMA__.placename ADD CHECK
+	(placenamevalidfrom <= placenamevalidto);
+    
+    
 ALTER TABLE ONLY __WDB_SCHEMA__.placename
     DROP CONSTRAINT placename_pkey;
 ALTER TABLE ONLY __WDB_SCHEMA__.placename
