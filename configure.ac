@@ -170,8 +170,6 @@ WDB_DATABASE_NAME
 WDB_STORAGE_DIR
 WDB_DATABASE_INSTALL
 
-AC_DEFINE(BOOST_FILESYSTEM_VERSION,[2],[Boost::filesystem version])
-
 #-----------------------------------------------------------------------------
 # Setup CPP linking
 #-----------------------------------------------------------------------------
