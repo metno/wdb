@@ -167,6 +167,7 @@ AC_DEFINE(DEFAULT_PROJECTION,["+proj=longlat +ellps=WGS84 +no_defs"],[The defaul
 
 # Set Database Install
 WDB_DATABASE_NAME
+WDB_STORAGE_DIR
 WDB_DATABASE_INSTALL
 
 AC_DEFINE(BOOST_FILESYSTEM_VERSION,[2],[Boost::filesystem version])

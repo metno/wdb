@@ -67,3 +67,22 @@ AC_DEFUN([WDB_DATABASE_NAME],
 			  		   ["wci_int"],
 			  		   [The default schema of WCI])
 ])
+
+
+#
+# Set Database name for installation/uninstall
+#
+AC_DEFUN([WDB_STORAGE_DIR],
+[
+	AC_ARG_WITH([storage_dir],
+		  	    AS_HELP_STRING([--with-storage-dir=DIR], 
+	     					   [Specify the storage directory to be used for binary data (default is in Postgresql data directory)]),
+	    		[storage_dir="$withval"],
+            	[])
+	# Define Custom Storage
+	if test "x$storage_dir" != "x"; then
+		AC_DEFINE_UNQUOTED(CUSTOM_STORAGE_DIR,
+				  		   [$storage_dir],
+				  		   [Storage location for binary data])
+	fi
+])
