@@ -81,7 +81,7 @@ AC_DEFUN([WDB_STORAGE_DIR],
             	[])
 	# Define Custom Storage
 	if test "x$storage_dir" != "x"; then
-		AC_DEFINE_UNQUOTED(CUSTOM_STORAGE_DIR,
+		AC_DEFINE_UNQUOTED(CUSTOM_STORAGE_DIRECTORY,
 				  		  ["$storage_dir"],
 				  		  [Storage location for binary data])
 	fi
