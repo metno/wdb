@@ -25,7 +25,7 @@ SED_SUBSTITUTION = 		sed s%__WDB_VERSION__%$(VERSION)%g $< \
 						| sed s%__WDB_SRCDIR__%@srcdir@%g \
 			 			| sed s%__WDB_BINDIR__%@bindir@%g \
 			 			| sed s%__WDB_LIBDIR__%@libdir@%g \
-			 			| sed s%__WDB_PKGLIBDIR__%$(libdir)/wdb%g \
+			 			| sed s%__WDB_PKGLIBDIR__%$(pkglibexecdir)%g \
 			 			| sed s%__WDB_PKGDATADIR__%$(pkgdatadir)%g \
 			 			| sed s%__WDB_DATADIR__%$(wdbdatadir)%g \
 			 			| sed s%__WDB_SYSCONFDIR__%@sysconfdir@%g \

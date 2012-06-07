@@ -322,6 +322,11 @@ if test -z ${postgis_SQL}; then
 	fi
 fi
 if test -z ${postgis_SQL}; then
+	if test -f ${postgis_CHECK}/contrib/postgis-2.0/postgis.sql; then
+		postgis_SQL=${postgis_CHECK}/contrib/postgis-2.0
+	fi
+fi
+if test -z ${postgis_SQL}; then
 	if test -f ${postgis_CHECK}/contrib/lwpostgis.sql; then
 		postgis_SQL=${postgis_CHECK}/contrib
 	fi

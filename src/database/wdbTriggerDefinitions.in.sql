@@ -55,7 +55,7 @@ begin
 	
 	RAISE DEBUG 'Geo is %', geo;
 
-	return geomfromtext(
+	return st_geomfromtext(
 		geo,
 		4030
 	);

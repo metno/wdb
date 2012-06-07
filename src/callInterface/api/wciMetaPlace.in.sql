@@ -401,7 +401,7 @@ BEGIN
 	WHERE btrim(proj4text) = btrim(projection_);
 	-- If SRID not found...
 	IF srid_ IS NULL THEN
-		RAISE EXCEPTION 'Could not identify the PROJ.4 projection in the database. Check that the projection is valid and, if needed, insert it into the database using wci.addSrid( ... )';		
+		RAISE EXCEPTION 'Could not identify the PROJ.4 projection % in the database. Check that the projection is valid and, if needed, insert it into the database using wci.addSrid( ... )', projection_;		
 	END IF;
 	-- Get placedef
 	SELECT placeid INTO placeId_ 

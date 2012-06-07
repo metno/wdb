@@ -429,7 +429,7 @@ std::string MetaPlaceTest::add( const std::string & placeName, const std::string
 	ostringstream st;
 	st << "SELECT * FROM wci.addPlacePoint('"
 	   << placeName << "', "
-	   << "geomfromtext('"<< placeGeo << "', 4030), '"
+	   << "st_geomfromtext('"<< placeGeo << "', 4030), '"
 	   << validFrom << "', '"
 	   << validTo << "')";
 	return st.str();
@@ -440,7 +440,7 @@ std::string MetaPlaceTest::addOrUpdate( const std::string & placeName, const std
 	ostringstream st;
 	st << "SELECT * FROM wci.addOrUpdatePlacePoint('"
 	   << placeName << "', "
-	   << "geomfromtext('"<< placeGeo << "', 4030), '"
+	   << "st_geomfromtext('"<< placeGeo << "', 4030), '"
 	   << validFrom << "', '"
 	   << validTo << "')";
 	return st.str();

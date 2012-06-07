@@ -46,7 +46,7 @@ static char * performSimpleQuery_(const char * query)
 	SPI_connect();
 	int result = SPI_exec(query, 1);
 	if ( result >= 0 )
-		ret = strdup(SPI_getvalue(* SPI_tuptable->vals, SPI_tuptable->tupdesc, 1));
+		ret = strdup( SPI_getvalue( * SPI_tuptable->vals, SPI_tuptable->tupdesc, 1 ) );
 	SPI_finish();
 
 	if ( result < 0 )
@@ -57,7 +57,8 @@ static char * performSimpleQuery_(const char * query)
 
 char * data_directory()
 {
-	return performSimpleQuery_("SHOW data_directory");
+	return performSimpleQuery_("SELECT setting FROM pg_settings where name = 'data_directory'");//SHOW data_directory");
+
 }
 
 char * database_name()

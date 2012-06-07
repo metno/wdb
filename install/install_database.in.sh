@@ -380,7 +380,6 @@ EOF
 	    echo "done"
 	fi
 
-
 	# Install wci
 	echo -n "installing wci components base... "
 	WCI_DIR="__WDB_DATADIR__/sql/wci"

@@ -1527,7 +1527,7 @@ void PlaceGeometryTest::testG40_01_AddPlacePoint()
 {
 	ostringstream q;
 	q << "SELECT wci.addPlacePoint( \'InstallTest Point\',"
-	  << "geomfromtext(\'POINT( 15 65 )\', "
+	  << "st_geomfromtext(\'POINT( 15 65 )\', "
 	  << DEFAULT_SRID
 	  << " ) )";
 	// Add Meta

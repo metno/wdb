@@ -231,11 +231,11 @@ string Location::queryReturnGrid( ) const
 	{
 		switch (interpolationType_) {
 		case Exact:
-			q << "( equals ( geomfromtext( '" << geometry() << "', 4030 ), v.placegeometry ) )";
+			q << "( equals ( st_geomfromtext( '" << geometry() << "', 4030 ), v.placegeometry ) )";
 			break;
 		default:
 			q 	<< WCI_SCHEMA << ".dwithin( "
-				<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+				<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 				<< "st_transform( v.placegeometry, v.originalsrid ), "
 				<< "1 )";
 			// See notes on transform below
@@ -266,18 +266,18 @@ string Location::queryReturnFloat( std::string where ) const
 		if ( hasGeometry() )
 		{
 			if ( geomType_ == GEOM_POINT ) {
-				q << "equals( geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
+				q << "equals( st_geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
 			}
 			else if ( geomType_ == GEOM_POLYGON ) {
 				q 	<< WCI_SCHEMA << ".dwithin( "
 					<< "st_transform( v.placegeometry, v.originalsrid ), "
-					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+					<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 					<< "1 )";
 			}
 			else if ( geomType_ == GEOM_MPOLYGON ) {
 				q 	<< WCI_SCHEMA << ".dwithin( "
 					<< "st_transform( v.placegeometry, v.originalsrid ), "
-					<< "st_transform( geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+					<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 					<< "1 )";
 			}
 		}
@@ -296,7 +296,7 @@ string Location::queryReturnFloat( std::string where ) const
 		break;
 	case Nearest:
 		if ( hasGeometry() )
-			myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
+			myGeometry = "st_geomfromtext('" + geometry() + "', 4030 )";
 		else
 			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
 		// Create query
@@ -314,7 +314,7 @@ string Location::queryReturnFloat( std::string where ) const
 		break;
 	case Surround:
 		if ( hasGeometry() )
-			myGeometry = "geomfromtext('" + geometry() + "', 4030 )";
+			myGeometry = "st_geomfromtext('" + geometry() + "', 4030 )";
 		else
 			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
 		// Create query

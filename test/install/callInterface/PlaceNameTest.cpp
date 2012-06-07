@@ -194,7 +194,7 @@ void PlaceNameTest::testL3_03B_MixedCase()
     // Insert
 	ostringstream q;
 	q << "SELECT wci.addPlacePoint( \'InstallTest Point Name\',"
-	  << "geomfromtext(\'POINT( 16 69 )\', "
+	  << "st_geomfromtext(\'POINT( 16 69 )\', "
 	  << DEFAULT_SRID
 	  << " ) )";
     result rId = t->exec( q.str() );

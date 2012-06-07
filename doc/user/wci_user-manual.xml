@@ -1956,7 +1956,7 @@ wci.addplacepoint
 				<para>An example setting up the place point "karasjok":</para>
 				
 				<programlisting>
-SELECT wci.addplacepoint ( 'karasjok', geomfromtext('POINT( 25.51 69.47 )') );
+SELECT wci.addplacepoint ( 'karasjok', st_geomfromtext('POINT( 25.51 69.47 )') );
 </programlisting>
 	
 				<para>Adding this point to the database while logged into a place 
@@ -2060,7 +2060,7 @@ wci.addplacepolygon
 				
 				<programlisting>
 SELECT wci.addplaceplygon ( 'square at nowhere',
-                            geomfromtext('POLYGON(() 10.0 61.3, 10.1 61.3, 10.1 61.4, 10.0 61.4, 10.0 61.3 ))') );
+                            st_geomfromtext('POLYGON(() 10.0 61.3, 10.1 61.3, 10.1 61.4, 10.0 61.4, 10.0 61.3 ))') );
 </programlisting>
 	
 				<para>Adding this polygon to the database while logged into a place 

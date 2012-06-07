@@ -78,7 +78,7 @@ DECLARE
 	ret geometry;
 BEGIN
 	IF location.isGeometry THEN
-		RETURN geomfromtext(location.location, 4030);
+		RETURN st_geomfromtext(location.location, 4030);
 	END IF;
 
 	SELECT 
