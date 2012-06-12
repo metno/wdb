@@ -55,7 +55,7 @@ static char * performSimpleQuery_(const char * query)
 	return ret;
 }
 
-char * data_directory()
+char * get_data_directory()
 {
 	return performSimpleQuery_("SHOW data_directory");
 }
