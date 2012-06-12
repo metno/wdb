@@ -477,7 +477,7 @@ do
 	current_version=`expr $current_version + 1`
 	echo -n "installing WDB schema package $current_version... "
 	vn=$(printf "%.4d" "$current_version")
-	__WDB_PKGLIBDIR__/wdbUpgrade$vn.sh $WDB_NAME $WDB_INSTALL_USER $WDB_INSTALL_PORT $WDB_DATAMODEL_PATH __WDB_DATADIR__/sql/wci $LOGDIR
+	__WDB_LIBEXECDIR__/wdbUpgrade$vn.sh $WDB_NAME $WDB_INSTALL_USER $WDB_INSTALL_PORT $WDB_DATAMODEL_PATH __WDB_DATADIR__/sql/wci $LOGDIR
 	if [ 0 != $? ]; then
 		echo "ERROR: Installation of wdbUpgrade$vn.sh failed"
 		exit 1

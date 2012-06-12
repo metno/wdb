@@ -10,7 +10,7 @@
 AC_DEFUN([WDB_BOOST_CHECK],
 [
 # Base Boost Lib
-req_boost_version=ifelse([$1], [], [1.46.1], [$1])
+req_boost_version=ifelse([$1], [], [1.40.0], [$1])
 WDB_BOOST_BASE($req_boost_version)	
 # Boost Base Header
 WDB_BOOST_BASE_HEADERS
