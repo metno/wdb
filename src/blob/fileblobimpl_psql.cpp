@@ -97,7 +97,7 @@ std::string verify(char * what)
 std::string getStorageDirectory()
 {
 #ifndef CUSTOM_STORAGE_DIRECTORY
-	return verify(data_directory());
+	return verify(get_data_directory());
 #else
 	return CUSTOM_STORAGE_DIRECTORY;
 #endif

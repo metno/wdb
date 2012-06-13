@@ -55,10 +55,9 @@ static char * performSimpleQuery_(const char * query)
 	return ret;
 }
 
-char * data_directory()
+char * get_data_directory()
 {
-	return performSimpleQuery_("SELECT setting FROM pg_settings where name = 'data_directory'");//SHOW data_directory");
-
+	return performSimpleQuery_("SHOW data_directory");
 }
 
 char * database_name()

@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-char * data_directory();
+char * get_data_directory();
 
 char * database_name();
 
