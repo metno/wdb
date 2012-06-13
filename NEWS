@@ -1,4 +1,4 @@
-wdb (1.5.0~a1-1) lucid; urgency=low
+wdb (1.5.0~a3-1) lucid; urgency=low
   
   * Upgraded WDB to be compatible with Precise Pangolin.
   * Added wci.prognosishour function to the database.
