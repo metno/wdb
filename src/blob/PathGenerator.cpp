@@ -69,7 +69,7 @@ FileId PathGenerator::reverse(const boost::filesystem::path & blobFileName) cons
 	if ( givenBranch != basePath_ )
 		throw std::logic_error(blobFileName.string() + " is not a blob file for this database");
 
-	std::string f = blobFileName.filename();
+	std::string f = blobFileName.string();
 
 	static const boost::regex re("([0-9a-fA-F]{16})[.]dat");
 	boost::smatch match;
