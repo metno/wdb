@@ -175,7 +175,7 @@ BEGIN
 					(placevalidto_   <= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidfrom = placenamevalidto_,
+				SET		placenamevalidfrom = placevalidto_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -193,7 +193,7 @@ BEGIN
 					(placevalidto_   >= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidto = placenamevalidfrom_,
+				SET		placenamevalidto = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -223,7 +223,7 @@ BEGIN
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
 				SET		placenamevalidto = placevalidto_,
-						placenamevalidfrom = placenamevalidfrom_,
+						placenamevalidfrom = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -243,7 +243,7 @@ BEGIN
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
 				SET		placenamevalidto = placevalidto_,
-						placenamevalidfrom = placenamevalidfrom_,
+						placenamevalidfrom = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -262,7 +262,7 @@ BEGIN
 					(placevalidto_   <= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidfrom = placenamevalidfrom_,
+				SET		placenamevalidfrom = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -281,7 +281,7 @@ BEGIN
 					(placevalidto_   >= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidto = placenamevalidto_,
+				SET		placenamevalidto = placevalidto_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -322,7 +322,7 @@ BEGIN
 					(placevalidto_   <= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidfrom = placenamevalidto_,
+				SET		placenamevalidfrom = placevalidto_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -340,7 +340,7 @@ BEGIN
 					(placevalidto_   >= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidto = placenamevalidfrom_,
+				SET		placenamevalidto = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -488,7 +488,7 @@ BEGIN
 					(placevalidto_   <= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidfrom = placenamevalidto_,
+				SET		placenamevalidfrom = placevalidto_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -506,7 +506,7 @@ BEGIN
 					(placevalidto_   >= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidto = placenamevalidfrom_,
+				SET		placenamevalidto = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -536,7 +536,7 @@ BEGIN
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
 				SET		placenamevalidto = placevalidto_,
-						placenamevalidfrom = placenamevalidfrom_,
+						placenamevalidfrom = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -556,7 +556,7 @@ BEGIN
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
 				SET		placenamevalidto = placevalidto_,
-						placenamevalidfrom = placenamevalidfrom_,
+						placenamevalidfrom = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -575,7 +575,7 @@ BEGIN
 					(placevalidto_   <= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidfrom = placenamevalidfrom_,
+				SET		placenamevalidfrom = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -594,7 +594,7 @@ BEGIN
 					(placevalidto_   >= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidto = placenamevalidto_,
+				SET		placenamevalidto = placevalidto_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -635,7 +635,7 @@ BEGIN
 					(placevalidto_   <= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidfrom = placenamevalidto_,
+				SET		placenamevalidfrom = placevalidto_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
@@ -653,7 +653,7 @@ BEGIN
 					(placevalidto_   >= placenamevalidto); 
 			IF FOUND THEN
 				UPDATE	__WDB_SCHEMA__.placename
-				SET		placenamevalidto = placenamevalidfrom_,
+				SET		placenamevalidto = placevalidfrom_,
 						placenameupdatetime = 'now'
 				WHERE	placename = lower(placeName_) AND
 						placenamespaceid = namespace_ AND	
