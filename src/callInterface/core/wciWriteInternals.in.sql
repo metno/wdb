@@ -202,80 +202,110 @@ __WCI_SCHEMA__.write(
 RETURNS void AS
 $BODY$
 DECLARE
-	session __WCI_SCHEMA__.sessiondata;
+	groupid_ 	bigint;
+	max_		int;
 BEGIN
-	-- Get session data (codespaces) 
-	SELECT * INTO session FROM __WCI_SCHEMA__.getSessionData(); 
-	-- dataproviderid	
-	-- placeid
-	-- referencetime
-	-- validtime
-	-- Todo: Set TimeIndeterminateCode
-	-- valueparameter
-	-- levelparameter	
+	-- Todo: Set Time by timeIndeterminateCode
 	-- Todo: Set Levels by levelIndeterminateCode
-	-- dataversion
-	-- Todo: what if dataversion is not max?
-	UPDATE 	__WDB_SCHEMA__.floatvalue 
-	SET 	maxdataversion = dataversion_ 
-	WHERE
-		dataproviderid = dataproviderid_ AND
-		placeid = placeid_ AND
-		referencetime = referencetime_ AND
-		validtimefrom = validfrom_ AND
-		validtimeto = validto_ AND
-		validtimeindeterminatecode = validic_ AND
-		valueparameterid = valueparameter_ AND
-		levelparameterid = levelparameter_ AND
-		levelfrom = levelfrom_ AND
-		levelto = levelto_ AND
-		levelindeterminatecode = levelic_;
-
-	-- Insert value row
-	INSERT INTO __WDB_SCHEMA__.floatvalue (
-		valuetype, 
-		dataproviderid,
-		placeid,
-		referencetime,
-		validtimefrom,
-		validtimeto,
-		validtimeindeterminatecode,
-		valueparameterid,
-		levelparameterid,
-		levelfrom, 
-		levelto, 
-		levelindeterminatecode, 
-		dataversion, 
-		maxdataversion,
-		confidencecode,
-		value, 
-		valuestoretime
+	-- Insert value group row
+	BEGIN
+		INSERT INTO __WDB_SCHEMA__.floatvaluegroup (
+    		dataproviderid,
+    		placeid,
+    		validtimefrom,
+    		validtimeto,
+    		validtimeindeterminatecode,
+			valueparameterid,
+			levelparameterid,
+			levelfrom, 
+			levelto, 
+			levelindeterminatecode, 
+			dataversion 
+		)
+		VALUES (
+			dataproviderid_, 
+			placeid_, 
+			(validfrom_ - referencetime_),
+			(validto_ - referencetime_),
+			validic_,
+	 		valueparameter_, 
+			levelparameter_,
+			levelfrom_,
+			levelto_,
+			levelic_,
+			dataversion_
+		)
+		RETURNING valuegroupid INTO groupid_;
+	EXCEPTION
+		WHEN unique_violation THEN
+			-- Do not abort on unique violations
+			SELECT valuegroupid INTO groupid_
+			FROM __WCI_SCHEMA__.floatvaluegroup
+			WHERE dataproviderid = dataproviderid_
+			AND placeid = placeid_
+			AND validtimefrom = (validfrom_ - referencetime_)
+			AND validtimeto = (validto_ - referencetime_)
+			AND validtimeindeterminatecode = validic_
+	 		AND valueparameterid = valueparameter_ 
+			AND levelparameterid = levelparameter_
+			AND levelfrom = levelfrom_
+			AND levelto = levelto_
+			AND levelindeterminatecode = levelic_
+			AND dataversion = dataversion_;
+	END;
+	-- Insert value item row
+	INSERT INTO __WDB_SCHEMA__.floatvalueitem (
+    	valuegroupid,
+    	referencetime,
+    	maxdataversion,
+    	confidencecode,
+    	value,
+    	valuestoretime
 	)
 	VALUES (
-		1, 
-		dataproviderid_, 
-		placeid_, 
+		groupid_, 
 		referencetime_,
-		validfrom_,
-		validto_,
-		validic_,
- 		valueparameter_, 
-		levelparameter_,
-		levelfrom_,
-		levelto_,
-		levelic_,
-		dataversion_,
 		dataversion_,
 		confidencecode_,
 		value_,
 		'now'
 	);
-
+	-- Get Max Data Version
+	IF (dataversion_ > 0) THEN
+		SELECT max(dataversion) INTO max_
+		FROM wci_int.floatvalue
+		WHERE dataproviderid = dataproviderid_
+		AND placeid = placeid_
+		AND referencetime = referencetime_	
+		AND validtimefrom = validfrom_
+		AND validtimeto = validto_
+		AND validtimeindeterminatecode = validic_
+		AND valueparameterid = valueparameter_ 
+		AND levelparameterid = levelparameter_
+		AND levelfrom = levelfrom_
+		AND levelto = levelto_
+		AND levelindeterminatecode = levelic_;
+		-- Set Max Data Version
+		UPDATE 	__WDB_SCHEMA__.floatvalueitem 
+		SET 	maxdataversion = max_
+		WHERE   referencetime = referencetime_	
+		AND		valuegroupid IN ( SELECT valuegroupid
+								  FROM	wdb_int.floatvaluegroup vg		
+								  WHERE	vg.dataproviderid = dataproviderid_
+								  AND 	vg.placeid = placeid_
+								  AND 	vg.validtimefrom = (validfrom_ - referencetime_)
+								  AND 	vg.validtimeto = (validto_ - referencetime_)
+								  AND 	vg.validtimeindeterminatecode = validic_
+								  AND 	vg.valueparameterid = valueparameter_ 
+								  AND 	vg.levelparameterid = levelparameter_
+								  AND 	vg.levelfrom = levelfrom_
+								  AND 	vg.levelto = levelto_
+								  AND 	vg.levelindeterminatecode = levelic_ );
+	END IF;	
 END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE 'plpgsql';
-
 
 
 --
@@ -302,7 +332,6 @@ __WCI_SCHEMA__.write(
 	NEW.dataversion,
 	NEW.confidencecode,
 	NEW.value );
-
 
 
 --

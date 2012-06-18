@@ -23,9 +23,12 @@ SET SESSION client_min_messages TO 'warning';
 --
 -- Primary Key Constraints
 --
+ALTER TABLE ONLY __WDB_SCHEMA__.floatvaluegroup
+    ADD CONSTRAINT floatvaluegroup_pkey PRIMARY KEY (valuegroupid);
 
-ALTER TABLE ONLY __WDB_SCHEMA__.floatvalue
-    ADD CONSTRAINT floatvalue_pkey PRIMARY KEY (valueid, valuetype);
+
+ALTER TABLE ONLY __WDB_SCHEMA__.floatvalueitem
+    ADD CONSTRAINT floatvalueitem_pkey PRIMARY KEY (valuegroupid, referencetime);
 
 
 ALTER TABLE ONLY __WDB_SCHEMA__.gridvalue
@@ -47,53 +50,60 @@ ALTER TABLE __WDB_SCHEMA__.parametername
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
-					
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+
+ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (dataproviderid)
 					REFERENCES __WDB_SCHEMA__.dataprovider
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (placeid)
 					REFERENCES __WDB_SCHEMA__.placedefinition
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (validtimeindeterminatecode)
 					REFERENCES __WDB_SCHEMA__.timeindeterminatetype
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (valueparameterid)
 					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (levelparameterid)
 					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (levelindeterminatecode)
 					REFERENCES __WDB_SCHEMA__.levelindeterminatetype
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
 
-ALTER TABLE __WDB_SCHEMA__.floatvalue
+ALTER TABLE __WDB_SCHEMA__.floatvalueitem
 	ADD FOREIGN KEY (confidencecode)
 					REFERENCES __WDB_SCHEMA__.qualityconfidencecode
 					ON DELETE RESTRICT
+					ON UPDATE CASCADE;
+
+
+ALTER TABLE __WDB_SCHEMA__.floatvalueitem
+	ADD FOREIGN KEY (valuegroupid)
+					REFERENCES __WDB_SCHEMA__.floatvaluegroup
+					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
 

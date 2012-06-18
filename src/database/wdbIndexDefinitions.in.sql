@@ -64,20 +64,35 @@ CREATE INDEX cascadingDeleteOids_gridvalue ON __WDB_SCHEMA__.gridvalue
 	value
 );
 
-CREATE UNIQUE INDEX XAK1Wdb_FloatValue ON wdb_int.FloatValue
+
+CREATE INDEX i_FloatValueGroup ON wdb_int.FloatValueGroup
 (
+	valuegroupid,
+	dataproviderid,
+	placeid,
+	valueparameterid
+);
+
+CREATE INDEX i_FloatValueItem ON wdb_int.FloatValueItem
+(
+	valuegroupid,
+	referencetime
+);
+
+
+CREATE UNIQUE INDEX XAK1Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
+(
+       DataProviderId,
+       DataVersion,
        PlaceId,
        ValueParameterId,
-       DataProviderId,
-       ReferenceTime,
-       DataVersion,
-       ValidTimeFrom,
-       ValidTimeTo,
-       ValidTimeIndeterminateCode,
        LevelParameterId,
        LevelFrom,
        LevelTo,
-       LevelIndeterminateCode
+       LevelIndeterminateCode,
+       ValidTimeFrom,
+       ValidTimeTo,
+       ValidTimeIndeterminateCode
 );
 
 
@@ -102,36 +117,6 @@ CREATE UNIQUE INDEX XAK1Wdb_TimeIndeterminateType ON __WDB_SCHEMA__.TimeIndeterm
 (
        TimeIndeterminateType
 );
-
-
-CREATE INDEX XIE1Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
-(
-       DataProviderId,
-       ValidTimeFrom,
-       ValueParameterId
-);
-
-CREATE INDEX XIE2Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
-(
-       PlaceId,
-       ValidTimeFrom,
-       ValueParameterId
-);
-
-CREATE INDEX XIE3Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
-(
-       ValidTimeFrom,
-       PlaceId,
-       Valueparameterid
-);
-
-CREATE INDEX XIE4Wdb_FloatValue ON __WDB_SCHEMA__.FloatValue
-(
-       ValidTimeFrom,
-       DataProviderId,
-       ValueParameterId
-);
-
 
 
 CREATE INDEX XIE0Wdb_gridvalue ON __WDB_SCHEMA__.gridvalue

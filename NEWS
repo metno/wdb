@@ -1,6 +1,8 @@
 wdb (1.5.0~a3-1) lucid; urgency=low
   
+  * Upgrade code reset. Version 1.5 cannot automatically upgrade from 1.1. 
   * Upgraded WDB to be compatible with Precise Pangolin.
+  * Removed unneeded function wci_int.dwithin.
   * Added wci.prognosishour function to the database.
   * Improved the loading performance for place definitions.
   * Fixed wci.browse such that it also retrieves data from the float value

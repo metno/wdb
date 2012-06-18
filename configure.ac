@@ -10,7 +10,7 @@
 AC_PREREQ(2.59)
 AC_INIT(wdb, 1.5.0, [wdb@met.no])
 AC_SUBST( [DEBIAN_VERSION],["1.5"] )
-AC_SUBST( [SCHEMA_VERSION],["3"] )
+AC_SUBST( [SCHEMA_VERSION],["0"] )
 # A previous schema version
 # - This is used for test purposes; e.g., the upgrade test
 AC_SUBST( [OLD_MAJOR_VERSION], ["1"] )
@@ -73,7 +73,6 @@ build_subdirs="			doc \
 						src/common/projection \
 						src/common/projection/test \
 						src/database \
-						src/database/upgrade0003 \
 						src/cleaningProgram \
 			    		src/admin \
 			    		src/admin/operations \
@@ -220,7 +219,6 @@ AC_CONFIG_FILES([Makefile
 				 src/callInterface/util/Makefile
 				 src/cleaningProgram/Makefile
 				 src/database/Makefile
-				 src/database/upgrade0003/Makefile
 				 src/admin/Makefile
 		   	 	 src/admin/operations/Makefile
 		   	 	 src/admin/ui/cmdLine/Makefile

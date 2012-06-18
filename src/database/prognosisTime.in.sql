@@ -18,12 +18,14 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 --
--- Update Schema to use Place Definition with Valid Times
+-- This function calculates the prognosis hour of the database, given a
+-- reference timestamp and validtime
 -- 
-
 SET SESSION client_min_messages TO 'warning';
 
-CREATE OR REPLACE FUNCTION wci.prognosishour(reftime timestamp with time zone, validtime timestamp with time zone)
+CREATE OR REPLACE FUNCTION
+wci.prognosishour( reftime timestamp with time zone,
+				   validtime timestamp with time zone )
 RETURNS double precision AS
 $BODY$
 SELECT extract(hour from ($2 - $1)) + (extract(day from ($2 - $1)) * 24); 

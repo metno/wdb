@@ -33,7 +33,6 @@ REVOKE ALL ON __WDB_SCHEMA__.valuetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.valuetype TO wdb_admin;
 
 
-
 CREATE TABLE __WDB_SCHEMA__.qualityconfidencecode (
     confidencecode				integer NOT NULL,
     confidencecodedescription	character varying(255) NOT NULL
@@ -49,36 +48,43 @@ INSERT INTO __WDB_SCHEMA__.qualityconfidencecode VALUES ( 0, 'not defined' );
 
 
 --
--- Name: FloatValue 
+-- Name: FloatValue Group 
 --
-CREATE TABLE __WDB_SCHEMA__.floatvalue (
-    valueid						bigserial NOT NULL,
-    valuetype 					integer NOT NULL,
+CREATE TABLE __WDB_SCHEMA__.floatvaluegroup (
+    valuegroupid				serial NOT NULL,
     dataproviderid 				bigint NOT NULL,
     placeid						bigint NOT NULL,
-    referencetime				timestamp with time zone NOT NULL,
-    validtimefrom				timestamp with time zone NOT NULL,
-    validtimeto					timestamp with time zone NOT NULL,
+    validtimefrom				interval NOT NULL,
+    validtimeto					interval NOT NULL,
     validtimeindeterminatecode	integer NOT NULL,
     valueparameterid			integer NOT NULL,
     levelparameterid			integer NOT NULL,
     levelfrom					real NOT NULL,
     levelto						real NOT NULL,
     levelindeterminatecode		integer NOT NULL,
-    dataversion					integer NOT NULL,
+    dataversion					integer NOT NULL
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.floatvaluegroup FROM public;
+GRANT ALL ON __WDB_SCHEMA__.floatvaluegroup TO wdb_admin;
+GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvaluegroup TO wdb_clean;
+
+
+--
+-- Name: FloatValue Detail
+--
+CREATE TABLE __WDB_SCHEMA__.floatvalueitem (
+    valuegroupid				integer NOT NULL,
+    referencetime				timestamp with time zone NOT NULL,
     maxdataversion				integer NOT NULL,
     confidencecode				integer NOT NULL,
     value						real NOT NULL,
     valuestoretime				timestamp with time zone NOT NULL
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.floatvalue FROM public;
-GRANT ALL ON __WDB_SCHEMA__.floatvalue TO wdb_admin;
-GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvalue TO wdb_clean;
---GRANT INSERT ON __WDB_SCHEMA__.floatvalue TO wdb_write;
---REVOKE ALL ON __WDB_SCHEMA__.floatvalue_valueid_seq FROM public;
---GRANT ALL ON __WDB_SCHEMA__.floatvalue_valueid_seq TO wdb_admin;
---GRANT SELECT,UPDATE ON __WDB_SCHEMA__.floatvalue_valueid_seq TO wdb_write;
+REVOKE ALL ON __WDB_SCHEMA__.floatvalueitem FROM public;
+GRANT ALL ON __WDB_SCHEMA__.floatvalueitem TO wdb_admin;
+GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvalueitem TO wdb_clean;
 
 
 --

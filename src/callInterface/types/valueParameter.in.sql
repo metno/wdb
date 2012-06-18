@@ -24,6 +24,7 @@ AS '__WDB_LIBDIR__/__WCI_LIB__', 'normalizeWciParameter'
 LANGUAGE C IMMUTABLE STRICT;
 
 
+-- Replace function wci_int.getparametername(wci_int.gridvalue);
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getParameterName( data __WCI_SCHEMA__.gridvalue )
 RETURNS text AS
 $BODY$

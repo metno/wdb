@@ -30,6 +30,9 @@ RETURNS bigint AS
 $BODY$
 DECLARE
 	placeId_ 	bigint;
+	namespace_	int;
+	newname_	text;
+	indCode_ 	int;
 BEGIN
 	SELECT wci.addPlacePoint(placeName_, placeGeometry_, 'today'::timestamp with time zone, 'infinity'::timestamp with time zone ) INTO placeId_;
 	RETURN placeId_;
@@ -37,7 +40,6 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
-
 
 
 --
@@ -96,7 +98,6 @@ SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
-
 --
 -- add New Place Definition
 -- 
@@ -128,75 +129,226 @@ BEGIN
 	SELECT	placeid INTO placeId_
 	FROM	__WCI_SCHEMA__.placedefinition
 	WHERE	st_equals( placegeometry, placeGeometry_ ) AND
-		placenamespaceid = 0;
-	-- Add dataprovider
+		    placenamespaceid = 0;
+	-- Add placedefinition
 	IF NOT FOUND THEN
 		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
 			( placeId_, indCode_, 'point', 'now', placeGeometry_ );
 		IF namespace_ <> 0 THEN
+			-- Different PlaceId, extends bounds
 			PERFORM	*
 			FROM  	__WDB_SCHEMA__.placename
 			WHERE	placename = lower(placeName_) AND
-				placenamespaceid = namespace_ AND
-				placevalidfrom_ < placenamevalidto;
-			IF FOUND THEN 
-				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placenamevalidto = placevalidfrom_
-				WHERE	placename = lower(placeName_) AND
 					placenamespaceid = namespace_ AND
-					placevalidfrom_ < placenamevalidto;
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Different PlaceId, inside bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Different PlaceId, early bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidfrom = placevalidto_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+			END IF;
+			-- Different PlaceId, later bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
 			END IF;
 			INSERT INTO __WDB_SCHEMA__.placename VALUES
-				( placeId_,
-				  namespace_,
-				  lower(placeName_),
-				  placevalidfrom_,
-				  placevalidto_, 
-				  'now' );
-		END IF;
-	ELSE
-		IF namespace_ <> 0 THEN
-			PERFORM	*
-			FROM  	__WDB_SCHEMA__.placename
-			WHERE	placename = lower(placeName_) AND
-				placenamespaceid = namespace_ AND
-				placeid <> placeId_ AND
-				placevalidfrom_ < placenamevalidto;
-			IF FOUND THEN
-				-- Other placeIds with same name 
-				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placenamevalidto = placevalidfrom_,
-					placenameupdatetime = 'now'
-				WHERE	placeid <> placeId_ AND
-					placename = lower(placeName_) AND
-					placenamespaceid = namespace_ AND
-					placevalidfrom_ < placenamevalidto;
-			END IF;
-			-- Update for same placeid, if exists
-			PERFORM	*
-			FROM  	__WDB_SCHEMA__.placename
-			WHERE	placename = lower(placeName_) AND
-				placenamespaceid = namespace_ AND
-				placeId = placeId_ AND
-				placevalidfrom_ < placenamevalidto;
-			IF NOT FOUND THEN
-				INSERT INTO __WDB_SCHEMA__.placename VALUES
 					( placeId_,
 					  namespace_,
 					  lower(placeName_),
 					  placevalidfrom_,
-					  placevalidto_,
+					  placevalidto_, 
 					  'now' );
-			ELSE
-				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placenamevalidfrom = placevalidfrom_,
-					placenamevalidto = placevalidto_,
-					placenameupdatetime = 'now'
-				WHERE	placeid = placeId_ AND
-					placename = lower(placeName_) AND
-					placenamespaceid = namespace_;
+			RETURN placeId_;
+		END IF;
+	ELSE
+		IF namespace_ <> 0 THEN
+			-- Same PlaceId, extends bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidto_,
+						placenamevalidfrom = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
+				RETURN placeId_;
 			END IF;
+			-- Same PlaceId, inside bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidto_,
+						placenamevalidfrom = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+				RETURN placeId_;
+			END IF;
+			-- Same PlaceId, early bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidfrom = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+				RETURN placeId_;
+			END IF;
+			-- Same PlaceId, later bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidto_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
+				RETURN placeId_;
+			END IF;
+			-- Different PlaceId, extends bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Different PlaceId, inside bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Same PlaceId, early bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidfrom = placevalidto_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+			END IF;
+			-- Different PlaceId, later bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
+			END IF;
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+					( placeId_,
+					  namespace_,
+					  lower(placeName_),
+					  placevalidfrom_,
+					  placevalidto_, 
+					  'now' );
+			RETURN placeId_;
 		END IF;
 	END IF;
 	RETURN placeId_;
@@ -204,6 +356,7 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
+
 
 --
 -- add New Place Definition
@@ -291,75 +444,225 @@ BEGIN
 	FROM	__WCI_SCHEMA__.placedefinition
 	WHERE	st_equals( placegeometry, placeGeometry_ ) AND
 		placenamespaceid = 0;
-	-- Add dataprovider
+	-- Add placedefinition
 	IF NOT FOUND THEN
 		placeId_ := nextval('__WDB_SCHEMA__.placedefinition_placeid_seq');
 		INSERT INTO __WDB_SCHEMA__.placedefinition VALUES
 			( placeId_, indCode_, 'polygon', 'now', placeGeometry_ );
 		IF namespace_ <> 0 THEN
+			-- Different PlaceId, extends bounds
 			PERFORM	*
 			FROM  	__WDB_SCHEMA__.placename
 			WHERE	placename = lower(placeName_) AND
-				placenamespaceid = namespace_ AND
-				placevalidfrom_ < placenamevalidto;
-			IF FOUND THEN 
-				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placenamevalidto = placevalidfrom_,
-					placenameupdatetime = 'now'
-				WHERE	placename = lower(placeName_) AND
 					placenamespaceid = namespace_ AND
-					placevalidfrom_ < placenamevalidto;
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Different PlaceId, inside bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Different PlaceId, early bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidfrom = placevalidto_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+			END IF;
+			-- Different PlaceId, later bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
 			END IF;
 			INSERT INTO __WDB_SCHEMA__.placename VALUES
-				( placeId_,
-				  namespace_,
-				  lower(placeName_),
-				  placevalidfrom_,
-				  placevalidto_,
-				  'now' );
-		END IF;
-	ELSE
-		IF namespace_ <> 0 THEN
-			PERFORM	*
-			FROM  	__WDB_SCHEMA__.placename
-			WHERE	placename = lower(placeName_) AND
-				placenamespaceid = namespace_ AND
-				placeid <> placeId_ AND
-				placevalidfrom_ < placenamevalidto;
-			IF FOUND THEN
-				-- Other placeIds with same name 
-				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placenamevalidto = placevalidfrom_,
-					placenameupdatetime = 'now'
-				WHERE	placeid <> placeId_ AND
-					placename = lower(placeName_) AND
-					placenamespaceid = namespace_ AND
-					placevalidfrom_ < placenamevalidto;
-			END IF;
-			-- Update for same placeid, if exists
-			PERFORM	*
-			FROM  	__WDB_SCHEMA__.placename
-			WHERE	placename = lower(placeName_) AND
-				placenamespaceid = namespace_ AND
-				placeId = placeId_ AND
-				placevalidfrom_ < placenamevalidto;
-			IF NOT FOUND THEN
-				INSERT INTO __WDB_SCHEMA__.placename VALUES
 					( placeId_,
 					  namespace_,
 					  lower(placeName_),
 					  placevalidfrom_,
-					  placevalidto_,
+					  placevalidto_, 
 					  'now' );
-			ELSE
-				UPDATE	__WDB_SCHEMA__.placename 
-				SET	placenamevalidfrom = placevalidfrom_,
-					placenamevalidto = placevalidto_,
-					placenameupdatetime = 'now'
-				WHERE	placeid = placeId_ AND
-					placename = lower(placeName_) AND
-					placenamespaceid = namespace_;
+			RETURN placeId_;
+		END IF;
+	ELSE
+		IF namespace_ <> 0 THEN
+			-- Same PlaceId, extends bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidto_,
+						placenamevalidfrom = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
+				RETURN placeId_;
 			END IF;
+			-- Same PlaceId, inside bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidto_,
+						placenamevalidfrom = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+				RETURN placeId_;
+			END IF;
+			-- Same PlaceId, early bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidfrom = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+				RETURN placeId_;
+			END IF;
+			-- Same PlaceId, later bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ = placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidto_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ = placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
+				RETURN placeId_;
+			END IF;
+			-- Different PlaceId, extends bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Different PlaceId, inside bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				RAISE EXCEPTION 'An identical placename for a different placeId is inside the validtime period. Split your placename.';
+			END IF;
+			-- Same PlaceId, early bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ <= placenamevalidfrom) AND 
+					(placevalidto_   <= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidfrom = placevalidto_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ <= placenamevalidfrom) AND 
+						(placevalidto_   <= placenamevalidto);
+			END IF;
+			-- Different PlaceId, later bounds
+			PERFORM	*
+			FROM  	__WDB_SCHEMA__.placename
+			WHERE	placename = lower(placeName_) AND
+					placenamespaceid = namespace_ AND
+					placeid_ <> placeid AND
+					(placevalidfrom_ >= placenamevalidfrom) AND 
+					(placevalidto_   >= placenamevalidto); 
+			IF FOUND THEN
+				UPDATE	__WDB_SCHEMA__.placename
+				SET		placenamevalidto = placevalidfrom_,
+						placenameupdatetime = 'now'
+				WHERE	placename = lower(placeName_) AND
+						placenamespaceid = namespace_ AND	
+						placeid_ <> placeid AND
+						(placevalidfrom_ >= placenamevalidfrom) AND 
+						(placevalidto_   >= placenamevalidto);
+			END IF;
+			INSERT INTO __WDB_SCHEMA__.placename VALUES
+					( placeId_,
+					  namespace_,
+					  lower(placeName_),
+					  placevalidfrom_,
+					  placevalidto_, 
+					  'now' );
+			RETURN placeId_;
 		END IF;
 	END IF;
 	RETURN placeId_;
@@ -367,7 +670,6 @@ END;
 $BODY$
 SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
-
 
 
 --
@@ -401,7 +703,7 @@ BEGIN
 	WHERE btrim(proj4text) = btrim(projection_);
 	-- If SRID not found...
 	IF srid_ IS NULL THEN
-		RAISE EXCEPTION 'Could not identify the PROJ.4 projection % in the database. Check that the projection is valid and, if needed, insert it into the database using wci.addSrid( ... )', projection_;		
+		RAISE EXCEPTION 'Could not identify the PROJ.4 projection in the database. Check that the projection is valid and, if needed, insert it into the database using wci.addSrid( ... )';		
 	END IF;
 	-- Get placedef
 	SELECT placeid INTO placeId_ 
@@ -463,10 +765,13 @@ SECURITY DEFINER
 LANGUAGE plpgsql VOLATILE;
 
 
--- Place Definition Info
+--
+-- New/Replacement WCI Functions
+--
 CREATE OR REPLACE FUNCTION 
-wci.getPlaceDefinition( location 			text )	
-RETURNS SETOF __WCI_SCHEMA__.placedefinition AS
+wci.getPlaceDefinition( location 			text,	
+						valid 				timestamp with time zone )
+RETURNS SETOF wci_int.placedefinition AS
 $BODY$
 	SELECT 	p.placeid,
 			p.placegeometrytype,
@@ -474,12 +779,25 @@ $BODY$
 			p.placeindeterminatecode,
 			p.placenamespaceid,
 			p.placename,
+			p.placenamevalidfrom,
+			p.placenamevalidto,
 			p.originalsrid,
 			p.placestoretime
-	FROM	__WCI_SCHEMA__.placeDefinition_mv p,
-			__WCI_SCHEMA__.getSessionData() s
+	FROM	wci_int.placeDefinition_mv p,
+			wci_int.getSessionData() s
 	WHERE	p.placenamespaceid = s.placenamespaceid
-	  AND	( $1 IS NULL OR placename LIKE lower($1) );
+	  AND	( $1 IS NULL OR placename LIKE lower($1) )
+	  AND	( $2 IS NULL OR ( placenamevalidfrom <= $2 AND placenamevalidto >= $2 ) );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION 
+wci.getPlaceDefinition( location 			text )	
+RETURNS SETOF wci_int.placedefinition AS
+$BODY$
+	SELECT 	*
+	FROM	wci.getPlaceDefinition($1, 'now');
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;
@@ -487,8 +805,9 @@ LANGUAGE sql STABLE;
 
 -- Place Point Info
 CREATE OR REPLACE FUNCTION 
-wci.getPlacePoint( location 			text )	
-RETURNS SETOF __WCI_SCHEMA__.placedefinition AS
+wci.getPlacePoint( location 			text,
+				   valid 				timestamp with time zone )
+RETURNS SETOF wci_int.placedefinition AS
 $BODY$
 	SELECT 	p.placeid,
 			p.placegeometrytype,
@@ -496,13 +815,26 @@ $BODY$
 			p.placeindeterminatecode,
 			p.placenamespaceid,
 			p.placename,
+			p.placenamevalidfrom,
+			p.placenamevalidto,
 			p.originalsrid,
 			p.placestoretime
-	FROM	__WCI_SCHEMA__.placeDefinition_mv p,
-			__WCI_SCHEMA__.getSessionData() s
+	FROM	wci_int.placeDefinition_mv p,
+			wci_int.getSessionData() s
 	WHERE	p.placenamespaceid = s.placenamespaceid
 	  AND	( $1 IS NULL OR placename LIKE lower($1) )
+	  AND	( $2 IS NULL OR ( placenamevalidfrom <= $2 AND placenamevalidto >= $2 ) )
 	  AND	p.placegeometrytype = 'point';
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION 
+wci.getPlacePoint( location 			text )	
+RETURNS SETOF wci_int.placedefinition AS
+$BODY$
+	SELECT 	*
+	FROM	wci.getPlacePoint($1, 'now');
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;
@@ -601,7 +933,6 @@ SECURITY DEFINER
 LANGUAGE sql;
 
 
-
 --
 -- add new data provider name in namespace
 -- 
@@ -656,7 +987,7 @@ CREATE OR REPLACE FUNCTION
 wci.getPlaceName(
 	name_	text
 )
-RETURNS SETOF __WCI_SCHEMA__.placename_v AS
+RETURNS SETOF __WCI_SCHEMA__.placename_V AS
 $BODY$
 	SELECT
 		*
@@ -672,30 +1003,24 @@ LANGUAGE sql VOLATILE;
 
 
 --
--- Get PlaceName using regular grid info
---  
-CREATE OR REPLACE FUNCTION
+-- Get DataProviderName
+-- Using valid times
+CREATE OR REPLACE FUNCTION 
 wci.getPlaceName(
-	numberX_ 		int,
-	numberY_ 		int,
-	incrementX_ 	float,
-	incrementY_ 	float,
-	startX_ 		float,
-	startY_ 		float,
-	projdefinition_ text
+	name_	text,
+	valid_	timestamp with time zone
+		
 )
-RETURNS __WCI_SCHEMA__.placename_v AS
+RETURNS SETOF __WCI_SCHEMA__.placename_valid_v AS
 $BODY$
-	SELECT placeid, grd.placenamespaceid, placename
-	FROM __WCI_SCHEMA__.placeregulargrid_mv grd, __WCI_SCHEMA__.getSessionData() s
-	WHERE numberX = $1
-	AND   numberY = $2
-	AND   round(incrementX::numeric, 3) = round($3::numeric, 3)
-	AND   round(incrementY::numeric, 3) = round($4::numeric, 3)
-	AND	  round(startX::numeric, 3) = round($5::numeric, 3)
-	AND   round(startY::numeric, 3) = round($6::numeric, 3)
-	AND   projdefinition = btrim($7)
-	AND   grd.placenamespaceid = s.placenamespaceid;
+	SELECT
+		*
+	FROM
+		__WCI_SCHEMA__.placename_valid_v
+	WHERE
+		( placename LIKE lower($1) OR $1 IS NULL ) AND
+		( $2 IS NULL OR 
+		 ( $2 >= placenamevalidfrom AND $2 <= placenamevalidto ) );
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;

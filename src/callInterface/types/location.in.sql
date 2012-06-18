@@ -19,14 +19,6 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
--- This function is a copy of the PostGIS ST_DWithin function
--- We need to backport this because WDB must be usable with PostGIS 1.1.6 
--- (the release on Debian Etch)
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.dwithin(geometry, geometry, float8)
-    RETURNS boolean
-    AS 'SELECT $1 && st_expand($2,$3) AND $2 && st_expand($1,$3) AND st_distance($1, $2) < $3'
-    LANGUAGE 'SQL' IMMUTABLE; -- WITH (iscachable);
-
 DROP TYPE IF EXISTS __WCI_SCHEMA__.location CASCADE;
 CREATE TYPE  __WCI_SCHEMA__.location AS (
 	interpolation 	text,

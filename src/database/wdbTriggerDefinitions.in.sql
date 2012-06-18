@@ -146,75 +146,72 @@ CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv2
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidercomment
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();
 
-
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateplacedefinition_mv() RETURNS "trigger"
-	AS $$
+CREATE OR REPLACE FUNCTION wdb_int.updateplacespec() 
+RETURNS TRIGGER
+AS 
+$BODY$
 BEGIN
-	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv');
+	DELETE FROM wci_int.placespec WHERE placeid=NEW.placeid;
+	INSERT INTO wci_int.placespec (SELECT * FROM wci_int.placespec_v WHERE placeid=NEW.placeid);
+	DELETE FROM wci_int.placedefinition_mv WHERE placeid=NEW.placeid;
+	INSERT INTO wci_int.placedefinition_mv (SELECT * FROM wci_int.placedefinition WHERE placeid=NEW.placeid);
+	DELETE FROM wci_int.placeregulargrid_mv WHERE placeid=NEW.placeid;
+	INSERT INTO wci_int.placeregulargrid_mv (SELECT * FROM wci_int.placeregulargrid WHERE placeid=NEW.placeid);
 	RETURN NULL;
-END;
-$$ LANGUAGE 'plpgsql';
+END
+$BODY$
+SECURITY DEFINER LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv1
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placedefinition
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
 
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv2
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placeregulargrid
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
-	
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacedefinition_mv3
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacedefinition_mv();
-
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateplacespec_mv() RETURNS "trigger"
-	AS $$
+CREATE OR REPLACE FUNCTION wdb_int.updateplacespec_delete() 
+RETURNS TRIGGER
+AS 
+$BODY$
 BEGIN
-	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placespec');
+	DELETE FROM wci_int.placespec WHERE placeid=OLD.placeid;
+	DELETE FROM wci_int.placedefinition_mv WHERE placeid=OLD.placeid;
+	DELETE FROM wci_int.placeregulargrid_mv WHERE placeid=OLD.placeid;
 	RETURN NULL;
-END;
-$$ LANGUAGE 'plpgsql';
+END
+$BODY$
+SECURITY DEFINER LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv1
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placedefinition
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv2
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv3
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placeregulargrid
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateplacespec_mv4
-	AFTER INSERT OR UPDATE OR DELETE ON spatial_ref_sys
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateplacespec_mv();
-
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateregulargrid_mv() RETURNS "trigger"
-	AS $$
+CREATE FUNCTION wdb_int.refreshplacespec() 
+RETURNS TRIGGER
+AS 
+$BODY$
 BEGIN
-	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placeregulargrid_mv');
+	PERFORM wdb_int.refreshMV('wci_int.placespec');
 	RETURN NULL;
-END;
-$$ LANGUAGE 'plpgsql';
+END
+$BODY$
+SECURITY DEFINER LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv1
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placedefinition
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv2
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placename
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv3
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.placeregulargrid
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateregulargrid_mv4
-	AFTER INSERT OR UPDATE OR DELETE ON spatial_ref_sys
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateregulargrid_mv();
-
+CREATE TRIGGER wdb_int_updateplacespec_a AFTER INSERT OR UPDATE ON wdb_int.placename
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec(); 
+CREATE TRIGGER wdb_int_updateplacespec_b AFTER UPDATE ON wdb_int.placedefinition
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec();
+CREATE TRIGGER wdb_int_updateplacespec_c AFTER UPDATE ON wdb_int.placeregulargrid
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec(); 
+CREATE TRIGGER wdb_int_updateplacespec_d AFTER UPDATE ON spatial_ref_sys
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.refreshplacespec();
+CREATE TRIGGER wdb_int_updateplacespec_e AFTER UPDATE ON wdb_int.placeindeterminatetype
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.refreshplacespec();
+CREATE TRIGGER wdb_int_updateplacespec_f AFTER UPDATE ON wdb_int.placeregulargrid
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.refreshplacespec();
+  
+CREATE TRIGGER wdb_int_updateplacespec_ad AFTER DELETE ON wdb_int.placename
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete(); 
+CREATE TRIGGER wdb_int_updateplacespec_bd AFTER DELETE ON wdb_int.placedefinition
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete();
+CREATE TRIGGER wdb_int_updateplacespec_cd AFTER DELETE ON wdb_int.placeregulargrid
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete(); 
+CREATE TRIGGER wdb_int_updateplacespec_dd AFTER DELETE ON spatial_ref_sys
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete();
+CREATE TRIGGER wdb_int_updateplacespec_ed AFTER DELETE ON wdb_int.placeindeterminatetype
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete();
+CREATE TRIGGER wdb_int_updateplacespec_ed AFTER DELETE ON wdb_int.placeregulargrid
+  FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete();
 	
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateparameter_mv() RETURNS "trigger"
 	AS $$

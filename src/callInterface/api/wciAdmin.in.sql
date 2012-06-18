@@ -230,6 +230,7 @@ END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE;
 
+
 REVOKE ALL ON FUNCTION wci.addNameSpace( id_		integer,
 									     name_		varchar(80),
 									     desc_		varchar(255),

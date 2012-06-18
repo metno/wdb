@@ -262,8 +262,24 @@ GRANT ALL ON __WCI_SCHEMA__.placename TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placename TO wdb_read, wdb_write;
 
 
+CREATE VIEW __WCI_SCHEMA__.placename_valid_v AS
+SELECT
+    p.placeid,
+    p.placename,
+    p.placenamevalidfrom,
+    p.placenamevalidto
+FROM
+	__WDB_SCHEMA__.placename p,
+	__WCI_SCHEMA__.getSessionData() s
+WHERE
+	p.placenamespaceid = s.placenamespaceid;
 
-CREATE VIEW __WCI_SCHEMA__.placedefinition AS
+REVOKE ALL ON __WCI_SCHEMA__.placename_valid_v FROM public;
+GRANT ALL ON __WCI_SCHEMA__.placename_valid_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.placename_valid_V TO wdb_read, wdb_write;
+
+
+CREATE VIEW wci_int.placedefinition AS
 SELECT
 	pd.placeid,
 	pd.placegeometrytype,
@@ -271,12 +287,14 @@ SELECT
 	pd.placeindeterminatecode,
 	pn.placenamespaceid,
 	pn.placename,
+	pn.placenamevalidfrom,
+	pn.placenamevalidto,
 	pg.originalsrid,
 	pd.placestoretime
 FROM 
-	__WDB_SCHEMA__.placedefinition pd, 
-	__WDB_SCHEMA__.placename pn,
-	__WDB_SCHEMA__.placeregulargrid pg
+	wdb_int.placedefinition pd, 
+	wdb_int.placeregulargrid pg,
+	wdb_int.placename pn
 WHERE
 	pd.placeid = pg.placeid
 	AND pd.placeid = pn.placeid
@@ -288,11 +306,13 @@ SELECT
 	pd.placeindeterminatecode,
 	pn.placenamespaceid,
 	pn.placename,
+	pn.placenamevalidfrom,
+	pn.placenamevalidto,
 	__WDB_SRID__ as originalsrid,
 	pd.placestoretime	
 FROM 
-	__WDB_SCHEMA__.placedefinition pd, 
-	__WDB_SCHEMA__.placename pn
+	wdb_int.placedefinition pd, 
+	wdb_int.placename pn
 WHERE
 	pd.placeid = pn.placeid
 	AND pd.placegeometrytype <> 'grid' 
@@ -304,11 +324,13 @@ SELECT
 	pd.placeindeterminatecode,
 	0 AS placenamespaceid,
 	'grid(' || pg.startX || ' ' || pg.startY || ', ' || pg.incrementX || ' ' || pg.incrementY || ', ' || pg.numberX || ' ' || pg.numberY || ', ' || pg.originalsrid || ')' AS placename,
+	'-infinity' AS placenamevalidfrom,
+	'infinity'  AS placenamevalidto,
 	pg.originalsrid,
 	pd.placestoretime	
 FROM 	
-	__WDB_SCHEMA__.placedefinition pd, 
-	__WDB_SCHEMA__.placeregulargrid pg
+	wdb_int.placedefinition pd, 
+	wdb_int.placeregulargrid pg
 WHERE
 	pd.placeid = pg.placeid
 UNION ALL
@@ -319,42 +341,53 @@ SELECT
 	pd.placeindeterminatecode,
 	0 AS placenamespaceid,
 	lower(st_astext( pd.placegeometry )) as placename,
+	'-infinity' AS placenamevalidfrom,
+	'infinity'  AS placenamevalidto,
 	__WDB_SRID__ as originalsrid,
 	pd.placestoretime	
 FROM 	
-	__WDB_SCHEMA__.placedefinition pd
+	wdb_int.placedefinition pd
 WHERE
 	pd.placegeometrytype != 'grid';
 		
-REVOKE ALL ON __WCI_SCHEMA__.placedefinition FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.placedefinition TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.placedefinition TO wdb_read, wdb_write;
+REVOKE ALL ON wci_int.placedefinition FROM PUBLIC;
+GRANT ALL ON wci_int.placedefinition TO wdb_admin;
+GRANT SELECT ON wci_int.placedefinition TO wdb_read, wdb_write;
 
-SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.placedefinition_mv', '__WCI_SCHEMA__.placedefinition');
-SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placedefinition_mv');
+--
+-- Recreate Materialized view
+--
+SELECT wdb_int.createMV('wci_int.placedefinition_mv', 'wci_int.placedefinition');
+SELECT wdb_int.refreshMV('wci_int.placedefinition_mv');
 
-REVOKE ALL ON __WCI_SCHEMA__.placedefinition_mv FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.placedefinition_mv TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.placedefinition_mv TO wdb_read, wdb_write;
+REVOKE ALL ON wci_int.placedefinition_mv FROM PUBLIC;
+GRANT ALL ON wci_int.placedefinition_mv TO wdb_admin;
+GRANT SELECT ON wci_int.placedefinition_mv TO wdb_read, wdb_write;
 
-CREATE INDEX XIE0wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+--
+-- Index Materialized View
+--
+CREATE INDEX XIE0wci_placedefinition_mv ON wci_int.placedefinition_mv
 USING GIST
 (
-    PlaceGeometry
+    placeGeometry
 );
 
-CREATE INDEX XIE1wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+CREATE INDEX XIE1wci_placedefinition_mv ON wci_int.placedefinition_mv
 (
-       PlaceId
+    placeNameValidFrom,
+    placeNameValidTo,
+	placeid
 );
 
-CREATE INDEX XIE2wci_placedefinition_mv ON __WCI_SCHEMA__.placedefinition_mv
+CREATE INDEX XIE2wci_placedefinition_mv ON wci_int.placedefinition_mv
 (
-       PlaceName,
-	   PlaceNameSpaceId,
-	   PlaceId
+	placeName,
+	placeNameValidFrom,
+	placeNameValidTo,
+	placeNameSpaceId,
+	placeId
 );
-
 
 
 CREATE VIEW __WCI_SCHEMA__.placeregulargrid AS 
@@ -675,7 +708,6 @@ GRANT SELECT ON __WCI_SCHEMA__.gridvalue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.gridvalue TO wdb_write;
 
 
-
 CREATE VIEW __WCI_SCHEMA__.floatgridvalue AS SELECT * FROM __WCI_SCHEMA__.gridvalue;
 
 REVOKE ALL ON __WCI_SCHEMA__.floatGridValue FROM public;
@@ -684,62 +716,62 @@ GRANT SELECT ON __WCI_SCHEMA__.floatGridValue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatGridValue TO wdb_write;
 
 
-
+DROP VIEW IF EXISTS __WCI_SCHEMA__.floatvalue;
 CREATE VIEW __WCI_SCHEMA__.floatvalue AS
-SELECT	
-	val.value,
+SELECT
+	vli.value,
 	dp.dataproviderid,
 	dp.dataprovidername,
 	dp.dataprovidernameleftset,
 	dp.dataprovidernamerightset,
 	pl.placename,
-	pl.placeid, 
+	pl.placeid,
 	pl.placegeometry,
 	pl.placeindeterminatecode,
 	pl.originalsrid,
-	val.referencetime, 
-	val.validtimefrom, 
-	val.validtimeto,
-	val.validtimeindeterminatecode,
-	val.valueparameterid,
+	vli.referencetime,
+	(vli.referencetime + vlg.validtimefrom) AS validtimefrom,
+	(vli.referencetime + vlg.validtimeto) AS validtimeto,
+	vlg.validtimeindeterminatecode,
+	vlg.valueparameterid,
 	vp.parametername AS valueparametername, 
 	vp.unitname AS valueunitname,
-	val.levelparameterid,
+	vlg.levelparameterid,
 	lp.parametername AS levelparametername,
 	lp.unitname AS levelunitname,
-	val.levelFrom, 
-	val.levelTo,
-	val.levelindeterminatecode,
-	val.dataversion,
-	val.maxdataversion,
-	val.confidencecode, 
-	val.valuestoretime,
-	val.valueid,
-	val.valuetype
+	vlg.levelFrom, 
+	vlg.levelTo,
+	vlg.levelindeterminatecode,
+	vlg.dataversion,
+	vli.maxdataversion,
+	vli.confidencecode,
+	vli.valuestoretime,
+	0::bigint AS valueid,
+	1 AS valuetype
 FROM 	
-	__WDB_SCHEMA__.floatvalue val,
+	__WDB_SCHEMA__.floatvalueitem vli,
+	__WDB_SCHEMA__.floatvaluegroup vlg,
 	__WCI_SCHEMA__.dataprovider_mv dp,
 	__WCI_SCHEMA__.placedefinition_mv pl,
 	__WCI_SCHEMA__.parameter_mv vp,
 	__WCI_SCHEMA__.parameter_mv lp,
 	__WCI_SCHEMA__.getSessionData() s
 WHERE
-	dp.dataprovidernamespaceid = s.dataprovidernamespaceid
+	vli.valuegroupid = vlg.valuegroupid
+	AND dp.dataprovidernamespaceid = s.dataprovidernamespaceid
 	AND pl.placenamespaceid = s.placenamespaceid
 	AND vp.parameternamespaceid = s.parameternamespaceid
 	AND lp.parameternamespaceid = s.parameternamespaceid
-	AND val.dataproviderid = dp.dataproviderid 
-	AND val.placeid = pl.placeid
-	AND val.valueparameterid = vp.parameterid
-	AND val.levelparameterid = lp.parameterid ;
+	AND vlg.dataproviderid = dp.dataproviderid 
+	AND vlg.placeid = pl.placeid
+	AND vlg.valueparameterid = vp.parameterid
+	AND vlg.levelparameterid = lp.parameterid ;
 
-	
 
 REVOKE ALL ON __WCI_SCHEMA__.floatValue FROM public;
 GRANT ALL ON __WCI_SCHEMA__.floatValue TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.floatValue TO wdb_read;
 GRANT SELECT, INSERT ON __WCI_SCHEMA__.floatValue TO wdb_write;
-
 
 
 CREATE VIEW __WCI_SCHEMA__.unit AS

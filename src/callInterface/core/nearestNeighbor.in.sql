@@ -1,7 +1,8 @@
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.expandoverlap_metric(a geometry,
-															   b geometry,
-															   maxe double precision,
-															   maxslice double precision)
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__.expandoverlap_metric(a geometry,
+								    b geometry,
+								    maxe double precision,
+								    maxslice double precision)
 RETURNS integer AS
 $BODY$
 BEGIN
@@ -17,15 +18,16 @@ LANGUAGE 'plpgsql' IMMUTABLE;
 
 DROP TYPE IF EXISTS __WCI_SCHEMA__.pgis_nn CASCADE;
 CREATE TYPE __WCI_SCHEMA__.pgis_nn AS (nn_gid integer, nn_dist numeric(16,5));
-   
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__._pgis_fn_nn(geom1 geometry,
-													  distguess double precision,
-													  numnn integer,
-													  maxslices integer,
-													  lookupset varchar(150),
-													  swhere varchar(5000),
-													  sgid2field varchar(100),
-													  sgeom2field varchar(100))
+
+CREATE OR REPLACE FUNCTION
+__WCI_SCHEMA__._pgis_fn_nn(geom1 geometry,
+						   distguess double precision,
+						   numnn integer,
+						   maxslices integer,
+						   lookupset varchar(150),
+						   swhere varchar(5000),
+						   sgid2field varchar(100),
+						   sgeom2field varchar(100))
 RETURNS SETOF __WCI_SCHEMA__.pgis_nn AS
 $BODY$
 DECLARE
@@ -57,6 +59,7 @@ BEGIN
 END
 $BODY$
 LANGUAGE 'plpgsql' STABLE;
+
 
 CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.nearestneighbor(geom1 		geometry,
 													 	  distguess 	double precision,

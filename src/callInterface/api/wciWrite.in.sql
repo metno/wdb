@@ -258,7 +258,6 @@ $BODY$
 LANGUAGE 'plpgsql';
 
 
-
 -- Write GRID Value
 -- All parameter specified
 CREATE OR REPLACE FUNCTION 

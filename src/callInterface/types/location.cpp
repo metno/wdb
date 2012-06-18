@@ -234,7 +234,7 @@ string Location::queryReturnGrid( ) const
 			q << "( equals ( st_geomfromtext( '" << geometry() << "', 4030 ), v.placegeometry ) )";
 			break;
 		default:
-			q 	<< WCI_SCHEMA << ".dwithin( "
+			q 	<< "st_dwithin( "
 				<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 				<< "st_transform( v.placegeometry, v.originalsrid ), "
 				<< "1 )";
@@ -269,13 +269,13 @@ string Location::queryReturnFloat( std::string where ) const
 				q << "equals( st_geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
 			}
 			else if ( geomType_ == GEOM_POLYGON ) {
-				q 	<< WCI_SCHEMA << ".dwithin( "
+				q 	<< "st_dwithin( "
 					<< "st_transform( v.placegeometry, v.originalsrid ), "
 					<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 					<< "1 )";
 			}
 			else if ( geomType_ == GEOM_MPOLYGON ) {
-				q 	<< WCI_SCHEMA << ".dwithin( "
+				q 	<< "st_dwithin( "
 					<< "st_transform( v.placegeometry, v.originalsrid ), "
 					<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
 					<< "1 )";

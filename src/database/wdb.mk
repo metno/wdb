@@ -22,9 +22,10 @@ DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
 						src/database/wdbAdminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
 
-UPGRADE_SOURCES =		src/database/wdbUpgrade0001.in.sh \
-						src/database/wdbUpgrade0002.in.sh \
-						src/database/wdbUpgrade0003.in.sh
+UPGRADE_SOURCES =		
+#						src/database/wdbUpgrade0001.in.sh \
+#						src/database/wdbUpgrade0002.in.sh \
+#						src/database/wdbUpgrade0003.in.sh
 
 nodist_pkglibexec_SCRIPTS += $(UPGRADE_SOURCES:.in.sh=.sh)
 
@@ -49,5 +50,5 @@ src/database/all: $(DATABASE_SOURCES:.in.sql=.sql)
 
 src/database/clean: clean
 
-include src/database/upgrade0003/wdb.mk
+#include src/database/upgrade0003/wdb.mk
  
