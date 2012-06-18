@@ -4,17 +4,18 @@ wdb (1.5.0~a3-1) lucid; urgency=low
   * Upgraded WDB to be compatible with Precise Pangolin.
   * Removed unneeded function wci_int.dwithin.
   * Added wci.prognosishour function to the database.
-  * Improved the loading performance for place definitions.
+  * Restructured the floatValue table definitions.
+  * Removed indexes on floatvalue table.  
   * Fixed wci.browse such that it also retrieves data from the float value
     tables.
+  * Improved and fixed bugs in the Place Definition funcitons and views.
+  * Improved the loading performance for place definitions.
   * Created addOrUpdate function for placenames. Modified the datamodel for
     placenames.
-  * Improved and fixed bugs in the Place Definition funcitons and views.
   * Fixed a bug where a missing placedefinition caused an
     SQL exception to be thrown. 
   * Fixed a bug in wdbLogHandler.
   * Restructured the source file structure for schema upgrades.
-  * Removed indexes on floatvalue table.  
 
  -- Michael Akinde <wdb@met.no>  Thu, 24 May 2012 20:00:00 +0000
 
