@@ -10,7 +10,7 @@ DATABASE_SOURCES =		src/database/schemaDefinitions.in.sql \
 						src/database/partyTables.in.sql \
 						src/database/configurationTables.in.sql \
 						src/database/timeTables.in.sql \
-						src/database/namespaceTables.in.sql \						
+						src/database/namespaceTables.in.sql \
 						src/database/dataProviderTables.in.sql \
 						src/database/wdbPlaceDefinitionTables.in.sql \
 						src/database/wdbParameterTables.in.sql \
