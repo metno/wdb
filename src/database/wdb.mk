@@ -6,9 +6,12 @@
 wdb_la_SOURCES +=	src/database/databaseProjection.cpp
 
 
-DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
-						src/database/wdbBaseTables.in.sql \
-						src/database/wdbDataProviderTables.in.sql \
+DATABASE_SOURCES =		src/database/schemaDefinitions.in.sql \
+						src/database/partyTables.in.sql \
+						src/database/configurationTables.in.sql \
+						src/database/timeTables.in.sql \
+						src/database/namespaceTables.in.sql \						
+						src/database/dataProviderTables.in.sql \
 						src/database/wdbPlaceDefinitionTables.in.sql \
 						src/database/wdbParameterTables.in.sql \
 						src/database/wdbValueTables.in.sql \
@@ -17,7 +20,6 @@ DATABASE_SOURCES =		src/database/wdbSchemaDefinitions.in.sql \
 						src/database/wdbConstraintDefinitions.in.sql \
 						src/database/wdbTriggerDefinitions.in.sql \
 						src/database/wdbUserDefinitions.in.sql \
-						src/database/wciSchemaDefinitions.in.sql \
 						src/database/wciViewDefinitions.in.sql \
 						src/database/wdbAdminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql

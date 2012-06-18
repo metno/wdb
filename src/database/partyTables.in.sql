@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007-2009 met.no
+-- Copyright (C) 2007-2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -20,8 +20,8 @@
 SET SESSION client_min_messages TO 'warning';
 
 
--- A party represents an actor wrt to the data in the database; either
--- a person, an organization or a set of software
+-- A party represents an actor wrt to the data in the database; this can be
+-- either a person, an organization or a set of software
 CREATE TABLE __WDB_SCHEMA__.party (
     partyid						serial NOT NULL,
     partytype 					character varying(80) NOT NULL,
@@ -34,11 +34,11 @@ CREATE TABLE __WDB_SCHEMA__.party (
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.party
-    ADD CONSTRAINT party_pkey PRIMARY KEY (partyid);
+    ADD CONSTRAINT party_pkey
+    PRIMARY KEY (partyid);
 
 REVOKE ALL ON __WDB_SCHEMA__.party FROM public;
 GRANT ALL ON __WDB_SCHEMA__.party TO wdb_admin;
-
 
 
 -- Comment box for partyid
@@ -49,7 +49,8 @@ CREATE TABLE __WDB_SCHEMA__.partycomment (
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.partycomment
-    ADD CONSTRAINT partycomment_pkey PRIMARY KEY (partyid, partycommentstoretime);
+    ADD CONSTRAINT partycomment_pkey
+    PRIMARY KEY (partyid, partycommentstoretime);
 
 ALTER TABLE __WDB_SCHEMA__.partycomment
 	ADD FOREIGN KEY (partyid)
@@ -61,7 +62,6 @@ REVOKE ALL ON __WDB_SCHEMA__.partycomment FROM public;
 GRANT ALL ON __WDB_SCHEMA__.partycomment TO wdb_admin;
 
 
-
 -- Organization types
 CREATE TABLE __WDB_SCHEMA__.organizationtype (
     organizationtype 			character varying(80) NOT NULL,
@@ -69,14 +69,16 @@ CREATE TABLE __WDB_SCHEMA__.organizationtype (
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.organizationtype
-    ADD CONSTRAINT organizationtype_pkey PRIMARY KEY (organizationtype);
+    ADD CONSTRAINT organizationtype_pkey
+    PRIMARY KEY (organizationtype);
 
 REVOKE ALL ON __WDB_SCHEMA__.organizationtype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.organizationtype TO wdb_admin;
 
-INSERT INTO __WDB_SCHEMA__.organizationtype VALUES ('international organization', 'An international organization');
-INSERT INTO __WDB_SCHEMA__.organizationtype VALUES ('government organization', 'A national governmental organization');
-
+INSERT INTO __WDB_SCHEMA__.organizationtype
+	VALUES ('international organization', 'An international organization');
+INSERT INTO __WDB_SCHEMA__.organizationtype
+	VALUES ('government organization', 'A national governmental organization');
 
 
 -- Organizations
@@ -106,7 +108,6 @@ REVOKE ALL ON __WDB_SCHEMA__.organization FROM public;
 GRANT ALL ON __WDB_SCHEMA__.organization TO wdb_admin;
 
 
-
 -- This is a standard person schema
 CREATE TABLE __WDB_SCHEMA__.person (
     partyid 					integer NOT NULL,
@@ -128,7 +129,8 @@ CREATE TABLE __WDB_SCHEMA__.person (
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.person
-    ADD CONSTRAINT person_pkey PRIMARY KEY (partyid);
+    ADD CONSTRAINT person_pkey
+    PRIMARY KEY (partyid);
 
 ALTER TABLE __WDB_SCHEMA__.person
 	ADD FOREIGN KEY (partyid)
@@ -140,7 +142,6 @@ REVOKE ALL ON __WDB_SCHEMA__.person FROM public;
 GRANT ALL ON __WDB_SCHEMA__.person TO wdb_admin;
 
 
-
 -- Software versions
 CREATE TABLE __WDB_SCHEMA__.softwareversion
 (
@@ -150,7 +151,8 @@ CREATE TABLE __WDB_SCHEMA__.softwareversion
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.softwareversion
-    ADD CONSTRAINT softwareversion_pkey PRIMARY KEY (partyid);
+    ADD CONSTRAINT softwareversion_pkey
+    PRIMARY KEY (partyid);
 
 ALTER TABLE __WDB_SCHEMA__.softwareversion
 	ADD FOREIGN KEY (partyid)
@@ -178,60 +180,3 @@ ALTER TABLE __WDB_SCHEMA__.configuration
 
 REVOKE ALL ON __WDB_SCHEMA__.configuration FROM public;
 GRANT ALL ON __WDB_SCHEMA__.configuration TO wdb_admin;
-
-
--- Namespace descriptors
-CREATE TABLE __WDB_SCHEMA__.namespace (
-    namespaceid					integer NOT NULL,
-    namespacename				character varying(80) NOT NULL,
-    namespacedescription		character varying(255) NOT NULL,
-    namespacefieldofapplication character varying(255) NOT NULL,
-    namespaceownerid			integer NOT NULL,
-    namespacecontactid			integer NOT NULL,
-    namespacevalidfrom 			date NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.namespace
-    ADD CONSTRAINT namespace_pkey PRIMARY KEY (namespaceid);
-
-ALTER TABLE __WDB_SCHEMA__.namespace
-	ADD FOREIGN KEY (namespaceownerid)
-					REFERENCES __WDB_SCHEMA__.organization
-					ON DELETE RESTRICT
-					ON UPDATE RESTRICT;
-
-ALTER TABLE __WDB_SCHEMA__.namespace
-	ADD FOREIGN KEY (namespacecontactid)
-					REFERENCES __WDB_SCHEMA__.person
-					ON DELETE RESTRICT
-					ON UPDATE RESTRICT;
-
-REVOKE ALL ON __WDB_SCHEMA__.namespace FROM public;
-GRANT ALL ON __WDB_SCHEMA__.namespace TO wdb_admin;
-
-
-
-
--- Indeterminate type for time
-CREATE TABLE __WDB_SCHEMA__.timeindeterminatetype (
-    timeindeterminatecode			integer NOT NULL,
-    timeindeterminatetype			character varying(80) NOT NULL,
-    timeindeterminatedescription	character varying(255) NOT NULL
-);
-
-ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
-    ADD CONSTRAINT timeindeterminatetype_pkey PRIMARY KEY (timeindeterminatecode);
-
-REVOKE ALL ON __WDB_SCHEMA__.timeindeterminatetype FROM public;
-GRANT ALL ON __WDB_SCHEMA__.timeindeterminatetype TO wdb_admin;
-
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 0, 'any', 'Values are universal constants (valid for any time)');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 1, 'exact', 'The time definition is exact');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 2, 'inside', 'The time definition is inside the given interval');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 3, 'outside', 'The time definition is outside the given interval');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 4, 'before', 'The time definition is before the given interval');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 5, 'after', 'The time definition is after the given interval');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 6, 'withheld', 'The time definition is known but withheld');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 7, 'withdrawn', 'The time definition has been removed');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 8, 'unknown', 'The time definition is unknown');
-INSERT INTO __WDB_SCHEMA__.timeindeterminatetype VALUES ( 9, 'delayed', 'The time definition will be given later');

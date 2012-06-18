@@ -17,7 +17,8 @@ WCIAPI_SOURCES = 		src/callInterface/api/wciWrite.in.sql \
 						src/callInterface/api/wciVersion.in.sql \
 						src/callInterface/api/wciAdmin.in.sql \
 						src/callInterface/api/wciAggregate.in.sql \
-						src/callInterface/api/wciCacheQuery.in.sql
+						src/callInterface/api/wciCacheQuery.in.sql \
+						src/callInterface/api/prognosisHour.in.sql
 
 wciapidir=				$(wcidir)/api
 

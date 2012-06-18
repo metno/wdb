@@ -360,9 +360,12 @@ EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
-\i $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbBaseTables.sql
-\i $WDB_DATAMODEL_PATH/wdbDataProviderTables.sql
+\i $WDB_DATAMODEL_PATH/schemaDefinitions.sql
+\i $WDB_DATAMODEL_PATH/partyTables.sql
+\i $WDB_DATAMODEL_PATH/configurationTables.sql
+\i $WDB_DATAMODEL_PATH/timeTables.sql
+\i $WDB_DATAMODEL_PATH/namespaceTables.sql
+\i $WDB_DATAMODEL_PATH/dataProviderTables.sql
 \i $WDB_DATAMODEL_PATH/wdbPlaceDefinitionTables.sql
 \i $WDB_DATAMODEL_PATH/wdbParameterTables.sql
 \i $WDB_DATAMODEL_PATH/wdbValueTables.sql
@@ -418,6 +421,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciWrite.sql
 \i $WCI_DIR/api/wciRemove.sql
 \i $WCI_DIR/api/wciAggregate.sql
+\i $WCI_DIR/api/prognosisHour.sql
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR: Installation of WDB Call Interface failed"; exit 1

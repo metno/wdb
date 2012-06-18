@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007 met.no
+-- Copyright (C) 2007-2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -19,18 +19,19 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
--- wci is the schema that contains the external functions of the
--- WDB Call Interface. 
-CREATE SCHEMA wci;
-REVOKE ALL ON SCHEMA wci FROM PUBLIC;
-GRANT ALL ON SCHEMA wci TO wdb_admin;
-GRANT USAGE ON SCHEMA wci TO wdb_write;
-GRANT USAGE ON SCHEMA wci TO wdb_read;
 
+-- configuration stores the WDB version information in the database
+CREATE TABLE __WDB_SCHEMA__.configuration (
+    softwareversionpartyid		integer NOT NULL,
+    packageversion				integer NOT NULL,
+    installtime					timestamp with time zone NOT NULL
+);
 
--- test is a schema that contains views, functions and tables that
--- are specific to the testing of the WDB system
-CREATE SCHEMA test;
-REVOKE ALL ON SCHEMA test FROM PUBLIC;
-GRANT ALL ON SCHEMA test TO wdb_admin;
-GRANT USAGE ON SCHEMA test TO wdb_test;
+ALTER TABLE __WDB_SCHEMA__.configuration
+	ADD FOREIGN KEY (softwareversionpartyid)
+					REFERENCES __WDB_SCHEMA__.softwareversion
+					ON DELETE RESTRICT
+					ON UPDATE RESTRICT;
+
+REVOKE ALL ON __WDB_SCHEMA__.configuration FROM public;
+GRANT ALL ON __WDB_SCHEMA__.configuration TO wdb_admin;
