@@ -161,7 +161,7 @@ echo -n "checking for the presence of wdb database files... "
 WDB_DATAMODEL_PATH=__WDB_DATADIR__/sql
 WDB_METADATA_PATH=$WDB_DATAMODEL_PATH
 WDB_CLEANUP_PATH=$WDB_DATAMODEL_PATH
-if test ! -f $WDB_DATAMODEL_PATH/wdbSchemaDefinitions.sql; then
+if test ! -f $WDB_DATAMODEL_PATH/schemaDefinitions.sql; then
 	echo "not found"
     echo "Error: Could not locate database installation files."
 	echo "Checking: $WDB_DATAMODEL_PATH"
