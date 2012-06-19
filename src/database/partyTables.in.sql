@@ -162,21 +162,3 @@ ALTER TABLE __WDB_SCHEMA__.softwareversion
 
 REVOKE ALL ON __WDB_SCHEMA__.softwareversion FROM public;
 GRANT ALL ON __WDB_SCHEMA__.softwareversion TO wdb_admin;
-
-
--- currentconfiguration stores the WDB version information in
--- the database
-CREATE TABLE __WDB_SCHEMA__.configuration (
-    softwareversionpartyid		integer NOT NULL,
-    packageversion				integer NOT NULL,
-    installtime					timestamp with time zone NOT NULL
-);
-
-ALTER TABLE __WDB_SCHEMA__.configuration
-	ADD FOREIGN KEY (softwareversionpartyid)
-					REFERENCES __WDB_SCHEMA__.softwareversion
-					ON DELETE RESTRICT
-					ON UPDATE RESTRICT;
-
-REVOKE ALL ON __WDB_SCHEMA__.configuration FROM public;
-GRANT ALL ON __WDB_SCHEMA__.configuration TO wdb_admin;
