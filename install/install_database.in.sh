@@ -375,7 +375,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql
 \i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wciSchemaDefinitions.sql
 EOF
 	if [ 0 != $? ]; then
 	    echo "ERROR"; exit 1
