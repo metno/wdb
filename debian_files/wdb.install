@@ -17,4 +17,3 @@ debian/tmp/usr/share/wdb/sql/*.sql usr/share/wdb/sql
 debian/tmp/usr/share/wdb/sql/wci/api/*.sql usr/share/wdb/sql/wci/api
 debian/tmp/usr/share/wdb/sql/wci/core/*.sql usr/share/wdb/sql/wci/core
 debian/tmp/usr/share/wdb/sql/wci/types/*.sql usr/share/wdb/sql/wci/types
-debian/tmp/usr/share/wdb/sql/upgrade0003/* usr/share/wdb/sql/upgrade0003
