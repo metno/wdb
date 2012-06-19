@@ -9,7 +9,6 @@ debian/tmp/usr/lib/wdb/install_remove_low_dataversions.sh usr/lib/wdb
 debian/tmp/usr/lib/wdb/move_database usr/lib/wdb
 debian/tmp/usr/lib/wdb/uninstall_database usr/lib/wdb
 debian/tmp/usr/lib/wdb/wdbConfiguration usr/lib/wdb
-debian/tmp/usr/lib/wdb/wdbUpgrade????.sh usr/lib/wdb
 debian/tmp/usr/share/doc/wdb/* usr/share/doc/wdb
 debian/tmp/usr/share/man/man1/* usr/share/man/man1
 debian/tmp/usr/share/man/man5/* usr/share/man/man5
