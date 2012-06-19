@@ -1,4 +1,4 @@
-wdb (1.5.0~a3-1) lucid; urgency=low
+wdb (1.5.0~a4-1) lucid; urgency=low
   
   * Upgrade code reset. Version 1.5 cannot automatically upgrade from 1.1. 
   * Upgraded WDB to be compatible with Precise Pangolin.
@@ -17,7 +17,7 @@ wdb (1.5.0~a3-1) lucid; urgency=low
   * Fixed a bug in wdbLogHandler.
   * Restructured the source file structure for schema upgrades.
 
- -- Michael Akinde <wdb@met.no>  Thu, 24 May 2012 20:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Tue, 19 Jun 2012 12:00:00 +0000
 
 wdb (1.1.0-1) lucid; urgency=medium
   
