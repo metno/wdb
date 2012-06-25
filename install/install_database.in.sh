@@ -413,6 +413,7 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/api/wciMetaDataProvider.sql
 \i $WCI_DIR/api/wciMetaParameter.sql
 \i $WCI_DIR/api/wciMetaPlace.sql
+\i $WCI_DIR/api/wciMetaPlacePoint.sql
 \i $WCI_DIR/api/wciMetaParty.sql
 \i $WCI_DIR/api/wciRead.sql
 \i $WCI_DIR/api/wciVersion.sql
