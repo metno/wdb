@@ -23,9 +23,9 @@
 # TODO: Add support for reading additiona configuration files
 
 
-DEFAULT_DATABASE=`__WDB_PKGLIBDIR__/wdbConfiguration --database`@`__WDB_PKGLIBDIR__/wdbConfiguration --host`
-DEFAULT_USER=`__WDB_PKGLIBDIR__/wdbConfiguration --user`
-DEFAULT_PORT=`__WDB_PKGLIBDIR__/wdbConfiguration --port`
+DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`__WDB_BINDIR__/wdbConfiguration --host`
+DEFAULT_USER=`__WDB_BINDIR__/wdbConfiguration --user`
+DEFAULT_PORT=`__WDB_BINDIR__/wdbConfiguration --port`
 
 SCRIPT_VERSION=__WDB_VERSION__
 
