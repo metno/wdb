@@ -1,4 +1,4 @@
-wdb (1.5.0~a4-1) lucid; urgency=low
+wdb (1.5.0~a5-1) lucid; urgency=low
   
   * Upgrade code reset. Version 1.5 cannot automatically upgrade from 1.1. 
   * Upgraded WDB to be compatible with Precise Pangolin.
