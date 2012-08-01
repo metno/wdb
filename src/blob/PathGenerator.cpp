@@ -71,13 +71,13 @@ FileId PathGenerator::reverse(const boost::filesystem::path & blobFileName) cons
 
 	std::string f = blobFileName.string();
 
-	static const boost::regex re("([0-9a-fA-F]{16})[.]dat");
+	static const boost::regex re("(.*/)?([0-9a-fA-F]{16})[.]dat");
 	boost::smatch match;
 	if ( ! boost::regex_match(f, match, re) )
 		throw std::logic_error("Invalid file name: " + f);
 
-	FileId ret = -1L;
-	std::istringstream val(match[1].str());
+	FileId ret = -1LL;
+	std::istringstream val(match[2].str());
 	val >> std::hex >> ret;
 	if ( ! val )
 		throw std::runtime_error("Invalid file name (possible decoding error): " + f);
