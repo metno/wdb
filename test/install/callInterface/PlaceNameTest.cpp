@@ -321,6 +321,16 @@ void PlaceNameTest::testL6_03_PolygonDataByName_FloatOnly()
 }
 
 
+void PlaceNameTest::testManyLocationsForSameName()
+{
+    result r = t->exec( statementFloat_( "test point 15" ) );
+
+//    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
+//    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 15 hirlam 20 grid" ) );
+//    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 15 hirlam 20 grid" ) );
+}
+
+
 std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 {
 	ostringstream st;

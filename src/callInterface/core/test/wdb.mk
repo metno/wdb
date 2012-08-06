@@ -6,7 +6,9 @@
 
 if HAS_CPPUNIT
 wdbUnitTest_SOURCES += 		src/callInterface/core/test/projTransformTest.cpp \
-							src/callInterface/core/test/projTransformTest.h 
+							src/callInterface/core/test/projTransformTest.h \
+							src/callInterface/core/test/BuilderTest.h \
+							src/callInterface/core/test/BuilderTest.cpp
 #							src/callInterface/core/test/PolygonReaderTest.cpp \
 #							src/callInterface/core/test/PolygonReaderTest.h
 # HAS_CPPUNIT

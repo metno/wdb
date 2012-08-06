@@ -28,15 +28,17 @@
 
 #include "levelQuery.h"
 #include "util.h"
+#include <Builder.h>
 #include <types/LevelSpecification.h>
-#include <ostream>
+#include <sstream>
 
-std::ostream & addLevelQuery(std::ostream & q, const char * levelSpec)
+void addLevelQuery(query::Builder & builder, const char * levelSpec)
 {
 	if ( ! levelSpec )
-		return q;
+		return;
 
-	q << "AND (";
+	std::ostringstream q;
+	q << "(";
 
 	LevelSpecification lvl(levelSpec);
 
@@ -58,8 +60,8 @@ std::ostream & addLevelQuery(std::ostream & q, const char * levelSpec)
     else
     	q << lvl.indeterminate();
 
-	q << ") ";
+	q << ")";
 
-	return q;
+	builder.where(q.str());
 }
 

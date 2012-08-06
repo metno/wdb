@@ -16,5 +16,6 @@ select wci.addorupdateplacepoint('test point 11',st_geomfromtext('POINT(11.5 60.
 select wci.addorupdateplacepoint('test point 12',st_geomfromtext('POINT(11.6 60.9)',4030), '2010-01-01T00:00:00+00', 'infinity' );
 select wci.addorupdateplacepoint('test point 13',st_geomfromtext('POINT(12.1 61.1)',4030), '2010-01-01T00:00:00+00', 'infinity' );
 select wci.addorupdateplacepoint('test point 14',st_geomfromtext('POINT(11.9 60.9)',4030), '2010-01-01T00:00:00+00', 'infinity' );
-
+select wci.addorupdateplacepoint('test point 15',st_geomfromtext('POINT(13.9 60.4)',4030), '2010-01-01T00:00:00+00', '2010-01-01T00:00:00+00' );
+select wci.addorupdateplacepoint('test point 15',st_geomfromtext('POINT(13.8 60.5)',4030), '2011-01-01T00:00:00+00', '2012-01-01T00:00:00+00' );
 

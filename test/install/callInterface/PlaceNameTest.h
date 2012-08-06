@@ -73,6 +73,9 @@ class PlaceNameTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL6_01_PolygonDataByName_Mixed );
 	CPPUNIT_TEST( testL6_02_PolygonDataByName_GridOnly );
 	CPPUNIT_TEST( testL6_03_PolygonDataByName_FloatOnly );
+
+	CPPUNIT_TEST( testManyLocationsForSameName );
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -111,6 +114,8 @@ public:
 	void testL6_01_PolygonDataByName_Mixed();
 	void testL6_02_PolygonDataByName_GridOnly();
 	void testL6_03_PolygonDataByName_FloatOnly();
+
+	void testManyLocationsForSameName();
 
 private:
 	std::string statementOid_( const std::string & placeDef ) const;

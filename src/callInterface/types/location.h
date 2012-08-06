@@ -36,6 +36,11 @@
 #include <sstream>
 #include <interpolationType.h>
 
+namespace query
+{
+class Builder;
+}
+
 class Location
 {
 public:
@@ -94,13 +99,17 @@ public:
 	};
 
 	/**
-	 * Get an "x=y" part of an sql query selecting the correct tuple from
-	 * the internal WCI views.
-	 *
-	 * @param returnType	The query constructed is partially dependent on
-	 * the return type that is required by the wci_read query.
+	 * Add this location to the where-part of this location's query. The added
+	 * parts will be valid for wci.read's returnfloat type statements
 	 */
-	std::string query( std::ostringstream & w, QueryReturnType returnType ) const;
+	void addFloatTableQuery(query::Builder & builder) const;
+
+	/**
+	 * Add this location to the where-part of this location's query. The added
+	 * parts will be valid for wci.read's returngid type statements
+	 */
+	void addGridTableQuery(query::Builder & builder) const;
+
 
 	/**
 	 * The error when a specification is syntactically incorrect
@@ -115,7 +124,13 @@ private:
 	void parseWithSpirit_(const std::string & location);
 
 	std::string queryReturnGrid( ) const;
-	std::string queryReturnFloat( std::string where ) const;
+
+	void addToReturnFloatQuery( query::Builder & builder, std::string where ) const;
+	void addToReturnExactFloatQuery( query::Builder & builder, std::string where ) const;
+	void addToReturnNearestFloatQuery( query::Builder & builder, std::string where ) const;
+	void addToReturnSurroundFloatQuery( query::Builder & builder, std::string where ) const;
+	void addToReturnBilinearFloatQuery( query::Builder & builder, std::string where ) const;
+
 
 	std::string interpolation_;
 	InterpolationType interpolationType_;

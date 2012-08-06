@@ -30,11 +30,14 @@
 #include <sstream>
 #include <types/location.h>
 #include "buildQuery.h"
+#include "Builder.h"
 #include "timeQuery.h"
 #include "parameterQuery.h"
 #include "levelQuery.h"
 #include "dataversionQuery.h"
 #include "util.h"
+#include <iostream>
+
 extern "C"
 {
 #include <utils/palloc.h>
@@ -55,34 +58,34 @@ extern "C"
  *                     all.
  * @return the given stream.
  */
-std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray * dataProvider)
+void addDataProviderQuery(query::Builder & builder, const struct StringArray * dataProvider)
 {
 	if ( ! dataProvider )
-		return q << "TRUE ";
-
+		return;
 	if ( dataProvider->size == 0 )
-		return q << "FALSE ";
+	{
+		builder.where("FALSE ");
+	}
+	else
+	{
+		std::ostringstream q;
+		q << "(";
+		q << "dataproviderid IN (";
+		q << "SELECT d.dataproviderid FROM ";
+		q << WCI_SCHEMA << ".dataprovider_mv d, ";
+		q << WCI_SCHEMA << ".dataprovider_mv source ";
+		q << "WHERE (";
+		q << "source.dataprovidername = " << quote(lower(dataProvider->data[0]));
+		for ( int i = 1; i < dataProvider->size; ++ i )
+			q << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
+		q << ") AND "
+				"source.dataprovidernameleftset <= d.dataprovidernameleftset AND "
+				"source.dataprovidernamerightset >= d.dataprovidernamerightset";
+		q << ")";
+		q << ") ";
 
-	q << "(";
-
-	q << "dataproviderid IN (";
-
-	q << "SELECT d.dataproviderid FROM ";
-	q << WCI_SCHEMA << ".dataprovider_mv d, ";
-	q << WCI_SCHEMA << ".dataprovider_mv source ";
-	q << "WHERE (";
-	q << "source.dataprovidername = " << quote(lower(dataProvider->data[0]));
-	for ( int i = 1; i < dataProvider->size; ++ i )
-		q << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
-	q << ") AND "
-			"source.dataprovidernameleftset <= d.dataprovidernameleftset AND "
-			"source.dataprovidernamerightset >= d.dataprovidernamerightset";
-
-	q << ")";
-
-	q << ") ";
-
-	return q;
+		builder.where(q.str());
+	}
 }
 
 
@@ -99,25 +102,18 @@ std::ostream & addDataProviderQuery(std::ostream & q, const struct StringArray *
  *                    vary, depending on which table is chosen.
  * @return the given stream.
  */
-std::ostream & addLocationQuery(std::ostringstream & q, const char * location, DataSource sourceTable, enum OutputType output)
+void addLocationQuery(query::Builder & builder, const char * location, DataSource sourceTable, enum OutputType output)
 {
 	if ( location )
 	{
 		try
 		{
+			Location loc(location);
 			if ( sourceTable == FloatTable )
-			{
-				Location loc(location);
-				q << "AND " << loc.query(q, Location::RETURN_FLOAT) << " ";
-			}
+				loc.addFloatTableQuery(builder);
 			else if ( sourceTable == GridTable )
-			{
-				Location loc(location);
 				if ( output == OutputGid )
-					q << "AND " << loc.query(q, Location::RETURN_OID) << " ";
-				//else // OutputFloat
-				//	q << "AND " << loc.query(Location::RETURN_OID_FLOAT);
-			}
+					loc.addGridTableQuery(builder);
 		}
 		catch(Location::InvalidSpecification & e)
 		{
@@ -126,40 +122,42 @@ std::ostream & addLocationQuery(std::ostringstream & q, const char * location, D
 					   errmsg( "%s", e.what() ) ) );
 		}
 	}
-	return q;
 }
 
 char * build_query(const struct WciReadParameterCollection * parameters,
 		enum DataSource dataSource, enum OutputType output,
-		const char * selectWhat, const char * ordering)
+		const char * selectWhat, const char * ordering, const char * groupby)
 {
 	try
 	{
-		std::ostringstream q;
-		q << "SELECT "<< selectWhat << " FROM ";
+		query::Builder builder;
+
 		if ( dataSource == FloatTable )
-			q << WCI_SCHEMA << ".floatvalue v ";
+			builder.from(WCI_SCHEMA".floatvalue v");
 		else // dataSource == GridTable
-			q << WCI_SCHEMA << ".gridvalue v ";
+			builder.from(WCI_SCHEMA".gridvalue v");
+
+		builder.what(selectWhat);
 
 		if ( parameters )
 		{
-			std::ostringstream w;
-			addDataProviderQuery(w, parameters->dataProvider);
-			addReferenceTimeQuery(w, parameters->referenceTime);
-			addValidTimeQuery(w, parameters->validTime);
-			addParameterQuery(w, parameters->parameter);
-			addLevelQuery(w, parameters->level);
-			addDataVersionQuery(w, parameters->dataVersion);
-			addLocationQuery(w, parameters->location, dataSource, output);
-			q << "WHERE " << w.str();
+			addDataProviderQuery(builder, parameters->dataProvider);
+			addReferenceTimeQuery(builder, parameters->referenceTime);
+			addValidTimeQuery(builder, parameters->validTime);
+			addParameterQuery(builder, parameters->parameter);
+			addLevelQuery(builder, parameters->level);
+			addDataVersionQuery(builder, parameters->dataVersion);
+			addLocationQuery(builder, parameters->location, dataSource, output);
 		}
 		if ( ordering )
-		{
-			q << ordering;
-		}
+			builder.orderBy(ordering);
+		if ( groupby )
+			builder.groupBy(groupby);
 
-		std::string ret = q.str();
+		//builder.debugPrint(std::cout) << std::flush;
+		std::cout << builder.str() << '\n' << std::endl;
+
+		std::string ret = builder.str();
 		return pstrdup(ret.c_str());
 	}
 	catch (std::exception & e)

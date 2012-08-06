@@ -36,6 +36,7 @@
 #include <boost/spirit/include/classic.hpp>
 #include "location.h"
 #include "getPlaceQuery.h"
+#include <Builder.h>
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -203,24 +204,40 @@ void Location::determineInterpolation() {
 		interpolationType_ = find->second;
 }
 
-string Location::query( std::ostringstream & w, Location::QueryReturnType returnType ) const
+void Location::addFloatTableQuery(query::Builder & builder) const
 {
-	std::string where = w.str();
+	std::ostringstream s;
+	builder.where(s);
+	std::string where = s.str();
+
 	size_t found = where.find("'");
-	while (found!=string::npos) {
+	while (found!=string::npos)
+	{
 		where.replace(found, 1, "''");
 		found = where.find("'", found + 2);
 	}
 
-	switch ( returnType )
-	{
-	case RETURN_OID:
-		return queryReturnGrid();
-	case RETURN_FLOAT:
-		return queryReturnFloat( where );
-	default:
-		throw InvalidSpecification("The return type specified for the location query is unsupported");
-	}
+	addToReturnFloatQuery(builder, where);
+}
+//void Location::addFloatTableQuery(query::Builder & builder) const
+//{
+//	std::ostringstream s;
+//	builder.where(s);
+//	std::string where = s.str();
+//
+//	size_t found = where.find("'");
+//	while (found!=string::npos)
+//	{
+//		where.replace(found, 1, "''");
+//		found = where.find("'", found + 2);
+//	}
+//
+//	builder.where(queryReturnFloat(where));
+//}
+
+void Location::addGridTableQuery(query::Builder & builder) const
+{
+	builder.where(queryReturnGrid());
 }
 
 string Location::queryReturnGrid( ) const
@@ -249,93 +266,127 @@ string Location::queryReturnGrid( ) const
 		q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << placeName() << "')";
 	}
 
-	std::cout << q.str() << std::endl;
+	//std::cout << q.str() << std::endl;
 	return q.str();
 }
 
 
-string Location::queryReturnFloat( std::string where ) const
+void Location::addToReturnFloatQuery( query::Builder & builder, std::string where ) const
 {
-	ostringstream q;
-	std::string myGeometry;
-
 	// This code is only relevant for retrieving point-value data from a point-valued table.
-	switch (interpolationType_) {
+
+	switch (interpolationType_)
+	{
 	case Exact:
-		q << '(';
-		if ( hasGeometry() )
-		{
-			if ( geomType_ == GEOM_POINT ) {
-				q << "equals( st_geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
-			}
-			else if ( geomType_ == GEOM_POLYGON ) {
-				q 	<< "st_dwithin( "
-					<< "st_transform( v.placegeometry, v.originalsrid ), "
-					<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
-					<< "1 )";
-			}
-			else if ( geomType_ == GEOM_MPOLYGON ) {
-				q 	<< "st_dwithin( "
-					<< "st_transform( v.placegeometry, v.originalsrid ), "
-					<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
-					<< "1 )";
-			}
-		}
-		if ( hasPlaceName() )
-		{
-			/*
-			if ( hasGeometry() )
-				q << " AND ";
-			q << "v.placename = '" << placeName() << "'";
-			*/
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-			//q << "st_intersects( " << myGeometry << ", v.placegeometry )";
-			q << myGeometry << " && v.placegeometry AND _ST_Intersects(" << myGeometry << ", v.placegeometry)";
-		}
-		q << ')';
+		addToReturnExactFloatQuery(builder, where);
 		break;
 	case Nearest:
-		if ( hasGeometry() )
-			myGeometry = "st_geomfromtext('" + geometry() + "', 4030 )";
-		else
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-		// Create query
-		q 	<<  "v.placeid IN "
-			<<	"(SELECT nn_gid FROM "
-			<< WCI_SCHEMA << ".nearestneighbor( "
-			<< myGeometry << ", "   // geometry
-			<< "1, "				// distance to nearest
-			<< "1, "				// number of points
-			<< "180, "				// iterations
-			<< "'" << WCI_SCHEMA << ".floatvalue', "
-			<< "'" << where << "', "
-			<< "'placeid', "
-			<< "'placegeometry' ))";
+		addToReturnNearestFloatQuery(builder, where);
 		break;
 	case Surround:
-		if ( hasGeometry() )
-			myGeometry = "st_geomfromtext('" + geometry() + "', 4030 )";
-		else
-			myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-		// Create query
-		q 	<<  "v.valueid IN "
-			<<	"(SELECT nn_gid FROM "
-			<< WCI_SCHEMA << ".nearestneighbor( "
-			<< myGeometry << ", "   // geometry
-			<< "1, "				// distance to nearest
-			<< interpolationParameter_ << ", "				// number of points
-			<< "180, "				// iterations
-			<< "'" << WCI_SCHEMA << ".floatvalue', "
-			<< "'" << where << "', "
-			<< "'valueid', "
-			<< "'placegeometry' ))";
+		addToReturnSurroundFloatQuery(builder, where);
 		break;
 	case Bilinear:
+		addToReturnBilinearFloatQuery(builder, where);
 	default:
-		q << "FALSE";
-		break;
+		builder.where("FALSE");
 	}
-
-	std::cout << q.str() << std::endl;
-	return q.str();
 }
+
+void Location::addToReturnExactFloatQuery( query::Builder & builder, std::string where ) const
+{
+	if ( hasGeometry() )
+	{
+		std::ostringstream q;
+		q << '(';
+		if ( geomType_ == GEOM_POINT ) {
+			q << "equals( st_geomfromtext('" << geometry() << "', 4030 ), v.placegeometry )";
+		}
+		else if ( geomType_ == GEOM_POLYGON ) {
+			q 	<< "st_dwithin( "
+				<< "st_transform( v.placegeometry, v.originalsrid ), "
+				<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+				<< "1 )";
+		}
+		else if ( geomType_ == GEOM_MPOLYGON ) {
+			q 	<< "st_dwithin( "
+				<< "st_transform( v.placegeometry, v.originalsrid ), "
+				<< "st_transform( st_geomfromtext( '" << geometry() << "', 4030), v.originalsrid ), "
+				<< "1 )";
+		}
+		q << ')';
+		builder.where(q.str());
+	}
+	if ( hasPlaceName() )
+	{
+		query::Builder subQuery;
+		subQuery.what("placegeometry AS geometry_for_name");
+		subQuery.from(WCI_SCHEMA".placedefinition_mv p");
+		subQuery.from(WCI_SCHEMA".getSessionData() s");
+		subQuery.where("p.placenamespaceid = s.placenamespaceid");
+		subQuery.where("placename = '" + placeName() + '\'');
+
+		builder.with(subQuery, "geometries");
+		builder.from("geometries g");
+		builder.where("g.geometry_for_name && v.placegeometry");
+		builder.where("_ST_Intersects(g.geometry_for_name, v.placegeometry)");
+
+
+//		std::string myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p,"
+//				" "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+//		q << myGeometry << " && v.placegeometry AND _ST_Intersects(" << myGeometry << ", v.placegeometry)";
+	}
+}
+
+void Location::addToReturnNearestFloatQuery( query::Builder & builder, std::string where ) const
+{
+	std::string myGeometry;
+	if ( hasGeometry() )
+		myGeometry = "st_geomfromtext('" + geometry() + "', 4030 )";
+	else
+		myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+	// Create query
+	std::ostringstream q;
+	q 	<<  "v.placeid IN "
+		<<	"(SELECT nn_gid FROM "
+		<< WCI_SCHEMA << ".nearestneighbor( "
+		<< myGeometry << ", "   // geometry
+		<< "1, "				// distance to nearest
+		<< "1, "				// number of points
+		<< "180, "				// iterations
+		<< "'" << WCI_SCHEMA << ".floatvalue', "
+		<< "'" << where << "', "
+		<< "'placeid', "
+		<< "'placegeometry' ))";
+	builder.where(q.str());
+}
+
+void Location::addToReturnSurroundFloatQuery( query::Builder & builder, std::string where ) const
+{
+	std::string myGeometry;
+	if ( hasGeometry() )
+		myGeometry = "st_geomfromtext('" + geometry() + "', 4030 )";
+	else
+		myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p, "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
+	// Create query
+	std::ostringstream q;
+	q 	<<  "v.valueid IN "
+		<<	"(SELECT nn_gid FROM "
+		<< WCI_SCHEMA << ".nearestneighbor( "
+		<< myGeometry << ", "   // geometry
+		<< "1, "				// distance to nearest
+		<< interpolationParameter_ << ", "				// number of points
+		<< "180, "				// iterations
+		<< "'" << WCI_SCHEMA << ".floatvalue', "
+		<< "'" << where << "', "
+		<< "'valueid', "
+		<< "'placegeometry' ))";
+
+	builder.where(q.str());
+}
+
+void Location::addToReturnBilinearFloatQuery( query::Builder & builder, std::string where ) const
+{
+	builder.where("FALSE");
+}
+
