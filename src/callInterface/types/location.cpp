@@ -321,6 +321,8 @@ void Location::addToReturnExactFloatQuery( query::Builder & builder, std::string
 	{
 		query::Builder subQuery;
 		subQuery.what("placegeometry AS geometry_for_name");
+		subQuery.what("placenamevalidfrom");
+		subQuery.what("placenamevalidto");
 		subQuery.from(WCI_SCHEMA".placedefinition_mv p");
 		subQuery.from(WCI_SCHEMA".getSessionData() s");
 		subQuery.where("p.placenamespaceid = s.placenamespaceid");
@@ -330,6 +332,8 @@ void Location::addToReturnExactFloatQuery( query::Builder & builder, std::string
 		builder.from("geometries g");
 		builder.where("g.geometry_for_name && v.placegeometry");
 		builder.where("_ST_Intersects(g.geometry_for_name, v.placegeometry)");
+		builder.where("referencetime >= g.placenamevalidfrom");
+		builder.where("referencetime < g.placenamevalidto");
 
 
 //		std::string myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p,"

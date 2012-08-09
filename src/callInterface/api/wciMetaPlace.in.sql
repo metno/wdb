@@ -396,7 +396,7 @@ BEGIN
 			VALUES ( placeId_,
 					 nameSpace_,
 					 lower(placeName_),
-					 'today'::TIMESTAMP WITH TIME ZONE,
+					 '-infinity'::TIMESTAMP WITH TIME ZONE,
 					 'infinity'::TIMESTAMP WITH TIME ZONE,
 					 'now' );
 		END IF;
@@ -408,7 +408,7 @@ BEGIN
 				  placenamespaceid = namespace_;
 			IF NOT FOUND THEN
 				INSERT INTO __WDB_SCHEMA__.placename VALUES
-				( placeId_, namespace_, lower(placeName_), 'today', 'infinity', 'now' );
+				( placeId_, namespace_, lower(placeName_), '-infinity', 'infinity', 'now' );
 			ELSE
 				UPDATE __WDB_SCHEMA__.placename 
 				SET placename = lower(placeName_), 
@@ -632,7 +632,7 @@ BEGIN
 	VALUES ( placeId_,
 			 namespace_,
 			 lower(placeName_),
-			  'today'::TIMESTAMP WITH TIME ZONE, 
+			  '-infinity'::TIMESTAMP WITH TIME ZONE, 
 			  'infinity'::TIMESTAMP WITH TIME ZONE,
 			   'now' );
 END;

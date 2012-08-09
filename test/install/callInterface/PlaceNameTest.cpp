@@ -307,6 +307,8 @@ void PlaceNameTest::testL6_03_PolygonDataByName_FloatOnly()
 {
     result r = t->exec( statementPolygon_( "test polygon 0", 16 ) );
 
+    std::cout << statementPolygon_( "test polygon 0", 16 );
+
     CPPUNIT_ASSERT_EQUAL( result::size_type( 5 ), r.size() );
     int count = 0;
     for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
@@ -323,13 +325,57 @@ void PlaceNameTest::testL6_03_PolygonDataByName_FloatOnly()
 
 void PlaceNameTest::testManyLocationsForSameName()
 {
-    result r = t->exec( statementFloat_( "test point 15" ) );
+	std::string query =
+			"SELECT value, placename, placegeometry "
+			"FROM wci.read( ARRAY['test wci 7'], 'test point 15', "
+			"NULL, NULL, "
+			"ARRAY['land area fraction'],NULL,"
+			"NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
 
-//    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
-//    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 15 hirlam 20 grid" ) );
-//    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 15 hirlam 20 grid" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), count_val( r, "placename", "test point 15" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 1 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 2 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.9 60.4)" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.8 60.5)" ) );
 }
 
+void PlaceNameTest::testLocationDoesNotExistYet()
+{
+	std::string query =
+			"SELECT value FROM wci.read( ARRAY['test wci 7'], 'test point 15', '2000-01-01', NULL, ARRAY['land area fraction'],NULL,NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
+
+	CPPUNIT_ASSERT(r.empty());
+}
+
+void PlaceNameTest::testLocationDoesNotExistAnymore()
+{
+	std::string query =
+			"SELECT value FROM wci.read( ARRAY['test wci 7'], 'test point 15', '2012-01-01', NULL, ARRAY['land area fraction'],NULL,NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
+
+	CPPUNIT_ASSERT(r.empty());
+}
+
+void PlaceNameTest::testQueryForLocationThatHasChangedName()
+{
+	std::string query =
+			"SELECT value, placename, placegeometry "
+			"FROM wci.read( ARRAY['test wci 7'], 'test point 16', "
+			"NULL, NULL, "
+			"ARRAY['land area fraction'],NULL,"
+			"NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
+
+	
+
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), size_t( r.size() ) );
+	CPPUNIT_ASSERT_EQUAL( std::string("test point 16"), r[0]["placename"].as<std::string>());
+    CPPUNIT_ASSERT_EQUAL( 3, r[0]["value"].as<int>());
+    CPPUNIT_ASSERT_EQUAL( std::string("POINT(13.9 60.4)"), r[0]["placegeometry"].as<std::string>());
+}
 
 std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 {

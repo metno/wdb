@@ -75,6 +75,9 @@ class PlaceNameTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL6_03_PolygonDataByName_FloatOnly );
 
 	CPPUNIT_TEST( testManyLocationsForSameName );
+	CPPUNIT_TEST( testLocationDoesNotExistYet );
+	CPPUNIT_TEST( testLocationDoesNotExistAnymore );
+	CPPUNIT_TEST( testQueryForLocationThatHasChangedName );
 
 	CPPUNIT_TEST_SUITE_END();
 
@@ -116,6 +119,10 @@ public:
 	void testL6_03_PolygonDataByName_FloatOnly();
 
 	void testManyLocationsForSameName();
+	void testLocationDoesNotExistYet();
+	void testLocationDoesNotExistAnymore();
+	void testQueryForLocationThatHasChangedName();
+
 
 private:
 	std::string statementOid_( const std::string & placeDef ) const;

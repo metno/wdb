@@ -72,6 +72,13 @@ class wciWriteTest : public AbstractWciTestFixture
 	CPPUNIT_TEST_EXCEPTION(testAutoRegistrationOfNewParametersWithWrongParameterUsageThrows, pqxx::sql_error);
 	CPPUNIT_TEST_EXCEPTION(testInconsistencyBetweenPhysicalPhenomenaAndUnitThrows, pqxx::sql_error);
 	CPPUNIT_TEST(testSeveralNewParameters);
+	CPPUNIT_TEST(testWriteExistingPlace);
+	CPPUNIT_TEST(testWriteNotYetExistingPlace);
+	CPPUNIT_TEST(testWriteNoLongerExistingPlace);
+	CPPUNIT_TEST(testWriteAtStartOfValidPeriod);
+	CPPUNIT_TEST(testWriteAtEndOfValidPeriod);
+
+
 	CPPUNIT_TEST_SUITE_END();
 public:
 	wciWriteTest();
@@ -102,6 +109,11 @@ public:
 	void testAutoRegistrationOfNewParametersWithWrongParameterUsageThrows();
 	void testInconsistencyBetweenPhysicalPhenomenaAndUnitThrows();
 	void testSeveralNewParameters();
+	void testWriteExistingPlace();
+	void testWriteNotYetExistingPlace();
+	void testWriteNoLongerExistingPlace();
+	void testWriteAtStartOfValidPeriod();
+	void testWriteAtEndOfValidPeriod();
 
 private:
 	std::string statement_(
