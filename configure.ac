@@ -135,10 +135,10 @@ VL_LIB_READLINE
 # Module Checks
 #-----------------------------------------------------------------------------
 
-# POSTGRES
-WDB_POSTGRES_CHECK(8.4.x)
-WDB_POSTGIS_CHECK(1.4.x)
-WDB_PQXX_CHECK(3.0.x)
+ # POSTGRES
+WDB_POSTGRES_CHECK(8.4.0)
+WDB_POSTGIS_CHECK(1.4.0)
+WDB_PQXX_CHECK(3.0.0)
 
 WDB_GEOS_C
 
