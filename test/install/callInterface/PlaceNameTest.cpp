@@ -64,7 +64,7 @@ void PlaceNameTest::testL1_01A_NoPlaceName()
 
 void PlaceNameTest::testL1_01B_NoPlaceName()
 {
-	CPPUNIT_ASSERT_THROW( t->exec( statementFloat_( "" ) ), data_exception );
+	CPPUNIT_ASSERT_THROW( t->exec( statementFloatFromGridOnly_( "" ) ), data_exception );
 }
 
 void PlaceNameTest::testL1_02A_OnePlaceName()
@@ -77,7 +77,7 @@ void PlaceNameTest::testL1_02A_OnePlaceName()
 
 void PlaceNameTest::testL1_02B_OnePlaceName()
 {
-    result r = t->exec( statementFloat_( "nearest test point 0" ) );
+    result r = t->exec( statementFloatFromGridOnly_( "nearest test point 0" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 test grid, rotated" ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20 grid" ) );
@@ -98,7 +98,7 @@ void PlaceNameTest::testL1_03A_NullPlaceName()
 
 void PlaceNameTest::testL1_03B_NullPlaceName()
 {
-    result r = t->exec( statementFloat_( "NULL" ) );
+    result r = t->exec( statementFloatFromGridOnly_( "NULL" ) );
 
     CPPUNIT_ASSERT( count_val( r, "placename", "test point 0" ) );
     CPPUNIT_ASSERT( count_val( r, "placename", "oslo" ) );
@@ -118,7 +118,7 @@ void PlaceNameTest::testL2_01A_PlaceNamesExist()
 
 void PlaceNameTest::testL2_01B_PlaceNamesExist()
 {
-	result r = t->exec( statementFloat_( "nearest test point 0" ) );
+	result r = t->exec( statementFloatFromGridOnly_( "nearest test point 0" ) );
 	CPPUNIT_ASSERT( ! r.empty() );
 }
 
@@ -130,7 +130,7 @@ void PlaceNameTest::testL2_02A_PlaceNamesDoNotExist()
 
 void PlaceNameTest::testL2_02B_PlaceNamesDoNotExist()
 {
-	result r = t->exec( statementFloat_( "no such place" ) );
+	result r = t->exec( statementFloatFromGridOnly_( "no such place" ) );
 	CPPUNIT_ASSERT( r.empty() );
 }
 
@@ -144,7 +144,7 @@ void PlaceNameTest::testL3_01A_LowerCase()
 
 void PlaceNameTest::testL3_01B_LowerCase()
 {
-    result r = t->exec( statementFloat_( "nearest test point 0" ) );
+    result r = t->exec( statementFloatFromGridOnly_( "nearest test point 0" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 test grid, rotated" ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest test point 0 hirlam 20 grid" ) );
@@ -161,8 +161,8 @@ void PlaceNameTest::testL3_02A_UpperCase()
 
 void PlaceNameTest::testL3_02B_UpperCase()
 {
-    result r = t->exec( statementFloat_( "NEAREST TEST POINT 0" ) );
-    result v = t->exec( statementFloat_( "nearest test point 0" ) );
+    result r = t->exec( statementFloatFromGridOnly_( "NEAREST TEST POINT 0" ) );
+    result v = t->exec( statementFloatFromGridOnly_( "nearest test point 0" ) );
 
     CPPUNIT_ASSERT( size_t( v.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
@@ -179,8 +179,8 @@ void PlaceNameTest::testL3_03A_MixedCase()
 
 void PlaceNameTest::testL3_03B_MixedCase()
 {
-    result r = t->exec( statementFloat_( "NearEST tESt PoINt 0" ) );
-    result v = t->exec( statementFloat_( "nearest test point 0" ) );
+    result r = t->exec( statementFloatFromGridOnly_( "NearEST tESt PoINt 0" ) );
+    result v = t->exec( statementFloatFromGridOnly_( "nearest test point 0" ) );
 
     CPPUNIT_ASSERT( size_t( v.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( v.size() ), size_t( r.size() ) );
@@ -241,7 +241,7 @@ void PlaceNameTest::testL4_02_SetPlaceRegularGridName()
 
 void PlaceNameTest::testL5_01_PointDataByName_Mixed()
 {
-    result r = t->exec( statementFloat_( "nearest oslo" ) );
+    result r = t->exec( statementFloatMixedSources_( "nearest oslo" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest oslo hirlam 10 grid" ) );
@@ -251,7 +251,7 @@ void PlaceNameTest::testL5_01_PointDataByName_Mixed()
 
 void PlaceNameTest::testL5_02_PointDataByName_GridOnly()
 {
-    result r = t->exec( statementFloat_( "nearest sortland" ) );
+    result r = t->exec( statementFloatFromGridOnly_( "nearest sortland" ) );
 
     CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "nearest sortland hirlam 10 grid" ) );
@@ -341,6 +341,36 @@ void PlaceNameTest::testManyLocationsForSameName()
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.8 60.5)" ) );
 }
 
+void PlaceNameTest::testNearestManyLocationsForSameName()
+{
+	std::string query =
+			"SELECT value, placename, placegeometry "
+			"FROM wci.read( ARRAY['test wci 7'], 'nearest test point 15', "
+			"NULL, NULL, "
+			"ARRAY['land area fraction'],NULL,"
+			"NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
+
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), count_val( r, "placename", "test point 15" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 1 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 2 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.9 60.4)" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.8 60.5)" ) );
+    // Is this correct?
+    // should we return test point 16 aswell?
+}
+
+void PlaceNameTest::testSuroundManyLocationsForSameName()
+{
+	CPPUNIT_FAIL("not implemented");
+}
+
+void PlaceNameTest::testBilinearManyLocationsForSameName()
+{
+	CPPUNIT_FAIL("not implemented");
+}
+
 void PlaceNameTest::testLocationDoesNotExistYet()
 {
 	std::string query =
@@ -369,8 +399,6 @@ void PlaceNameTest::testQueryForLocationThatHasChangedName()
 			"NULL,NULL::wci.returnfloat)";
     result r = t->exec( query );
 
-	
-
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), size_t( r.size() ) );
 	CPPUNIT_ASSERT_EQUAL( std::string("test point 16"), r[0]["placename"].as<std::string>());
     CPPUNIT_ASSERT_EQUAL( 3, r[0]["value"].as<int>());
@@ -392,10 +420,26 @@ std::string PlaceNameTest::statementOid_( const std::string & placeDef ) const
 	return st.str();
 }
 
-std::string PlaceNameTest::statementFloat_( const std::string & placeDef ) const
+std::string PlaceNameTest::statementFloatMixedSources_( const std::string & placeDef ) const
 {
 	ostringstream st;
 	st << "SELECT placename FROM wci.read( ARRAY['test group'], ";
+	if ( "NULL" == placeDef )
+		st << "NULL";
+	else
+		st << "'" << placeDef << "'";
+	st << ", '2004-12-25 06:00:00+00', NULL, ";
+	st << "'{\"" << defaultParameter << "\"}', ";
+	st << "NULL, NULL, NULL::wci.returnfloat )";
+
+	return st.str();
+}
+
+
+std::string PlaceNameTest::statementFloatFromGridOnly_( const std::string & placeDef ) const
+{
+	ostringstream st;
+	st << "SELECT placename FROM wci.read( ARRAY['test wci 0','test wci 1','test wci 2','test wci 5'], ";
 	if ( "NULL" == placeDef )
 		st << "NULL";
 	else

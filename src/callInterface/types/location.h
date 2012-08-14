@@ -125,11 +125,11 @@ private:
 
 	std::string queryReturnGrid( ) const;
 
-	void addToReturnFloatQuery( query::Builder & builder, std::string where ) const;
-	void addToReturnExactFloatQuery( query::Builder & builder, std::string where ) const;
-	void addToReturnNearestFloatQuery( query::Builder & builder, std::string where ) const;
-	void addToReturnSurroundFloatQuery( query::Builder & builder, std::string where ) const;
-	void addToReturnBilinearFloatQuery( query::Builder & builder, std::string where ) const;
+	void addToReturnFloatQuery( query::Builder & builder, const std::string & where ) const;
+	void addToReturnExactFloatQuery( query::Builder & builder ) const;
+	void addToReturnNearestFloatQuery( query::Builder & builder, const std::string & where ) const;
+	void addToReturnSurroundFloatQuery( query::Builder & builder, const std::string & where ) const;
+	void addToReturnBilinearFloatQuery( query::Builder & builder ) const;
 
 
 	std::string interpolation_;
