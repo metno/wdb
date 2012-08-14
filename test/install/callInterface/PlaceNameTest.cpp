@@ -357,8 +357,6 @@ void PlaceNameTest::testNearestManyLocationsForSameName()
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 2 ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.9 60.4)" ) );
     CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.8 60.5)" ) );
-    // Is this correct?
-    // should we return test point 16 aswell?
 }
 
 void PlaceNameTest::testSuroundManyLocationsForSameName()

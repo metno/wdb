@@ -281,7 +281,7 @@ void Location::addToReturnFloatQuery( query::Builder & builder, const std::strin
 		addToReturnExactFloatQuery(builder);
 		break;
 	case Nearest:
-		addToReturnNearestFloatQuery(builder, where);
+		addToReturnNearestFloatQuery(builder);
 		break;
 	case Surround:
 		addToReturnSurroundFloatQuery(builder, where);
@@ -359,7 +359,7 @@ query::Builder getGeometryQuery(const std::string & placename)
 }
 }
 
-void Location::addToReturnNearestFloatQuery( query::Builder & builder, const std::string & where ) const
+void Location::addToReturnNearestFloatQuery( query::Builder & builder ) const
 {
 	// This is fairly complex:
 	// We take the original query (which must be complete except for the

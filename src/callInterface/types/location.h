@@ -127,7 +127,7 @@ private:
 
 	void addToReturnFloatQuery( query::Builder & builder, const std::string & where ) const;
 	void addToReturnExactFloatQuery( query::Builder & builder ) const;
-	void addToReturnNearestFloatQuery( query::Builder & builder, const std::string & where ) const;
+	void addToReturnNearestFloatQuery( query::Builder & builder ) const;
 	void addToReturnSurroundFloatQuery( query::Builder & builder, const std::string & where ) const;
 	void addToReturnBilinearFloatQuery( query::Builder & builder ) const;
 
