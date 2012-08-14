@@ -307,8 +307,6 @@ void PlaceNameTest::testL6_03_PolygonDataByName_FloatOnly()
 {
     result r = t->exec( statementPolygon_( "test polygon 0", 16 ) );
 
-    std::cout << statementPolygon_( "test polygon 0", 16 );
-
     CPPUNIT_ASSERT_EQUAL( result::size_type( 5 ), r.size() );
     int count = 0;
     for ( result::const_iterator it = r.begin(); it != r.end(); ++ it ) {
@@ -366,7 +364,15 @@ void PlaceNameTest::testSuroundManyLocationsForSameName()
 
 void PlaceNameTest::testBilinearManyLocationsForSameName()
 {
-	CPPUNIT_FAIL("not implemented");
+	std::string query =
+			"SELECT value, placename, placegeometry "
+			"FROM wci.read( ARRAY['test wci 7'], 'bilinear test point 15', "
+			"NULL, NULL, "
+			"ARRAY['land area fraction'],NULL,"
+			"NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
+
+    CPPUNIT_ASSERT(r.empty());
 }
 
 void PlaceNameTest::testLocationDoesNotExistYet()
