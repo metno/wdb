@@ -125,10 +125,9 @@ private:
 
 	std::string queryReturnGrid( ) const;
 
-	void addToReturnFloatQuery( query::Builder & builder, const std::string & where ) const;
 	void addToReturnExactFloatQuery( query::Builder & builder ) const;
 	void addToReturnNearestFloatQuery( query::Builder & builder ) const;
-	void addToReturnSurroundFloatQuery( query::Builder & builder, const std::string & where ) const;
+	void addToReturnSurroundFloatQuery( query::Builder & builder ) const;
 	void addToReturnBilinearFloatQuery( query::Builder & builder ) const;
 
 
