@@ -359,7 +359,22 @@ void PlaceNameTest::testNearestManyLocationsForSameName()
 
 void PlaceNameTest::testSuroundManyLocationsForSameName()
 {
-	CPPUNIT_FAIL("not implemented");
+	std::string query =
+			"SELECT value, placename, placegeometry "
+			"FROM wci.read( ARRAY['test wci 7'], 'surround(2) test point 15', "
+			"NULL, NULL, "
+			"ARRAY['land area fraction'],NULL,"
+			"NULL,NULL::wci.returnfloat)";
+    result r = t->exec( query );
+
+    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), size_t( r.size() ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), count_val( r, "placename", "test point 15" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placename", "test point 16" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 1 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 2 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "value", 3 ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), count_val( r, "placegeometry", "POINT(13.9 60.4)" ) );
+    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), count_val( r, "placegeometry", "POINT(13.8 60.5)" ) );
 }
 
 void PlaceNameTest::testBilinearManyLocationsForSameName()
