@@ -301,29 +301,7 @@ void Location::addToReturnExactFloatQuery( query::Builder & builder) const
 		builder.where("_ST_Intersects(g.geometry_for_name, v.placegeometry)");
 		builder.where("referencetime >= g.placenamevalidfrom");
 		builder.where("referencetime < g.placenamevalidto");
-
-
-//		std::string myGeometry = "(SELECT placegeometry FROM " + std::string(WCI_SCHEMA) + ".placedefinition_mv p,"
-//				" "  + std::string(WCI_SCHEMA) +  ".getSessionData() s  WHERE p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-//		q << myGeometry << " && v.placegeometry AND _ST_Intersects(" << myGeometry << ", v.placegeometry)";
 	}
-}
-
-namespace
-{
-query::Builder getGeometryQuery(const std::string & placename)
-{
-	query::Builder builder(WCI_SCHEMA".placedefinition_mv p");
-	builder.from(WCI_SCHEMA".getSessionData() s");
-	builder.what("placegeometry");
-	builder.where("p.placenamespaceid = s.placenamespaceid");
-	builder.where("placename = '" + placename + "'");
-
-	return builder;
-
-//	return "(SELECT placegeometry FROM "WCI_SCHEMA".placedefinition_mv p, "WCI_SCHEMA".getSessionData() s  WHERE "
-//			"p.placenamespaceid = s.placenamespaceid AND placename = '" + placeName() + "')";
-}
 }
 
 void Location::addToReturnNearestFloatQuery( query::Builder & builder ) const
@@ -384,4 +362,3 @@ void Location::addToReturnBilinearFloatQuery( query::Builder & builder ) const
 {
 	builder.where("FALSE");
 }
-
