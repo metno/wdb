@@ -208,7 +208,7 @@ install-database:
 	@builddir@/install/install_database -d $(DATABASE_NAME)
 
 uninstall-database: install/uninstall_database
-	@builddir@/install/uninstall_database
+	@builddir@/install/uninstall_database -d $(DATABASE_NAME)
 
 # We cannot install the database unless we have installed the binaries in 
 # @prefix@, therefore we ommit database installation if DESTDIR has been set.

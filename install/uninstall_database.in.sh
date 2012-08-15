@@ -102,6 +102,19 @@ if test -z "$WDB_INSTALL_PORT"; then
 fi
 
 
+if [ -z $WDB_INSTALL_DATABASE ]; then
+	echo No database name available - unable to continue
+	exit 1
+fi
+PSQL_OPTIONS=$WDB_INSTALL_DATABASE
+if [ $WDB_INSTALL_PORT ]; then
+	PSQL_OPTIONS="$PSQL_OPTIONS -p$WDB_INSTALL_PORT"
+fi
+if [ $WDB_INSTALL_USER ]; then
+	PSQL_OPTIONS="$PSQL_OPTIONS -U$WDB_INSTALL_USER"
+fi
+
+
 # Start Installation
 echo "---- wdb database uninstall ----"
 
@@ -149,7 +162,7 @@ export $WDB_NAME
 echo -n "checking whether database $WDB_NAME exists... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
 # grab first line (name) | trim whitesoace
-DB_CHECK=`psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
+DB_CHECK=`psql $PSQL_OPTIONS -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
 # Test whether database exists
 # Note: as the list above only grabs the first tablename matching 
 # the WDB_NAME pattern this may fail if there is a database with a
@@ -164,12 +177,12 @@ fi
 
 # Delete the field data, so it won't remain in the postgresql database folder
 echo -n "deleting data fields... "
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "DELETE FROM __WDB_SCHEMA__.gridvalue" >> /dev/null
-psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT $WDB_NAME -c "SELECT __WDB_SCHEMA__.vacuum_file_blob()" >> /dev/null
+psql $PSQL_OPTIONS -c "DELETE FROM __WDB_SCHEMA__.gridvalue" >> /dev/null
+psql $PSQL_OPTIONS -c "SELECT __WDB_SCHEMA__.vacuum_file_blob()" >> /dev/null
 echo "done"
 # Drop the wdb database
 echo -n "dropping database... "
-if ! dropdb -p $WDB_INSTALL_PORT $WDB_NAME; then
+if ! dropdb $PSQL_OPTIONS; then
     echo "No database found - skipping database uninstall"
 	exit 1
 fi
