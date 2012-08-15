@@ -399,7 +399,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WCI_DIR/types/wciReadReturnType.sql
 \i $WCI_DIR/types/wciTimeSpec.sql
 -- WCI Core
-\i $WCI_DIR/core/nearestNeighbor.sql
 \i $WCI_DIR/core/getDataProvider.sql
 \i $WCI_DIR/core/wciBrowseInternals.sql
 \i $WCI_DIR/core/wciSession.sql

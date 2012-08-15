@@ -33,8 +33,7 @@ libwciCoreNoPostgres_la_SOURCES +=\
 WCICORE_SOURCES =		src/callInterface/core/wciSession.in.sql \
 						src/callInterface/core/getDataProvider.in.sql \
 						src/callInterface/core/wciBrowseInternals.in.sql \
-						src/callInterface/core/wciWriteInternals.in.sql \
-						src/callInterface/core/nearestNeighbor.in.sql
+						src/callInterface/core/wciWriteInternals.in.sql
 
 wcicoredir = 			$(wcidir)/core
 
