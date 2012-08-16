@@ -20,12 +20,17 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # install - install the wdb system
 
-# TODO: Add support for reading additiona configuration files
+# TODO: Add support for reading additional configuration files
 
-
-DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`__WDB_BINDIR__/wdbConfiguration --host`
-DEFAULT_USER=`__WDB_BINDIR__/wdbConfiguration --user`
-DEFAULT_PORT=`__WDB_BINDIR__/wdbConfiguration --port`
+if test -e "__WDB_BINDIR__/wdbConfiguration"; then
+	DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`__WDB_BINDIR__/wdbConfiguration --host`
+	DEFAULT_USER=`__WDB_BINDIR__/wdbConfiguration --user`
+	DEFAULT_PORT=`__WDB_BINDIR__/wdbConfiguration --port`
+else
+	DEFAULT_DATABASE=$PGDATABASE
+	DEFAULT_USER=$PGUSER
+	DEFAULT_PORT=$PGPORT
+fi
 
 SCRIPT_VERSION=__WDB_VERSION__
 
@@ -33,7 +38,7 @@ SCRIPT_USAGE="Usage: $0 [OPTION]
 
 The script uninstalls the WDB system from the database using the PG environment variables:
 
-PGDATABASE        (default: $DEFAULT_PGDATABASE)
+PGDATABASE        (default: $DEFAULT_DATABASE)
 PGUSER            (default: $DEFAULT_USER)
 PGPORT            (default: $DEFAULT_PORT)
 

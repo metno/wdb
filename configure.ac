@@ -143,7 +143,31 @@ WDB_PQXX_CHECK(3.0.0)
 WDB_GEOS_C
 
 # BOOST
-WDB_BOOST_CHECK
+AX_BOOST_BASE(1.40.0)
+AX_BOOST_PROGRAM_OPTIONS
+AX_BOOST_DATE_TIME
+AX_BOOST_REGEX
+AX_BOOST_FILESYSTEM
+AX_BOOST_THREAD
+AC_CHECK_HEADERS([boost/lexical_cast.hpp boost/shared_ptr.hpp]) 
+AC_CHECK_HEADERS([boost/noncopyable.hpp boost/static_assert.hpp])
+AC_CHECK_HEADERS([boost/assign/list_of.hpp boost/scoped_array.hpp])
+AC_CHECK_HEADERS([boost/function.hpp boost/algorithm/string.hpp])
+AC_CHECK_HEADERS([boost/program_options.hpp boost/program_options/options_description.hpp])
+AC_CHECK_HEADERS([boost/program_options/variables_map.hpp])
+AC_CHECK_HEADERS([boost/program_options/positional_options.hpp])
+AC_CHECK_HEADERS([boost/date_time/posix_time/posix_time.hpp])
+AC_CHECK_HEADERS([boost/date_time/posix_time/posix_time_duration.hpp])
+AC_CHECK_HEADERS([boost/date_time/gregorian/gregorian.hpp])
+AC_CHECK_HEADERS([boost/filesystem/operations.hpp boost/filesystem/path.hpp])
+AC_CHECK_HEADERS([boost/thread.hpp])
+CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+export CPPFLAGS
+LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
+export LDFLAGS
+LIBS="$LIBS $BOOST_PROGRAM_OPTIONS_LIB $BOOST_DATE_TIME_LIB $BOOST_REGEX_LIB $BOOST_FILESYSTEM_LIB $BOOST_THREAD_LIB -lboost_system"
+export LIBS
+#WDB_BOOST_CHECK
 
 
 # LOG4CPP
