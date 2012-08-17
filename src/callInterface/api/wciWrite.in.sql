@@ -39,7 +39,7 @@ DECLARE
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
 	currentVersion_ integer;
-	placeid_ bigint := __WCI_SCHEMA__.getplaceid( placename_ );
+	placeid_ bigint := __WCI_SCHEMA__.getplaceid( placename_, referencetime_ );
 	valueParameterId_ integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	levelParameterId_ integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ );
 	dataId bigint;
@@ -156,7 +156,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( dataProviderName_ );
-	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_ );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_, referencetime_ );
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueParameterName_ );
 	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelParameterName_ );
@@ -279,7 +279,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( dataProviderName_ );
-	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_ );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_, referencetime );
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueParameterName_ );
 	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelParameterName_ );
@@ -476,7 +476,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( what.dataProviderName );
-	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( what.placeName );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( what.placeName, what.referencetime );
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( what.valueParameterName );
 	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( what.levelParameterName );
@@ -599,7 +599,7 @@ DECLARE
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueparameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelparameter_ );
 	currentVersion_ integer;
-	placeid_ bigint := __WCI_SCHEMA__.getplaceid( placename_ );
+	placeid_ bigint := __WCI_SCHEMA__.getplaceid( placename_, referencetime_ );
 	valueParameterId_ integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	levelParameterId_ integer := __WCI_SCHEMA__.getlevelparameterid( normalizedLevelParameter_ ); 
 BEGIN
@@ -709,7 +709,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	dataProviderId_ 		  bigint := __WCI_SCHEMA__.idfromdataprovider( dataProviderName_ );
-	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_ );
+	placeid_ 				  bigint := __WCI_SCHEMA__.getplaceid( placeName_, referencetime_ );
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( valueParameterName_ );
 	valueParameterId_ 	   	  integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( levelParameterName_ );
@@ -815,7 +815,7 @@ RETURNS void AS
 $BODY$
 DECLARE
 	dataProviderId_ 		bigint := __WCI_SCHEMA__.idfromdataprovider( what.dataProviderName );
-	placeid_ 				bigint := __WCI_SCHEMA__.getplaceid( what.placeName );
+	placeid_ 				bigint := __WCI_SCHEMA__.getplaceid( what.placeName, what.referencetime );
 	normalizedValueParameter_ text := __WCI_SCHEMA__.normalizeParameter( what.valueParameterName );
 	valueParameterId_ 	   	integer := __WCI_SCHEMA__.getvalueparameterid( normalizedValueParameter_ );
 	normalizedLevelParameter_ text := __WCI_SCHEMA__.normalizeLevelParameter( what.levelParameterName );

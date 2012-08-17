@@ -39,7 +39,7 @@ Datum getWciBrowseDataProviderQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"dataprovidername, min(referencetime), max(referencetime), count(*)",
-			"GROUP BY dataprovidername");
+			NULL, "dataprovidername");
 
 	text * ret = CStringGetTextP(query);
 
@@ -55,7 +55,7 @@ Datum getWciBrowsePlaceQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"placename, min(referencetime), max(referencetime), count(*)",
-			"GROUP BY placename");
+			NULL, "placename");
 
 	text * ret = CStringGetTextP(query);
 
@@ -71,7 +71,7 @@ Datum getWciBrowseReferenceTimeQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"referencetime, count(*)",
-			"GROUP BY referencetime");
+			NULL, "referencetime");
 
 	text * ret = CStringGetTextP(query);
 
@@ -87,7 +87,7 @@ Datum getWciBrowseValidTimeQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"validtimefrom, validtimeto, count(*)",
-			"GROUP BY validtimefrom, validtimeto");
+			NULL, "validtimefrom, validtimeto");
 
 	text * ret = CStringGetTextP(query);
 
@@ -103,7 +103,7 @@ Datum getWciBrowseValueParameterQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"valueparametername, valueunitname, count(*)",
-			"GROUP BY valueparametername, valueunitname");
+			NULL, "valueparametername, valueunitname");
 
 	text * ret = CStringGetTextP(query);
 
@@ -119,7 +119,7 @@ Datum getWciBrowseLevelParameterQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"levelparametername, levelunitname, min(levelfrom), max(levelto), count(*)",
-			"GROUP BY levelparametername, levelunitname");
+			NULL, "levelparametername, levelunitname");
 
 	text * ret = CStringGetTextP(query);
 
@@ -134,7 +134,7 @@ Datum getWciBrowseDataVersionQuery(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"dataversion, count(*)",
-			"GROUP BY 1 ORDER BY 1");
+			"1", "1");
 
 	text * ret = CStringGetTextP(query);
 
@@ -151,7 +151,7 @@ Datum getWciBrowseDataProviderQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"dataprovidername, min(referencetime), max(referencetime), count(*)",
-			"GROUP BY dataprovidername");
+			NULL, "dataprovidername");
 
 	text * ret = CStringGetTextP(query);
 
@@ -167,7 +167,7 @@ Datum getWciBrowsePlaceQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"placename, min(referencetime), max(referencetime), count(*)",
-			"GROUP BY placename");
+			NULL, "placename");
 
 	text * ret = CStringGetTextP(query);
 
@@ -183,7 +183,7 @@ Datum getWciBrowseReferenceTimeQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"referencetime, count(*)",
-			"GROUP BY referencetime");
+			NULL, "referencetime");
 
 	text * ret = CStringGetTextP(query);
 
@@ -199,7 +199,7 @@ Datum getWciBrowseValidTimeQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"validtimefrom, validtimeto, count(*)",
-			"GROUP BY validtimefrom, validtimeto");
+			NULL, "validtimefrom, validtimeto");
 
 	text * ret = CStringGetTextP(query);
 
@@ -215,7 +215,7 @@ Datum getWciBrowseValueParameterQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"valueparametername, valueunitname, count(*)",
-			"GROUP BY valueparametername, valueunitname");
+			NULL, "valueparametername, valueunitname");
 
 	text * ret = CStringGetTextP(query);
 
@@ -231,7 +231,7 @@ Datum getWciBrowseLevelParameterQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"levelparametername, levelunitname, min(levelfrom), max(levelto), count(*)",
-			"GROUP BY levelparametername, levelunitname");
+			NULL, "levelparametername, levelunitname");
 
 	text * ret = CStringGetTextP(query);
 
@@ -246,7 +246,7 @@ Datum getWciBrowseDataVersionQueryGrid(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, GridTable, OutputGid,
 			"dataversion, count(*)",
-			"GROUP BY 1 ORDER BY 1");
+			"1", "1");
 
 	text * ret = CStringGetTextP(query);
 
@@ -262,7 +262,7 @@ Datum getWciBrowseDataProviderQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"dataprovidername, min(referencetime), max(referencetime), count(*)",
-			"GROUP BY dataprovidername");
+			NULL, "dataprovidername");
 
 	text * ret = CStringGetTextP(query);
 
@@ -278,7 +278,7 @@ Datum getWciBrowsePlaceQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"placename, min(referencetime), max(referencetime), count(*)",
-			"GROUP BY placename");
+			NULL, "placename");
 
 	text * ret = CStringGetTextP(query);
 
@@ -294,7 +294,7 @@ Datum getWciBrowseReferenceTimeQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"referencetime, count(*)",
-			"GROUP BY referencetime");
+			NULL, "referencetime");
 
 	text * ret = CStringGetTextP(query);
 
@@ -310,7 +310,7 @@ Datum getWciBrowseValidTimeQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"validtimefrom, validtimeto, count(*)",
-			"GROUP BY validtimefrom, validtimeto");
+			NULL, "validtimefrom, validtimeto");
 
 	text * ret = CStringGetTextP(query);
 
@@ -326,7 +326,7 @@ Datum getWciBrowseValueParameterQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"valueparametername, valueunitname, count(*)",
-			"GROUP BY valueparametername, valueunitname");
+			NULL, "valueparametername, valueunitname");
 
 	text * ret = CStringGetTextP(query);
 
@@ -342,7 +342,7 @@ Datum getWciBrowseLevelParameterQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"levelparametername, levelunitname, min(levelfrom), max(levelto), count(*)",
-			"GROUP BY levelparametername, levelunitname");
+			NULL, "levelparametername, levelunitname");
 
 	text * ret = CStringGetTextP(query);
 
@@ -357,7 +357,7 @@ Datum getWciBrowseDataVersionQueryFloat(PG_FUNCTION_ARGS)
 
 	const char * query = build_query(& p, FloatTable, OutputFloat,
 			"dataversion, count(*)",
-			"GROUP BY 1 ORDER BY 1");
+			"1", "1");
 
 	text * ret = CStringGetTextP(query);
 

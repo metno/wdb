@@ -32,12 +32,13 @@
 #include "WciReadParameterCollection.h"
 
 
-std::ostream & addReferenceTimeQuery(std::ostream & q, const char * timeSpec)
+void addReferenceTimeQuery(query::Builder & builder, const char * timeSpec)
 {
 	if ( ! timeSpec )
-		return q;
+		return;
 
-	q << "AND (";
+	std::ostringstream q;
+	q << "(";
 
 	std::string spec(timeSpec);
 	TimeSpecification ts(spec);
@@ -76,7 +77,7 @@ std::ostream & addReferenceTimeQuery(std::ostream & q, const char * timeSpec)
 
 	q << ") ";
 
-	return q;
+	builder.where(q.str());
 }
 
 namespace
@@ -95,12 +96,13 @@ std::string quote(const std::string & validTime)
 }
 }
 
-std::ostream & addValidTimeQuery(std::ostream & q, const char * timeSpec)
+void addValidTimeQuery(query::Builder & builder, const char * timeSpec)
 {
 	if ( ! timeSpec )
-		return q;
+		return;
 
-	q << "AND (";
+	std::ostringstream q;
+	q << "(";
 
 	std::string spec(timeSpec);
 	TimeSpecification ts(spec);
@@ -139,7 +141,7 @@ std::ostream & addValidTimeQuery(std::ostream & q, const char * timeSpec)
     	ereport(ERROR, (errcode(ERRCODE_DATA_EXCEPTION), errmsg("Invalid time indeterminate code")));
     }
 
-	q << ") ";
+	q << ")";
 
-	return q;
+	builder.where(q.str());
 }

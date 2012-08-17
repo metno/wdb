@@ -4,7 +4,7 @@ wdb_la_LIBADD += $(geos_LIBS) $(GLIB_LIBS)
 wcidir = 				$(sqldir)/wci
 
 if HAS_CPPUNIT
-wdbUnitTest_LDADD += 	libwciCoreNoPostgres.la libwciTypesNoPostgres.la
+wdbUnitTest_LDADD += 	libwciTypesNoPostgres.la libwciCoreNoPostgres.la
 wdbUnitTest_LDADD += 	libwdbProj.a libwdbMath.a libwdbExcept.a
 wdbUnitTest_LDADD += 	$(geos_LIBS)
 # HAS_CPPUNIT

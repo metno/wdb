@@ -25,13 +25,15 @@ check_LTLIBRARIES +=	libwciCoreNoPostgres.la
 
 libwciCoreNoPostgres_la_SOURCES +=\
 						src/callInterface/core/projTransform.h \
-						src/callInterface/core/projTransform.cpp
+						src/callInterface/core/projTransform.cpp \
+						src/callInterface/core/Builder.h \
+						src/callInterface/core/Builder.cpp
+						
 						
 WCICORE_SOURCES =		src/callInterface/core/wciSession.in.sql \
 						src/callInterface/core/getDataProvider.in.sql \
 						src/callInterface/core/wciBrowseInternals.in.sql \
-						src/callInterface/core/wciWriteInternals.in.sql \
-						src/callInterface/core/nearestNeighbor.in.sql
+						src/callInterface/core/wciWriteInternals.in.sql
 
 wcicoredir = 			$(wcidir)/core
 

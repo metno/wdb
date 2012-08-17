@@ -30,7 +30,10 @@
 #ifndef LEVELQUERY_H_
 #define LEVELQUERY_H_
 
-#include <iosfwd>
+namespace query
+{
+class Builder;
+}
 
 /**
  * @addtogroup wci
@@ -48,7 +51,7 @@
  *                  function, or NULL if you want all.
  * @return the given stream.
  */
-std::ostream & addLevelQuery(std::ostream & q, const char * levelSpec);
+void addLevelQuery(query::Builder & builder, const char * levelSpec);
 
 /**
  * @}

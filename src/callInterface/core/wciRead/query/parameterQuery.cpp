@@ -28,7 +28,8 @@
 
 
 #include "util.h"
-#include <ostream>
+#include <Builder.h>
+#include <sstream>
 #include <stdexcept>
 #include "WciReadParameterCollection.h"
 
@@ -40,19 +41,23 @@ std::string prepParameter(const std::string & parameter)
 	return lquote(parameter);
 }
 
-std::ostream & addParameterQuery(std::ostream & q, const struct StringArray * parameters)
+void addParameterQuery(query::Builder & builder, const struct StringArray * parameters)
 {
 	if ( ! parameters )
-		return q;
-
-	q << "AND ";
+		return;
 
 	if ( parameters->size == 0 )
-		return q << "FALSE ";
+	{
+		builder.where("FALSE");
+		return;
+	}
 
+	std::ostringstream q;
 	q << "(valueparametername LIKE " << prepParameter(parameters->data[0]);
 	for ( int i = 1; i < parameters->size; ++ i )
 		q << " OR valueparametername LIKE " << prepParameter(parameters->data[i]);
-	return q << ") ";
+	q << ")";
+
+	builder.where(q.str());
 }
 

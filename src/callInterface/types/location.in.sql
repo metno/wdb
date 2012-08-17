@@ -34,7 +34,8 @@ LANGUAGE 'c' IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION
 __WCI_SCHEMA__.getPlaceId(
-	name_ text
+	name_ text,
+	at_time timestamp with time zone
 )
 RETURNS bigint AS
 $BODY$
@@ -48,8 +49,10 @@ BEGIN
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		p.placenamespaceid = s.placenamespaceid AND
-		p.placename = lower(name_);
-
+		p.placename = lower(name_) AND
+		at_time >= p.placenamevalidfrom AND
+		at_time < p.placenamevalidto;
+ 
 	IF NOT FOUND THEN
 		RAISE EXCEPTION 'Failed to identify placename in namespace: %', name_;
 	END IF;

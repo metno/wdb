@@ -53,6 +53,10 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'oslo' --reftime '2004-12-25
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 1' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
 $TEST_WRITE --dataprovider 'test wci 7' --placename 'test point 1' --reftime '2004-12-25 06:00:00+00' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' 
+$TEST_WRITE --value 1 --dataprovider 'test wci 7' --placename 'test point 15' --reftime '2010-12-24 12:00:00+00' --valueparameter='land area fraction'
+$TEST_WRITE --value 2 --dataprovider 'test wci 7' --placename 'test point 15' --reftime '2011-12-24 12:00:00+00' --valueparameter='land area fraction'
+$TEST_WRITE --value 3 --dataprovider 'test wci 7' --placename 'test point 16' --reftime '2011-12-24 12:00:00+00' --valueparameter='land area fraction'
+
 # Polygon Placenames
 $TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '2004-12-25 06:00:00+00' --valueparameter 'dew point temperature' -P164,161=2 -P165,160=2 -P165,161=2 -P165,162=2 -P166,159=2 -P166,160=2 -P166,161=2 -P166,162=2 -P166,163=2 -P167,158=2 -P167,159=2 -P167,160=2 -P167,161=2 -P167,162=2 -P167,163=2 -P167,164=2 -P168,159=2 -P168,160=2 -P168,161=2 -P168,162=2 -P168,163=2 -P169,160=2 -P169,161=2 -P169,162=2 -P170,161=2
 $TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 9'  --reftime '2004-12-25 06:00:00+00' --valueparameter 'dew point temperature' --validtimefrom '2005-01-11 06:00:00+00' --validtimeto '2005-01-12 06:00:00+00' --value 2

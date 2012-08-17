@@ -699,6 +699,8 @@ WHERE
 	AND lp.parameternamespaceid = s.parameternamespaceid
 	AND val.dataproviderid = dp.dataproviderid 
 	AND val.placeid = pl.placeid
+	AND pl.placenamevalidfrom <= val.referencetime
+	AND pl.placenamevalidto > val.referencetime
 	AND val.valueparameterid = vp.parameterid
 	AND val.levelparameterid = lp.parameterid ;
 
@@ -764,6 +766,8 @@ WHERE
 	AND lp.parameternamespaceid = s.parameternamespaceid
 	AND vlg.dataproviderid = dp.dataproviderid 
 	AND vlg.placeid = pl.placeid
+	AND pl.placenamevalidfrom <= vli.referencetime
+	AND pl.placenamevalidto > vli.referencetime
 	AND vlg.valueparameterid = vp.parameterid
 	AND vlg.levelparameterid = lp.parameterid ;
 
