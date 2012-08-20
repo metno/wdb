@@ -28,21 +28,23 @@
 
 #include "dataversionQuery.h"
 #include "WciReadParameterCollection.h"
-#include <ostream>
+#include <Builder.h>
+#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <iterator>
 
 
-std::ostream & addDataVersionQuery(std::ostream & q, const struct IntegerArray * dataVersions)
+void addDataVersionQuery(query::Builder & builder, const struct IntegerArray * dataVersions)
 {
 	if ( ! dataVersions )
-		return q;
-
-	q << "AND ";
+		return;
 
 	if ( dataVersions->size == 0 )
-		return q << "FALSE";
+	{
+		builder.where("FALSE");
+		return;
+	}
 
 	std::vector<int> positiveVersion;
 	std::vector<int> negativeVersion;
@@ -53,8 +55,8 @@ std::ostream & addDataVersionQuery(std::ostream & q, const struct IntegerArray *
 		else
 			positiveVersion.push_back(* it);
 
+	std::ostringstream q;
 	q << "(";
-
 	if ( not positiveVersion.empty() )
 	{
 		q << "dataversion IN (";
@@ -73,9 +75,8 @@ std::ostream & addDataVersionQuery(std::ostream & q, const struct IntegerArray *
 			q << ", (maxdataversion +1 -" << - negativeVersion[i] << ")";
 		q << ") ";
  	}
-
 	q << ") ";
 
-	return q;
+	builder.where(q.str());
 }
 

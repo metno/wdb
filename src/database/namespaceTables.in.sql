@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007-2012 met.no
+-- Copyright (C) 2007 - 2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -49,3 +49,16 @@ ALTER TABLE __WDB_SCHEMA__.namespace
 
 REVOKE ALL ON __WDB_SCHEMA__.namespace FROM public;
 GRANT ALL ON __WDB_SCHEMA__.namespace TO wdb_admin;
+
+--
+-- WCI Tables
+--
+CREATE TABLE __WDB_SCHEMA__.defaultnamespace (
+	rolname 				NAME NOT NULL PRIMARY KEY,
+	dataprovidernamespaceid integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid),
+	placenamespaceid		integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid),
+	parameternamespaceid	integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid)
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.defaultnamespace FROM public;
+GRANT ALL ON __WDB_SCHEMA__.defaultnamespace TO wdb_admin;

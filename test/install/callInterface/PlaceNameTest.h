@@ -73,6 +73,15 @@ class PlaceNameTest : public AbstractWciTestFixture
 	CPPUNIT_TEST( testL6_01_PolygonDataByName_Mixed );
 	CPPUNIT_TEST( testL6_02_PolygonDataByName_GridOnly );
 	CPPUNIT_TEST( testL6_03_PolygonDataByName_FloatOnly );
+
+	CPPUNIT_TEST( testManyLocationsForSameName );
+	CPPUNIT_TEST( testNearestManyLocationsForSameName );
+	CPPUNIT_TEST( testSuroundManyLocationsForSameName );
+	CPPUNIT_TEST( testBilinearManyLocationsForSameName );
+	CPPUNIT_TEST( testLocationDoesNotExistYet );
+	CPPUNIT_TEST( testLocationDoesNotExistAnymore );
+	CPPUNIT_TEST( testQueryForLocationThatHasChangedName );
+
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -112,9 +121,19 @@ public:
 	void testL6_02_PolygonDataByName_GridOnly();
 	void testL6_03_PolygonDataByName_FloatOnly();
 
+	void testManyLocationsForSameName();
+	void testNearestManyLocationsForSameName();
+	void testSuroundManyLocationsForSameName();
+	void testBilinearManyLocationsForSameName();
+	void testLocationDoesNotExistYet();
+	void testLocationDoesNotExistAnymore();
+	void testQueryForLocationThatHasChangedName();
+
+
 private:
 	std::string statementOid_( const std::string & placeDef ) const;
-	std::string statementFloat_( const std::string & placeDef ) const;
+	std::string statementFloatMixedSources_( const std::string & placeDef ) const;
+	std::string statementFloatFromGridOnly_( const std::string & placeDef ) const;
 	std::string statementFloatOnly_( const std::string & placeDef ) const;
 	std::string statementPolygon_( const std::string & placeDef, int paramid ) const;
 	/**

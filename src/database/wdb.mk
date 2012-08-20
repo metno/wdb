@@ -10,18 +10,28 @@ DATABASE_SOURCES =		src/database/schemaDefinitions.in.sql \
 						src/database/partyTables.in.sql \
 						src/database/configurationTables.in.sql \
 						src/database/timeTables.in.sql \
+						src/database/qualityTables.in.sql \
 						src/database/namespaceTables.in.sql \
 						src/database/dataProviderTables.in.sql \
-						src/database/wdbPlaceDefinitionTables.in.sql \
-						src/database/wdbParameterTables.in.sql \
-						src/database/wdbValueTables.in.sql \
-						src/database/wdbIndexDefinitions.in.sql \
-						src/database/wdbMaterializedView.in.sql \
-						src/database/wdbConstraintDefinitions.in.sql \
-						src/database/wdbTriggerDefinitions.in.sql \
+						src/database/placeDefinitionTables.in.sql \
+						src/database/cfParameterTables.in.sql \
+						src/database/parameterUnitTables.in.sql \
+						src/database/parameterTables.in.sql \
+						src/database/floatValueTables.in.sql \
+						src/database/gridValueTables.in.sql \
+						src/database/materializedView.in.sql \
+						src/database/dataProviderTriggers.sql \
+						src/database/placeDefinitionTriggers.sql \
+						src/database/parameterTriggers.sql \
+						src/database/gridValueTriggers.sql \
 						src/database/wdbUserDefinitions.in.sql \
+						src/database/configurationViews.in.sql \
+						src/database/partyViews.in.sql \
+						src/database/dataProviderViews.in.sql \
+						src/database/placeDefinitionViews.in.sql \
+						src/database/cfParameterViews.in.sql \
 						src/database/wciViewDefinitions.in.sql \
-						src/database/wdbAdminDefinitions.in.sql \
+						src/database/adminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
 
 UPGRADE_SOURCES =		

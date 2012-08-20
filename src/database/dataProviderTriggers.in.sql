@@ -17,21 +17,19 @@
 --  (at your option) any later version.
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SET SESSION client_min_messages TO 'warning';
 
+CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatedataprovider_mv() RETURNS "trigger"
+AS $$
+BEGIN
+	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv');
+	RETURN NULL;
+END;
+$$ LANGUAGE 'plpgsql';
 
--- configuration stores the WDB version information in the database
-CREATE TABLE __WDB_SCHEMA__.configuration (
-    softwareversionpartyid		integer NOT NULL,
-    packageversion				integer NOT NULL,
-    installtime					timestamp with time zone NOT NULL
-);
+CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv1
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidername
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();
 
-ALTER TABLE __WDB_SCHEMA__.configuration
-	ADD FOREIGN KEY (softwareversionpartyid)
-					REFERENCES __WDB_SCHEMA__.softwareversion
-					ON DELETE RESTRICT
-					ON UPDATE RESTRICT;
-
-REVOKE ALL ON __WDB_SCHEMA__.configuration FROM public;
-GRANT ALL ON __WDB_SCHEMA__.configuration TO wdb_admin;
+CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv2
+	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidercomment
+	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();

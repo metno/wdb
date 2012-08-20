@@ -19,19 +19,15 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
-
--- configuration stores the WDB version information in the database
-CREATE TABLE __WDB_SCHEMA__.configuration (
-    softwareversionpartyid		integer NOT NULL,
-    packageversion				integer NOT NULL,
-    installtime					timestamp with time zone NOT NULL
+CREATE TABLE __WDB_SCHEMA__.qualityconfidencecode (
+    confidencecode				integer NOT NULL,
+    confidencecodedescription	character varying(255) NOT NULL
 );
 
-ALTER TABLE __WDB_SCHEMA__.configuration
-	ADD FOREIGN KEY (softwareversionpartyid)
-					REFERENCES __WDB_SCHEMA__.softwareversion
-					ON DELETE RESTRICT
-					ON UPDATE RESTRICT;
+ALTER TABLE ONLY __WDB_SCHEMA__.qualityconfidencecode
+    ADD CONSTRAINT confidencecode_pkey PRIMARY KEY (confidencecode);
 
-REVOKE ALL ON __WDB_SCHEMA__.configuration FROM public;
-GRANT ALL ON __WDB_SCHEMA__.configuration TO wdb_admin;
+REVOKE ALL ON __WDB_SCHEMA__.qualityconfidencecode FROM public;
+GRANT ALL ON __WDB_SCHEMA__.qualityconfidencecode TO wdb_admin;
+
+INSERT INTO __WDB_SCHEMA__.qualityconfidencecode VALUES ( 0, 'not defined' );

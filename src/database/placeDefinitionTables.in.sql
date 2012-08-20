@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007-2009 met.no
+-- Copyright (C) 2007 - 2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -30,6 +30,11 @@ CREATE TABLE __WDB_SCHEMA__.placeindeterminatetype (
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placeindeterminatetype
     ADD CONSTRAINT placeindeterminatetype_pkey PRIMARY KEY (placeindeterminatecode);
+
+CREATE UNIQUE INDEX XAK1Wdb_PlaceIndeterminateType ON __WDB_SCHEMA__.PlaceIndeterminateType
+(
+       PlaceIndeterminateType
+);
 
 REVOKE ALL ON __WDB_SCHEMA__.placeindeterminatetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placeindeterminatetype TO wdb_admin;
@@ -127,6 +132,9 @@ CREATE TABLE __WDB_SCHEMA__.placename (
     CHECK ( placenamevalidfrom <= placenamevalidto )
 );
 
+REVOKE ALL ON __WDB_SCHEMA__.placename FROM public;
+GRANT ALL ON __WDB_SCHEMA__.placename TO wdb_admin;
+
 ALTER TABLE ONLY __WDB_SCHEMA__.placename
     ADD CONSTRAINT placename_pkey PRIMARY KEY (placeid, placenamespaceid, placename, placenamevalidfrom);
 
@@ -144,6 +152,13 @@ ALTER TABLE __WDB_SCHEMA__.placename
 					REFERENCES __WDB_SCHEMA__.namespace
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
+
+
+CREATE INDEX XIE1Wdb_PlaceName ON __WDB_SCHEMA__.PlaceName
+(
+       PlaceId,
+       PlaceNameSpaceId
+);
 
 REVOKE ALL ON __WDB_SCHEMA__.placename FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placename TO wdb_admin;

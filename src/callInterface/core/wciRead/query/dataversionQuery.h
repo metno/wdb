@@ -30,9 +30,12 @@
 #ifndef DATAVERSIONQUERY_H_
 #define DATAVERSIONQUERY_H_
 
-#include <iosfwd>
 
 struct IntegerArray;
+namespace query
+{
+class Builder;
+}
 
 /**
  * @addtogroup wci
@@ -49,7 +52,7 @@ struct IntegerArray;
  * @param dataVersions DataVersions to request, or NULL if you want all.
  * @return the given stream.
  */
-std::ostream & addDataVersionQuery(std::ostream & q, const struct IntegerArray * dataVersions);
+void addDataVersionQuery(query::Builder & builder, const struct IntegerArray * dataVersions);
 
 /**
  * @}

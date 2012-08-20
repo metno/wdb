@@ -61,7 +61,7 @@ static void runWciReadFloatQueryFloat(struct ReadStore * out, FunctionCallInfo f
 
 	// This must match exactly the return type for wci.returnfloat
 	const char * whatToSelect = "value::float, dataprovidername, placename::text, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelfrom, levelto, levelindeterminatecode, dataversion, confidencecode, valuestoretime, valueid, valuetype";
-	const char * gridQuery = build_query(& p, FloatTable, OutputFloat, whatToSelect, NULL);
+	const char * gridQuery = build_query(& p, FloatTable, OutputFloat, whatToSelect, NULL, NULL);
 	elog(DEBUG1, "%s", gridQuery);
 
 	// Perform primary query
@@ -86,7 +86,7 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 	struct WciReadParameterCollection p;
 	parseReadParameters(& p, fcinfo);
 	const char * whatToSelect = "value, dataprovidername, placename::text, placegeometry, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelfrom, levelto, levelindeterminatecode, dataversion, confidencecode, valuestoretime, valueid, valuetype, placeid";
-	const char * gridQuery = build_query(& p, GridTable, OutputFloat, whatToSelect, NULL);
+	const char * gridQuery = build_query(& p, GridTable, OutputFloat, whatToSelect, NULL, NULL);
 	elog(DEBUG1, "%s", gridQuery);
 
 	// Perform primary query

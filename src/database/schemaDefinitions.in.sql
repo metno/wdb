@@ -29,6 +29,15 @@ GRANT USAGE ON SCHEMA __WDB_SCHEMA__ TO wdb_write;
 GRANT ALL ON SCHEMA __WDB_SCHEMA__ TO wdb_clean;
 
 
+-- __WCI_SCHEMA__ (usually wci_int) is a schema that contains the internal
+-- functions, views, and tables utilized by the WCI 
+CREATE SCHEMA __WCI_SCHEMA__;
+REVOKE ALL ON SCHEMA __WCI_SCHEMA__ FROM PUBLIC;
+GRANT ALL ON SCHEMA __WCI_SCHEMA__ TO wdb_admin;
+GRANT USAGE ON SCHEMA __WCI_SCHEMA__ TO wdb_write;
+GRANT USAGE ON SCHEMA __WCI_SCHEMA__ TO wdb_read;
+
+
 -- wci is the schema that contains the external functions of the
 -- WDB Call Interface. 
 CREATE SCHEMA wci;
@@ -36,6 +45,13 @@ REVOKE ALL ON SCHEMA wci FROM PUBLIC;
 GRANT ALL ON SCHEMA wci TO wdb_admin;
 GRANT USAGE ON SCHEMA wci TO wdb_write;
 GRANT USAGE ON SCHEMA wci TO wdb_read;
+
+
+-- Admin is a schema that contains views and functions used for the 
+-- administration of the WDB system
+CREATE SCHEMA admin;
+REVOKE ALL ON SCHEMA admin FROM PUBLIC;
+GRANT ALL ON SCHEMA admin TO wdb_admin;
 
 
 -- test is a schema that contains views, functions and tables that

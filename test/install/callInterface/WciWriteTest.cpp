@@ -449,6 +449,57 @@ void wciWriteTest::testSeveralNewParameters()
 	*/
 }
 
+void wciWriteTest::testWriteExistingPlace()
+{
+	std::string write =
+			"SELECT wci.write(12.3, 'test point 15', '2010-07-01', '2010-07-01','2010-07-01', 'air temperature', 'height above ground', 2, 2)";
+	CPPUNIT_ASSERT_NO_THROW(t->exec(write));
+
+	std::string read =
+			"SELECT value FROM wci.read(ARRAY['wcitestwriter'], 'test point 15', '2010-07-01', '2010-07-01', ARRAY['air temperature'],NULL, NULL, NULL::wci.returnfloat)";
+	result r = t->exec(read);
+	CPPUNIT_ASSERT_EQUAL(size_t(1), r.size());
+	CPPUNIT_ASSERT_DOUBLES_EQUAL(12.3, r[0][0].as<double>(), 0.000001);
+}
+
+void wciWriteTest::testWriteNotYetExistingPlace()
+{
+	std::string write =
+			"SELECT wci.write(0, 'test point 15', '2000-01-01', '2000-01-01','2000-01-01', 'air temperature', 'height above ground', 2, 2)";
+	CPPUNIT_ASSERT_THROW(t->exec(write), pqxx_exception);
+}
+
+void wciWriteTest::testWriteNoLongerExistingPlace()
+{
+	std::string write =
+			"SELECT wci.write(0, 'test point 15', '2012-01-01', '2012-01-01','2012-01-01', 'air temperature', 'height above ground', 2, 2)";
+	CPPUNIT_ASSERT_THROW(t->exec(write), pqxx_exception);
+}
+
+void wciWriteTest::testWriteAtStartOfValidPeriod()
+{
+	std::string write =
+			"SELECT wci.write(13.5, 'test point 15', '2010-01-01 00:00:00Z', '2010-01-01 00:00:00Z','2010-01-01 00:00:00Z', 'air temperature', 'height above ground', 2, 2)";
+	CPPUNIT_ASSERT_NO_THROW(t->exec(write));
+
+	std::string read =
+			"SELECT value FROM wci.read(ARRAY['wcitestwriter'], 'test point 15', '2010-01-01 00:00:00Z', '2010-01-01 00:00:00Z', ARRAY['air temperature'],NULL, NULL, NULL::wci.returnfloat)";
+	result r = t->exec(read);
+	CPPUNIT_ASSERT_EQUAL(size_t(1), r.size());
+	CPPUNIT_ASSERT_DOUBLES_EQUAL(13.5, r[0][0].as<double>(), 0.000001);
+
+}
+
+void wciWriteTest::testWriteAtEndOfValidPeriod()
+{
+	std::string write =
+			"SELECT wci.write(0, 'test point 15', '2012-01-01 00:00:00Z', '2012-01-01','2012-01-01', 'air temperature', 'height above ground', 2, 2)";
+	CPPUNIT_ASSERT_THROW(t->exec(write), pqxx_exception);
+}
+
+
+
+
 string wciWriteTest::statement_(const string & referenceTime) const
 {
 	ostringstream ret;

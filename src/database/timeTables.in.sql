@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007-2012 met.no
+-- Copyright (C) 2007 - 2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -30,6 +30,12 @@ CREATE TABLE __WDB_SCHEMA__.timeindeterminatetype (
 ALTER TABLE ONLY __WDB_SCHEMA__.timeindeterminatetype
     ADD CONSTRAINT timeindeterminatetype_pkey
     PRIMARY KEY (timeindeterminatecode);
+
+
+CREATE UNIQUE INDEX XAK1Wdb_TimeIndeterminateType ON __WDB_SCHEMA__.TimeIndeterminateType
+(
+       TimeIndeterminateType
+);
 
 REVOKE ALL ON __WDB_SCHEMA__.timeindeterminatetype FROM public;
 GRANT ALL ON __WDB_SCHEMA__.timeindeterminatetype TO wdb_admin;

@@ -75,28 +75,61 @@ public:
     	userName_(username),
     	admin_(admin),
     	read_(read),
-    	write_(write)
+    	write_(write),
+    	hasAdmin_(false),
+    	hasRead_(false),
+    	hasWrite_(false)
     {
     	// NOOP
     }
 
+    void checkRoles(argument_type &T)
+    {
+    	// Read
+		std::ostringstream queryR;
+		queryR << "select * from pg_user where usename = '" << userName_ << "' AND usesysid IN "
+			  << "( select grolist[s] from (SELECT grolist, generate_subscripts(grolist, 1) as s FROM pg_group where groname = 'wdb_read') AS gs )";
+		pqxx::result rR = T.exec( queryR.str() );
+		if (rR.size() > 0) {
+			hasRead_ = true;
+		}
+    	// Write
+		std::ostringstream queryW;
+		queryW << "select * from pg_user where usename = '" << userName_ << "' AND usesysid IN "
+			  << "( select grolist[s] from (SELECT grolist, generate_subscripts(grolist, 1) as s FROM pg_group where groname = 'wdb_write') AS gs )";
+		pqxx::result rW = T.exec( queryW.str() );
+		if (rW.size() > 0) {
+			hasWrite_ = true;
+		}
+    	// Admin
+		std::ostringstream queryA;
+		queryA << "select * from pg_user where usename = '" << userName_ << "' AND usesysid IN "
+			  << "( select grolist[s] from (SELECT grolist, generate_subscripts(grolist, 1) as s FROM pg_group where groname = 'wdb_admin') AS gs )";
+		pqxx::result rA = T.exec( queryA.str() );
+		if (rA.size() > 0) {
+			hasAdmin_ = true;
+		}
+    }
+
+
+
     void revokeRoles(argument_type &T)
     {
-		if ( ! admin_)
+		if (( ! admin_) && (hasAdmin_))
 			query::revokeRole(T, userName_, "wdb_admin");
-		if ( ! read_ )
+		if (( ! read_ ) && (hasRead_))
 			query::revokeRole(T, userName_, "wdb_read");
-		if ( ! write_ )
+		if (( ! write_ ) && (hasWrite_))
 			query::revokeRole(T, userName_, "wdb_write");
     }
 
     void grantRoles(argument_type &T)
     {
-		if (admin_)
+		if ((admin_)&&(!hasAdmin_))
 			query::grantRole(T, userName_, "wdb_admin");
-		if (read_)
+		if ((read_)&&(!hasRead_))
 			query::grantRole(T, userName_, "wdb_read");
-		if (write_)
+		if ((write_)&&(!hasWrite_))
 			query::grantRole(T, userName_, "wdb_write");
     }
 
@@ -105,6 +138,7 @@ public:
 	 */
 	void operator()(argument_type &T)
   	{
+		checkRoles(T);
 		revokeRoles(T);
 		grantRoles(T);
 	}
@@ -146,6 +180,12 @@ private:
     bool read_;
     /// Write Options
     bool write_;
+    /// Admin Options
+    bool hasAdmin_;
+    /// Read Options
+    bool hasRead_;
+    /// Write Options
+    bool hasWrite_;
 
 };
 

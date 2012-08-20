@@ -363,18 +363,55 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/schemaDefinitions.sql
 \i $WDB_DATAMODEL_PATH/partyTables.sql
 \i $WDB_DATAMODEL_PATH/configurationTables.sql
-\i $WDB_DATAMODEL_PATH/timeTables.sql
 \i $WDB_DATAMODEL_PATH/namespaceTables.sql
 \i $WDB_DATAMODEL_PATH/dataProviderTables.sql
-\i $WDB_DATAMODEL_PATH/wdbPlaceDefinitionTables.sql
-\i $WDB_DATAMODEL_PATH/wdbParameterTables.sql
-\i $WDB_DATAMODEL_PATH/wdbValueTables.sql
-\i $WDB_DATAMODEL_PATH/wdbConstraintDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wdbMaterializedView.sql
-\i $WDB_DATAMODEL_PATH/wdbTriggerDefinitions.sql
-\i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
+\i $WDB_DATAMODEL_PATH/placeDefinitionTables.sql
+\i $WDB_DATAMODEL_PATH/timeTables.sql
+\i $WDB_DATAMODEL_PATH/cfParameterTables.sql
+\i $WDB_DATAMODEL_PATH/parameterUnitTables.sql
+\i $WDB_DATAMODEL_PATH/parameterTables.sql
+\i $WDB_DATAMODEL_PATH/qualityTables.sql
+\i $WDB_DATAMODEL_PATH/floatValueTables.sql
+\i $WDB_DATAMODEL_PATH/gridValueTables.sql
+\i $WDB_DATAMODEL_PATH/materializedView.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql
-\i $WDB_DATAMODEL_PATH/wdbAdminDefinitions.sql
+EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+
+	# Install Database Triggers
+	echo -n "installing data triggers... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+\i $WDB_DATAMODEL_PATH/dataProviderTriggers.sql
+\i $WDB_DATAMODEL_PATH/placeDefinitionTriggers.sql
+\i $WDB_DATAMODEL_PATH/parameterTriggers.sql
+\i $WDB_DATAMODEL_PATH/gridValueTriggers.sql
+EOF
+	if [ 0 != $? ]; then
+	    echo "ERROR"; exit 1
+	else
+	    echo "done"
+	fi
+
+	# Install Views
+	echo -n "installing data views... "
+	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
+SET CLIENT_MIN_MESSAGES TO "WARNING";
+\set ON_ERROR_STOP
+\o $LOGDIR/wdb_install_datamodel.log
+\i $WDB_DATAMODEL_PATH/configurationViews.sql
+\i $WDB_DATAMODEL_PATH/partyViews.sql
+\i $WDB_DATAMODEL_PATH/dataProviderViews.sql
+\i $WDB_DATAMODEL_PATH/placeDefinitionViews.sql
+\i $WDB_DATAMODEL_PATH/cfParameterViews.sql
+\i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
+\i $WDB_DATAMODEL_PATH/adminDefinitions.sql
 EOF
 	if [ 0 != $? ]; then
 	    echo "ERROR"; exit 1
@@ -449,7 +486,7 @@ EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
-\i $WDB_DATAMODEL_PATH/wdbIndexDefinitions.sql
+--\i $WDB_DATAMODEL_PATH/wdbIndexDefinitions.sql
 EOF
 	if [ 0 != $? ]; then
 	    echo "ERROR"; exit 1

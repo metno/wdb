@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007 met.no
+-- Copyright (C) 2007 - 2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -122,29 +122,6 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger___WDB_SCHEMA___deleteObsoleteGrids
-    AFTER DELETE ON __WDB_SCHEMA__.gridvalue
-    FOR EACH ROW
-    EXECUTE PROCEDURE __WDB_SCHEMA__.deleteObsoleteGrids();
-
-
-
-
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updatedataprovider_mv() RETURNS "trigger"
-	AS $$
-BEGIN
-	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv');
-	RETURN NULL;
-END;
-$$ LANGUAGE 'plpgsql';
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv1
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidername
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv2
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidercomment
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();
 
 CREATE OR REPLACE FUNCTION wdb_int.updateplacespec() 
 RETURNS TRIGGER
@@ -212,20 +189,4 @@ CREATE TRIGGER wdb_int_updateplacespec_ed AFTER DELETE ON wdb_int.placeindetermi
   FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete();
 CREATE TRIGGER wdb_int_updateplacespec_ed AFTER DELETE ON wdb_int.placeregulargrid
   FOR EACH ROW EXECUTE PROCEDURE wdb_int.updateplacespec_delete();
-	
-CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.updateparameter_mv() RETURNS "trigger"
-	AS $$
-BEGIN
-	PERFORM __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.parameter_mv');
-	RETURN NULL;
-END;
-$$ LANGUAGE 'plpgsql';
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updateparameter_mv1
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.parameter
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateparameter_mv();
-
-CREATE TRIGGER trigger___WDB_SCHEMA___updatevalueparameter_mv2
-	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.parametername
-	EXECUTE PROCEDURE __WDB_SCHEMA__.updateparameter_mv();
-	
+    

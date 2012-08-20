@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007 met.no
+-- Copyright (C) 2007 - 2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -17,18 +17,9 @@
 --  (at your option) any later version.
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SET SESSION client_min_messages TO 'warning';
 
-
--- Admin is a schema that contains views and functions used for the 
--- administration of the WDB system
-CREATE SCHEMA admin;
-REVOKE ALL ON SCHEMA admin FROM PUBLIC;
-GRANT ALL ON SCHEMA admin TO wdb_admin;
-
-
---
 -- File Blob View
---
 CREATE VIEW admin.blob AS
 SELECT	
 	file_id,
@@ -40,6 +31,7 @@ REVOKE ALL ON admin.blob FROM public;
 GRANT ALL ON admin.blob TO wdb_admin;
 
 
+-- Update all materialized views
 create or replace function
 admin.updateMaterializedViews() 
 returns void as
@@ -53,4 +45,3 @@ language sql;
 
 REVOKE ALL ON FUNCTION admin.updateMaterializedViews() FROM public;
 GRANT ALL ON FUNCTION admin.updateMaterializedViews() TO wdb_admin;
-

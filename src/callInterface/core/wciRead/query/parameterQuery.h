@@ -30,10 +30,12 @@
 #ifndef PARAMETERQUERY_H_
 #define PARAMETERQUERY_H_
 
-#include <iosfwd>
-
 struct StringArray;
 
+namespace query
+{
+class Builder;
+}
 
 /**
  * @addtogroup wci
@@ -51,7 +53,7 @@ struct StringArray;
  *                  wci.read function, or NULL if you want all.
  * @return the given stream.
  */
-std::ostream & addParameterQuery(std::ostream & q, const struct StringArray * parameters);
+void addParameterQuery(query::Builder & builder, const struct StringArray * parameters);
 
 /**
  * @}

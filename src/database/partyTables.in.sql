@@ -2,7 +2,7 @@
 -- 
 -- wdb - weather and water data storage
 --
--- Copyright (C) 2007-2012 met.no
+-- Copyright (C) 2007 - 2012 met.no
 --
 --  Contact information:
 --  Norwegian Meteorological Institute
@@ -98,6 +98,18 @@ ALTER TABLE __WDB_SCHEMA__.organization
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
+CREATE UNIQUE INDEX XAK1Wdb_Organization ON __WDB_SCHEMA__.Organization
+(
+       organizationalias
+);
+
+CREATE UNIQUE INDEX XAK2Wdb_Organization ON __WDB_SCHEMA__.Organization
+(
+       organizationname
+);
+
+
+
 ALTER TABLE __WDB_SCHEMA__.organizationtype
 	ADD FOREIGN KEY (organizationtype)
 					REFERENCES __WDB_SCHEMA__.organizationtype
@@ -141,6 +153,11 @@ ALTER TABLE __WDB_SCHEMA__.person
 REVOKE ALL ON __WDB_SCHEMA__.person FROM public;
 GRANT ALL ON __WDB_SCHEMA__.person TO wdb_admin;
 
+CREATE UNIQUE INDEX XAK1Wdb_Person ON __WDB_SCHEMA__.Person
+(
+       initials
+);
+
 
 -- Software versions
 CREATE TABLE __WDB_SCHEMA__.softwareversion
@@ -162,3 +179,15 @@ ALTER TABLE __WDB_SCHEMA__.softwareversion
 
 REVOKE ALL ON __WDB_SCHEMA__.softwareversion FROM public;
 GRANT ALL ON __WDB_SCHEMA__.softwareversion TO wdb_admin;
+
+CREATE UNIQUE INDEX XAK1Wdb_SoftwareVersion ON __WDB_SCHEMA__.SoftwareVersion
+(
+       softwarename,
+       softwareversioncode
+);
+
+CREATE UNIQUE INDEX XAK1SoftwareVersion ON __WDB_SCHEMA__.softwareversion
+(
+	SoftwareName,
+	SoftwareVersionCode
+);

@@ -30,7 +30,7 @@
 #ifndef TIMEQUERY_H_
 #define TIMEQUERY_H_
 
-#include <iosfwd>
+#include <Builder.h>
 
 /**
  * @addtogroup wci
@@ -48,7 +48,7 @@
  *                 all.
  * @return the given stream.
  */
-std::ostream & addReferenceTimeQuery(std::ostream & q, const char * timeSpec);
+void addReferenceTimeQuery(query::Builder & builder, const char * timeSpec);
 
 
 /**
@@ -62,7 +62,7 @@ std::ostream & addReferenceTimeQuery(std::ostream & q, const char * timeSpec);
  *                 all.
  * @return the given stream.
  */
-std::ostream & addValidTimeQuery(std::ostream & q, const char * timeSpec);
+void addValidTimeQuery(query::Builder & builder, const char * timeSpec);
 
 /**
  * @}

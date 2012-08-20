@@ -113,7 +113,7 @@ public:
 				throw std::runtime_error("Error when trying to create role " + newUserName_);
 		}
 		else
-			std::clog << "Role <" << newUserName_ << "> already existed" << std::endl;
+			throw std::runtime_error("Role " + newUserName_ + " already exists");
 
 		ChangeUser changeUser(newUserName_, admin_, read_, write_);
 		changeUser(T);

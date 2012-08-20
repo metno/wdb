@@ -1617,7 +1617,7 @@ void PlaceGeometryTest::testG102_01_testLocationInterference()
 std::string PlaceGeometryTest::statement_( const std::string & geo, int paramid ) const
 {
     ostringstream st;
-    st << "SELECT *, st_astext(placegeometry) AS geometry_as_text FROM wci.read( ARRAY['test group'], ";
+    st << "SELECT *, st_astext(placegeometry) AS geometry_as_text FROM wci.read( ARRAY['test wci 0','test wci 1','test wci 2','test wci 5'], ";
     if ( "NULL" == geo ) {
         st << "NULL";
     }
