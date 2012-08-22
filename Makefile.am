@@ -205,7 +205,6 @@ dbclean:
 install-database:
 	mkdir -p @builddir@/var/logs/
 	rm -f @builddir@/var/logs/*
-	env
 	@builddir@/install/install_database -d $(DATABASE_NAME)
 
 uninstall-database: install/uninstall_database
@@ -448,20 +447,3 @@ upgradecheck: all
 include config/mk/debian.mk
 
 debian: common-debian
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
