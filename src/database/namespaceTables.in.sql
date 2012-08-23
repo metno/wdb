@@ -50,15 +50,19 @@ ALTER TABLE __WDB_SCHEMA__.namespace
 REVOKE ALL ON __WDB_SCHEMA__.namespace FROM public;
 GRANT ALL ON __WDB_SCHEMA__.namespace TO wdb_admin;
 
---
+
+
 -- WCI Tables
---
 CREATE TABLE __WDB_SCHEMA__.defaultnamespace (
-	rolname 				NAME NOT NULL PRIMARY KEY,
+	rolname 				NAME NOT NULL,
 	dataprovidernamespaceid integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid),
 	placenamespaceid		integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid),
 	parameternamespaceid	integer NOT NULL REFERENCES __WDB_SCHEMA__.namespace (namespaceid)
 );
+
+ALTER TABLE ONLY __WDB_SCHEMA__.defaultnamespace
+    ADD CONSTRAINT defaultnamespace_pkey
+    PRIMARY KEY (rolname);
 
 REVOKE ALL ON __WDB_SCHEMA__.defaultnamespace FROM public;
 GRANT ALL ON __WDB_SCHEMA__.defaultnamespace TO wdb_admin;

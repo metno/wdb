@@ -236,7 +236,7 @@ SELECT
 	val.confidencecode, 
 	val.valuestoretime,
 	val.valueid,
-	val.valuetype
+	1 as valuetype
 FROM 	
 	__WDB_SCHEMA__.gridvalue val,
 	__WCI_SCHEMA__.dataprovider_mv dp,
@@ -301,7 +301,7 @@ SELECT
 	vli.confidencecode,
 	vli.valuestoretime,
 	0::bigint AS valueid,
-	1 AS valuetype
+	0 AS valuetype
 FROM 	
 	__WDB_SCHEMA__.floatvalueitem vli,
 	__WDB_SCHEMA__.floatvaluegroup vlg,

@@ -19,9 +19,8 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
---
+
 -- Name: FloatValue Group 
---
 CREATE TABLE __WDB_SCHEMA__.floatvaluegroup (
     valuegroupid				serial NOT NULL,
     dataproviderid 				bigint NOT NULL,
@@ -37,10 +36,6 @@ CREATE TABLE __WDB_SCHEMA__.floatvaluegroup (
     dataversion					integer NOT NULL
 );
 
-REVOKE ALL ON __WDB_SCHEMA__.floatvaluegroup FROM public;
-GRANT ALL ON __WDB_SCHEMA__.floatvaluegroup TO wdb_admin;
-GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvaluegroup TO wdb_clean;
-
 ALTER TABLE ONLY __WDB_SCHEMA__.floatvaluegroup
     ADD CONSTRAINT floatvaluegroup_pkey PRIMARY KEY (valuegroupid);
 
@@ -50,13 +45,11 @@ ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
-
 ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (placeid)
 					REFERENCES __WDB_SCHEMA__.placedefinition
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
-
 
 ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (validtimeindeterminatecode)
@@ -71,27 +64,17 @@ ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
-
 ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (levelparameterid)
 					REFERENCES __WDB_SCHEMA__.parameter
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
 
-
 ALTER TABLE __WDB_SCHEMA__.floatvaluegroup
 	ADD FOREIGN KEY (levelindeterminatecode)
 					REFERENCES __WDB_SCHEMA__.levelindeterminatetype
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
-
-CREATE INDEX i_FloatValueGroup ON wdb_int.FloatValueGroup
-(
-	valuegroupid,
-	dataproviderid,
-	placeid,
-	valueparameterid
-);
 
 CREATE UNIQUE INDEX XAK1Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
 (
@@ -108,11 +91,33 @@ CREATE UNIQUE INDEX XAK1Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
        ValidTimeIndeterminateCode
 );
 
+CREATE INDEX XIE1Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
+(
+	valuegroupid
+);
+
+CREATE INDEX XIE2Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
+(
+	dataproviderid
+);
+
+CREATE INDEX XIE3Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
+(
+	placeid
+);
+
+CREATE INDEX XIE4Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
+(
+	valueparameterid
+);
+
+REVOKE ALL ON __WDB_SCHEMA__.floatvaluegroup FROM public;
+GRANT ALL ON __WDB_SCHEMA__.floatvaluegroup TO wdb_admin;
+GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvaluegroup TO wdb_clean;
 
 
---
+
 -- Name: FloatValue Detail
---
 CREATE TABLE __WDB_SCHEMA__.floatvalueitem (
     valuegroupid				integer NOT NULL,
     referencetime				timestamp with time zone NOT NULL,
@@ -127,7 +132,8 @@ GRANT ALL ON __WDB_SCHEMA__.floatvalueitem TO wdb_admin;
 GRANT SELECT, DELETE ON __WDB_SCHEMA__.floatvalueitem TO wdb_clean;
 
 ALTER TABLE ONLY __WDB_SCHEMA__.floatvalueitem
-    ADD CONSTRAINT floatvalueitem_pkey PRIMARY KEY (valuegroupid, referencetime);
+    ADD CONSTRAINT floatvalueitem_pkey PRIMARY KEY ( valuegroupid,
+    												 referencetime );
 
 ALTER TABLE __WDB_SCHEMA__.floatvalueitem
 	ADD FOREIGN KEY (valuegroupid)

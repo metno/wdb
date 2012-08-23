@@ -355,12 +355,13 @@ EOF
 	fi
 	
 	# Install Datamodel
-	echo -n "installing baseline datamodel... "
+	echo -n "installing datamodel tables... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
 \o $LOGDIR/wdb_install_datamodel.log
 \i $WDB_DATAMODEL_PATH/schemaDefinitions.sql
+\i $WDB_DATAMODEL_PATH/materializedView.sql
 \i $WDB_DATAMODEL_PATH/partyTables.sql
 \i $WDB_DATAMODEL_PATH/configurationTables.sql
 \i $WDB_DATAMODEL_PATH/namespaceTables.sql
@@ -373,7 +374,6 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/qualityTables.sql
 \i $WDB_DATAMODEL_PATH/floatValueTables.sql
 \i $WDB_DATAMODEL_PATH/gridValueTables.sql
-\i $WDB_DATAMODEL_PATH/materializedView.sql
 \i $WDB_DATAMODEL_PATH/fileblob.sql
 EOF
 	if [ 0 != $? ]; then

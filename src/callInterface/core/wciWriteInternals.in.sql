@@ -106,7 +106,6 @@ BEGIN
 
 	-- Insert value row
 	INSERT INTO __WDB_SCHEMA__.gridvalue (
-		valuetype, 
 		dataproviderid,
 		placeid,
 		referencetime,
@@ -125,7 +124,6 @@ BEGIN
 		valuestoretime
 	)
 	VALUES (
-		1, 
 		dataproviderid_, 
 		placeid_, 
 		referencetime_,
@@ -240,7 +238,7 @@ BEGIN
 		WHEN unique_violation THEN
 			-- Do not abort on unique violations
 			SELECT valuegroupid INTO groupid_
-			FROM __WCI_SCHEMA__.floatvaluegroup
+			FROM __WDB_SCHEMA__.floatvaluegroup
 			WHERE dataproviderid = dataproviderid_
 			AND placeid = placeid_
 			AND validtimefrom = (validfrom_ - referencetime_)

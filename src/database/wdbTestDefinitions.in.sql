@@ -47,7 +47,7 @@ SELECT
 	val.confidencecode, 
 	val.valuestoretime,
 	val.valueid,
-	val.valuetype
+	0 as valuetype
 FROM 	
 	__WDB_SCHEMA__.gridvalue val,
 	__WCI_SCHEMA__.dataprovider_mv dp,

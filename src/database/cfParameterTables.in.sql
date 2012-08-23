@@ -29,6 +29,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.cfsurface
     ADD CONSTRAINT cfsurface_pkey PRIMARY KEY (cfsurface);
 
 
+
 -- Component
 CREATE TABLE __WDB_SCHEMA__.cfcomponent (
     cfcomponent					character varying(255) NOT NULL,
@@ -37,6 +38,7 @@ CREATE TABLE __WDB_SCHEMA__.cfcomponent (
 
 ALTER TABLE ONLY __WDB_SCHEMA__.cfcomponent
     ADD CONSTRAINT cfcomponent_pkey PRIMARY KEY (cfcomponent);
+
 
 
 -- Medium
@@ -49,6 +51,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.cfmedium
     ADD CONSTRAINT cfmedium_pkey PRIMARY KEY (cfmedium);
 
 
+
 -- Process
 CREATE TABLE __WDB_SCHEMA__.cfprocess (
     cfprocess					character varying(255) NOT NULL,
@@ -59,6 +62,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.cfprocess
     ADD CONSTRAINT cfprocess_pkey PRIMARY KEY (cfprocess);
 
 
+
 -- Condition
 CREATE TABLE __WDB_SCHEMA__.cfcondition (
     cfcondition					character varying(255) NOT NULL,
@@ -67,6 +71,7 @@ CREATE TABLE __WDB_SCHEMA__.cfcondition (
 
 ALTER TABLE ONLY __WDB_SCHEMA__.cfcondition
     ADD CONSTRAINT cfcondition_pkey PRIMARY KEY (cfcondition);
+
 
 
 -- Surface

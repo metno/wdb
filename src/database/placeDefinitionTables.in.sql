@@ -63,7 +63,6 @@ CREATE TABLE __WDB_SCHEMA__.placedefinition (
 			((placegeometrytype)::text = 'polygon'::text) )
 );
 SELECT AddGeometryColumn('__WDB_SCHEMA__', 'placedefinition', 'placegeometry', 4030, 'GEOMETRY', 2);
---ALTER SEQUENCE __WDB_SCHEMA__.placedefinition_placeid_seq RESTART WITH 100000;
 
 ALTER TABLE ONLY __WDB_SCHEMA__.placedefinition
     ADD CONSTRAINT placedefiniton_pkey PRIMARY KEY (placeid);
@@ -116,7 +115,6 @@ ALTER TABLE __WDB_SCHEMA__.placeregulargrid
 					
 REVOKE ALL ON __WDB_SCHEMA__.placeregulargrid FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placeregulargrid TO wdb_admin;
---GRANT INSERT ON __WDB_SCHEMA__.placeregulargrid TO wdb_write;
 GRANT SELECT, DELETE ON __WDB_SCHEMA__.placeregulargrid TO wdb_clean;
 
 
@@ -152,13 +150,6 @@ ALTER TABLE __WDB_SCHEMA__.placename
 					REFERENCES __WDB_SCHEMA__.namespace
 					ON DELETE RESTRICT
 					ON UPDATE CASCADE;
-
-
-CREATE INDEX XIE1Wdb_PlaceName ON __WDB_SCHEMA__.PlaceName
-(
-       PlaceId,
-       PlaceNameSpaceId
-);
 
 REVOKE ALL ON __WDB_SCHEMA__.placename FROM public;
 GRANT ALL ON __WDB_SCHEMA__.placename TO wdb_admin;

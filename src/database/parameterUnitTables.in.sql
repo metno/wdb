@@ -36,6 +36,7 @@ REVOKE ALL ON __WDB_SCHEMA__.unit FROM public;
 GRANT ALL ON __WDB_SCHEMA__.unit TO wdb_admin;
 
 
+
 -- Conversion tables
 CREATE TABLE __WDB_SCHEMA__.baseunitconversion (
     unitname						character varying(80) NOT NULL,

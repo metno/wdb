@@ -20,10 +20,11 @@
 
 -- The materializedView table contains a list of the materialized views
 CREATE TABLE __WDB_SCHEMA__.materializedView (
-	materializedViewName NAME NOT NULL PRIMARY KEY,
-	viewName NAME NOT NULL,
-	lastRefreshTime TIMESTAMP WITH TIME ZONE
+	materializedViewName	NAME NOT NULL PRIMARY KEY,
+	viewName				NAME NOT NULL,
+	lastRefreshTime			TIMESTAMP WITH TIME ZONE
 );
+
 
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.createMV(NAME, NAME)
@@ -37,21 +38,14 @@ DECLARE
     entry __WDB_SCHEMA__.materializedView%ROWTYPE;
 BEGIN
     SELECT * INTO entry FROM __WDB_SCHEMA__.materializedView WHERE materializedViewName = matview;
-
     IF FOUND THEN
         RAISE EXCEPTION 'Materialized view % already exists.', matview;
     END IF;
-
     EXECUTE 'REVOKE ALL ON ' || view_name || ' FROM PUBLIC'; 
-
     EXECUTE 'GRANT SELECT ON ' || view_name || ' TO PUBLIC';
-
     EXECUTE 'CREATE TABLE ' || matview || ' AS SELECT * FROM ' || view_name;
-
     EXECUTE 'REVOKE ALL ON ' || matview || ' FROM PUBLIC';
-
     EXECUTE 'GRANT SELECT ON ' || matview || ' TO PUBLIC';
-
     INSERT INTO __WDB_SCHEMA__.materializedView (materializedViewName, viewName, lastRefreshTime)
       VALUES (matview, view_name, CURRENT_TIMESTAMP); 
     
@@ -59,6 +53,7 @@ BEGIN
 END
 $BODY$
 LANGUAGE plpgsql;
+
 
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.dropMV(NAME)
@@ -84,6 +79,7 @@ BEGIN
 END
 $BODY$
 LANGUAGE plpgsql;
+
 
 
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.refreshMV(name)

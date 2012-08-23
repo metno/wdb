@@ -20,6 +20,7 @@
 SET SESSION client_min_messages TO 'warning';
 
 
+
 -- A party represents an actor wrt to the data in the database; this can be
 -- either a person, an organization or a set of software
 CREATE TABLE __WDB_SCHEMA__.party (
@@ -39,6 +40,7 @@ ALTER TABLE ONLY __WDB_SCHEMA__.party
 
 REVOKE ALL ON __WDB_SCHEMA__.party FROM public;
 GRANT ALL ON __WDB_SCHEMA__.party TO wdb_admin;
+
 
 
 -- Comment box for partyid
@@ -62,6 +64,7 @@ REVOKE ALL ON __WDB_SCHEMA__.partycomment FROM public;
 GRANT ALL ON __WDB_SCHEMA__.partycomment TO wdb_admin;
 
 
+
 -- Organization types
 CREATE TABLE __WDB_SCHEMA__.organizationtype (
     organizationtype 			character varying(80) NOT NULL,
@@ -81,6 +84,7 @@ INSERT INTO __WDB_SCHEMA__.organizationtype
 	VALUES ('government organization', 'A national governmental organization');
 
 
+
 -- Organizations
 CREATE TABLE __WDB_SCHEMA__.organization (
     partyid 					integer NOT NULL,
@@ -98,6 +102,12 @@ ALTER TABLE __WDB_SCHEMA__.organization
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
+ALTER TABLE __WDB_SCHEMA__.organization
+	ADD FOREIGN KEY (organizationtype)
+					REFERENCES __WDB_SCHEMA__.organizationtype
+					ON DELETE RESTRICT
+					ON UPDATE CASCADE;
+
 CREATE UNIQUE INDEX XAK1Wdb_Organization ON __WDB_SCHEMA__.Organization
 (
        organizationalias
@@ -108,16 +118,9 @@ CREATE UNIQUE INDEX XAK2Wdb_Organization ON __WDB_SCHEMA__.Organization
        organizationname
 );
 
-
-
-ALTER TABLE __WDB_SCHEMA__.organizationtype
-	ADD FOREIGN KEY (organizationtype)
-					REFERENCES __WDB_SCHEMA__.organizationtype
-					ON DELETE RESTRICT
-					ON UPDATE CASCADE;
-
 REVOKE ALL ON __WDB_SCHEMA__.organization FROM public;
 GRANT ALL ON __WDB_SCHEMA__.organization TO wdb_admin;
+
 
 
 -- This is a standard person schema
@@ -159,6 +162,7 @@ CREATE UNIQUE INDEX XAK1Wdb_Person ON __WDB_SCHEMA__.Person
 );
 
 
+
 -- Software versions
 CREATE TABLE __WDB_SCHEMA__.softwareversion
 (
@@ -184,10 +188,4 @@ CREATE UNIQUE INDEX XAK1Wdb_SoftwareVersion ON __WDB_SCHEMA__.SoftwareVersion
 (
        softwarename,
        softwareversioncode
-);
-
-CREATE UNIQUE INDEX XAK1SoftwareVersion ON __WDB_SCHEMA__.softwareversion
-(
-	SoftwareName,
-	SoftwareVersionCode
 );

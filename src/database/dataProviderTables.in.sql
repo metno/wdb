@@ -49,8 +49,6 @@ ALTER TABLE ONLY __WDB_SCHEMA__.dataprovider
 
 REVOKE ALL ON __WDB_SCHEMA__.dataprovider FROM public;
 GRANT ALL ON __WDB_SCHEMA__.dataprovider TO wdb_admin;
--- This sets startvalue to match that of a wci writer:
--- SELECT setval('__WDB_SCHEMA__.dataprovider_dataproviderid_seq'::regclass, 1000000);
 
 
 
@@ -62,13 +60,14 @@ CREATE TABLE __WDB_SCHEMA__.dataprovidername (
     dataprovidernamevalidto 		TIMESTAMP WITH TIME ZONE NOT NULL,
 	dataprovidernameleftset			bigint NOT NULL,
 	dataprovidernamerightset		bigint NOT NULL
+    CHECK ( dataprovidernamevalidfrom <= dataprovidernamevalidto )
 );
 
 ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
     ADD CONSTRAINT dataprovidername_pkey PRIMARY KEY (dataproviderid, dataprovidernamespaceid);
 
 ALTER TABLE ONLY __WDB_SCHEMA__.dataprovidername
-    ADD CONSTRAINT dataprovidername_skey UNIQUE (dataprovidernamespaceid, dataprovidername);
+    ADD CONSTRAINT dataprovidername_skey UNIQUE (dataprovidernamespaceid, dataprovidername, dataprovidernamevalidfrom);
 
 ALTER TABLE __WDB_SCHEMA__.dataprovidername
 	ADD FOREIGN KEY (dataproviderid)

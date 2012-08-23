@@ -39,6 +39,7 @@ REVOKE ALL ON __WDB_SCHEMA__.parameter FROM public;
 GRANT ALL ON __WDB_SCHEMA__.parameter TO wdb_admin;
 
 
+
 -- Parameter Names
 CREATE TABLE __WDB_SCHEMA__.parametername (
 	parameterid 				integer NOT NULL,
@@ -49,26 +50,14 @@ CREATE TABLE __WDB_SCHEMA__.parametername (
 ALTER TABLE ONLY __WDB_SCHEMA__.parametername
     ADD CONSTRAINT parametername_pkey PRIMARY KEY (parameterid, parameternamespaceid);
 
-REVOKE ALL ON __WDB_SCHEMA__.parametername FROM public;
-GRANT ALL ON __WDB_SCHEMA__.parametername TO wdb_admin;
-
 ALTER TABLE __WDB_SCHEMA__.parametername
 	ADD FOREIGN KEY (parameternamespaceid)
 					REFERENCES __WDB_SCHEMA__.namespace
 					ON DELETE CASCADE
 					ON UPDATE CASCADE;
 
-
-
-CREATE TABLE __WDB_SCHEMA__.valueparameter (
-	valueparameterid 			serial NOT NULL,
-	valueparametertype 			character varying(80) NOT NULL
-    CONSTRAINT value_valueparametertype_check
-	CHECK (	((valueparametertype)::text = 'Measure Parameter'::text) OR
-			((valueparametertype)::text = 'Function Parameter'::text) OR
-			((valueparametertype)::text = 'Code Parameter'::text) OR
-			((valueparametertype)::text = 'Dimensionless Parameter'::text))
-);
+REVOKE ALL ON __WDB_SCHEMA__.parametername FROM public;
+GRANT ALL ON __WDB_SCHEMA__.parametername TO wdb_admin;
 
 
 
