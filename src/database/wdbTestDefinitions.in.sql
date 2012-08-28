@@ -21,7 +21,7 @@
 --
 -- Test View
 --
-CREATE OR REPLACE VIEW test.gridvalue AS
+CREATE OR REPLACE VIEW test.gridvalue_v AS
 SELECT	
 	val.value,
 	dp.dataproviderid,
@@ -63,15 +63,15 @@ WHERE
 	AND vp.parameternamespaceid = 999
 	AND vl.parameternamespaceid = 999;
 
-REVOKE ALL ON test.gridvalue FROM public;
-GRANT ALL ON test.gridvalue TO wdb_admin;
-GRANT SELECT ON test.gridvalue TO wdb_test;
+REVOKE ALL ON test.gridvalue_v FROM public;
+GRANT ALL ON test.gridvalue_v TO wdb_admin;
+GRANT SELECT ON test.gridvalue_v TO wdb_test;
 
 
 -- 
 -- Data Provider
 
-CREATE OR REPLACE VIEW test.dataprovider AS
+CREATE OR REPLACE VIEW test.dataprovider_v AS
 SELECT
 	dp.dataproviderid,
 	dp.dataprovidertype,
@@ -90,15 +90,15 @@ WHERE
 	dp.dataproviderid = dn.dataproviderid AND
 	dp.dataproviderid = dc.dataproviderid;
 
-REVOKE ALL ON test.dataprovider FROM PUBLIC;
-GRANT ALL ON test.dataprovider TO wdb_admin;
-GRANT SELECT ON test.dataprovider TO wdb_test;
+REVOKE ALL ON test.dataprovider_v FROM PUBLIC;
+GRANT ALL ON test.dataprovider_v TO wdb_admin;
+GRANT SELECT ON test.dataprovider_v TO wdb_test;
 
 
 --
 -- Place Regular Grid
 
-CREATE OR REPLACE VIEW test.placeregulargrid AS SELECT 
+CREATE OR REPLACE VIEW test.placeregulargrid_v AS SELECT 
 	pd.placeid,
 	pn.placename,
 	pn.placenamespaceid,
@@ -124,9 +124,9 @@ WHERE
 	AND (pd.placeid = pn.placeid)
 	AND (pit.placeindeterminatecode = pd.placeindeterminatecode);
 
-REVOKE ALL ON TABLE test.placeregulargrid FROM PUBLIC;
-GRANT ALL ON TABLE test.placeregulargrid TO wdb_admin;
-GRANT SELECT ON TABLE test.placeregulargrid TO wdb_test;
+REVOKE ALL ON TABLE test.placeregulargrid_v FROM PUBLIC;
+GRANT ALL ON TABLE test.placeregulargrid_v TO wdb_admin;
+GRANT SELECT ON TABLE test.placeregulargrid_v TO wdb_test;
 
 
 CREATE OR REPLACE FUNCTION 
@@ -159,7 +159,7 @@ $BODY$
 DECLARE
 	pid 	integer;
 BEGIN
-	SELECT placeid INTO pid FROM test.placeregulargrid 
+	SELECT placeid INTO pid FROM test.placeregulargrid_v 
 	WHERE  numberX = 3 AND numberY = 3 AND
 	       round(incrementX::numeric, 3) = 0.1 AND round(incrementY::numeric, 3) = 0.1 AND
 	       startX = 0 AND startY = 0 AND

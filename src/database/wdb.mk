@@ -30,7 +30,10 @@ DATABASE_SOURCES =		src/database/schemaDefinitions.in.sql \
 						src/database/placeDefinitionViews.in.sql \
 						src/database/placeDefinitionTriggers.in.sql \
 						src/database/cfParameterViews.in.sql \
-						src/database/wciViewDefinitions.in.sql \
+						src/database/parameterViews.in.sql \
+						src/database/parameterUnitViews.in.sql \
+						src/database/floatValueViews.in.sql \
+						src/database/gridValueViews.in.sql \
 						src/database/adminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
 

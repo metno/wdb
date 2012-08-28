@@ -42,7 +42,7 @@ BEGIN
 	FROM __WCI_SCHEMA__.getSessionData();
 	-- Check 
 	SELECT dataproviderid INTO dpid_ 
-	FROM __WCI_SCHEMA__.dataprovider
+	FROM __WCI_SCHEMA__.dataprovider_v
 	WHERE dataprovidername = lower(dataProviderName_) AND
 		  dataprovidernamespaceid = namespace_;
 	-- Add dataprovider
@@ -57,7 +57,7 @@ BEGIN
 	
 		-- TODO: Need to verify that this is in fact secure (serial)
 		SELECT max(dataprovidernamerightset) INTO gpid_ 
-		FROM   __WCI_SCHEMA__.dataprovider;
+		FROM   __WCI_SCHEMA__.dataprovider_v;
 
 		IF ( gpid_ IS NULL ) THEN
 			gpid_ := 0;
@@ -114,7 +114,7 @@ BEGIN
 	FROM __WCI_SCHEMA__.getSessionData();
 	-- Get DataProvider
 	SELECT dataproviderid INTO dpid_
-	FROM __WCI_SCHEMA__.dataprovider
+	FROM __WCI_SCHEMA__.dataprovider_v
 	WHERE dataprovidername = lower(dataProviderName_) AND
 		  dataprovidernamespaceid = namespace_;
 	IF NOT FOUND THEN
@@ -122,7 +122,7 @@ BEGIN
 	END IF;
 	-- Get Group
 	SELECT dataproviderid, dataprovidernameleftset, dataprovidernamerightset INTO gpid_, gplft_, gprgt_ 
-	FROM __WCI_SCHEMA__.dataprovider
+	FROM __WCI_SCHEMA__.dataprovider_v
 	WHERE dataprovidername = lower(dataProviderGroup_) AND
 		  dataprovidertype = 'data provider group' AND
 		  dataprovidernamespaceid = namespace_;
@@ -187,7 +187,7 @@ LANGUAGE plpgsql STRICT VOLATILE;
 --
 CREATE OR REPLACE FUNCTION 
 wci.getDataProvider( dataprovider 		text )	
-RETURNS SETOF __WCI_SCHEMA__.dataprovider AS
+RETURNS SETOF __WCI_SCHEMA__.dataprovider_v AS
 $BODY$
 	SELECT 	d.dataproviderid,
 			d.dataprovidertype,
@@ -256,7 +256,7 @@ BEGIN
 	FROM __WCI_SCHEMA__.getSessionData();
 	-- Get dataproviderid
 	SELECT dataproviderid INTO dataProviderId_
-	FROM __WCI_SCHEMA__.dataprovider
+	FROM __WCI_SCHEMA__.dataprovider_v
 	WHERE dataprovidername = lower(fromName_) AND
 		  dataprovidernamespaceid = fromNameSpaceId_;
 	-- Failed to find dpid
@@ -269,7 +269,7 @@ BEGIN
 		  dataproviderid = dataProviderId_;
 	-- Get Group ID
 	SELECT max(dataprovidernamerightset) INTO gpid_ 
-	FROM   __WCI_SCHEMA__.dataprovider
+	FROM   __WCI_SCHEMA__.dataprovider_v
 	WHERE  dataprovidernamespaceid = namespace_;
 	-- Insert new name
 	INSERT INTO __WDB_SCHEMA__.dataprovidername

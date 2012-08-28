@@ -40,7 +40,7 @@ __WCI_SCHEMA__.getPlaceId(
 RETURNS bigint AS
 $BODY$
 DECLARE
-	session __WCI_SCHEMA__.sessionData;
+	session __WCI_SCHEMA__.sessionData_v;
 	ret bigint;
 BEGIN
 	SELECT placeid INTO ret

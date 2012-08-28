@@ -70,7 +70,7 @@ BEGIN
 	END IF;	
 	-- Get placedef
 	SELECT	placeid INTO placeId_ 
-	FROM	__WCI_SCHEMA__.placedefinition
+	FROM	__WCI_SCHEMA__.placedefinition_v
 	WHERE	st_equals( placegeometry, placeGeometry_) AND
 		placenamespaceid = 0;
 	-- Add dataprovider
@@ -125,7 +125,7 @@ BEGIN
 	END IF;	
 	-- Get placedef
 	SELECT	placeid INTO placeId_
-	FROM	__WCI_SCHEMA__.placedefinition
+	FROM	__WCI_SCHEMA__.placedefinition_v
 	WHERE	st_equals( placegeometry, placeGeometry_ ) AND
 		    placenamespaceid = 0;
 	-- Add placedefinition
@@ -266,7 +266,7 @@ LANGUAGE plpgsql VOLATILE;
 CREATE OR REPLACE FUNCTION 
 wci.getPlacePoint( location 			text,
 				   valid 				timestamp with time zone )
-RETURNS SETOF wci_int.placedefinition AS
+RETURNS SETOF wci_int.placedefinition_v AS
 $BODY$
 	SELECT 	p.placeid,
 			p.placegeometrytype,
@@ -291,7 +291,7 @@ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION 
 wci.getPlacePoint( location 			text )	
-RETURNS SETOF wci_int.placedefinition AS
+RETURNS SETOF wci_int.placedefinition_v AS
 $BODY$
 	SELECT 	*
 	FROM	wci.getPlacePoint($1, 'now');

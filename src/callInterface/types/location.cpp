@@ -252,7 +252,7 @@ string Location::queryReturnGrid( ) const
 	else
 	{
 		// This corresponds to an "exact" query - just much faster
-		q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename WHERE placename = '" << placeName() << "')";
+		q << "placeid = (SELECT placeid FROM " << WCI_SCHEMA << ".placename_v WHERE placename = '" << placeName() << "')";
 	}
 
 	//std::cout << q.str() << std::endl;

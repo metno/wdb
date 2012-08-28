@@ -20,15 +20,15 @@
 SET SESSION client_min_messages TO 'warning';
 
 -- File Blob View
-CREATE VIEW admin.blob AS
+CREATE VIEW admin.blob_v AS
 SELECT	
 	file_id,
 	active
 FROM 	
 	__WDB_SCHEMA__.file_blob;
 
-REVOKE ALL ON admin.blob FROM public;
-GRANT ALL ON admin.blob TO wdb_admin;
+REVOKE ALL ON admin.blob_v FROM public;
+GRANT ALL ON admin.blob_v TO wdb_admin;
 
 
 -- Update all materialized views

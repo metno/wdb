@@ -50,7 +50,7 @@ $TEST_PATH/tearDown.sh
 # Should generate two rows in database:
 ${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} --valueparameter 'air pressure'
 ${TESTWRITE_PATH}/testWrite --dataprovider 'test cleandb' --reftime ${TESTTIME} --valueparameter 'air temperature'
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "2"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v WHERE dataprovidername='test cleandb'" | grep -qE "2"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
@@ -72,7 +72,7 @@ EOF
 
 # Check Result
 # - Expected Result: Data should be deleted
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue WHERE dataprovidername='test cleandb'" | grep -qE "0"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v WHERE dataprovidername='test cleandb'" | grep -qE "0"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)

@@ -34,23 +34,6 @@ GRANT SELECT ON __WCI_SCHEMA__.placename_v TO wdb_read, wdb_write;
 
 
 
-
-CREATE VIEW __WCI_SCHEMA__.placename AS
-SELECT
-    p.placeid,
-    p.placenamespaceid,
-    p.placename
-FROM
-	__WDB_SCHEMA__.placename p,
-	__WCI_SCHEMA__.getSessionData() s
-WHERE
-	p.placenamespaceid = s.placenamespaceid;
-
-REVOKE ALL ON __WCI_SCHEMA__.placename FROM public;
-GRANT ALL ON __WCI_SCHEMA__.placename TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.placename TO wdb_read, wdb_write;
-
-
 CREATE VIEW __WCI_SCHEMA__.placename_valid_v AS
 SELECT
     p.placeid,
@@ -68,7 +51,8 @@ GRANT ALL ON __WCI_SCHEMA__.placename_valid_v TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.placename_valid_V TO wdb_read, wdb_write;
 
 
-CREATE VIEW wci_int.placedefinition AS
+
+CREATE VIEW wci_int.placedefinition_v AS
 SELECT
 	pd.placeid,
 	pd.placegeometrytype,
@@ -139,47 +123,13 @@ FROM
 WHERE
 	pd.placegeometrytype != 'grid';
 		
-REVOKE ALL ON wci_int.placedefinition FROM PUBLIC;
-GRANT ALL ON wci_int.placedefinition TO wdb_admin;
-GRANT SELECT ON wci_int.placedefinition TO wdb_read, wdb_write;
-
---
--- Recreate Materialized view
---
-SELECT wdb_int.createMV('wci_int.placedefinition_mv', 'wci_int.placedefinition');
-SELECT wdb_int.refreshMV('wci_int.placedefinition_mv');
-
-REVOKE ALL ON wci_int.placedefinition_mv FROM PUBLIC;
-GRANT ALL ON wci_int.placedefinition_mv TO wdb_admin;
-GRANT SELECT ON wci_int.placedefinition_mv TO wdb_read, wdb_write;
-
---
--- Index Materialized View
---
-CREATE INDEX XIE0wci_placedefinition_mv ON wci_int.placedefinition_mv
-USING GIST
-(
-    placeGeometry
-);
-
-CREATE INDEX XIE1wci_placedefinition_mv ON wci_int.placedefinition_mv
-(
-    placeNameValidFrom,
-    placeNameValidTo,
-	placeid
-);
-
-CREATE INDEX XIE2wci_placedefinition_mv ON wci_int.placedefinition_mv
-(
-	placeName,
-	placeNameValidFrom,
-	placeNameValidTo,
-	placeNameSpaceId,
-	placeId
-);
+REVOKE ALL ON wci_int.placedefinition_v FROM PUBLIC;
+GRANT ALL ON wci_int.placedefinition_v TO wdb_admin;
+GRANT SELECT ON wci_int.placedefinition_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.placeregulargrid AS 
+
+CREATE VIEW __WCI_SCHEMA__.placeregulargrid_v AS 
 SELECT 
 	pd.placeid,
 	pd.placegeometrytype,
@@ -234,11 +184,11 @@ WHERE
 	AND srs.srid = pg.originalsrid
 	AND pit.placeindeterminatecode = pd.placeindeterminatecode;
 	
-REVOKE ALL ON TABLE __WCI_SCHEMA__.placeregulargrid FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.placeregulargrid TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.placeregulargrid TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.placeregulargrid_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.placeregulargrid_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.placeregulargrid_v TO wdb_read, wdb_write;
 
-SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.placeregulargrid_mv', '__WCI_SCHEMA__.placeregulargrid');
+SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.placeregulargrid_mv', '__WCI_SCHEMA__.placeregulargrid_v');
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.placeregulargrid_mv');
 
 REVOKE ALL ON TABLE __WCI_SCHEMA__.placeregulargrid_mv FROM PUBLIC;
@@ -247,13 +197,34 @@ GRANT SELECT ON TABLE __WCI_SCHEMA__.placeregulargrid_mv TO wdb_read, wdb_write;
 
 
 
-CREATE VIEW __WCI_SCHEMA__.placeindeterminatetype AS
-SELECT
-	placeindeterminatecode,
-	placeindeterminatetype
-FROM
-	__WDB_SCHEMA__.placeindeterminatetype;
-	
-REVOKE ALL ON TABLE __WCI_SCHEMA__.placeindeterminatetype FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.placeindeterminatetype TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.placeindeterminatetype TO wdb_read, wdb_write;
+-- Recreate Materialized view
+SELECT wdb_int.createMV('wci_int.placedefinition_mv', 'wci_int.placedefinition_v');
+SELECT wdb_int.refreshMV('wci_int.placedefinition_mv');
+
+REVOKE ALL ON wci_int.placedefinition_mv FROM PUBLIC;
+GRANT ALL ON wci_int.placedefinition_mv TO wdb_admin;
+GRANT SELECT ON wci_int.placedefinition_mv TO wdb_read, wdb_write;
+
+-- Index Materialized View
+CREATE INDEX XIE0Wci_placedefinition_mv ON wci_int.placedefinition_mv
+USING GIST
+(
+    placeGeometry
+);
+
+CREATE INDEX XIE1Wci_placedefinition_mv ON wci_int.placedefinition_mv
+(
+	placeid
+);
+
+CREATE INDEX XIE2Wci_placedefinition_mv ON wci_int.placedefinition_mv
+(
+	placeNameValidFrom,
+	placeNameValidTo
+);
+
+CREATE INDEX XIE3Wci_placedefinition_mv ON wci_int.placedefinition_mv
+(
+	placeName,
+	placeNameSpaceId
+);

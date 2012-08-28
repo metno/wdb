@@ -36,7 +36,7 @@ BEGIN
 	SELECT 
 		g.numberx*g.numbery INTO specSize
 	FROM 
-		__WCI_SCHEMA__.placeregulargrid g, 
+		__WCI_SCHEMA__.placeregulargrid_v g, 
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		g.placename = placename_ AND
@@ -75,7 +75,7 @@ __WCI_SCHEMA__.write(
 RETURNS void AS
 $BODY$
 DECLARE
-	session __WCI_SCHEMA__.sessiondata;
+	session __WCI_SCHEMA__.sessiondata_v;
 BEGIN
 	-- Get session data (codespaces) 
 	SELECT * INTO session FROM __WCI_SCHEMA__.getSessionData(); 
@@ -155,7 +155,7 @@ LANGUAGE 'plpgsql';
 --
 CREATE OR REPLACE RULE 
 wci_internal_gridvalue_insert
-AS ON INSERT TO __WCI_SCHEMA__.gridvalue
+AS ON INSERT TO __WCI_SCHEMA__.gridvalue_v
 DO INSTEAD 
 SELECT
 __WCI_SCHEMA__.write(
@@ -271,7 +271,7 @@ BEGIN
 	-- Get Max Data Version
 	IF (dataversion_ > 0) THEN
 		SELECT max(dataversion) INTO max_
-		FROM wci_int.floatvalue
+		FROM wci_int.floatvalue_v
 		WHERE dataproviderid = dataproviderid_
 		AND placeid = placeid_
 		AND referencetime = referencetime_	
@@ -312,7 +312,7 @@ LANGUAGE 'plpgsql';
 --
 CREATE OR REPLACE RULE 
 wci_internal_floatvalue_insert
-AS ON INSERT TO __WCI_SCHEMA__.floatvalue
+AS ON INSERT TO __WCI_SCHEMA__.floatvalue_v
 DO INSTEAD 
 SELECT
 __WCI_SCHEMA__.write(
@@ -343,7 +343,6 @@ DECLARE
 	myDataProviderId bigint;
 BEGIN
 	-- Get data provider
-	--SELECT dataproviderid INTO myDataProviderId FROM __WCI_SCHEMA__.wciuserdataprovider WHERE rolname=(SELECT user);
 	SELECT 
 		dataproviderid INTO myDataProviderId 
 	FROM 

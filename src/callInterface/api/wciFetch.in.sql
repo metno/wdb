@@ -38,12 +38,12 @@ RETURNS wci.grid AS
 $BODY$
 DECLARE
 	placeid_		bigint;
-	placeinfo_		__WCI_SCHEMA__.placeregulargrid;
+	placeinfo_		__WCI_SCHEMA__.placeregulargrid_v;
 	returnObject_ 	wci.grid;
 BEGIN
 	-- Fetch PlaceId
 	SELECT 	placeid INTO placeid_ 
-	FROM 	__WCI_SCHEMA__.gridvalue 
+	FROM 	__WCI_SCHEMA__.gridvalue_v 
 	WHERE 	value = gridid;
 
 	-- Retrieve PlaceInfo

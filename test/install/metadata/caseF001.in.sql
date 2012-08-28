@@ -35,7 +35,7 @@ SELECT
 	levelindeterminatecode, 
 	dataversion, 
 	confidencecode
-FROM test.gridvalue 
+FROM test.gridvalue_v 
 WHERE dataproviderid=88001 AND
       (referenceTime='2006-12-05T12:00:00+00' OR
 	  referenceTime='1919-01-01T01:01:00 UTC')

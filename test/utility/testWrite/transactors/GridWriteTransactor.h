@@ -102,7 +102,7 @@ public:
 
 		// Get Grid Dimensions
 		std::ostringstream gridQuery;
-		gridQuery << "SELECT * FROM test.placeregulargrid WHERE placename = "
+		gridQuery << "SELECT * FROM test.placeregulargrid_v WHERE placename = "
 				  << "'" << conf_.dataDefinitions().placeName << "'"
 				  << " AND placenamespaceid = 999";
 		pqxx::result R = T.exec( gridQuery.str() );

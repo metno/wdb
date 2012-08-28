@@ -26,6 +26,8 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
+
+
 CREATE TRIGGER trigger___WDB_SCHEMA___updatedataprovider_mv1
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.dataprovidername
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updatedataprovider_mv();

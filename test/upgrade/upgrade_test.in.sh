@@ -139,7 +139,7 @@ test_datawrite
 
 # -- Check for presence of test data 
 echo -n "Checking number of rows in gridvalue... "
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v" | grep -qE "48"
 then
    	echo "failed"
 	test_cleanup
@@ -148,7 +148,7 @@ else
 	echo "48"
 fi
 echo -n "Checking number of rows in fileblob... "
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v" | grep -qE "48"
 then
    	echo "failed"
 	test_cleanup
@@ -158,7 +158,7 @@ else
 fi
 
 echo -n "Writing data check files... "
-$PSQL -Atc "SELECT dataprovidername, st_astext(placegeometry), placeindeterminatecode, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelFrom, levelTo, levelindeterminatecode, dataversion, maxdataversion, confidencecode FROM test.gridvalue  order by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17" -t -o $UPGRADE_DIR/data_check0.txt 
+$PSQL -Atc "SELECT dataprovidername, st_astext(placegeometry), placeindeterminatecode, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelFrom, levelTo, levelindeterminatecode, dataversion, maxdataversion, confidencecode FROM test.gridvalue_v  order by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17" -t -o $UPGRADE_DIR/data_check0.txt 
 echo "done"
 
 # Ensure we are in build directory
@@ -197,7 +197,7 @@ test_datawrite
 
 # -- Check for presence of test data 
 echo -n "Checking number of rows in gridvalue... "
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v" | grep -qE "48"
 then
    	echo "failed"
 	test_cleanup
@@ -206,7 +206,7 @@ else
 	echo "48"
 fi
 echo -n "Checking number of rows in fileblob... "
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v" | grep -qE "48"
 then
    	echo "failed"
 	test_cleanup
@@ -239,7 +239,7 @@ fi
 
 # -- Check for presence of test data 
 echo -n "Checking number of rows in gridvalue... "
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v" | grep -qE "48"
 then
    	echo "failed"
 	test_cleanup
@@ -248,7 +248,7 @@ else
 	echo "48"
 fi
 echo -n "Checking number of rows in fileblob... "
-if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue" | grep -qE "48"
+if ! $PSQL -Atc "SELECT count(*) FROM test.gridvalue_v" | grep -qE "48"
 then
    	echo "failed"
 	test_cleanup
@@ -258,7 +258,7 @@ else
 fi
 
 echo -n "Writing data check files... "
-$PSQL -Atc "SELECT dataprovidername, st_astext(placegeometry), placeindeterminatecode, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelFrom, levelTo, levelindeterminatecode, dataversion, maxdataversion, confidencecode FROM test.gridvalue order by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17" -t -o $UPGRADE_DIR/data_check1.txt 
+$PSQL -Atc "SELECT dataprovidername, st_astext(placegeometry), placeindeterminatecode, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelFrom, levelTo, levelindeterminatecode, dataversion, maxdataversion, confidencecode FROM test.gridvalue_v order by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17" -t -o $UPGRADE_DIR/data_check1.txt 
 echo "done"
 
 echo -n "Diff between data check files... "

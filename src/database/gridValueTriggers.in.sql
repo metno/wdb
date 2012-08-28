@@ -18,8 +18,7 @@
 --
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- Deletion control:
-
+-- Deletion control
 CREATE OR REPLACE FUNCTION __WDB_SCHEMA__.deleteObsoleteGrids() RETURNS trigger
 	AS 
 $BODY$
@@ -27,18 +26,11 @@ DECLARE
 	noOfRows integer;
 	status integer;
 BEGIN
-
 	SELECT count(*) INTO noOfRows FROM __WDB_SCHEMA__.gridvalue WHERE value=OLD.value;
-
 	IF noOfRows = 0 THEN
 		BEGIN
 			PERFORM __WDB_SCHEMA__.drop_file(OLD.value);
-		--EXCEPTION
-		--	WHEN OTHERS THEN 
-				-- don't know proper name of exception. 
-				-- We silently ignore attempts to do multiple deletes of the same large object.
-				-- This happens when a single delete affects several rows with the same value. 
-		--		RETURN NULL;
+			-- No exception handling
 		END;
 		IF status = -1 THEN
 			RAISE WARNING 'Error when attempting to delete large object <%>', OLD.value;
@@ -46,11 +38,12 @@ BEGIN
 	ELSE
 		RAISE DEBUG 'Still % rows left which refers to Grid <%>', noOfRows, OLD.value;
 	END IF;
-
 	RETURN NULL;
 END;
 $BODY$
 LANGUAGE plpgsql;
+
+
 
 CREATE TRIGGER trigger___WDB_SCHEMA___deleteObsoleteGrids
     AFTER DELETE ON __WDB_SCHEMA__.gridvalue

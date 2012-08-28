@@ -21,13 +21,13 @@
 -- Get CF-Metadata Surface Parameter
 CREATE OR REPLACE FUNCTION 
 wci.getcfsurface( searchterm 		text )	
-RETURNS SETOF __WCI_SCHEMA__.cfsurface AS
+RETURNS SETOF __WCI_SCHEMA__.cfsurface_v AS
 $BODY$
 	SELECT
 		cfsurface,
 		cfsurfacecomment
 	FROM 
-		__WCI_SCHEMA__.cfsurface v,
+		__WCI_SCHEMA__.cfsurface_v v,
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		($1 IS NULL OR cfsurface LIKE lower($1));
@@ -50,7 +50,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Check for Duplicate
 	PERFORM *
-	FROM __WCI_SCHEMA__.cfsurface
+	FROM __WCI_SCHEMA__.cfsurface_v
 	WHERE cfsurface = surface_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -72,13 +72,13 @@ LANGUAGE plpgsql VOLATILE;
 -- Get CF-Metadata component Parameter
 CREATE OR REPLACE FUNCTION 
 wci.getcfcomponent( searchterm 		text )	
-RETURNS SETOF __WCI_SCHEMA__.cfcomponent AS
+RETURNS SETOF __WCI_SCHEMA__.cfcomponent_v AS
 $BODY$
 	SELECT
 		cfcomponent,
 		cfcomponentcomment
 	FROM 
-		__WCI_SCHEMA__.cfcomponent v,
+		__WCI_SCHEMA__.cfcomponent_v v,
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		($1 IS NULL OR cfcomponent LIKE lower($1));
@@ -101,7 +101,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Check for Duplicate
 	PERFORM * 
-	FROM __WCI_SCHEMA__.cfcomponent
+	FROM __WCI_SCHEMA__.cfcomponent_v
 	WHERE cfcomponent = component_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -123,13 +123,13 @@ LANGUAGE plpgsql VOLATILE;
 -- Get CF-Metadata medium Parameter
 CREATE OR REPLACE FUNCTION 
 wci.getcfmedium( searchterm 		text )	
-RETURNS SETOF __WCI_SCHEMA__.cfmedium AS
+RETURNS SETOF __WCI_SCHEMA__.cfmedium_v AS
 $BODY$
 	SELECT
 		cfmedium,
 		cfmediumcomment
 	FROM 
-		__WCI_SCHEMA__.cfmedium v,
+		__WCI_SCHEMA__.cfmedium_v v,
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		($1 IS NULL OR cfmedium LIKE lower($1));
@@ -152,7 +152,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Check for Duplicate
 	PERFORM * 
-	FROM __WCI_SCHEMA__.cfmedium
+	FROM __WCI_SCHEMA__.cfmedium_v
 	WHERE cfmedium = medium_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -174,13 +174,13 @@ LANGUAGE plpgsql VOLATILE;
 -- Get CF-Metadata process Parameter
 CREATE OR REPLACE FUNCTION 
 wci.getcfprocess( searchterm 		text )	
-RETURNS SETOF __WCI_SCHEMA__.cfprocess AS
+RETURNS SETOF __WCI_SCHEMA__.cfprocess_v AS
 $BODY$
 	SELECT
 		cfprocess,
 		cfprocesscomment
 	FROM 
-		__WCI_SCHEMA__.cfprocess v,
+		__WCI_SCHEMA__.cfprocess_v v,
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		($1 IS NULL OR cfprocess LIKE lower($1));
@@ -203,7 +203,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Check for Duplicate
 	PERFORM * 
-	FROM __WCI_SCHEMA__.cfprocess
+	FROM __WCI_SCHEMA__.cfprocess_v
 	WHERE cfprocess = process_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -225,13 +225,13 @@ LANGUAGE plpgsql VOLATILE;
 -- Get CF-Metadata condition Parameter
 CREATE OR REPLACE FUNCTION 
 wci.getcfcondition( searchterm 		text )	
-RETURNS SETOF __WCI_SCHEMA__.cfcondition AS
+RETURNS SETOF __WCI_SCHEMA__.cfcondition_v AS
 $BODY$
 	SELECT
 		cfcondition,
 		cfconditioncomment
 	FROM 
-		__WCI_SCHEMA__.cfcondition v,
+		__WCI_SCHEMA__.cfcondition_v v,
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		($1 IS NULL OR cfcondition LIKE lower($1));
@@ -254,7 +254,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Check for Duplicate
 	PERFORM * 
-	FROM __WCI_SCHEMA__.cfcondition
+	FROM __WCI_SCHEMA__.cfcondition_v
 	WHERE cfcondition = condition_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -276,14 +276,14 @@ LANGUAGE plpgsql VOLATILE;
 -- Get CF-Metadata Parameter Function
 CREATE OR REPLACE FUNCTION 
 wci.getcfmethods( searchterm 		text )	
-RETURNS SETOF __WCI_SCHEMA__.cfmethods AS
+RETURNS SETOF __WCI_SCHEMA__.cfmethods_v AS
 $BODY$
 	SELECT
 		cfmethods,
 		cfmethodscomment,
 		cfmethodsname
 	FROM 
-		__WCI_SCHEMA__.cfmethods v,
+		__WCI_SCHEMA__.cfmethods_v v,
 		__WCI_SCHEMA__.getSessionData() s
 	WHERE
 		($1 IS NULL OR cfmethods LIKE lower($1));
@@ -305,7 +305,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Check for Duplicate
 	PERFORM * 
-	FROM __WCI_SCHEMA__.cfmethods
+	FROM __WCI_SCHEMA__.cfmethods_v
 	WHERE cfmethods = cfmethods_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -326,7 +326,7 @@ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION
 wci.getParameter( parameter 		text )	
-RETURNS SETOF __WCI_SCHEMA__.parameter AS
+RETURNS SETOF __WCI_SCHEMA__.parameter_v AS
 $BODY$
 	SELECT 
 		parameterid,
@@ -383,14 +383,24 @@ BEGIN
 	END IF;
 	-- NAME
 	SELECT getcanonicalparametername INTO canonicname_
-	FROM __WCI_SCHEMA__.getCanonicalParameterName( cfstandardname_, cfsurface_, cfcomponent_, 
-		cfmedium_, cfprocess_, cfcondition_, cfmethods_ );
+	FROM __WCI_SCHEMA__.getCanonicalParameterName( cfstandardname_,
+												   cfsurface_,
+												   cfcomponent_,
+												   cfmedium_,
+												   cfprocess_,
+												   cfcondition_,
+												   cfmethods_ );
 	SELECT getparametername INTO parametername_
-	FROM __WCI_SCHEMA__.getParameterName( cfstandardname_, cfsurface_, cfcomponent_, 
-		cfmedium_, cfprocess_, cfcondition_, cfmethods_ );
+	FROM __WCI_SCHEMA__.getParameterName( cfstandardname_,
+										  cfsurface_,
+										  cfcomponent_,
+										  cfmedium_,
+										  cfprocess_,
+										  cfcondition_,
+										  cfmethods_ );
 	-- Check for Duplicate
 	SELECT parameterid INTO parameterid_
-	FROM   __WCI_SCHEMA__.parameter
+	FROM   __WCI_SCHEMA__.parameter_v
 	WHERE  parametername::text = canonicname_;
 	-- Insert
 	IF NOT FOUND THEN
@@ -542,13 +552,11 @@ CREATE OR REPLACE FUNCTION
 wci.getUnit(
 	unit		text
 )
-RETURNS SETOF __WCI_SCHEMA__.unitwithconversion AS
+RETURNS SETOF __WCI_SCHEMA__.unitwithconversion_v AS
 $BODY$
 	SELECT *
-	FROM __WCI_SCHEMA__.unitwithconversion
+	FROM __WCI_SCHEMA__.unitwithconversion_v
 	WHERE unitname LIKE $1 OR $1 IS NULL; 
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql STABLE;
-
-

@@ -381,7 +381,7 @@ EOF
 	else
 	    echo "done"
 	fi
-
+	
 	# Install Database Triggers
 	echo -n "installing data triggers... "
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
@@ -410,7 +410,10 @@ SET CLIENT_MIN_MESSAGES TO "WARNING";
 \i $WDB_DATAMODEL_PATH/dataProviderViews.sql
 \i $WDB_DATAMODEL_PATH/placeDefinitionViews.sql
 \i $WDB_DATAMODEL_PATH/cfParameterViews.sql
-\i $WDB_DATAMODEL_PATH/wciViewDefinitions.sql
+\i $WDB_DATAMODEL_PATH/parameterViews.sql
+\i $WDB_DATAMODEL_PATH/parameterUnitViews.sql
+\i $WDB_DATAMODEL_PATH/floatValueViews.sql
+\i $WDB_DATAMODEL_PATH/gridValueViews.sql
 \i $WDB_DATAMODEL_PATH/adminDefinitions.sql
 EOF
 	if [ 0 != $? ]; then

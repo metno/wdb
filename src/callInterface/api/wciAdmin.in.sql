@@ -37,11 +37,11 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.getSessionData();
 	-- Get OwnerID
 	SELECT partyid INTO oid_
-	FROM __WCI_SCHEMA__.organization
+	FROM __WCI_SCHEMA__.organization_v
 	WHERE organizationalias = owner_;
 	-- Get ContactID
 	SELECT partyid INTO cid_
-	FROM __WCI_SCHEMA__.person
+	FROM __WCI_SCHEMA__.person_v
 	WHERE initials = contact_;
 	-- Check
 	PERFORM * 
@@ -169,7 +169,7 @@ BEGIN
 							 						   			  v.cfprocess,
 							 						   			  v.cfcondition,
 							 					    			  v.cfmethods ) )
-	FROM	__WCI_SCHEMA__.parameter v
+	FROM	__WCI_SCHEMA__.parameter_v v
 	WHERE	parameternamespaceid = copyFromId_;
 END;
 $BODY$
@@ -193,7 +193,7 @@ DECLARE
 BEGIN
 	-- Get OwnerID
 	SELECT partyid INTO sid_
-	FROM __WCI_SCHEMA__.softwareversion
+	FROM __WCI_SCHEMA__.softwareversion_v
 	WHERE softwarename = name_ AND
 		  softwareversioncode = code_;
 	-- Update or INSERT

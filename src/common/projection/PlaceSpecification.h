@@ -45,7 +45,7 @@ extern "C" {
 #endif
 
 /**
- * Holds the parsed result from a wci(internal).placespec.
+ * Holds the parsed result from a wci(internal).placeregulargrid_mv.
  */
 struct PlaceSpecification
 {

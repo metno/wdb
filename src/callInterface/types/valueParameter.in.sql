@@ -25,7 +25,7 @@ LANGUAGE C IMMUTABLE STRICT;
 
 
 -- Replace function wci_int.getparametername(wci_int.gridvalue);
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getParameterName( data __WCI_SCHEMA__.gridvalue )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getParameterName( data __WCI_SCHEMA__.gridvalue_v )
 RETURNS text AS
 $BODY$
 DECLARE
@@ -44,7 +44,7 @@ $BODY$
 DECLARE
 	pp text; --selected physicalphenomenon from table
 BEGIN
-	SELECT physicalphenomenon INTO pp FROM __WCI_SCHEMA__.unit WHERE unitname = unit;
+	SELECT physicalphenomenon INTO pp FROM __WCI_SCHEMA__.unit_v WHERE unitname = unit;
 
 	IF pp != physicalphenomenon_ THEN
 		RAISE EXCEPTION '% is not a % (it is a %)', unit,  physicalphenomenon_, pp;
@@ -61,7 +61,7 @@ __WCI_SCHEMA__.getValueParameterId(
 RETURNS integer AS
 $BODY$
 DECLARE
-        session __WCI_SCHEMA__.sessionData;
+        session __WCI_SCHEMA__.sessionData_v;
         ret integer;
 BEGIN
 	session := __WCI_SCHEMA__.getsessiondata();

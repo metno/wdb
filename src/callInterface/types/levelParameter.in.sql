@@ -31,7 +31,7 @@ LANGUAGE C IMMUTABLE STRICT;
 
 
 -- Replace function wci_int.getlevelparametername(wci_int.gridvalue);
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLevelParameterName( data __WCI_SCHEMA__.gridvalue )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.getLevelParameterName( data __WCI_SCHEMA__.gridvalue_v )
 RETURNS text AS
 $BODY$
 DECLARE
@@ -65,7 +65,7 @@ __WCI_SCHEMA__.getLevelParameterId(
 RETURNS integer AS
 $BODY$
 DECLARE
-        session __WCI_SCHEMA__.sessionData;
+        session __WCI_SCHEMA__.sessionData_v;
         ret integer;
 BEGIN
     session := __WCI_SCHEMA__.getsessiondata();
@@ -86,7 +86,7 @@ LANGUAGE 'plpgsql';
 
 
 
-CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.lp_matches( val __WCI_SCHEMA__.gridvalue, param text[] )
+CREATE OR REPLACE FUNCTION __WCI_SCHEMA__.lp_matches( val __WCI_SCHEMA__.gridvalue_v, param text[] )
 RETURNS boolean AS
 $BODY$
 DECLARE

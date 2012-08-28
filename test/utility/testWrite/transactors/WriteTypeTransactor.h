@@ -92,7 +92,7 @@ public:
   	{
 		// Get Grid Dimensions
 		std::ostringstream testQuery;
-		testQuery << "SELECT spatialdomaindelivery FROM test.dataprovider WHERE dataprovidername = "
+		testQuery << "SELECT spatialdomaindelivery FROM test.dataprovider_v WHERE dataprovidername = "
 				  << "'" << conf_.dataDefinitions().dataProvider << "'"
 				  << " AND dataprovidernamespaceid = 999";
 		pqxx::result R = T.exec( testQuery.str() );

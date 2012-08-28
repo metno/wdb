@@ -133,9 +133,9 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 		query::Builder builder;
 
 		if ( dataSource == FloatTable )
-			builder.from(WCI_SCHEMA".floatvalue v");
+			builder.from(WCI_SCHEMA".floatvalue_v v");
 		else // dataSource == GridTable
-			builder.from(WCI_SCHEMA".gridvalue v");
+			builder.from(WCI_SCHEMA".gridvalue_v v");
 
 		builder.what(selectWhat);
 
@@ -180,7 +180,7 @@ char * build_placeSpecQuery(long long placeid)
 {
 	std::ostringstream query;
 	query << "SELECT startx, starty, numberx, numbery, incrementx, incrementy, originalsrid, projdefinition "
-			"FROM " << WCI_SCHEMA << ".placespec "
+			"FROM " << WCI_SCHEMA << ".placeregulargrid_mv "
 			"WHERE placeid=" << placeid;
 
 	std::string ret = query.str();

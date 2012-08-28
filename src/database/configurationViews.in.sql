@@ -19,24 +19,28 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
-
-CREATE VIEW __WCI_SCHEMA__.configuration AS
+CREATE VIEW __WCI_SCHEMA__.configuration_v AS
 SELECT
-	sw.softwarename AS name,
-	sw.softwareversioncode AS softwareversion,
-	cf.packageversion AS packageversion,
-	pc.partycomment AS description,
-	cf.installtime AS installtime
+	sw.softwarename				AS name,
+	sw.softwareversioncode 		AS softwareversion,
+	cf.packageversion 			AS packageversion,
+	pc.partycomment 			AS description,
+	cf.installtime 				AS installtime
 FROM
-	(__WDB_SCHEMA__.configuration AS cf JOIN __WDB_SCHEMA__.softwareversion AS sw ON cf.softwareversionpartyid = sw.partyid)
-	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc ON softwareversionpartyid = pc.partyid; 
+	( __WDB_SCHEMA__.configuration AS cf JOIN
+	  __WDB_SCHEMA__.softwareversion AS sw 
+	  ON
+	  cf.softwareversionpartyid = sw.partyid )
+	LEFT OUTER JOIN
+	__WDB_SCHEMA__.partycomment AS pc ON softwareversionpartyid = pc.partyid; 
 
-REVOKE ALL ON __WCI_SCHEMA__.configuration FROM public;
-GRANT ALL ON __WCI_SCHEMA__.configuration TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.configuration TO wdb_read, wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.configuration_v FROM public;
+GRANT ALL ON __WCI_SCHEMA__.configuration_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.configuration_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.sessiondata AS
+
+CREATE VIEW __WCI_SCHEMA__.sessiondata_v AS
 SELECT
 	dataprovidernamespaceid,
 	placenamespaceid,
@@ -50,16 +54,16 @@ ORDER BY
 LIMIT 
 	1;
 
-REVOKE ALL ON __WCI_SCHEMA__.sessiondata FROM public;
-GRANT ALL ON __WCI_SCHEMA__.sessiondata TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.sessiondata TO wdb_read, wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.sessiondata_v FROM public;
+GRANT ALL ON __WCI_SCHEMA__.sessiondata_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.sessiondata_v TO wdb_read, wdb_write;
+
 
 
 -- Needs to be defined here to support view creation
 CREATE OR REPLACE FUNCTION 
 __WCI_SCHEMA__.getSessionData
 ()
-RETURNS __WCI_SCHEMA__.sessionData AS
+RETURNS __WCI_SCHEMA__.sessionData_v AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wciSession_get'
 LANGUAGE 'c' STABLE;
-

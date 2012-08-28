@@ -55,7 +55,7 @@ extern "C" {
 struct PlaceSpecification;
 
 /**
- * Extract fields from a wci(internal).placespec.
+ * Extract fields from a wci(internal).placeregulargrid_mv.
  *
  * @param out Return value. Will contain the values extracted from indata.
  * @param indata The tuple to be parsed.

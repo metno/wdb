@@ -34,7 +34,7 @@ $BODY$
 	SELECT 
 		DISTINCT dataproviderid
 	FROM 
-		__WCI_SCHEMA__.dataprovider
+		__WCI_SCHEMA__.dataprovider_v
 	WHERE 
 		( dataprovidername = $1 );
 $BODY$

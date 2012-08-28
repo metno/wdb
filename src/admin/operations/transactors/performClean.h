@@ -78,9 +78,9 @@ public:
 	 */
 	void operator()(argument_type &T)
   	{
-    	pqxx::result r1 = T.exec( "SELECT count(*) FROM admin.blob" );
+    	pqxx::result r1 = T.exec( "SELECT count(*) FROM admin.blob_v" );
 		T.exec( "SELECT cleanupdb()" );
-    	pqxx::result r2 = T.exec( "SELECT count(*) FROM admin.blob" );
+    	pqxx::result r2 = T.exec( "SELECT count(*) FROM admin.blob_v" );
     	int c1, c2;
     	r1.at(0).at(0).to( c1 );
     	r2.at(0).at(0).to( c2 );

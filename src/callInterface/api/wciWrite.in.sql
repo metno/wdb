@@ -51,7 +51,7 @@ BEGIN
 	SELECT 
 		max(dataversion) INTO currentVersion_ 
 	FROM 
-		__WCI_SCHEMA__.gridvalue v
+		__WCI_SCHEMA__.gridvalue_v v
 	WHERE
 		myDataProviderId_ = dataproviderid AND
 		v.referencetime = referencetime_ AND
@@ -71,7 +71,7 @@ BEGIN
 	
 	dataId := __WCI_SCHEMA__.reserve_file_id();
 
-	INSERT INTO __WCI_SCHEMA__.gridvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -173,7 +173,7 @@ BEGIN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
-			__WCI_SCHEMA__.gridvalue v
+			__WCI_SCHEMA__.gridvalue_v v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
 			v.referencetime = referencetime_ AND
@@ -197,7 +197,7 @@ BEGIN
 
 	dataId := __WCI_SCHEMA__.reserve_file_id();
 	
-	INSERT INTO __WCI_SCHEMA__.gridvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -295,7 +295,7 @@ BEGIN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
-			__WCI_SCHEMA__.gridvalue v
+			__WCI_SCHEMA__.gridvalue_v v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
 			v.referencetime = referencetime_ AND
@@ -317,7 +317,7 @@ BEGIN
 		confidenceCode_ := 0;
 	END IF;
 
-	INSERT INTO __WCI_SCHEMA__.gridvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -405,7 +405,7 @@ BEGIN
 
 	dataId := __WCI_SCHEMA__.reserve_file_id();
 	
-	INSERT INTO __WCI_SCHEMA__.gridvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -490,7 +490,7 @@ BEGIN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
-			__WCI_SCHEMA__.gridvalue v
+			__WCI_SCHEMA__.gridvalue_v v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
 			v.referencetime = what.referencetime AND
@@ -509,7 +509,7 @@ BEGIN
 		END IF;
 	END IF;
 		
-	INSERT INTO __WCI_SCHEMA__.gridvalue 
+	INSERT INTO __WCI_SCHEMA__.gridvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -610,7 +610,7 @@ BEGIN
 	SELECT 
 		max(dataversion) INTO currentVersion_ 
 	FROM 
-		__WCI_SCHEMA__.floatvalue v
+		__WCI_SCHEMA__.floatvalue_v v
 	WHERE
 		myDataProviderId_ = dataproviderid AND
 		v.referencetime = referencetime_ AND
@@ -628,7 +628,7 @@ BEGIN
 		currentVersion_ := currentVersion_ + 1;
 	END IF;
 
-	INSERT INTO __WCI_SCHEMA__.floatvalue 
+	INSERT INTO __WCI_SCHEMA__.floatvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -724,7 +724,7 @@ BEGIN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
-			__WCI_SCHEMA__.floatvalue v
+			__WCI_SCHEMA__.floatvalue_v v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
 			v.referencetime = referencetime_ AND
@@ -746,7 +746,7 @@ BEGIN
 		confidenceCode_ := 0;
 	END IF;
 
-	INSERT INTO __WCI_SCHEMA__.floatvalue 
+	INSERT INTO __WCI_SCHEMA__.floatvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -829,7 +829,7 @@ BEGIN
 		SELECT 
 			max(dataversion) INTO currentVersion_ 
 		FROM 
-			__WCI_SCHEMA__.floatvalue v
+			__WCI_SCHEMA__.floatvalue_v v
 		WHERE
 			v.dataproviderid = dataProviderId_ AND
 			v.referencetime = what.referencetime AND
@@ -848,7 +848,7 @@ BEGIN
 		END IF;
 	END IF;
 		
-	INSERT INTO __WCI_SCHEMA__.floatvalue 
+	INSERT INTO __WCI_SCHEMA__.floatvalue_v 
 	(
 		value,
 		dataproviderid,
@@ -933,7 +933,7 @@ wci.writed(
 RETURNS void AS
 $BODY$
 BEGIN
-	INSERT INTO __WCI_SCHEMA__.floatvalue 
+	INSERT INTO __WCI_SCHEMA__.floatvalue_v 
 	(
 		value,
 		dataproviderid,

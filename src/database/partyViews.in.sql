@@ -19,8 +19,7 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
-
-CREATE VIEW __WCI_SCHEMA__.person AS
+CREATE VIEW __WCI_SCHEMA__.person_v AS
 SELECT
     py.partyid,
     py.partytype,
@@ -38,16 +37,19 @@ SELECT
 	pc.partycomment,
     pc.partycommentstoretime
 FROM
-	(__WDB_SCHEMA__.party AS py JOIN __WDB_SCHEMA__.person AS pn ON py.partyid = pn.partyid)  
-	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc ON py.partyid = pc.partyid;
-	
+	( __WDB_SCHEMA__.party AS py JOIN
+	  __WDB_SCHEMA__.person AS pn
+	  ON py.partyid = pn.partyid )  
+	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc
+	ON py.partyid = pc.partyid;
 
-REVOKE ALL ON __WCI_SCHEMA__.person FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.person TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.person TO wdb_read, wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.person_v FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.person_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.person_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.organization AS
+
+CREATE VIEW __WCI_SCHEMA__.organization_v AS
 SELECT
     py.partyid,
     py.partytype,
@@ -59,15 +61,20 @@ SELECT
 	pc.partycomment,
     pc.partycommentstoretime
 FROM
-	(__WDB_SCHEMA__.party AS py JOIN __WDB_SCHEMA__.organization AS po ON py.partyid = po.partyid) 
-	LEFT OUTER JOIN __WDB_SCHEMA__.partycomment AS pc ON py.partyid = pc.partyid;
+	( __WDB_SCHEMA__.party AS py JOIN
+	  __WDB_SCHEMA__.organization AS po
+	  ON
+	  py.partyid = po.partyid ) 
+	LEFT OUTER JOIN
+	__WDB_SCHEMA__.partycomment AS pc
+	ON py.partyid = pc.partyid;
 
-REVOKE ALL ON __WCI_SCHEMA__.organization FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.organization TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.organization TO wdb_read, wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.organization_v FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.organization_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.organization_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.softwareversion AS
+CREATE VIEW __WCI_SCHEMA__.softwareversion_v AS
 SELECT
     py.partyid,
     py.partytype,
@@ -78,9 +85,13 @@ SELECT
 	pc.partycomment,
     pc.partycommentstoretime
 FROM
-	(__WDB_SCHEMA__.party AS py JOIN __WDB_SCHEMA__.softwareversion AS ps ON py.partyid = ps.partyid )
-	LEFT OUTER JOIN  __WDB_SCHEMA__.partycomment AS pc ON py.partyid = pc.partyid;
+	( __WDB_SCHEMA__.party AS py JOIN
+	  __WDB_SCHEMA__.softwareversion AS ps
+	  ON py.partyid = ps.partyid )
+	LEFT OUTER JOIN
+	__WDB_SCHEMA__.partycomment AS pc
+	ON py.partyid = pc.partyid;
 
-REVOKE ALL ON __WCI_SCHEMA__.softwareversion FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.softwareversion TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.softwareversion TO wdb_read, wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.softwareversion_v FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.softwareversion_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.softwareversion_v TO wdb_read, wdb_write;

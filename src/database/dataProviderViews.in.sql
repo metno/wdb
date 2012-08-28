@@ -19,9 +19,8 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
-
 -- DataProvider
-CREATE VIEW __WCI_SCHEMA__.dataprovider AS
+CREATE VIEW __WCI_SCHEMA__.dataprovider_v AS
 SELECT
 	dp.dataproviderid,
 	dp.dataprovidertype,
@@ -45,36 +44,29 @@ WHERE
 		WHERE c.dataproviderid = dp.dataproviderid
 	);
 
-REVOKE ALL ON __WCI_SCHEMA__.dataprovider FROM PUBLIC;
-GRANT ALL ON __WCI_SCHEMA__.dataprovider TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.dataprovider TO wdb_read, wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.dataprovider_v FROM PUBLIC;
+GRANT ALL ON __WCI_SCHEMA__.dataprovider_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.dataprovider_v TO wdb_read, wdb_write;
 
-SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.dataprovider_mv', '__WCI_SCHEMA__.dataprovider');
+
+
+-- Create Materialized View
+SELECT __WDB_SCHEMA__.createMV('__WCI_SCHEMA__.dataprovider_mv', '__WCI_SCHEMA__.dataprovider_v');
 SELECT __WDB_SCHEMA__.refreshMV('__WCI_SCHEMA__.dataprovider_mv');
 
 REVOKE ALL ON TABLE __WCI_SCHEMA__.dataprovider_mv FROM PUBLIC;
 GRANT ALL ON TABLE __WCI_SCHEMA__.dataprovider_mv TO wdb_admin;
 GRANT SELECT ON TABLE __WCI_SCHEMA__.dataprovider_mv TO wdb_read, wdb_write;
 
-CREATE INDEX XIE0wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
+CREATE INDEX XIE1Wci_DataProvider_mv ON __WCI_SCHEMA__.dataprovider_mv
 (
-    dataprovidernameleftset,
-	dataprovidernamerightset,
-	dataproviderid,
-	dataprovidernamespaceid
+       DataProviderId,
+	   DataProviderNamespaceId
 );
 
-CREATE INDEX XIE1wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
+CREATE INDEX XIE2Wci_DataProvider_mv ON __WCI_SCHEMA__.dataprovider_mv
 (
-	dataprovidernamespaceid,
-	dataproviderid,
-	dataprovidernameleftset,
-	dataprovidernamerightset
-);
-
-CREATE INDEX XIE2wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
-(
-    dataprovidername
+	   DataProviderName
 );
 
 CREATE INDEX XIE3wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
@@ -83,16 +75,19 @@ CREATE INDEX XIE3wci_dataprovider_mv ON __WCI_SCHEMA__.dataprovider_mv
 	dataprovidernamerightset
 );
 
-CREATE VIEW __WCI_SCHEMA__.wciuserdataprovider AS
+
+
+CREATE VIEW __WCI_SCHEMA__.wciuserdataprovider_v AS
 SELECT
 	dataproviderid,
 	rolname
 FROM
 	__WDB_SCHEMA__.wciuserdataprovider;
 
-REVOKE ALL ON __WCI_SCHEMA__.wciuserdataprovider FROM public;
-GRANT ALL ON __WCI_SCHEMA__.wciuserdataprovider TO wdb_admin;
-GRANT SELECT ON __WCI_SCHEMA__.wciuserdataprovider TO wdb_write;
+REVOKE ALL ON __WCI_SCHEMA__.wciuserdataprovider_v FROM public;
+GRANT ALL ON __WCI_SCHEMA__.wciuserdataprovider_v TO wdb_admin;
+GRANT SELECT ON __WCI_SCHEMA__.wciuserdataprovider_v TO wdb_write;
+
 
 
 -- Dataprovider Name
@@ -107,11 +102,3 @@ FROM
 REVOKE ALL ON __WCI_SCHEMA__.dataprovidername_v FROM public;
 GRANT ALL ON __WCI_SCHEMA__.dataprovidername_v TO wdb_admin;
 GRANT SELECT ON __WCI_SCHEMA__.dataprovidername_v TO wdb_read, wdb_write;
-
-
-CREATE INDEX XIE1Wdb_DataProvider_Mv ON __WCI_SCHEMA__.dataprovider_mv
-(
-       DataProviderId,
-	   DataProviderNamespaceId,
-	   DataProviderName
-);

@@ -41,7 +41,7 @@ BEGIN
 	PERFORM wci_int.getSessionData();
 	-- Check 
 	SELECT partyid INTO ppid_ 
-	FROM wci_int.organization
+	FROM wci_int.organization_v
 	WHERE organizationalias = alias_;
 	-- Add Organization
 	IF NOT FOUND THEN
@@ -123,7 +123,7 @@ BEGIN
 	PERFORM wci_int.getSessionData();
 	-- Check 
 	SELECT partyid INTO ppid_ 
-	FROM wci_int.person
+	FROM wci_int.person_v
 	WHERE initials = initials_;
 	-- Add dataprovider
 	IF NOT FOUND THEN
@@ -205,7 +205,7 @@ BEGIN
 	PERFORM wci_int.getSessionData();
 	-- Check 
 	SELECT partyid INTO ppid_ 
-	FROM wci_int.softwareversion
+	FROM wci_int.softwareversion_v
 	WHERE softwarename = name_ AND
 	      softwareversioncode = version_;
 	-- Add Organization

@@ -42,7 +42,7 @@ LANGUAGE 'c' VOLATILE;
 CREATE OR REPLACE FUNCTION 
 __WCI_SCHEMA__.getSessionData
 ()
-RETURNS __WCI_SCHEMA__.sessionData AS
+RETURNS __WCI_SCHEMA__.sessionData_v AS
 '__WDB_LIBDIR__/__WCI_LIB__', 'wciSession_get'
 LANGUAGE 'c' STABLE;
 

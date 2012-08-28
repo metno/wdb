@@ -47,7 +47,7 @@ BEGIN
 	PERFORM __WCI_SCHEMA__.setRole( newUser );
 	
 	SELECT * INTO dataproviderNameSpaceId, placeNameSpaceId, parameterNameSpaceId
-		FROM __WCI_SCHEMA__.sessiondata;
+		FROM __WCI_SCHEMA__.sessiondata_v;
 
 	PERFORM __WCI_SCHEMA__.setupSession(newUser,dataproviderNameSpaceId,placeNameSpaceId,parameterNameSpaceId );
 END;

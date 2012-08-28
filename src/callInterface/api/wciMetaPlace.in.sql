@@ -46,7 +46,7 @@ BEGIN
 	END IF;	
 	-- Get placedef
 	SELECT	placeid INTO placeId_ 
-	FROM	__WCI_SCHEMA__.placedefinition
+	FROM	__WCI_SCHEMA__.placedefinition_v
 	WHERE	st_equals( placegeometry, placeGeometry_) AND
 		placenamespaceid = 0;
 	-- Add dataprovider
@@ -102,7 +102,7 @@ BEGIN
 	END IF;	
 	-- Get placedef
 	SELECT	placeid INTO placeId_
-	FROM	__WCI_SCHEMA__.placedefinition
+	FROM	__WCI_SCHEMA__.placedefinition_v
 	WHERE	st_equals( placegeometry, placeGeometry_ ) AND
 		placenamespaceid = 0;
 	-- Add placedefinition
@@ -432,7 +432,7 @@ LANGUAGE plpgsql VOLATILE;
 CREATE OR REPLACE FUNCTION 
 wci.getPlaceDefinition( location 			text,	
 						valid 				timestamp with time zone )
-RETURNS SETOF wci_int.placedefinition AS
+RETURNS SETOF wci_int.placedefinition_v AS
 $BODY$
 	SELECT 	p.placeid,
 			p.placegeometrytype,
@@ -455,7 +455,7 @@ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION 
 wci.getPlaceDefinition( location 			text )	
-RETURNS SETOF wci_int.placedefinition AS
+RETURNS SETOF wci_int.placedefinition_v AS
 $BODY$
 	SELECT 	*
 	FROM	wci.getPlaceDefinition($1, 'now');
@@ -468,7 +468,7 @@ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION 
 wci.getPlacePoint( location 			text,
 				   valid 				timestamp with time zone )
-RETURNS SETOF wci_int.placedefinition AS
+RETURNS SETOF wci_int.placedefinition_v AS
 $BODY$
 	SELECT 	p.placeid,
 			p.placegeometrytype,
@@ -492,7 +492,7 @@ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION 
 wci.getPlacePoint( location 			text )	
-RETURNS SETOF wci_int.placedefinition AS
+RETURNS SETOF wci_int.placedefinition_v AS
 $BODY$
 	SELECT 	*
 	FROM	wci.getPlacePoint($1, 'now');
@@ -503,7 +503,7 @@ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION 
 wci.getPlaceRegularGrid( grid_ 		text )
-RETURNS SETOF __WCI_SCHEMA__.placeregulargrid AS
+RETURNS SETOF __WCI_SCHEMA__.placeregulargrid_v AS
 $BODY$
 	SELECT 	p.placeid,
 			p.placegeometrytype,
@@ -648,7 +648,7 @@ CREATE OR REPLACE FUNCTION
 wci.getPlaceName(
 	name_	text
 )
-RETURNS SETOF __WCI_SCHEMA__.placename_V AS
+RETURNS SETOF __WCI_SCHEMA__.placename_v AS
 $BODY$
 	SELECT
 		*
@@ -656,7 +656,7 @@ $BODY$
 		__WCI_SCHEMA__.placename_v
 	WHERE placeid = SOME
 		  ( SELECT placeid 
-		    FROM   __WCI_SCHEMA__.placename p
+		    FROM   __WCI_SCHEMA__.placename_v p
 		    WHERE  ( p.placename LIKE lower($1) OR $1 IS NULL ) );
 $BODY$
 SECURITY DEFINER
@@ -696,7 +696,7 @@ $BODY$
 	SELECT 
 		placename 
 	FROM 
-		wci_int.placedefinition p, 
+		wci_int.placedefinition_v p, 
 		wci_int.getsessiondata() s 
 	WHERE 
 		placegeometry = $1 AND 
@@ -714,7 +714,7 @@ $BODY$
 	SELECT 
 		placename 
 	FROM 
-		wci_int.placedefinition p, 
+		wci_int.placedefinition_v p, 
 		wci_int.getsessiondata() s 
 	WHERE 
 		placegeometry = st_geomfromtext($1, 4030) AND 

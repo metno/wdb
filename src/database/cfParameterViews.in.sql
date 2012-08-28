@@ -19,68 +19,72 @@
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SET SESSION client_min_messages TO 'warning';
 
-
-CREATE VIEW __WCI_SCHEMA__.cfsurface AS
+CREATE VIEW __WCI_SCHEMA__.cfsurface_v AS
 SELECT
 	cfsurface,
 	cfsurfacecomment
 FROM
 	__WDB_SCHEMA__.cfsurface;
 
-REVOKE ALL ON TABLE __WCI_SCHEMA__.cfsurface FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.cfsurface TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.cfsurface TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.cfsurface_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.cfsurface_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.cfsurface_v TO wdb_read, wdb_write;
+
 
 	
-CREATE VIEW __WCI_SCHEMA__.cfcomponent AS
+CREATE VIEW __WCI_SCHEMA__.cfcomponent_v AS
 SELECT
 	cfcomponent,
 	cfcomponentcomment
 FROM
 	__WDB_SCHEMA__.cfcomponent;
 
-REVOKE ALL ON TABLE __WCI_SCHEMA__.cfcomponent FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.cfcomponent TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.cfcomponent TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.cfcomponent_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.cfcomponent_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.cfcomponent_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.cfmedium AS
+
+CREATE VIEW __WCI_SCHEMA__.cfmedium_v AS
 SELECT
 	cfmedium,
 	cfmediumcomment
 FROM
 	__WDB_SCHEMA__.cfmedium;
 
-REVOKE ALL ON TABLE __WCI_SCHEMA__.cfmedium FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.cfmedium TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.cfmedium TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.cfmedium_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.cfmedium_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.cfmedium_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.cfprocess AS
+
+CREATE VIEW __WCI_SCHEMA__.cfprocess_v AS
 SELECT
 	cfprocess,
 	cfprocesscomment
 FROM
 	__WDB_SCHEMA__.cfprocess;
 
-REVOKE ALL ON TABLE __WCI_SCHEMA__.cfprocess FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.cfprocess TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.cfprocess TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.cfprocess_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.cfprocess_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.cfprocess_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.cfcondition AS
+
+CREATE VIEW __WCI_SCHEMA__.cfcondition_v AS
 SELECT
 	cfcondition,
 	cfconditioncomment
 FROM
 	__WDB_SCHEMA__.cfcondition;
 
-REVOKE ALL ON TABLE __WCI_SCHEMA__.cfcondition FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.cfcondition TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.cfcondition TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.cfcondition_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.cfcondition_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.cfcondition_v TO wdb_read, wdb_write;
 
 
-CREATE VIEW __WCI_SCHEMA__.cfmethods AS
+
+CREATE VIEW __WCI_SCHEMA__.cfmethods_v AS
 SELECT
 	cfmethods,
 	cfmethodscomment,
@@ -88,6 +92,6 @@ SELECT
 FROM
 	__WDB_SCHEMA__.cfmethods;
 
-REVOKE ALL ON TABLE __WCI_SCHEMA__.cfmethods FROM PUBLIC;
-GRANT ALL ON TABLE __WCI_SCHEMA__.cfmethods TO wdb_admin;
-GRANT SELECT ON TABLE __WCI_SCHEMA__.cfmethods TO wdb_read, wdb_write;
+REVOKE ALL ON TABLE __WCI_SCHEMA__.cfmethods_v FROM PUBLIC;
+GRANT ALL ON TABLE __WCI_SCHEMA__.cfmethods_v TO wdb_admin;
+GRANT SELECT ON TABLE __WCI_SCHEMA__.cfmethods_v TO wdb_read, wdb_write;

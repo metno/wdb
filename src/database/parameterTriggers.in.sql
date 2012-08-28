@@ -26,6 +26,8 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
+
+
 CREATE TRIGGER trigger___WDB_SCHEMA___updateparameter_mv1
 	AFTER INSERT OR UPDATE OR DELETE ON __WDB_SCHEMA__.parameter
 	EXECUTE PROCEDURE __WDB_SCHEMA__.updateparameter_mv();
