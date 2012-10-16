@@ -645,7 +645,7 @@ LANGUAGE plpgsql VOLATILE;
 -- Get PlaceName
 --
 CREATE OR REPLACE FUNCTION 
-wci.getPlaceName(
+wci.getPlaces(
 	name_	text
 )
 RETURNS SETOF __WCI_SCHEMA__.placename_v AS
@@ -667,7 +667,7 @@ LANGUAGE sql VOLATILE;
 -- Get DataProviderName
 -- Using valid times
 CREATE OR REPLACE FUNCTION 
-wci.getPlaceName(
+wci.getPlaces(
 	name_	text,
 	valid_	timestamp with time zone
 		
@@ -682,6 +682,36 @@ $BODY$
 		( placename LIKE lower($1) OR $1 IS NULL ) AND
 		( $2 IS NULL OR 
 		 ( $2 >= placenamevalidfrom AND $2 <= placenamevalidto ) );
+$BODY$
+SECURITY DEFINER
+LANGUAGE sql VOLATILE;
+
+
+--
+-- Get PlaceName using regular grid info
+--  
+CREATE OR REPLACE FUNCTION
+wci.getPlaceName(
+	numberX_ 		int,
+	numberY_ 		int,
+	incrementX_ 	float,
+	incrementY_ 	float,
+	startX_ 		float,
+	startY_ 		float,
+	projdefinition_ text
+)
+RETURNS __WCI_SCHEMA__.placename_v AS
+$BODY$
+	SELECT placeid, grd.placenamespaceid, placename
+	FROM __WCI_SCHEMA__.placeregulargrid_mv grd, __WCI_SCHEMA__.getSessionData() s
+	WHERE numberX = $1
+	AND   numberY = $2
+	AND   round(incrementX::numeric, 3) = round($3::numeric, 3)
+	AND   round(incrementY::numeric, 3) = round($4::numeric, 3)
+	AND	  round(startX::numeric, 3) = round($5::numeric, 3)
+	AND   round(startY::numeric, 3) = round($6::numeric, 3)
+	AND   projdefinition = btrim($7)
+	AND   grd.placenamespaceid = s.placenamespaceid;
 $BODY$
 SECURITY DEFINER
 LANGUAGE sql VOLATILE;
