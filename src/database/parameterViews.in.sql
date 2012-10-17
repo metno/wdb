@@ -171,3 +171,9 @@ CREATE INDEX XIE0wci_parameter_mv ON __WCI_SCHEMA__.parameter_mv
 	parametername,
 	parameternamespaceid
 );
+
+CREATE INDEX XIE1wci_parameter_mv ON wci_int.parameter_mv 
+(
+	parameternamespaceid, 
+	parametername
+);

@@ -228,3 +228,8 @@ CREATE INDEX XIE3Wci_placedefinition_mv ON wci_int.placedefinition_mv
 	placeName,
 	placeNameSpaceId
 );
+
+CREATE INDEX XIE3Wci_placedefinition_mv ON wci_int.placedefinition_mv (
+	placenamespaceid, 
+	placename
+);

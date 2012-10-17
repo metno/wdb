@@ -64,6 +64,13 @@ CREATE INDEX XIE1Wci_DataProvider_mv ON __WCI_SCHEMA__.dataprovider_mv
 	   DataProviderNamespaceId
 );
 
+CREATE INDEX XIE0Wci_DataProvider_mv ON wci_int.dataprovider_mv 
+(
+	dataprovidernamespaceid, 
+	dataprovidername
+);
+
+
 CREATE INDEX XIE2Wci_DataProvider_mv ON __WCI_SCHEMA__.dataprovider_mv
 (
 	   DataProviderName

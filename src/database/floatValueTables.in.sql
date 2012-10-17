@@ -91,6 +91,16 @@ CREATE UNIQUE INDEX XAK1Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
        ValidTimeIndeterminateCode
 );
 
+CREATE INDEX XIE0Wdb_FloatValueGroup ON wdb_int.floatvaluegroup 
+(
+	placeid, 
+	dataproviderid, 
+	valueparameterid, 
+	validtimeto, 
+	validtimefrom, 
+	dataversion
+);
+
 CREATE INDEX XIE1Wdb_FloatValueGroup ON wdb_int.FloatValueGroup
 (
 	valuegroupid
