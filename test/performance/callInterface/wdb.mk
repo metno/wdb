@@ -17,10 +17,11 @@ wciPerformanceTester_SOURCES =\
 						test/performance/callInterface/transactors/getField.h \
 						test/performance/callInterface/transactors/getBilinearPoint.h
 
-wciPerformanceTester_CPPFLAGS = 	$(AM_CPPFLAGS) -I$(srcdir)/test/performance/callInterface
+wciPerformanceTester_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/test/performance/callInterface
 
-wciPerformanceTester_LDFLAGS =	$(AM_LDFLAGS)	-lwdbConfig \
-						-lwdbLog
+wciPerformanceTester_LDFLAGS =	$(AM_LDFLAGS) \
+								-lwdbConfig \
+								-lwdbLog
 
 WCIPERFTEST_SOURCES =	test/performance/callInterface/caseP001_01.in.test \
 						test/performance/callInterface/caseP001_02.in.test \
@@ -66,7 +67,7 @@ EXTRA_DIST +=			test/performance/callInterface/wciPerformanceTest.in.sh \
 
 DISTCLEANFILES +=		test/performance/callInterface/Makefile
 
-wciPerformanceTest.sh:		test/performance/callInterface/wciPerformanceTest.in.sh
+wciPerformanceTest.sh:	test/performance/callInterface/wciPerformanceTest.in.sh
 				sed s%__WDB_VERSION__%$(VERSION)% $<\
 				| sed s%__WDB_LIB_PATH__%$(LD_LIBRARY_PATH)% \
 	 			| sed s%__WDB_BINDIR__%$(bindir)% \

@@ -283,7 +283,7 @@ AC_SUBST(libpqxx_LIBS)
 
 CPPFLAGS="$CPPFLAGS $libpqxx_CFLAGS"
 LDFLAGS="$LDFLAGS $libpqxx_LDFLAGS"
-LIBS="$LIBS $libpqxx_LIBS"
+LIBS="$LIBS $libpqxx_LIBS -lpq"
 
 ])
 
