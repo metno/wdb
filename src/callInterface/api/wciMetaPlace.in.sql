@@ -645,7 +645,7 @@ LANGUAGE plpgsql VOLATILE;
 -- Get PlaceName
 --
 CREATE OR REPLACE FUNCTION 
-wci.getPlaces(
+wci.getPlaceName(
 	name_	text
 )
 RETURNS SETOF __WCI_SCHEMA__.placename_v AS
@@ -667,7 +667,7 @@ LANGUAGE sql VOLATILE;
 -- Get DataProviderName
 -- Using valid times
 CREATE OR REPLACE FUNCTION 
-wci.getPlaces(
+wci.getPlaceName(
 	name_	text,
 	valid_	timestamp with time zone
 		
