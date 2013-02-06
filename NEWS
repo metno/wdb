@@ -1,4 +1,4 @@
-wdb (1.5.0~rc1-1) lucid; urgency=high
+wdb (1.5.0~rc2-1) lucid; urgency=high
   
   * Upgrade code reset. Version 1.5 cannot automatically upgrade from 1.1.
   
@@ -34,7 +34,7 @@ wdb (1.5.0~rc1-1) lucid; urgency=high
   * Restructured the source file structure for the database tables and views,
     and cleaned out deprecated code.
 
- -- Michael Akinde <wdb@met.no>  Thu, 13 Dec 2012 20:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Wed, 06 Feb 2013 12:30:00 +0000
 
 wdb (1.1.0-1) lucid; urgency=medium
   
