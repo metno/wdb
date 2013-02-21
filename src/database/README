@@ -2,15 +2,21 @@
 WDB - Database Schema
 ============================================================
 
-The database schema of WDB version 1.0.0 are defined in a number of SQL files
+The database schema of WDB version 1.5.0 are defined in a number of SQL files
 distributed over several repositories.
 
 Each time the data model is changed, the SCHEMA_VERSION of the database is
 incremented.
 
 Each SCHEMA_VERSION is associated with a wdbUpgradeXXXX script in src/database
-(where XXXX = SCHEMA_VERSION); when a database is upgraded from one version
-to the next, only the upgrade scripts for the added SCHEMA_VERSIONs are 
+(where XXXX = SCHEMA_VERSION). Each upgrade script has an associated 
+upgradeXXXX directory in src/database.
+
+Any changes that are required in the data model MUST go into a database upgrade
+scripts.
+
+ when a database is upgraded from one version
+to the next, a only the upgrade scripts for the added SCHEMA_VERSIONs are 
 added.
 
 This essentially means that the only time one can be guaranteed that a 

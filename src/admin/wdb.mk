@@ -21,7 +21,7 @@ noinst_LIBRARIES +=			libwdbAdmin.a
 # source files added in subdir 
 libwdbAdmin_a_SOURCES =		
 
-libwdbAdmin_a_CPPFLAGS =	$(AM_CPPFLAGS) -fPIC -DWDB_PKGLIBDIR=\"$(libdir)/wdb\"
+libwdbAdmin_a_CPPFLAGS =	$(AM_CPPFLAGS) -fPIC -DWDB_PKGLIBDIR=\"$(pkglibexecdir)\"
 
 EXTRA_DIST += 				src/admin/wdb.mk \
 							src/admin/Makefile.am \
