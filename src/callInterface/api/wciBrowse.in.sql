@@ -96,8 +96,9 @@ DECLARE
 	ret wci.browsedataprovider;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowseDataProviderQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion) || 
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowseDataProviderQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowseDataProviderQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
@@ -143,8 +144,9 @@ DECLARE
 	ret 	wci.browseplace;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowsePlaceQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowsePlaceQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowsePlaceQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
@@ -191,8 +193,9 @@ DECLARE
 	ret 	wci.browsereferencetime;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowseReferenceTimeQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowseReferenceTimeQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowseReferenceTimeQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
@@ -239,8 +242,9 @@ DECLARE
 	ret 	wci.browsevalidtime;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowseValidTimeQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion)||
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowseValidTimeQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowseValidTimeQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
@@ -286,8 +290,9 @@ DECLARE
 	ret 	wci.browsevalueparameter;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowseValueParameterQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowseValueParameterQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowseValueParameterQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
@@ -334,8 +339,9 @@ DECLARE
 	ret 	wci.browselevelparameter;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowseLevelParameterQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowseLevelParameterQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ;
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowseLevelParameterQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
@@ -385,8 +391,9 @@ DECLARE
 	ret 	wci.browsedataversion;
 BEGIN
 	query := __WCI_SCHEMA__.getBrowseDataVersionQueryGrid(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
-	' UNION ALL ' ||
-	__WCI_SCHEMA__.getBrowseDataVersionQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion);
+	' UNION ALL (' ||
+	__WCI_SCHEMA__.getBrowseDataVersionQueryFloat(dataprovider, location, referencetime, validtime, parameter, level, dataversion) ||
+	')';
 	RAISE DEBUG '%', query;
 
 	FOR ret IN EXECUTE query LOOP
