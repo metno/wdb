@@ -172,7 +172,8 @@ BEGIN
 		  'wci user',
 		  'any',
 		  '1 day',
-		  'WCI User' ) INTO id; 
+		  'WCI User' ) INTO id;
+	INSERT INTO wdb_int.wciuserdataprovider VALUES ( id, newdataprovidername );
 	RETURN id;
 END;
 $BODY$
