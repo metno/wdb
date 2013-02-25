@@ -321,10 +321,11 @@ else
 	# Install Baseline Version
 	#
 	current_version=0
+	# Installing languages
+	createlang -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT sql $WDB_NAME
+	createlang -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT plpgsql $WDB_NAME
 	# Install PostGIS
 	echo -n "installing postgis... "
-	# Setup plpgsql
-	createlang -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT plpgsql $WDB_NAME
 	# Install Postgis objects
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";

@@ -1,4 +1,4 @@
-wdb (1.5.0~rc2-1) lucid; urgency=high
+wdb (1.5.0~rc3-1) lucid; urgency=high
   
   * Upgrade code reset. Version 1.5 cannot automatically upgrade from 1.1.
   
@@ -24,6 +24,9 @@ wdb (1.5.0~rc2-1) lucid; urgency=high
     
   * Fixed a bug where a missing placedefinition caused an SQL exception to be
     thrown.
+    
+  * Fixed a bug where wci users where not being inserted correctly as data
+    providers.
 
   * Updated the parameter metadata for oceanographic data slightly.
      
@@ -34,7 +37,7 @@ wdb (1.5.0~rc2-1) lucid; urgency=high
   * Restructured the source file structure for the database tables and views,
     and cleaned out deprecated code.
 
- -- Michael Akinde <wdb@met.no>  Wed, 06 Feb 2013 12:30:00 +0000
+ -- Michael Akinde <wdb@met.no>  Wed, 25 Feb 2013 22:30:00 +0000
 
 wdb (1.1.0-1) lucid; urgency=medium
   
