@@ -28,17 +28,18 @@ BEGIN
 		);
 	GET DIAGNOSTICS ret.grids_removed = ROW_COUNT;
 	
-	DELETE FROM 
-		wdb_int.floatvalue 
-	WHERE
-		valueid in (
-			SELECT valueid FROM wci.read(
-				dataprovider_, location_, 
-				referencetime_, validtime_, 
-				parameter_, level_, 
-				dataversion_, NULL::wci.returnfloat)
-		);
-	GET DIAGNOSTICS ret.floats_removed = ROW_COUNT;
+--	DELETE FROM 
+--		wdb_int.floatvalue 
+--	WHERE
+--		valueid in (
+--			SELECT valueid FROM wci.read(
+--				dataprovider_, location_, 
+--				referencetime_, validtime_, 
+--				parameter_, level_, 
+--				dataversion_, NULL::wci.returnfloat)
+--		);
+--	GET DIAGNOSTICS ret.floats_removed = ROW_COUNT;
+	ret.floats_removed = 0;
 		
 	RETURN ret;
 END;
