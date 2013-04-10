@@ -10,7 +10,7 @@ BEGIN
 	SELECT count(*) INTO rows FROM clean.referencetime_lifetime;
 	IF rows = 0 THEN
 		INSERT INTO clean.referencetime_lifetime VALUES (NULL, '1 day');
-		INSERT INTO clean.referencetime_lifetime VALUES ('statkart.no', '10000 years');
+		INSERT INTO clean.referencetime_lifetime VALUES ('statkart.no', '1000 years');
 	END IF;
 END;
 $BODY$
