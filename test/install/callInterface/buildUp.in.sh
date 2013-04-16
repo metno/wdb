@@ -250,6 +250,21 @@ $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '20
 $TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '2005-01-01 06:00:00+00' --valueparameter 'min air temperature' --validtimefrom '2005-01-01 06:00:00+00' --validtimeto '2005-01-01 14:00:00+00' --value="5"
 
 
+# Wci Remove
+# Gridded Data
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'test grid, rotated' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 10 grid' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20 grid' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 1' --placename 'hirlam 20 grid' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 0' --placename 'hirlam 20 grid' --reftime '1900-12-26T06:00:00+00'
+# Float Data
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 0' --reftime '1900-12-25T06:00:00+00' 
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 1' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 2' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 6' --placename 'test point 2' --reftime '1900-12-25T06:00:00+00'
+$TEST_WRITE --dataprovider 'test wci 4' --placename 'test point 2' --reftime '1900-12-26T06:00:00+00'
+
+
 
 # Exit
 echo -e "# Generated test data..."

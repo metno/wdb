@@ -41,6 +41,7 @@ BEGIN
 		) AND
 		referencetime = referencetime_::timestamp with time zone;
 	GET DIAGNOSTICS ret.floats_removed = ROW_COUNT;
+	ret.floats_removed = 0;
 		
 	RETURN ret;
 END;

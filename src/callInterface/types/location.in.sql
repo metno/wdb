@@ -51,10 +51,10 @@ BEGIN
 		p.placenamespaceid = s.placenamespaceid AND
 		p.placename = lower(name_) AND
 		at_time >= p.placenamevalidfrom AND
-		at_time < p.placenamevalidto;
+		at_time <= p.placenamevalidto;
  
 	IF NOT FOUND THEN
-		RAISE EXCEPTION 'Failed to identify placename in namespace: %', name_;
+		RAISE EXCEPTION 'Failed to identify placename in namespace. Name: %, Time: %', name_, at_time;
 	END IF;
 
 	RETURN ret;
