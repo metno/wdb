@@ -49,7 +49,7 @@ SELECT
 	vli.maxdataversion,
 	vli.confidencecode,
 	vli.valuestoretime,
-	0::bigint AS valueid,
+	vlg.valuegroupid AS valueid,
 	0 AS valuetype
 FROM 	
 	__WDB_SCHEMA__.floatvalueitem vli,

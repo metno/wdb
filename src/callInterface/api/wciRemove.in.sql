@@ -3,8 +3,8 @@ DROP TYPE IF EXISTS remove_stats CASCADE;
 CREATE TYPE remove_stats AS (grids_removed integer, floats_removed integer);
 
 CREATE OR REPLACE FUNCTION 
-wci.remove( dataprovider_ 		text[],
-		  location_ 			text,
+wci.remove( dataprovider_ 	text[],
+		  location_ 		text,
 		  referencetime_ 	text,
 		  validtime_ 		text,
 		  parameter_ 		text[],
@@ -29,15 +29,17 @@ BEGIN
 	GET DIAGNOSTICS ret.grids_removed = ROW_COUNT;
 	
 	DELETE FROM 
-		wdb_int.floatvalue 
+		wdb_int.floatvalueitem 
 	WHERE
-		valueid in (
-			SELECT valueid FROM wci.read(
+		valuegroupid in (
+			SELECT distinct valueid 
+			FROM wci.read(
 				dataprovider_, location_, 
 				referencetime_, validtime_, 
 				parameter_, level_, 
 				dataversion_, NULL::wci.returnfloat)
-		);
+		) AND
+		referencetime = referencetime_::timestamp with time zone;
 	GET DIAGNOSTICS ret.floats_removed = ROW_COUNT;
 		
 	RETURN ret;
