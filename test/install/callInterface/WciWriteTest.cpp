@@ -493,7 +493,7 @@ void wciWriteTest::testWriteAtStartOfValidPeriod()
 void wciWriteTest::testWriteAtEndOfValidPeriod()
 {
 	std::string write =
-			"SELECT wci.write(0, 'test point 15', '2012-01-01 00:00:00Z', '2012-01-01','2012-01-01', 'air temperature', 'height above ground', 2, 2)";
+			"SELECT wci.write(0, 'test point 15', '2012-01-01 00:00:00Z', '2012-01-02','2012-01-02', 'air temperature', 'height above ground', 2, 2)";
 	CPPUNIT_ASSERT_THROW(t->exec(write), pqxx_exception);
 }
 
