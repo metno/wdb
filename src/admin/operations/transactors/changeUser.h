@@ -87,7 +87,7 @@ public:
     {
     	// Read
 		std::ostringstream queryR;
-		queryR << "select * from pg_user where usename = '" << userName_ << "' AND usesysid IN "
+		queryR << "select * from pg_user where usename = '" << T.esc(userName_) << "' AND usesysid IN "
 			  << "( select grolist[s] from (SELECT grolist, generate_subscripts(grolist, 1) as s FROM pg_group where groname = 'wdb_read') AS gs )";
 		pqxx::result rR = T.exec( queryR.str() );
 		if (rR.size() > 0) {
@@ -95,7 +95,7 @@ public:
 		}
     	// Write
 		std::ostringstream queryW;
-		queryW << "select * from pg_user where usename = '" << userName_ << "' AND usesysid IN "
+		queryW << "select * from pg_user where usename = '" << T.esc(userName_) << "' AND usesysid IN "
 			  << "( select grolist[s] from (SELECT grolist, generate_subscripts(grolist, 1) as s FROM pg_group where groname = 'wdb_write') AS gs )";
 		pqxx::result rW = T.exec( queryW.str() );
 		if (rW.size() > 0) {
@@ -103,7 +103,7 @@ public:
 		}
     	// Admin
 		std::ostringstream queryA;
-		queryA << "select * from pg_user where usename = '" << userName_ << "' AND usesysid IN "
+		queryA << "select * from pg_user where usename = '" << T.esc(userName_) << "' AND usesysid IN "
 			  << "( select grolist[s] from (SELECT grolist, generate_subscripts(grolist, 1) as s FROM pg_group where groname = 'wdb_admin') AS gs )";
 		pqxx::result rA = T.exec( queryA.str() );
 		if (rA.size() > 0) {
@@ -116,21 +116,21 @@ public:
     void revokeRoles(argument_type &T)
     {
 		if (( ! admin_) && (hasAdmin_))
-			query::revokeRole(T, userName_, "wdb_admin");
+			query::revokeRole(T, T.esc(userName_), "wdb_admin");
 		if (( ! read_ ) && (hasRead_))
-			query::revokeRole(T, userName_, "wdb_read");
+			query::revokeRole(T, T.esc(userName_), "wdb_read");
 		if (( ! write_ ) && (hasWrite_))
-			query::revokeRole(T, userName_, "wdb_write");
+			query::revokeRole(T, T.esc(userName_), "wdb_write");
     }
 
     void grantRoles(argument_type &T)
     {
 		if ((admin_)&&(!hasAdmin_))
-			query::grantRole(T, userName_, "wdb_admin");
+			query::grantRole(T, T.esc(userName_), "wdb_admin");
 		if ((read_)&&(!hasRead_))
-			query::grantRole(T, userName_, "wdb_read");
+			query::grantRole(T, T.esc(userName_), "wdb_read");
 		if ((write_)&&(!hasWrite_))
-			query::grantRole(T, userName_, "wdb_write");
+			query::grantRole(T, T.esc(userName_), "wdb_write");
     }
 
 	/**

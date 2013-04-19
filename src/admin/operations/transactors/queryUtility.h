@@ -43,7 +43,7 @@ template <typename Transaction>
 bool roleExists(Transaction & T, const std::string & userName)
 {
 	std::ostringstream query;
-	query << "SELECT usename FROM pg_user WHERE usename='" << userName << "'";
+	query << "SELECT usename FROM pg_user WHERE usename='" << T.esc(userName) << "'";
 	pqxx::result user = T.exec(query.str());
 	if ( user.empty() )
 		return false;
@@ -80,7 +80,7 @@ template <typename Transaction>
 void revokeRole(Transaction & T, const std::string & userName, const std::string & role)
 {
 	std::ostringstream query;
-	query << "REVOKE " << role << " FROM " << userName;
+	query << "REVOKE " << role << " FROM " << T.esc(userName);
 	T.exec(query.str());
 }
 
@@ -88,7 +88,7 @@ template <typename Transaction>
 void grantRole(Transaction & T, const std::string & userName, const std::string & role)
 {
 	std::ostringstream query;
-	query << "GRANT " << role << " TO " << userName;
+	query << "GRANT " << role << " TO " << T.esc(userName);
 	T.exec(query.str());
 }
 

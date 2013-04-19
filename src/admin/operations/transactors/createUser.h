@@ -97,14 +97,14 @@ public:
 	void createDataProvider(argument_type & T, const std::string & userName)
 	{
 		std::ostringstream query;
-		query << "SELECT wci.addwciuser('" << userName << "')";
+		query << "SELECT wci.addwciuser('" << T.esc(userName) << "')";
 		pqxx::result dataProviderId = T.exec(query.str());
 	}
 
 	void operator()(argument_type &T)
 	{
 		std::ostringstream query;
-		query << "SELECT wci.begin( '" << myUserName_ << "' );";
+		query << "SELECT wci.begin( '" << T.esc(myUserName_) << "' );";
 		T.exec( query.str() );
 		if ( ! query::roleExists(T, newUserName_) )
 		{

@@ -79,7 +79,7 @@ public:
   	{
 		if ( query::roleExists(T, userName_) )
 		{
-			std::string query = "DROP ROLE " + userName_;
+			std::string query = "DROP ROLE " + T.esc(userName_);
 			T.exec( query.c_str() );
 			if ( query::roleExists(T, userName_) )
 				throw std::runtime_error("Unable to drop role " + userName_);

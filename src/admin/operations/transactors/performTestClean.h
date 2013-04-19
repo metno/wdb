@@ -79,7 +79,7 @@ public:
 	void operator()(argument_type &T)
   	{
 		using namespace pqxx;
-		T.exec("SELECT wci.begin('" + wciUser_ + "')");
+		T.exec("SELECT wci.begin('" + T.esc(wciUser_) + "')");
     	pqxx::result r1 = T.exec( "SELECT count(numberoftuples) FROM wci.browse( NULL::wci.browsedataprovider )" );
 		T.exec( "SELECT test.cleanTestData()" );
     	pqxx::result r2 = T.exec( "SELECT count(numberoftuples) FROM wci.browse( NULL::wci.browsedataprovider )" );

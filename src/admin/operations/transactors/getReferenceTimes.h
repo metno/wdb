@@ -68,7 +68,7 @@ public:
 	void operator ()(Transaction & t)
 	{
 		using namespace pqxx;
-		t.exec("SELECT wci.begin('" + wciUser_ + "')");
+		t.exec("SELECT wci.begin('" + t.esc(wciUser_) + "')");
 		result r = t.exec("SELECT * FROM wci.browse( NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL::wci.browsereferencetime ) ORDER BY referencetime");
 		for (result::const_iterator it = r.begin(); it != r.end(); ++it )
 		{

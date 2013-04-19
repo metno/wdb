@@ -79,7 +79,7 @@ public:
 	void operator ()(Transaction & t)
 	{
 		using namespace pqxx;
-		t.exec("SELECT wci.begin('" + wciUser_ + "')");
+		t.exec("SELECT wci.begin('" + t.esc(wciUser_) + "')");
 		pqxx::result r = t.exec(query_);
 		std::copy(r.begin(), r.end(), std::back_inserter(store_));
 	}
