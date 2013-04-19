@@ -90,7 +90,7 @@ public:
 	void createRole(argument_type &T, const std::string & userName, bool admin, bool read, bool write)
   	{
 		std::ostringstream query;
-		query << "CREATE ROLE " + userName << " LOGIN";
+		query << "CREATE ROLE " + T.esc(userName) << " LOGIN";
 		T.exec( query.str() );
 	}
 
@@ -112,8 +112,8 @@ public:
 			if ( ! query::roleExists(T, newUserName_) )
 				throw std::runtime_error("Error when trying to create role " + newUserName_);
 		}
-		else
-			throw std::runtime_error("Role " + newUserName_ + " already exists");
+		//else
+		//	throw std::runtime_error("Role " + newUserName_ + " already exists");
 
 		ChangeUser changeUser(newUserName_, admin_, read_, write_);
 		changeUser(T);

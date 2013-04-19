@@ -72,7 +72,7 @@ AdminOperations::performCreateUser( const string & username, bool admin, bool re
 	}
 	catch ( std::exception & e )
 	{
-		cerr << e.what();
+		clog << e.what() << std::endl;
 		return false;
 	}
 	return true;

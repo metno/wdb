@@ -173,7 +173,13 @@ BEGIN
 		  'any',
 		  '1 day',
 		  'WCI User' ) INTO id;
-	INSERT INTO wdb_int.wciuserdataprovider VALUES ( id, newdataprovidername );
+	
+	PERFORM id FROM wdb_int.wciuserdataprovider WHERE rolname=newdataprovidername;
+	IF NOT FOUND THEN
+		INSERT INTO wdb_int.wciuserdataprovider VALUES ( id, newdataprovidername );
+	ELSE
+		RAISE INFO 'wci user already existed';
+	END IF;
 	RETURN id;
 END;
 $BODY$
