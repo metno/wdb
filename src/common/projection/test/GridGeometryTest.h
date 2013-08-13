@@ -14,6 +14,9 @@ class GridGeometryTest : public CppUnit::TestFixture
 	CPPUNIT_TEST( testGetUpperRightCorner );
 	CPPUNIT_TEST( testGetLowerLeftCorner );
 	CPPUNIT_TEST( testGetLowerRightCorner );
+
+	CPPUNIT_TEST( testGetLccGrid );
+
 	//CPPUNIT_TEST( testChangeOrientation );
 	CPPUNIT_TEST( testGetGeometryUtm );
 	CPPUNIT_TEST_SUITE_END();
@@ -33,6 +36,8 @@ public:
 	void testGetLowerRightCorner();
 
 	void testChangeOrientation();
+
+	void testGetLccGrid();
 
 	void testGetGeometryUtm();
 

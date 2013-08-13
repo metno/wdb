@@ -169,6 +169,15 @@ void GridGeometryTest::testChangeOrientation()
 	*/
 }
 
+void GridGeometryTest::testGetLccGrid()
+{
+	std::string proj("+proj=lcc +lat_0=64.35 +lat_1=64.35 +lat_2=64.35 +lon_0=-23 +R=6371000");
+	GridGeometry gg(proj, GridGeometry::LeftLowerHorizontal, 167, 383, 5000, 5000, 1.23788e+06, -356964);
+
+	std::string expected("POLYGON((-0.9047 59.1917,11.5959 55.9777,36.8253 68.8507,20.7225 74.2734,-0.9047 59.1917))");
+	CPPUNIT_ASSERT_EQUAL(expected, gg.wktRepresentation());
+}
+
 void GridGeometryTest::testGetGeometryUtm()
 {
 

@@ -71,12 +71,15 @@ inline int indexFromXy( int x, int y, const PlaceSpecification & ps  )
 	return index_from_xy( x, y, ps.xNumber_, ps.yNumber_ );
 };
 
-inline bool isMetric( std::string projDef )
+inline bool isMetric( const std::string & projDef )
 {
-	const std::string projDef_( projDef );
+	if ( projDef.find("longlat") != std::string::npos )
+		return false;
+	return true;
 
-	if ( projDef_.find("+units=m") == std::string::npos and
-		 projDef_.find("+units=km") == std::string::npos )
+
+	if ( projDef.find("+units=m") == std::string::npos and
+		 projDef.find("+units=km") == std::string::npos )
 		return false;
 	return true;
 }
