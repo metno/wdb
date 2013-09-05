@@ -100,12 +100,16 @@ fi
 
 # DATABASE_USER
 if test -z "$WDB_INSTALL_USER"; then
-	WDB_INSTALL_USER=$DEFAULT_USER
+	if test -n "$DEFAULT_USER"; then
+		WDB_INSTALL_USER=$DEFAULT_USER
+	fi
 fi
 
 # DATABASE_PORT
 if test -z "$WDB_INSTALL_PORT"; then
-	WDB_INSTALL_PORT=$DEFAULT_PORT
+	if test -n "$DEFAULT_PORT"; then
+		WDB_INSTALL_PORT=$DEFAULT_PORT
+	fi
 fi
 
 # Set PSQL Options
