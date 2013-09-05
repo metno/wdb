@@ -1,5 +1,5 @@
-wdb (1.5.0~rc6-1) precise; urgency=low
-  
+wdb-1.5 (1.5.0~rc8-1) precise; urgency=low
+
   * Corrected time-to-live for statkart.no when doing automatic cleaning
 
   * Upgrade code reset. Version 1.5 cannot automatically upgrade from 1.1.
