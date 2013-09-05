@@ -114,7 +114,7 @@ fi
 
 # Set PSQL Options
 PSQL_OPTIONS=$WDB_INSTALL_DATABASE
-DBCK_OPTIONS="postgress"
+DBCK_OPTIONS=""
 if [ -n $WDB_INSTALL_PORT ]; then
 	PSQL_OPTIONS="$PSQL_OPTIONS -p$WDB_INSTALL_PORT"
 	DBCK_OPTIONS="$DBCK_OPTIONS -p$WDB_INSTALL_PORT"
@@ -154,7 +154,7 @@ WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
 echo -n "checking whether database $WDB_NAME exists... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
 # grab first line (name) | trim whitesoace
-DB_CHECK=`psql DBCK_OPTIONS -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
+DB_CHECK=`psql $DBCK_OPTIONS -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
 # Test whether database exists
 # Note: as the list above only grabs the first tablename matching 
 # the WDB_NAME pattern this may fail if there is a database with a
