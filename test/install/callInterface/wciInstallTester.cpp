@@ -34,6 +34,17 @@
 #include <AbstractWdbTestFixture.h>
 #include <boost/program_options.hpp>
 #include <boost/program_options/options_description.hpp>
+#include <iostream>
+#include <cppunit/Exception.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/Message.h>
+#include <cppunit/SourceLine.h>
+#include <cppunit/Test.h>
+#include <cppunit/TestFailure.h>
+#include <cppunit/TestRunner.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/TestResultCollector.h>
+#include <cppunit/TestSuite.h>
 
 using namespace std;
 using namespace boost::program_options;
@@ -86,31 +97,30 @@ int run_main( const char * programName, int argc, char ** argv )
 {
     TestConfiguration c;
     c.parse( argc, argv );
-
+    // --help
     if ( c.general().help )
     {
         help( programName, c.shownOptions(), cout );
         return 0;
     }
+    // --version
     if ( c.general().version )
     {
         version( programName, cout );
         return 0;
     }
 
-
-    CppUnit::TextUi::TestRunner runner;
+    CppUnit::TextTestRunner runner;
 
     runner.setOutputter( getOutputter( c.output(), runner.result(), clog ) );
 
     CppUnit::Test * allTests = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
-
+    //
 	if (c.listTests())
 	{
 		listTests(*allTests);
 		return 0;
 	}
-
 
 	if ( c.runTest().empty() )
 		runner.addTest( allTests );
@@ -133,7 +143,6 @@ int run_main( const char * programName, int argc, char ** argv )
     AbstractWdbTestFixture::setConnection( conn );
 
     bool ok = runner.run();
-
 
     // Unless command line contains the switch "--nowarn":
     // Give extra information if lots of errors.
