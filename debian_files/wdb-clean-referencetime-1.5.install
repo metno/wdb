@@ -1,3 +1,3 @@
 debian/tmp/usr/share/wdb/sql/cleaning/remove_old_referencetimes.sql	usr/share/wdb/sql/cleaning
 debian/tmp/usr/share/wdb/sql/cleaning/default_cleaning_setup.sql	usr/share/wdb/sql/cleaning
-debian/tmp/usr/lib/wdb-1.5/wdb/install_remove_old_referencetimes.sh	usr/lib/wdb
+debian/tmp/usr/lib/wdb/wdb/install_remove_old_referencetimes.sh	usr/lib/wdb

@@ -1,9 +1,9 @@
-Source: wdb-1.5
+Source: wdb
 Section: devel
 Priority: extra
 Maintainer: WDB Group, Meteorologisk institutt <wdb@met.no>
 Uploaders: Michael O. Akinde <michael.akinde@met.no>
-Build-Depends: debhelper (>= 5),
+Build-Depends: debhelper (>= 7),
  debconf,
  po-debconf,
  devscripts,

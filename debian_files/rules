@@ -9,6 +9,12 @@ install/wdb-1.5::
 	for file in $(CURDIR)/debian/tmp/usr/lib/*.la; do \
 		sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
 	done
-	mv $(CURDIR)/debian/tmp/usr/lib/wdb-1.5/wdb/* $(CURDIR)/debian/tmp/usr/lib/wdb-1.5/
-	rm -rf $(CURDIR)/debian/tmp/usr/lib/wdb-1.5/wdb/
+	mv $(CURDIR)/debian/tmp/usr/lib/wdb/wdb/* $(CURDIR)/debian/tmp/usr/lib/wdb/
+	rm -rf $(CURDIR)/debian/tmp/usr/lib/wdb/wdb/
 	rm $(CURDIR)/NEWS
+
+#install/wdb-clean-referencetime-1.5::
+#	rm $(CURDIR)/NEWS
+
+#install/wdb-clean-dataversion-1.5::
+#	rm $(CURDIR)/NEWS
