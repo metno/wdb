@@ -1,9 +1,4 @@
 #!/bin/sh
-#
-# autogen.sh is utilized for the eclipse autotools plugin and in the
-# continuous build bots
-#
-# Parse command line
 FLAG=""
 while test -n "$1"; do
 	case $1 in
