@@ -3,7 +3,7 @@ Section: devel
 Priority: extra
 Maintainer: WDB Group, Meteorologisk institutt <wdb@met.no>
 Uploaders: Michael O. Akinde <michael.akinde@met.no>
-Build-Depends: debhelper (>= 5),
+Build-Depends: debhelper (>= 7),
  debconf,
  po-debconf,
  devscripts,
@@ -28,7 +28,7 @@ Build-Depends: debhelper (>= 5),
  postgresql-server-dev-9.1
 Standards-Version: 3.9.3
 
-Package: wdb
+Package: wdb-1.5
 Architecture: any
 Depends: ${misc:Depends},
  ${shlibs:Depends},
@@ -38,8 +38,9 @@ Depends: ${misc:Depends},
  postgresql-9.1-postgis,
  postgresql-client (>=9.1),
  proj (>=4.6.0)
-Breaks: wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2)
-Replaces: wdb-0.9, wdb-1.0
+Breaks: wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2), wdb (<= 1.1.0)
+Replaces: wdb-0.9, wdb-1.0, wdb (<= 1.1.0)
+Provides: wdb
 Description: Database designed to store MHO data.
  Database system designed to store MHO (Meteorological, Hydrological and
  Oceanographic) data in a postgresql database. The purpose of the system 
@@ -47,7 +48,7 @@ Description: Database designed to store MHO data.
   production by providing a complete, flexible, and effective data storage
   solution for real-time and archive data.
 
-Package: wdb-clean-referencetime
+Package: wdb-clean-referencetime-1.5
 Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on reference times into a wdb database.
@@ -57,7 +58,7 @@ Description: Installs cleaning based on reference times into a wdb database.
  may be provided by adding entries in the clean.referencetime_lifetime table.
  Default lifetimes may be modified in a similar way.
 
-Package: wdb-clean-dataversion
+Package: wdb-clean-dataversion-1.5
 Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on data versions into a wdb database.

@@ -29,6 +29,7 @@ Call Interface (wci)
 Options:
 --help             display this help and exit
 --version          output version information and exit
+--database, -d ARG database name (defaults to wdb)
 --xml,-x		   output tests results in JUnit XML
 --ouput=FILE, -o FILE
                    output test log to <FILE>
@@ -46,7 +47,17 @@ while test -n "$1"; do
     	echo "$SCRIPT_USAGE"; exit 0;;
     --version) 
     	echo "$0 $SCRIPT_VERSION"; exit 0;;
-    --xml)
+	--database)
+	    shift
+	    DB=`echo $1`
+	    shift
+	    continue;;
+	-d)
+	    shift
+	    DB=`echo $1`
+	    shift
+	    continue;;
+   --xml)
 		RUN_TEST_PROGRAM="__WDB_BUILDDIR__/wciInstallTester --nowarn -o X" 
 		shift
 		continue;;
@@ -75,13 +86,16 @@ while test -n "$1"; do
 done
 echo -e "#\n# callInterface Installation Tests\n"
 
-source ${TEST_PATH}/tearDown.sh
-source ${TEST_PATH}/buildUp.sh
-
 # Create the writer for the wci write tests:
 #__WDB_BINDIR__/wdb createuser wcitestwriter write
 # This is now actually done in the installation. 
 # Should test before doing this to avoid errors/warnings
+if test -n "$DB"; then 
+	RUN_TEST_PROGRAM="$RUN_TEST_PROGRAM -d $DB"
+fi
+
+source ${TEST_PATH}/tearDown.sh
+source ${TEST_PATH}/buildUp.sh
 
 # Run Tests
 if test -n "$LOGFILE"; then 

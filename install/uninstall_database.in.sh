@@ -18,9 +18,7 @@
 #  (at your option) any later version.
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# install - install the wdb system
-
-# TODO: Add support for reading additional configuration files
+# uninstall - uninstall the wdb system
 
 if test -e "__WDB_BINDIR__/wdbConfiguration"; then
 	DEFAULT_DATABASE=`__WDB_BINDIR__/wdbConfiguration --database`@`__WDB_BINDIR__/wdbConfiguration --host`
@@ -95,6 +93,10 @@ done
 if test -z "$WDB_INSTALL_DATABASE"; then
     WDB_INSTALL_DATABASE=$DEFAULT_DATABASE
 fi
+if [ -z $WDB_INSTALL_DATABASE ]; then
+	echo No database name available - unable to continue
+	exit 1
+fi
 
 # DATABASE_USER
 if test -z "$WDB_INSTALL_USER"; then
@@ -106,47 +108,29 @@ if test -z "$WDB_INSTALL_PORT"; then
 	WDB_INSTALL_PORT=$DEFAULT_PORT
 fi
 
-
-if [ -z $WDB_INSTALL_DATABASE ]; then
-	echo No database name available - unable to continue
-	exit 1
-fi
+# Set PSQL Options
 PSQL_OPTIONS=$WDB_INSTALL_DATABASE
-if [ $WDB_INSTALL_PORT ]; then
+DBCK_OPTIONS=""
+if [ -n $WDB_INSTALL_PORT ] && [ "$WDB_INSTALL_PORT"!=" " ]; then
 	PSQL_OPTIONS="$PSQL_OPTIONS -p$WDB_INSTALL_PORT"
+	DBCK_OPTIONS="$DBCK_OPTIONS -p$WDB_INSTALL_PORT"
 fi
-if [ $WDB_INSTALL_USER ]; then
+if [ -n $WDB_INSTALL_USER ] && [ "$WDB_INSTALL_USER"!=" " ]; then
 	PSQL_OPTIONS="$PSQL_OPTIONS -U$WDB_INSTALL_USER"
+	DBCK_OPTIONS="$DBCK_OPTIONS -U$WDB_INSTALL_USER"
 fi
 
 
-# Start Installation
+# Start Uninstall
 echo "---- wdb database uninstall ----"
 
-# Set PATHS
-# echo -n "checking for the presence of wdb source files... "
-# if test -z "$top_builddir"; then
-#     if test -f ./src/database/wdbTableDefinitions.sql; then
-# 	WDB_DATAMODEL_PATH="./src/database"
-# 	WDB_METADATA_PATH="./etc/metadata"
-# 	WDB_CLEANUP_PATH="./src/common/cleaner"
-#     else 
-# 	if test -f ../src/database/wdbTableDefinitions.sql; then
-# 	    WDB_DATAMODEL_PATH="../src/database"
-# 	    WDB_METADATA_PATH="../etc/metadata"
-# 	    WDB_CLEANUP_PATH="../src/common/cleaner"
-# 	else
-# 	    echo "no"
-# 	    echo "Error: Could not locate database installation files."
-# 	    exit 1
-# 	fi
-#     fi
-# else
-#     WDB_DATAMODEL_PATH=$top_srcdir"/src/database"
-#     WDB_METADATA_PATH=$top_srcdir"/etc/metadata"
-#     WDB_CLEANUP_PATH=$top_srcdir"/src/common/cleaner"
-# fi
-# echo "yes"
+# uninstall information
+echo -n "uninstalling user identification... "
+echo $WDB_INSTALL_USER
+echo -n "uninstalling database with database name... "
+echo $WDB_INSTALL_DATABASE
+echo -n "uninstalling database on database port... "
+echo $WDB_INSTALL_PORT
 
 # Verify that Postmaster is running
 echo -n "checking that postgres is running... "
@@ -161,13 +145,12 @@ fi
 
 # Get database name
 WDB_NAME=`echo $WDB_INSTALL_DATABASE | sed 's/@/\n/' | sed q`
-export $WDB_NAME
 
 # Check that the database exists
 echo -n "checking whether database $WDB_NAME exists... "
 # DB_CHECK= list database | isolate pattern WDB_NAME | split record |  
 # grab first line (name) | trim whitesoace
-DB_CHECK=`psql $PSQL_OPTIONS -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
+DB_CHECK=`psql $DBCK_OPTIONS -l | sed -n /$WDB_NAME/p | sed -e 's/|/\n/' | sed q | sed -e 's/^[ \t]*//;s/[ \t]*$//'`
 # Test whether database exists
 # Note: as the list above only grabs the first tablename matching 
 # the WDB_NAME pattern this may fail if there is a database with a
@@ -178,6 +161,12 @@ if test "$DB_CHECK" = "$WDB_NAME"; then
 else
     echo "no"
     DATABASE_EXISTS="no"
+fi
+
+# Exit if database does not exist
+if test "$DATABASE_EXISTS" = "no"; then
+	echo "---- wdb database uninstall completed ----"
+	exit 0
 fi
 
 # Delete the field data, so it won't remain in the postgresql database folder

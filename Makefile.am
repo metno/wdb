@@ -445,5 +445,3 @@ upgradecheck: all
 #-----------------------------------------------------------------------------
 
 include config/mk/debian.mk
-
-debian: common-debian
