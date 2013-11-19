@@ -8,7 +8,7 @@ db_get wdb/database_admin && DB_USER="$RET"
 
 case "$1" in
     purge)
-		  su postgres -c "psql `/usr/bin/wdbConfiguration --psqlArgs` -Upostgres -c 'DELETE FROM clean.strategies WHERE function = \$\$clean_referencetimes\$\$; DROP TABLE clean.referencetime_lifetime; DROP FUNCTION clean.clean_referencetimes()'"  	
+		  su postgres -c "psql `wdbConfiguration --psqlArgs` -Upostgres -c 'DELETE FROM clean.strategies WHERE function = \$\$clean_referencetimes\$\$; DROP TABLE clean.referencetime_lifetime; DROP FUNCTION clean.clean_referencetimes()'"  	
 	;;
 esac
 
