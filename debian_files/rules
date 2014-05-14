@@ -5,6 +5,8 @@ include /usr/share/cdbs/1/class/autotools.mk
 
 #DEB_DESTDIR = $(CURDIR)/debian/wdb
 
+DEB_DH_INSTALL_CRON_ARGS = --name=wdb
+
 install/wdb-1.5::
 	for file in $(CURDIR)/debian/tmp/usr/lib/*.la; do \
 		sed -i "/dependency_libs/ s/'.*'/''/" $$file ; \
