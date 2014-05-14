@@ -56,7 +56,6 @@ extern "C"
  * @param q the stream to add the query to
  * @param dataProvider Data provider names to request, or NULL if you want
  *                     all.
- * @return the given stream.
  */
 void addDataProviderQuery(query::Builder & builder, const struct StringArray * dataProvider)
 {
@@ -68,23 +67,22 @@ void addDataProviderQuery(query::Builder & builder, const struct StringArray * d
 	}
 	else
 	{
-		std::ostringstream q;
-		q << "(";
-		q << "dataproviderid IN (";
-		q << "SELECT d.dataproviderid FROM ";
-		q << WCI_SCHEMA << ".dataprovider_mv d, ";
-		q << WCI_SCHEMA << ".dataprovider_mv source ";
-		q << "WHERE (";
-		q << "source.dataprovidername = " << quote(lower(dataProvider->data[0]));
+		query::Builder dataprovider;
+		dataprovider.what("d.dataproviderid AS id");
+		dataprovider.from(WCI_SCHEMA".dataprovider_mv d");
+		dataprovider.from(WCI_SCHEMA".dataprovider_mv source");
+		std::ostringstream where;
+		where << "(source.dataprovidername = " << quote(lower(dataProvider->data[0]));
 		for ( int i = 1; i < dataProvider->size; ++ i )
-			q << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
-		q << ") AND "
-				"source.dataprovidernameleftset <= d.dataprovidernameleftset AND "
-				"source.dataprovidernamerightset >= d.dataprovidernamerightset";
-		q << ")";
-		q << ") ";
+			where << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
+		where << ")";
+		dataprovider.where(where.str());
+		dataprovider.where("source.dataprovidernameleftset <= d.dataprovidernameleftset");
+		dataprovider.where("source.dataprovidernamerightset >= d.dataprovidernamerightset");
 
-		builder.where(q.str());
+		builder.with(dataprovider, "dataprovider");
+		builder.from("dataprovider");
+		builder.where("v.dataproviderid IN (dataprovider.id)");
 	}
 }
 
