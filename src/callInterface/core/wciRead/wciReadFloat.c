@@ -92,10 +92,11 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 
 	// Perform primary query
 	SPIPlanPtr queryPlan = getSpiPlan(gridQuery);
-	if (SPI_OK_SELECT != SPI_execute_plan(queryPlan, NULL, NULL, true, 0))
+	int result = SPI_execute_plan(queryPlan, NULL, NULL, true, 0);
+	if (SPI_OK_SELECT != result)
 	{
 		ereport(ERROR, (errcode(ERRCODE_INTERNAL_ERROR), errmsg(
-				"Error when performing base query")));
+				"Error when performing base query; %d", result)));
 	}
 	MemoryContext oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
