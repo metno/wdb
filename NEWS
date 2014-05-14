@@ -1,3 +1,9 @@
+wdb (1.5.1-1) precise; urgency=low
+
+  * performance improvements
+
+ -- Michael Akinde <wdb@met.no>  Wed, 14 May 2014 13:35:44 +0200
+
 wdb (1.5.0-2) precise; urgency=low
 
   * Added missing cron job in package
