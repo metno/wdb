@@ -153,7 +153,6 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 			builder.groupBy(groupby);
 
 		//builder.debugPrint(std::cout) << std::flush;
-		std::cout << builder.str() << '\n' << std::endl;
 
 		std::string ret = builder.str();
 		return pstrdup(ret.c_str());
