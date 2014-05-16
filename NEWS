@@ -1,3 +1,9 @@
+wdb (1.5.2-1) precise; urgency=low
+
+  * removed trash in postgresql logs
+
+ -- Michael Akinde <wdb@met.no>  Fri, 16 May 2014 09:50:23 +0200
+
 wdb (1.5.1-1) precise; urgency=low
 
   * performance improvements
