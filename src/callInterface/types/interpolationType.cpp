@@ -50,7 +50,7 @@ Datum interpolationType_in( PG_FUNCTION_ARGS )
 {
 	try
 	{
-		int4 ret = indeterminate[ PG_GETARG_CSTRING( 0 ) ];
+		int32 ret = indeterminate[ PG_GETARG_CSTRING( 0 ) ];
 		PG_RETURN_INT32( ret );
 	}
 	catch ( std::out_of_range & e )
