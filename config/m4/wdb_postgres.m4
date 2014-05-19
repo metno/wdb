@@ -327,6 +327,16 @@ if test -z ${postgis_SQL}; then
 	fi
 fi
 if test -z ${postgis_SQL}; then
+	if test -f ${postgis_CHECK}/contrib/postgis-2.1/postgis.sql; then
+		postgis_SQL=${postgis_CHECK}/contrib/postgis-2.1
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f ${postgis_CHECK}/contrib/postgis-2.2/postgis.sql; then
+		postgis_SQL=${postgis_CHECK}/contrib/postgis-2.2
+	fi
+fi
+if test -z ${postgis_SQL}; then
 	if test -f ${postgis_CHECK}/contrib/lwpostgis.sql; then
 		postgis_SQL=${postgis_CHECK}/contrib
 	fi
@@ -348,6 +358,31 @@ if test -z ${postgis_SQL}; then
 	fi
 fi
 # Debian Directories
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-9.4-postgis/postgis.sql; then
+		postgis_SQL=/usr/share/postgresql-9.4-postgis
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-9.3-postgis/postgis.sql; then
+		postgis_SQL=/usr/share/postgresql-9.3-postgis
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-9.2-postgis/postgis.sql; then
+		postgis_SQL=/usr/share/postgresql-9.2-postgis
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-9.1-postgis/postgis.sql; then
+		postgis_SQL=/usr/share/postgresql-9.1-postgis
+	fi
+fi
+if test -z ${postgis_SQL}; then
+	if test -f /usr/share/postgresql-9.0-postgis/postgis.sql; then
+		postgis_SQL=/usr/share/postgresql-9.0-postgis
+	fi
+fi
 if test -z ${postgis_SQL}; then
 	if test -f /usr/share/postgresql-8.4-postgis/postgis.sql; then
 		postgis_SQL=/usr/share/postgresql-8.4-postgis
