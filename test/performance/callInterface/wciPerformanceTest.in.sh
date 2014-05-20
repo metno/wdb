@@ -52,7 +52,7 @@ case $1 in
     echo "$0 $SCRIPT_VERSION"; exit 0;;
 esac
 
-echo "WCI Performance Tests"
+echo "WCI Performance Test Suite"
 
 # Test Environment
 $TEST_PATH/testEnvironment.sh

@@ -31,7 +31,8 @@
 #endif
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/program_options.hpp>
-#include <pqxx/connection>
+#include <pqxx/pqxx>
+#include <pqxx/prepared_statement>
 #include <transactors/wciTransactors.h>
 #include <transactors/getRandomPoint.h>
 #include <transactors/getBilinearPoint.h>
@@ -86,6 +87,7 @@ int main(int argc, char *argv[])
 	using namespace boost::posix_time;
 	using namespace boost::program_options;
 	using namespace pqxx;
+	using namespace pqxx::prepare;
 
 	// Options
 	PerformanceTestConfiguration conf;
@@ -162,17 +164,18 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case 8: // Prepared Random Point retrieval - individual points
+			    /*
 				isFloat = true;
 				C.prepare("ReadRandom1",
 						  "select value, dataprovidername, placename, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, valueparametername, valueparameterunit, levelparametername, levelunitname,levelfrom, levelto, dataversion, confidencecode, storetime, valueid, valuetype"
 						  " from wci.read ( ARRAY[$1], $2, $3, $4, ARRAY[$5], "
 						  "'exact 0 height', "
 						  "ARRAY[-1], NULL::wci.returnFloat	)" )
-						  ("varchar", treat_string )
-						  ("varchar", treat_string )
-						  ("varchar", treat_string )
-						  ("varchar", treat_string )
-						  ("varchar", treat_string );
+						  ("varchar", pqxx::prepare::treat_string )
+						  ("varchar", pqxx::prepare::treat_string )
+						  ("varchar", pqxx::prepare::treat_string )
+						  ("varchar", pqxx::prepare::treat_string )
+						  ("varchar", pqxx::prepare::treat_string );
 				for (int i=0; i<1000; i++) {
 					try {
 						C.perform( PreparedRandomPointTest1(resultF) );
@@ -183,6 +186,7 @@ int main(int argc, char *argv[])
 						cerr << "Exception: " << i << " " << e.what() << endl;
 					}
 				}
+				*/
 				break;
 			case 11: // Individual simple polygon
 				isFloat = true;
