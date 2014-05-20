@@ -36,7 +36,7 @@ Depends: ${misc:Depends},
  python (>=2.4),
  postgresql-9.3,
  postgresql-9.3-postgis-2.1,
- postgresql-client (>=9.1),
+ postgresql-client-9.3
  proj (>=4.6.0)
 Breaks: wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2), wdb (<= 1.5.0)
 Replaces: wdb-0.9, wdb-1.0, wdb (<= 1.5.0)
