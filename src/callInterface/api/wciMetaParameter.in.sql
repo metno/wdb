@@ -537,7 +537,9 @@ BEGIN
 				UPDATE __WDB_SCHEMA__.baseunitconversion SET
 					baseunitname = baseunitname_,
 					baseunitconversioncoefficient = baseunitconversioncoefficient_,
-					baseunitconversionterm = baseunitconversionterm_;
+					baseunitconversionterm = baseunitconversionterm_
+				WHERE
+					unitname=unitname_;
 			END IF;
 		END IF;			
 	END IF;
