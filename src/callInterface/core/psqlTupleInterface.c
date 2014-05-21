@@ -166,27 +166,32 @@ Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo )
     return HeapTupleGetDatum( ht );
 }
 
-
-
 Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo )
 {
     TupleDesc td;
+    elog(DEBUG1, "packSession1");
     if ( get_call_result_type( fcinfo, NULL, & td ) != TYPEFUNC_COMPOSITE )
     {
         ereport( ERROR,
                  ( errcode( ERRCODE_DATA_EXCEPTION ),
                    errmsg( "\'packSessionData\': Function returning record called in context that cannot accept type record" ) ) );
     }
+    elog(DEBUG1, "packSession2");
     td = BlessTupleDesc( td );
+    elog(DEBUG1, "packSession3");
 
     Datum * ret = ( Datum * ) palloc( 3 * sizeof( Datum ) );
+    elog(DEBUG1, "packSession4");
     bool isNull[ 3 ] = {false, false, false};
+    elog(DEBUG1, "packSession5");
 
     ret[ 0 ] = Int32GetDatum( dataProviderCs );
     ret[ 1 ] = Int32GetDatum( parameterCs );
     ret[ 2 ] = Int32GetDatum( levelParameterCs );
+    elog(DEBUG1, "packSession6");
 
     HeapTuple ht = ( HeapTuple ) heap_form_tuple( td, ret, isNull );
+    elog(DEBUG1, "packSession7");
     return HeapTupleGetDatum( ht );
 }
 
