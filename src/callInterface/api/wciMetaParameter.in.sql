@@ -526,7 +526,8 @@ BEGIN
 	ELSE
 		UPDATE __WDB_SCHEMA__.unit SET
 			unittype = unittype_,
-			description = description_;
+			description = description_
+		WHERE unitname = unitname_;
 		IF ( unittype_::text = 'derived unit'::text ) THEN
 			PERFORM * 
 			FROM __WDB_SCHEMA__.baseunitconversion;
