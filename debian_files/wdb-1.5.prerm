@@ -28,7 +28,7 @@ case "$1" in
 		# Uninstall database
 		db_get wdb/database_purge
 		if [ "$RET" = "true" ]; then
-			su postgres -c "/usr/lib/wdb/uninstall_database -d $DB_NAME -u postgres"
+			su postgres -c "/usr/lib/wdb/wdb/uninstall_database -d $DB_NAME -u postgres"
 		fi
     ;;
     

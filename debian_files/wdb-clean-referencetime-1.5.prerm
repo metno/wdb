@@ -10,7 +10,7 @@ db_get wdb/database_admin && DB_USER="$RET"
 
 case "$1" in
     remove)
-    	su $DB_USER -c "/usr/lib/wdb/install_remove_old_referencetimes.sh uninstall"
+    	su $DB_USER -c "/usr/lib/wdb/wdb/install_remove_old_referencetimes.sh uninstall"
     ;;
     upgrade|deconfigure|failed-upgrade)
     ;;

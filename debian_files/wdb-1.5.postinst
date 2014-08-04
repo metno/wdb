@@ -51,7 +51,7 @@ case "$1" in
 		su postgres -c "psql -c \"ALTER ROLE $DB_USER WITH SUPERUSER\"" >> /dev/null 2>&1
 		su postgres -c "psql -c \"ALTER ROLE $DB_USER WITH LOGIN\"" >> /dev/null 2>&1
 		# Run install script
-		su $DB_USER -c "/usr/lib/wdb/install_database -d $DB_NAME -u $DB_USER"
+		su $DB_USER -c "/usr/lib/wdb/wdb/install_database -d $DB_NAME -u $DB_USER"
 		# Grant administrator rights to user	
 		su postgres -c "psql -c \"GRANT wdb_admin TO $DB_USER WITH ADMIN OPTION\"" >> /dev/null 2>&1
     ;;
