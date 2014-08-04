@@ -37,8 +37,8 @@ DATABASE_SOURCES =		src/database/schemaDefinitions.in.sql \
 						src/database/adminDefinitions.in.sql \
 						src/database/wdbTestDefinitions.in.sql
 
-UPGRADE_SOURCES =		
-#						src/database/wdbUpgrade0001.in.sh \
+UPGRADE_SOURCES =		\
+						src/database/wdbUpgrade0001.in.sh 
 #						src/database/wdbUpgrade0002.in.sh \
 #						src/database/wdbUpgrade0003.in.sh
 
