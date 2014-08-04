@@ -1,3 +1,15 @@
+wdb (1.5.6-1) precise; urgency=low
+
+  * minor index changes
+
+ -- Michael Akinde <wdb@met.no>  Mon, 04 Aug 2014 09:59:32 +0200
+
+wdb (1.5.5-1) precise; urgency=low
+
+  * minor bugfixes
+
+ -- Michael Akinde <wdb@met.no>  Tue, 27 May 2014 09:33:19 +0200
+
 wdb (1.5.4-1) precise; urgency=low
 
   * fixed upgrade bug
