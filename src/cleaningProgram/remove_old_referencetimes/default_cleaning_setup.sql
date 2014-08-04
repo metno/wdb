@@ -1,24 +1,27 @@
 BEGIN;
 
-CREATE FUNCTION
-setup_referencetime_cleanig()
+CREATE FUNCTION add_to_referencetime_lifetime_table(dataprovider text, timetolive interval)
 RETURNS void AS
 $BODY$
-DECLARE
-	rows int;
-BEGIN
-	SELECT count(*) INTO rows FROM clean.referencetime_lifetime;
-	IF rows = 0 THEN
-		INSERT INTO clean.referencetime_lifetime VALUES (NULL, '1 day');
-		INSERT INTO clean.referencetime_lifetime VALUES ('statkart.no', '1000 years');
-	END IF;
-END;
+	INSERT INTO clean.referencetime_lifetime (dataprovidername, oldest_lifetime) 
+	SELECT $1, $2 WHERE NOT EXISTS 
+	(SELECT dataprovidername FROM clean.referencetime_lifetime WHERE dataprovidername=$1);
 $BODY$
-LANGUAGE plpgsql;
-SELECT setup_referencetime_cleanig();
+LANGUAGE sql;
 
-DROP FUNCTION setup_referencetime_cleanig();
+INSERT INTO clean.referencetime_lifetime (dataprovidername, oldest_lifetime) 
+SELECT NULL, '1 day' WHERE NOT EXISTS 
+(SELECT dataprovidername FROM clean.referencetime_lifetime WHERE dataprovidername IS NULL);
 
-INSERT INTO clean.strategies VALUES(DEFAULT, 'clean_referencetimes');
+SELECT add_to_referencetime_lifetime_table('statkart.no', '1000 years');
+SELECT add_to_referencetime_lifetime_table('norsk_polarinstitutt', '1000 years');
+
+INSERT INTO clean.strategies (function) 
+SELECT 'clean_referencetimes' WHERE NOT EXISTS
+(SELECT function FROM clean.strategies WHERE function='clean_referencetimes'); 
+
+
+DROP FUNCTION add_to_referencetime_lifetime_table(text, interval);
+
 
 END;
