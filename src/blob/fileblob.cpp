@@ -110,15 +110,29 @@ Datum remove_unreferenced_files()
 	int count = 0;
 	FileId * refFiles = all_referenced_files(& count);
 
-	std::string warning;
+	std::ostringstream warning;
+	std::vector<FileId> skipped;
 
 	// WARNING:
 	// Do not use any postgres functionality within this macro
 	// It will cause a resource leak.
-	HANDLE_EXCEPTIONS(unreferencedFiles = removeUnreferencedFiles(refFiles, count, warning));
+	HANDLE_EXCEPTIONS(unreferencedFiles = removeUnreferencedFiles(refFiles, count, warning, skipped));
 
-	if ( not warning.empty() )
-		elog(WARNING, "%s", warning.c_str());
+	if ( not skipped.empty() )
+	{
+		std::vector<FileId>::const_iterator it = skipped.begin();
+		std::ostringstream msg;
+		msg << "Skipped files (too young): " << * it;
+		while (++ it != skipped.end() )
+			msg << ", " << * it;
+
+		std::string info = msg.str();
+		elog(DEBUG1, info.c_str());
+	}
+
+	std::string swarning = warning.str();
+	if ( not swarning.empty() )
+		elog(WARNING, "%s", swarning.c_str());
 
 	PG_RETURN_INT32(unreferencedFiles);
 }

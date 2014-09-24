@@ -32,6 +32,7 @@
 
 #include <vector>
 #include <string>
+#include <iosfwd>
 #include "bstream.h"
 #include "FileId.h"
 
@@ -63,8 +64,11 @@ void dropFile(FileId id, std::string & warningOut);
  * @param referencedFiles List of files to check
  * @param refFileCount Number of files in referencedFiles
  * @param warningOut will be populated by any warning messages
+ * @param skipped Will be populated with a list of files that should have been
+ *                deleted, but were not because they were very new, and may
+ *                have been part of an ongoing transaction.
  */
-int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::string & warningOut);
+int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::ostream & warningOut, std::vector<FileId> & skipped);
 
 /**
  * Read the entire file associated with the given file. readSize must be

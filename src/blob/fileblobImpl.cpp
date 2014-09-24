@@ -37,6 +37,7 @@
 #include <iterator>
 #include <algorithm>
 #include <iostream>
+#include <ctime>
 
 namespace fs = boost::filesystem;
 
@@ -94,7 +95,7 @@ void dropFile(FileId id, std::string & warningOut)
 	}
 }
 
-int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::string & warningOut)
+int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::ostream & warningOut, std::vector<FileId> & skipped)
 {
 	initializeFileStorage();
 
@@ -110,13 +111,20 @@ int removeUnreferencedFiles(FileId * referencedFiles, int refFileCount, std::str
 			if ( ! std::binary_search(referencedFiles, & referencedFiles[refFileCount], fileId) )
 			{
 				const std::string fileName = it->path().string();
-				fs::remove(* it);
-				++ unreferencedFiles;
+
+				std::time_t writeTime = fs::last_write_time(*it);
+				if ( std::time(0) - writeTime > 3600 )
+				{
+					fs::remove(* it);
+					++ unreferencedFiles;
+				}
+				else
+					skipped.push_back(fileId);
 			}
 		}
 		catch ( std::exception & e )
 		{
-			warningOut += std::string(e.what()) + '\n';
+			warningOut << std::string(e.what()) << '\n';
 		}
 	}
 	return unreferencedFiles;
@@ -151,9 +159,10 @@ void readFile(FileId id, std::vector<char> & out)
 {
 	initializeFileStorage();
 
-	lo::ibstream_p f = lo::getBStream(id, std::ios::in | std::ios::binary | std::ios::ate);
+	lo::ibstream_p f = lo::getBStream(id/*, std::ios::in | std::ios::binary | std::ios::ate*/);
 	if ( f->is_open() )
 	{
+		f->seekg(0, std::ios::end);
 		std::size_t size = f->tellg();
 		f->seekg(0, std::ios::beg);
 
