@@ -122,12 +122,10 @@ Datum remove_unreferenced_files()
 	{
 		std::vector<FileId>::const_iterator it = skipped.begin();
 		std::ostringstream msg;
-		msg << "Skipped files (too young): " << * it;
-		while (++ it != skipped.end() )
-			msg << ", " << * it;
+		msg << "Skipped " << skipped.size() << " files (too young).";
 
 		std::string info = msg.str();
-		elog(DEBUG1, info.c_str());
+		elog(DEBUG1, "%s", info.c_str());
 	}
 
 	std::string swarning = warning.str();
