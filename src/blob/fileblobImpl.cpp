@@ -159,10 +159,9 @@ void readFile(FileId id, std::vector<char> & out)
 {
 	initializeFileStorage();
 
-	lo::ibstream_p f = lo::getBStream(id/*, std::ios::in | std::ios::binary | std::ios::ate*/);
+	lo::ibstream_p f = lo::getBStream(id, std::ios::in | std::ios::binary | std::ios::ate);
 	if ( f->is_open() )
 	{
-		f->seekg(0, std::ios::end);
 		std::size_t size = f->tellg();
 		f->seekg(0, std::ios::beg);
 
