@@ -1,14 +1,14 @@
 /*
- pg_fileblob
+ wdb
 
- Copyright (C) 2009 met.no
+ Copyright (C) 2014 met.no
 
  Contact information:
  Norwegian Meteorological Institute
  Box 43 Blindern
  0313 OSLO
  NORWAY
- E-mail: wdb@met.no
+ E-mail: post@met.no
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -26,26 +26,31 @@
  MA  02110-1301, USA
  */
 
+#ifndef LRUFILELISTTEST_H_
+#define LRUFILELISTTEST_H_
 
-#ifndef BSTREAM_H_
-#define BSTREAM_H_
-
-#include <boost/filesystem/fstream.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/shared_ptr.hpp>
-
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace lo
 {
-typedef boost::filesystem::fstream bstream;
-typedef boost::shared_ptr<bstream> bstream_p;
 
-typedef boost::filesystem::ifstream ibstream;
-typedef boost::shared_ptr<ibstream> ibstream_p;
+class LRUFileListTest: public CppUnit::TestFixture
+{
+	CPPUNIT_TEST_SUITE(LRUFileListTest);
+	CPPUNIT_TEST( correctRead );
+	CPPUNIT_TEST( correctEviction );
+	CPPUNIT_TEST( overwriteProtection );
+	CPPUNIT_TEST_SUITE_END( );
 
+public:
+	LRUFileListTest();
+	~LRUFileListTest();
 
-ibstream_p getBStream(long long id);
-}
+	void correctRead();
+	void correctEviction();
+	void overwriteProtection();
+};
 
+} /* namespace lo */
 
-#endif /* BSTREAM_H_ */
+#endif /* LRUFILELISTTEST_H_ */
