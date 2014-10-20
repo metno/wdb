@@ -16,7 +16,7 @@ water observations and forecasts. It handles both gridded data
 
 The system can be used to:
 
-- Decode and store meteorological and oceanographic forecast fields
+- Decode and store meteorological and oceanographic forecast fields and observations
 - Load forecasts, analysis, wave and circulations models stored in GRIB1, GRIB2, and NetCDF format
 - Retrieve data through the WDB Call Interface (WCI). This is an SQL function interface that isolated applications from the internal tables
 
