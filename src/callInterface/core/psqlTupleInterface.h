@@ -51,6 +51,9 @@ extern "C" {
 #include <fmgr.h>
 #include <access/htup.h>
 #include <utils/timestamp.h>
+#ifdef PG_MODULE_MAGIC
+PG_MODULE_MAGIC;
+#endif
 
 struct PlaceSpecification;
 
@@ -85,7 +88,7 @@ void extractExtractGridDataReturnType( struct ExtractGridDataReturnType * out, c
  *
  * @return A tuple in the form of a Datum object.
  */
-Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo );
+Datum getLatLonCoordinates( float8 x, float8 y, FunctionCallInfo fcinfo );
 
 
 /**

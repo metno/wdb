@@ -143,7 +143,7 @@ void extractExtractGridDataReturnType( struct ExtractGridDataReturnType * out, c
     out->j = extractInt_(& t, "j");
 }
 
-PG_FUNCTION_INFO_V1( getLatLonCoordinates );
+//PG_FUNCTION_INFO_V1( getLatLonCoordinates );
 Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo )
 {
     TupleDesc td;
@@ -165,8 +165,6 @@ Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo )
 
     return HeapTupleGetDatum( ht );
 }
-
-
 
 Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo )
 {
