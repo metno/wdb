@@ -51,9 +51,6 @@ extern "C" {
 #include <fmgr.h>
 #include <access/htup.h>
 #include <utils/timestamp.h>
-#ifdef PG_MODULE_MAGIC
-PG_MODULE_MAGIC;
-#endif
 
 struct PlaceSpecification;
 
