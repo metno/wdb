@@ -103,7 +103,7 @@ Datum drop_file(PG_FUNCTION_ARGS)
 }
 
 PG_FUNCTION_INFO_V1(remove_unreferenced_files);
-Datum remove_unreferenced_files()
+Datum remove_unreferenced_files(PG_FUNCTION_ARGS)
 {
 	int unreferencedFiles = 0;
 
