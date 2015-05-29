@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # 
 # wdb - weather and water data storage
@@ -515,7 +515,7 @@ EOF
 fi
 
 
-while [ $current_version -lt $version_number ]
+while [[ $current_version -lt $version_number ]]
 do
 	current_version=`expr $current_version + 1`
 	echo -n "installing WDB schema package $current_version... "
