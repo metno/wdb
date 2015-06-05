@@ -26,7 +26,7 @@ Build-Depends: debhelper (>= 7),
  liblog4cpp5-dev (>=1.0), 
  libglib2.0-dev (>=2.24.0),
  postgresql-server-dev-9.1
-Standards-Version: 3.9.3
+Standards-Version: 3.9.5
 
 Package: wdb-1.5
 Architecture: any
