@@ -18,6 +18,7 @@ AC_SUBST( [OLD_MINOR_VERSION], ["1"] )
 AC_SUBST( [OLD_MICRO_VERSION], ["0"] )
 
 # Config
+AM_PROG_AR
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([config/m4])
