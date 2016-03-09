@@ -28,6 +28,7 @@
 
 #include "tuple.h"
 #include <funcapi.h>
+#include <access/htup_details.h>
 #include <access/heapam.h>
 
 Datum createTupleFromCStringArray(FunctionCallInfo fcinfo, const char ** specList)

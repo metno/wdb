@@ -189,8 +189,6 @@ clean-local:
 	rm -f $(CLEANFILES)
 	$(DOCCLEAN_HOOK)
 	rm -rf @builddir@/var/
-	rm -f core.*
-# Should not remove cores - hack for v0.3
 
 # The dbclean target is used by Buildbot to clean-up after a failed distcheck.
 dbclean:

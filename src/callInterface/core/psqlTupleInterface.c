@@ -34,6 +34,7 @@
 #include <wdbProjectionCInterface.h>
 #include <indeterminateType.h>
 #include <funcapi.h>
+#include <access/htup_details.h>
 #include <executor/spi.h>
 #include <executor/executor.h>
 #include <utils/builtins.h>
@@ -143,7 +144,7 @@ void extractExtractGridDataReturnType( struct ExtractGridDataReturnType * out, c
     out->j = extractInt_(& t, "j");
 }
 
-PG_FUNCTION_INFO_V1( getLatLonCoordinates );
+//PG_FUNCTION_INFO_V1( getLatLonCoordinates );
 Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo )
 {
     TupleDesc td;
@@ -161,14 +162,12 @@ Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo )
     ret[ 0 ] = Float8GetDatum( x );
     ret[ 1 ] = Float8GetDatum( y );
 
-    HeapTuple ht = ( HeapTuple ) heap_form_tuple( td, ret, isNull );
+    HeapTuple ht = heap_form_tuple( td, ret, isNull );
 
     return HeapTupleGetDatum( ht );
 }
 
-
-
-Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo )
+Datum packSessionData( int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo )
 {
     TupleDesc td;
     if ( get_call_result_type( fcinfo, NULL, & td ) != TYPEFUNC_COMPOSITE )
@@ -186,7 +185,7 @@ Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, i
     ret[ 1 ] = Int32GetDatum( parameterCs );
     ret[ 2 ] = Int32GetDatum( levelParameterCs );
 
-    HeapTuple ht = ( HeapTuple ) heap_form_tuple( td, ret, isNull );
+    HeapTuple ht = heap_form_tuple( td, ret, isNull );
     return HeapTupleGetDatum( ht );
 }
 

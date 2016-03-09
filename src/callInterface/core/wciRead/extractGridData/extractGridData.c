@@ -30,6 +30,7 @@
 #include <fmgr.h>
 #include <funcapi.h>
 #include <access/heapam.h>
+#include <access/htup_details.h>
 #include <utils/memutils.h>
 #include <access/xact.h>
 #include <types/interpolationType.h>

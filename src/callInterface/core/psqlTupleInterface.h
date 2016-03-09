@@ -85,7 +85,7 @@ void extractExtractGridDataReturnType( struct ExtractGridDataReturnType * out, c
  *
  * @return A tuple in the form of a Datum object.
  */
-Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo );
+Datum getLatLonCoordinates( float8 x, float8 y, FunctionCallInfo fcinfo );
 
 
 /**
@@ -99,7 +99,7 @@ Datum getAllLatLonCoordinates( FunctionCallInfo fcinfo );
 /**
  * Create a tuple of the given user data.
  */
-Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo );
+Datum packSessionData( int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo );
 
 /**
  * A plain mapping to sql SET ROLE

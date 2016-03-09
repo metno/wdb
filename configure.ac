@@ -8,16 +8,18 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(wdb, 1.5.7, [wdb@met.no])
-AC_SUBST( [DEBIAN_VERSION],["1.5"] )
+AC_INIT(wdb, 1.6.0, [wdb@met.no])
+AC_SUBST( [DEBIAN_VERSION],["1.6"] )
 AC_SUBST( [SCHEMA_VERSION],["1"] )
 # A previous schema version
 # - This is used for test purposes; e.g., the upgrade test
 AC_SUBST( [OLD_MAJOR_VERSION], ["1"] )
-AC_SUBST( [OLD_MINOR_VERSION], ["1"] )
-AC_SUBST( [OLD_MICRO_VERSION], ["0"] )
+AC_SUBST( [OLD_MINOR_VERSION], ["5"] )
+AC_SUBST( [OLD_MICRO_VERSION], ["7"] )
 
 # Config
+m4_pattern_allow([AM_PROG_AR])
+AM_PROG_AR
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([config/m4])
@@ -136,14 +138,14 @@ VL_LIB_READLINE
 #-----------------------------------------------------------------------------
 
 # POSTGRES
-WDB_POSTGRES_CHECK(9.1.x)
-WDB_POSTGIS_CHECK(1.5.x)
+WDB_POSTGRES_CHECK(9.5.x)
+WDB_POSTGIS_CHECK(2.2.x)
 WDB_PQXX_CHECK(3.0.x)
 
 WDB_GEOS_C
 
 # BOOST
-AX_BOOST_BASE(1.40.0)
+AX_BOOST_BASE(1.46.x)
 AX_BOOST_PROGRAM_OPTIONS
 AX_BOOST_DATE_TIME
 AX_BOOST_REGEX

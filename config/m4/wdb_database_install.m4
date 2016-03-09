@@ -70,7 +70,7 @@ AC_DEFUN([WDB_DATABASE_NAME],
 
 
 #
-# Set Database name for installation/uninstall
+# Set Database storage directory for installation/uninstall
 #
 AC_DEFUN([WDB_STORAGE_DIR],
 [

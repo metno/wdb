@@ -111,11 +111,11 @@ fi
 # Set PSQL Options
 PSQL_OPTIONS=$WDB_INSTALL_DATABASE
 DBCK_OPTIONS=""
-if [ -n $WDB_INSTALL_PORT ] && [ "$WDB_INSTALL_PORT"!=" " ]; then
+if [ -n "$WDB_INSTALL_PORT" ] && [ "$WDB_INSTALL_PORT"!=" " ]; then
 	PSQL_OPTIONS="$PSQL_OPTIONS -p$WDB_INSTALL_PORT"
 	DBCK_OPTIONS="$DBCK_OPTIONS -p$WDB_INSTALL_PORT"
 fi
-if [ -n $WDB_INSTALL_USER ] && [ "$WDB_INSTALL_USER"!=" " ]; then
+if [ -n "$WDB_INSTALL_USER" ] && [ "$WDB_INSTALL_USER"!=" " ]; then
 	PSQL_OPTIONS="$PSQL_OPTIONS -U$WDB_INSTALL_USER"
 	DBCK_OPTIONS="$DBCK_OPTIONS -U$WDB_INSTALL_USER"
 fi
@@ -131,6 +131,8 @@ echo -n "uninstalling database with database name... "
 echo $WDB_INSTALL_DATABASE
 echo -n "uninstalling database on database port... "
 echo $WDB_INSTALL_PORT
+echo -n "uninstalling database with database user... "
+echo $WDB_INSTALL_USER
 
 # Verify that Postmaster is running
 echo -n "checking that postgres is running... "
