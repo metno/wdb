@@ -34,6 +34,7 @@
 #include <wdbProjectionCInterface.h>
 #include <indeterminateType.h>
 #include <funcapi.h>
+#include <access/htup_details.h>
 #include <executor/spi.h>
 #include <executor/executor.h>
 #include <utils/builtins.h>
@@ -161,12 +162,12 @@ Datum getLatLonCoordinates( double x, double y, FunctionCallInfo fcinfo )
     ret[ 0 ] = Float8GetDatum( x );
     ret[ 1 ] = Float8GetDatum( y );
 
-    HeapTuple ht = ( HeapTuple ) heap_form_tuple( td, ret, isNull );
+    HeapTuple ht = heap_form_tuple( td, ret, isNull );
 
     return HeapTupleGetDatum( ht );
 }
 
-Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo )
+Datum packSessionData( int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo )
 {
     TupleDesc td;
     if ( get_call_result_type( fcinfo, NULL, & td ) != TYPEFUNC_COMPOSITE )
@@ -184,7 +185,7 @@ Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, i
     ret[ 1 ] = Int32GetDatum( parameterCs );
     ret[ 2 ] = Int32GetDatum( levelParameterCs );
 
-    HeapTuple ht = ( HeapTuple ) heap_form_tuple( td, ret, isNull );
+    HeapTuple ht = heap_form_tuple( td, ret, isNull );
     return HeapTupleGetDatum( ht );
 }
 

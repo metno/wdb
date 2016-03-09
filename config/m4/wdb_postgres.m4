@@ -359,49 +359,19 @@ if test -z ${postgis_SQL}; then
 fi
 # Debian Directories
 if test -z ${postgis_SQL}; then
+    if test -f /usr/share/postgresql-9.5-postgis/postgis.sql; then
+        postgis_SQL=/usr/share/postgresql-9.5-postgis
+    fi
+fi
+if test -z ${postgis_SQL}; then
 	if test -f /usr/share/postgresql-9.4-postgis/postgis.sql; then
 		postgis_SQL=/usr/share/postgresql-9.4-postgis
 	fi
 fi
 if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-9.3-postgis/postgis.sql; then
-		postgis_SQL=/usr/share/postgresql-9.3-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-9.2-postgis/postgis.sql; then
-		postgis_SQL=/usr/share/postgresql-9.2-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-9.1-postgis/postgis.sql; then
-		postgis_SQL=/usr/share/postgresql-9.1-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-9.0-postgis/postgis.sql; then
-		postgis_SQL=/usr/share/postgresql-9.0-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-8.4-postgis/postgis.sql; then
-		postgis_SQL=/usr/share/postgresql-8.4-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql; then
-		postgis_SQL=/usr/share/postgresql-8.3-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-8.2-postgis/lwpostgis.sql; then
-		postgis_SQL=/usr/share/postgresql-8.2-postgis
-	fi
-fi
-if test -z ${postgis_SQL}; then
-	if test -f /usr/share/postgresql-8.1-postgis/lwpostgis.sql; then
-		postgis_SQL=/usr/share/postgresql-8.1-postgis
-	fi
+    if test -f /usr/share/postgresql-9.3-postgis/postgis.sql; then
+        postgis_SQL=/usr/share/postgresql-9.3-postgis
+    fi
 fi
 # Error
 if test -z ${postgis_SQL}; then

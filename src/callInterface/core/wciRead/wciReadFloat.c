@@ -28,6 +28,7 @@
 
 #include "query/plan.h"
 #include <funcapi.h>
+#include <access/htup_details.h>
 #include <tsearch/ts_utils.h>
 #include <wdb_geos.h>
 #include "pconversion.h"

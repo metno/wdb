@@ -99,7 +99,7 @@ Datum getAllLatLonCoordinates( FunctionCallInfo fcinfo );
 /**
  * Create a tuple of the given user data.
  */
-Datum packSessionData( const char * user, int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo );
+Datum packSessionData( int dataProviderCs, int parameterCs, int levelParameterCs, FunctionCallInfo fcinfo );
 
 /**
  * A plain mapping to sql SET ROLE

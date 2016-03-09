@@ -1,6 +1,7 @@
 #include "psqlTypesTupleInterface.h"
 #include <util/conversion.h>
 #include <funcapi.h>
+#include <access/htup_details.h>
 #include <access/heapam.h>
 
 Datum packWciParameter( const char * statisticsType,
@@ -29,7 +30,7 @@ Datum packWciParameter( const char * statisticsType,
 	ret[1] = PointerGetDatum( pp );
 	ret[2] = PointerGetDatum( ua );
 
-	HeapTuple ht = (HeapTuple) heap_form_tuple( td, ret, isNull );
+	HeapTuple ht = heap_form_tuple( td, ret, isNull );
 	return HeapTupleGetDatum( ht );
 }
 
@@ -56,7 +57,7 @@ Datum packWciLevelParameter( const char * physicalPhenomena,
 	ret[0] = PointerGetDatum( pp );
 	ret[1] = PointerGetDatum( ua );
 
-	HeapTuple ht = (HeapTuple) heap_form_tuple( td, ret, isNull );
+	HeapTuple ht = heap_form_tuple( td, ret, isNull );
 	return HeapTupleGetDatum( ht );
 }
 
@@ -85,7 +86,7 @@ Datum packWciLocation( const char * interpolation,
 	ret[1] = PointerGetDatum( l );
 	ret[2] = BoolGetDatum( isPlainGeometry );
 
-	HeapTuple ht = (HeapTuple) heap_form_tuple( td, ret, isNull );
+	HeapTuple ht = heap_form_tuple( td, ret, isNull );
 	return HeapTupleGetDatum( ht );
 }
 

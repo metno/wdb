@@ -25,21 +25,21 @@ Build-Depends: debhelper (>= 7),
  libpqxx3-dev (>= 3.0.0), 
  liblog4cpp5-dev (>=1.0), 
  libglib2.0-dev (>=2.24.0),
- postgresql-server-dev-9.1
+ postgresql-server-dev-9.5
 Standards-Version: 3.9.5
 
-Package: wdb-1.5
+Package: wdb-1.6
 Architecture: any
 Depends: ${misc:Depends},
  ${shlibs:Depends},
  adduser, 
  python (>=2.4),
- postgresql-9.1,
- postgresql-9.1-postgis,
- postgresql-client (>=9.1),
+ postgresql-9.5,
+ postgresql-9.5-postgis,
+ postgresql-client (>=9.5),
  proj (>=4.6.0)
-Breaks: wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2), wdb (<= 1.1.0)
-Replaces: wdb-0.9, wdb-1.0, wdb (<= 1.1.0)
+Breaks: wdb (<= 1.1.0), wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2), wdb-1.5 (<= 1.5.7) 
+Replaces: wdb (<= 1.1.0), wdb-0.9, wdb-1.0, wdb-1.5 
 Provides: wdb
 Description: Database designed to store MHO data.
  Database system designed to store MHO (Meteorological, Hydrological and
@@ -48,7 +48,7 @@ Description: Database designed to store MHO data.
   production by providing a complete, flexible, and effective data storage
   solution for real-time and archive data.
 
-Package: wdb-clean-referencetime-1.5
+Package: wdb-clean-referencetime-1.6
 Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on reference times into a wdb database.
@@ -58,7 +58,7 @@ Description: Installs cleaning based on reference times into a wdb database.
  may be provided by adding entries in the clean.referencetime_lifetime table.
  Default lifetimes may be modified in a similar way.
 
-Package: wdb-clean-dataversion-1.5
+Package: wdb-clean-dataversion-1.6
 Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on data versions into a wdb database.

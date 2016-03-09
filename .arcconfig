@@ -1,5 +1,4 @@
 {
 	"project.name": "wdb",
-    "phabricator.uri": "https://phab.met.no",
-    "lint.engine": "MetCppLintEngine"
+    "phabricator.uri": "https://phab.met.no"
 }
