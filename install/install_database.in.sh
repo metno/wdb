@@ -330,9 +330,7 @@ else
 	psql -U $WDB_INSTALL_USER -p $WDB_INSTALL_PORT -d $WDB_NAME -q <<EOF
 SET CLIENT_MIN_MESSAGES TO "WARNING";
 \set ON_ERROR_STOP
-\i $POSTGIS_DIR/$POSTGIS_FILE
-\i $POSTGIS_DIR/spatial_ref_sys.sql
---\i $POSTGIS_DIR/rtpostgis.sql
+CREATE EXTENSION postgis;
 EOF
 	if [ 0 != $? ]; then
 		echo "ERROR"

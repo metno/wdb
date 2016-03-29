@@ -17,3 +17,5 @@
 /.autotools
 /config.log
 /INSTALL
+/ar-lib
+/test-driver
