@@ -36,6 +36,7 @@ class WciRemoveTest: public AbstractWciTestFixture
 	CPPUNIT_TEST_SUITE( WciRemoveTest );
 	CPPUNIT_TEST( testRemoveGridData );
 	CPPUNIT_TEST( testRemoveFloatData );
+	CPPUNIT_TEST( testRemoveFloatDataWithTimeModifier );
 	CPPUNIT_TEST_SUITE_END();
 public:
 	WciRemoveTest();
@@ -46,6 +47,8 @@ public:
 
 	void testRemoveGridData();
 	void testRemoveFloatData();
+  void testRemoveFloatDataWithTimeModifier();
+
 };
 
 #endif /* WCIFETCHTEST_H_ */

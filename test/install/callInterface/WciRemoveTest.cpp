@@ -111,3 +111,30 @@ void WciRemoveTest::testRemoveFloatData()
     result rAfter = t->exec(select);
     CPPUNIT_ASSERT_EQUAL(result::size_type(2), rAfter.size());
 }
+
+void WciRemoveTest::testRemoveFloatDataWithTimeModifier()
+{
+  const string select = "SELECT * FROM wci.read("
+      "ARRAY['test wci 4', 'test wci 6'],"
+      "NULL,"
+      "'inside 1900-12-25T06:00:00+00 TO 1900-12-26T06:00:00+00',"
+      "NULL,"
+      "NULL,"
+      "NULL,"
+      "NULL,"
+      "NULL::wci.returnfloat)";
+  const string remove = "SELECT * FROM wci.remove("
+      "ARRAY['test wci 4'],"
+      "NULL,"
+      "'before 1900-12-25 07:00:00+00',"
+      "NULL,"
+      "NULL,"
+      "NULL,"
+      "NULL )";
+
+  result rBefore = t->exec(select);
+  CPPUNIT_ASSERT_EQUAL(result::size_type(5), rBefore.size());
+  t->exec(remove);
+  result rAfter = t->exec(select);
+  CPPUNIT_ASSERT_EQUAL(result::size_type(2), rAfter.size());
+}
