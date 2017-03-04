@@ -1,6 +1,6 @@
 if HAS_CPPUNIT
-
 noinst_LTLIBRARIES += libwciInstallTestBase.la
+endif
 
 libwciInstallTestBase_la_SOURCES = \
 	test/install/callInterface/AbstractWciTestFixture.cpp \
@@ -19,6 +19,7 @@ libwciInstallTestBase_la_CPPFLAGS = $(AM_CPPFLAGS) \
 
 libwciInstallTestBase_la_LIBS = \
 	-lwdbTest -lwdbConfig
+
 
 
 #-----------------------------------------------------------------------------
@@ -69,10 +70,30 @@ wciInstallTester_SOURCES =	test/install/callInterface/SqlInjectionTest.h \
 							test/install/callInterface/MetaPlacePointTest.cpp \
 							test/install/callInterface/main.cpp
 
+WCIINSTALLTEST_SUPPORT = test/install/callInterface/buildUp.in.sh \
+			test/install/callInterface/tearDown.in.sh
+
+CLEANFILES += 	wciInstallTest.sh \
+		$(WCIINSTALLTEST_SUPPORT:.in.sh=.sh)
+
+EXTRA_DIST +=	test/install/callInterface/wciInstallTest.in.sh \
+	        $(WCIINSTALLTEST_SUPPORT) \
+		test/install/callInterface/wdb.mk \
+		test/install/callInterface/Makefile.am \
+		test/install/callInterface/Makefile.in
+
+DISTCLEANFILES += test/install/callInterface/Makefile
+
+wciInstallTest.sh: test/install/callInterface/wciInstallTest.in.sh
+				$(SED_SUBSTITUTION);\
+				chmod 754 $@
+
+
 #
 # These functions only work with pqxx 3.0. Need to test with 2.6.9
 #							test/install/callInterface/MetaPlaceTest.h \
 #							test/install/callInterface/MetaPlaceTest.cpp
+if HAS_CPPUNIT
 
 wciInstallTester_CPPFLAGS =	$(AM_CPPFLAGS) $(CPPUNIT_CFLAGS) -I$(srcdir)/test/utility/configuration -I$(srcdir)/test/install/callInterface
 
@@ -82,35 +103,13 @@ wciInstallTester_LDFLAGS =	$(AM_LDFLAGS) $(top_builddir)/libwciInstallTestBase.l
 
 wciInstallTester_LDADD =	-lwdbProj -lwdbExcept -lwdbMath
 
-WCIINSTALLTEST_SUPPORT =	test/install/callInterface/buildUp.in.sh \
-							test/install/callInterface/tearDown.in.sh
 							
-if HAS_CPPUNIT
-
 INSTALLTESTS += 			wciInstallTest.sh
 
 noinst_PROGRAMS += 			wciInstallTester
 
 noinst_SCRIPTS += 			wciInstallTest.sh \
 							$(WCIINSTALLTEST_SUPPORT:.in.sh=.sh)
-
-endif
-
-CLEANFILES += 				wciInstallTest.sh \
-							$(WCIINSTALLTEST_SUPPORT:.in.sh=.sh)
-
-EXTRA_DIST +=				test/install/callInterface/wciInstallTest.in.sh \
-							$(WCIINSTALLTEST_SUPPORT) \
-							test/install/callInterface/wdb.mk \
-							test/install/callInterface/Makefile.am \
-							test/install/callInterface/Makefile.in
-
-DISTCLEANFILES += 			test/install/callInterface/Makefile
-
-wciInstallTest.sh:			test/install/callInterface/wciInstallTest.in.sh
-				$(SED_SUBSTITUTION);\
-				chmod 754 $@
-
 
 
 # Local Makefile Targets
@@ -122,5 +121,4 @@ test/install/callInterface/clean: clean
 
 test/install/callInterface/install: install
 
-# HAS_CPPUNIT
 endif
