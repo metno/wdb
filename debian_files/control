@@ -22,10 +22,10 @@ Build-Depends: debhelper (>= 7),
  libcppunit-dev (>=1.12.1),
  libproj-dev (>=4.6.0), 
  libgeos-dev (>=3.1.0),
- libpqxx3-dev (>= 3.0.0), 
+ libpqxx3-metno-dev (>= 3.1.1) | libpqxx3-dev (>= 3.0.0), 
  liblog4cpp5-dev (>=1.0), 
  libglib2.0-dev (>=2.24.0),
- postgresql-server-dev-9.5
+ postgresql-server-dev-9.6
 Standards-Version: 3.9.5
 
 Package: wdb-1.6
@@ -34,10 +34,10 @@ Depends: ${misc:Depends},
  ${shlibs:Depends},
  adduser, 
  python (>=2.4),
- postgresql-9.5,
- postgresql-9.5-postgis-2.2,
+ postgresql-9.6,
+ postgresql-9.6-postgis-2.3,
  postgresql-client,
- libproj0 (>=4.8.0)
+ libproj9 (>=4.8.0) 
 Breaks: wdb (<= 1.1.0), wdb-0.9 (<= 0.9.9), wdb-1.0 (<= 1.0.2), wdb-1.5 (<= 1.5.7) 
 Replaces: wdb (<= 1.1.0), wdb-0.9, wdb-1.0, wdb-1.5 
 Provides: wdb
@@ -63,5 +63,5 @@ Architecture: all
 Depends: wdb, ${misc:Depends}
 Description: Installs cleaning based on data versions into a wdb database.
  Installing this package will attach an extra cleaning function to wdb's 
- cleaner cron-job. The job will clean only allow the latest data version for
+ cleaner cron-job. The job will only allow the latest data version for
  each piece of data to live.
