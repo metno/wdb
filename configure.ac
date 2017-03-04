@@ -151,6 +151,7 @@ AX_BOOST_DATE_TIME
 AX_BOOST_REGEX
 AX_BOOST_FILESYSTEM
 AX_BOOST_THREAD
+AC_LANG_PUSH([C++])
 AC_CHECK_HEADERS([boost/lexical_cast.hpp boost/shared_ptr.hpp]) 
 AC_CHECK_HEADERS([boost/noncopyable.hpp boost/static_assert.hpp])
 AC_CHECK_HEADERS([boost/assign/list_of.hpp boost/scoped_array.hpp])
@@ -163,6 +164,7 @@ AC_CHECK_HEADERS([boost/date_time/posix_time/posix_time_duration.hpp])
 AC_CHECK_HEADERS([boost/date_time/gregorian/gregorian.hpp])
 AC_CHECK_HEADERS([boost/filesystem/operations.hpp boost/filesystem/path.hpp])
 AC_CHECK_HEADERS([boost/thread.hpp])
+AC_LANG_POP([C++])
 CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
 export CPPFLAGS
 LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
