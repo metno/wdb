@@ -36,7 +36,9 @@
 #include "levelQuery.h"
 #include "dataversionQuery.h"
 #include "util.h"
+#include "buildQuery_dataprovider.h"
 #include <iostream>
+#include <boost/shared_ptr.hpp>
 
 extern "C"
 {
@@ -47,6 +49,35 @@ extern "C"
  * @addtogroup wci
  * @{
  */
+
+
+boost::shared_ptr<query::Builder> createDataProviderBuilder(const struct StringArray * dataProvider)
+{
+  if ( ! dataProvider )
+    return boost::shared_ptr<query::Builder>();
+
+  boost::shared_ptr<query::Builder> builder(new query::Builder);
+
+  if ( dataProvider->size == 0 )
+  {
+    builder->where("FALSE ");
+  }
+  else
+  {
+    builder->what("d.dataproviderid AS id");
+    builder->from(WCI_SCHEMA".dataprovider_mv d");
+    builder->from(WCI_SCHEMA".dataprovider_mv source");
+    std::ostringstream where;
+    where << "(source.dataprovidername = " << quote(lower(dataProvider->data[0]));
+    for ( int i = 1; i < dataProvider->size; ++ i )
+      where << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
+    where << ")";
+    builder->where(where.str());
+    builder->where("source.dataprovidernameleftset <= d.dataprovidernameleftset");
+    builder->where("source.dataprovidernamerightset >= d.dataprovidernamerightset");
+  }
+  return builder;
+}
 
 /**
  * Create the part of a wci.read base query related to data provider. If no
@@ -59,33 +90,10 @@ extern "C"
  */
 void addDataProviderQuery(query::Builder & builder, const struct StringArray * dataProvider)
 {
-	if ( ! dataProvider )
-		return;
-	if ( dataProvider->size == 0 )
-	{
-		builder.where("FALSE ");
-	}
-	else
-	{
-		query::Builder dataprovider;
-		dataprovider.what("d.dataproviderid AS id");
-		dataprovider.from(WCI_SCHEMA".dataprovider_mv d");
-		dataprovider.from(WCI_SCHEMA".dataprovider_mv source");
-		std::ostringstream where;
-		where << "(source.dataprovidername = " << quote(lower(dataProvider->data[0]));
-		for ( int i = 1; i < dataProvider->size; ++ i )
-			where << " OR source.dataprovidername = " << quote(lower(dataProvider->data[i]));
-		where << ")";
-		dataprovider.where(where.str());
-		dataprovider.where("source.dataprovidernameleftset <= d.dataprovidernameleftset");
-		dataprovider.where("source.dataprovidernamerightset >= d.dataprovidernamerightset");
-
-		builder.with(dataprovider, "dataprovider");
-		builder.from("dataprovider");
-		builder.where("v.dataproviderid IN (dataprovider.id)");
-	}
+  char * ids = get_dataprovider_query_fragment(dataProvider);
+  if (ids != NULL)
+    builder.where(ids);
 }
-
 
 /**
  * Create the part of a wci.read base query related to location.
@@ -172,6 +180,19 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 	// Never reached:
 	return NULL;
 }
+
+char * build_dataproviderQuery(const struct StringArray * dataproviderNames)
+{
+  boost::shared_ptr<query::Builder> builder = createDataProviderBuilder(dataproviderNames);
+  if (builder)
+  {
+    std::string ret = builder->str();
+    return pstrdup(ret.c_str());
+  }
+  else
+    return NULL;
+}
+
 
 char * build_placeSpecQuery(long long placeid)
 {
