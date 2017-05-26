@@ -32,6 +32,7 @@
 #include <fmgr.h>
 #include <executor/spi.h>
 #include "plan.h"
+#include "buildQuery.h"
 
 
 /**
@@ -68,7 +69,7 @@ char * get_dataprovider_query_fragment(const struct StringArray * dataProvider)
         "unable to connect to SPI procedure")));
   }
 
-  const char * dataproviderQuery = build_dataproviderQuery(dataProvider);
+  char * dataproviderQuery = build_dataproviderQuery(dataProvider);
   if (dataproviderQuery == NULL)
   {
     SPI_finish();
