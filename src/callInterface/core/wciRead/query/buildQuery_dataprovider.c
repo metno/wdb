@@ -36,15 +36,17 @@
 
 
 /**
- * Creates query fragment. Must be run as end of get_dataprovider_query_fragment.
+ * Creates query fragment. Must be run as end of
+ * get_dataprovider_query_fragment. Returned string must be
+ * freed manually, using free().
  */
 static char * mk_query()
 {
   if (SPI_processed == 0)
-    return "FALSE";
+    return strdup("FALSE");
 
   unsigned buffer_size = (SPI_processed+1) * 23; // allocating a large buffer, since we expect number of values to be few
-  char * ids = (char*) palloc(SPI_processed * buffer_size);
+  char * ids = (char*) malloc(SPI_processed * buffer_size);
   char * current = ids + sprintf(ids, "dataproviderid in (");
   int i;
   for (i = 0; i < SPI_processed; ++ i)
@@ -87,5 +89,9 @@ char * get_dataprovider_query_fragment(const struct StringArray * dataProvider)
   char * ids = mk_query();
 
   SPI_finish();
-  return ids;
+
+  char * ret = pstrdup(ids);
+  free(ids);
+
+  return ret;
 }
