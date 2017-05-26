@@ -38,6 +38,7 @@
 #include "extractGridData/readCache.h"
 #include "getData.h"
 
+
 /**
  * @addtogroup wci
  * @{
@@ -57,21 +58,24 @@
  */
 static void runWciReadFloatQueryFloat(struct ReadStore * out, FunctionCallInfo fcinfo)
 {
-	struct WciReadParameterCollection p;
+  struct WciReadParameterCollection p;
 	parseReadParameters(& p, fcinfo);
 
 	// This must match exactly the return type for wci.returnfloat
 	const char * whatToSelect = "value::float, dataprovidername, placename::text, st_astext(placegeometry), referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelfrom, levelto, levelindeterminatecode, dataversion, confidencecode, valuestoretime, valueid, valuetype";
+	SPI_push();
 	const char * gridQuery = build_query(& p, FloatTable, OutputFloat, whatToSelect, NULL, NULL);
+	SPI_pop();
 	elog(DEBUG1, "%s", gridQuery);
 
 	// Perform primary query
 	SPIPlanPtr queryPlan = getSpiPlan(gridQuery);
 	int result = SPI_execute_plan(queryPlan, NULL, NULL, true, 0);
+
 	if (SPI_OK_SELECT != result)
 	{
 		ereport(ERROR, (errcode(ERRCODE_INTERNAL_ERROR), errmsg(
-				"Error when performing base query; %d", result)));
+				"Error when performing base float query; %d", result)));
 	}
 
 	out->tuples = SPI_tuptable;
@@ -88,7 +92,9 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 	struct WciReadParameterCollection p;
 	parseReadParameters(& p, fcinfo);
 	const char * whatToSelect = "value, dataprovidername, placename::text, placegeometry, referencetime, validtimefrom, validtimeto, validtimeindeterminatecode, valueparametername, valueunitname, levelparametername, levelunitname, levelfrom, levelto, levelindeterminatecode, dataversion, confidencecode, valuestoretime, valueid, valuetype, placeid";
+	SPI_push();
 	const char * gridQuery = build_query(& p, GridTable, OutputFloat, whatToSelect, NULL, NULL);
+	SPI_pop();
 	elog(DEBUG1, "%s", gridQuery);
 
 	// Perform primary query
@@ -97,7 +103,7 @@ static void runWciReadFloatQueryGrid(struct ReadStore * out, FuncCallContext * f
 	if (SPI_OK_SELECT != result)
 	{
 		ereport(ERROR, (errcode(ERRCODE_INTERNAL_ERROR), errmsg(
-				"Error when performing base query; %d", result)));
+				"Error when performing base grid/float query; %d", result)));
 	}
 	MemoryContext oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 

@@ -77,6 +77,7 @@ char * build_query(const struct WciReadParameterCollection * parameters,
 		enum DataSource dataSource, enum OutputType output,
 		const char * selectWhat, const char * ordering, const char * groupby);
 
+char * build_dataproviderQuery(const struct StringArray * dataproviderNames);
 
 /**
  * Create a query to get a the place specification for the regular grid

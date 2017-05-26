@@ -15,5 +15,7 @@ wdb_la_SOURCES +=		src/callInterface/core/wciRead/query/util.h \
 						src/callInterface/core/wciRead/query/WciReadParameterCollection_string.h \
 						src/callInterface/core/wciRead/query/WciReadParameterCollection_string.cpp \
 						src/callInterface/core/wciRead/query/plan.h \
-						src/callInterface/core/wciRead/query/plan.c
+						src/callInterface/core/wciRead/query/plan.c \
+						src/callInterface/core/wciRead/query/buildQuery_dataprovider.h \
+						src/callInterface/core/wciRead/query/buildQuery_dataprovider.c
 						
